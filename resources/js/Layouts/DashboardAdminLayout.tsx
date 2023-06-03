@@ -68,10 +68,8 @@ export default function DashboardAdminLayout({
                     </ResponsiveNavLink>
                 </li>
                 <li>
-                    <ResponsiveNavLink href={route('dashboard')}
-                        // active={route().current('dashboard')}
-                    >
-                        History Transaksi
+                    <ResponsiveNavLink href={route('question.index') } active={route().current('question.index')}>
+                        Pertanyaan
                     </ResponsiveNavLink>
                 </li>
             </ul>

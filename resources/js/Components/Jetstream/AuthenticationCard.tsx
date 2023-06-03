@@ -18,9 +18,7 @@ export default function AuthenticationCard({
         <div className="card glass py-5 w-full md:w-3/4 mt-10 lg:mt-0">
           <div className="card-body ">
             <div className='flex flex-col text-black'>
-              <div className='text-2xl m-auto font-semibold'>
-                Digital Reconnect Ticketing
-              </div>
+              <img src={asset('root','assets/logo.png')} className='mx-auto' />
             </div>
             <div className="mt-6 py-4 sm:rounded-lg ">
               {children}
