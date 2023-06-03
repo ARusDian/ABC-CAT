@@ -2,11 +2,8 @@
 
 use App\Actions\Fortify\UserProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ResearchController;
-use App\Http\Controllers\ResearchDocumentController;
-use App\Http\Controllers\ResearchDocumentCategoryController;
-use App\Http\Controllers\ResearchTypeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,8 +37,11 @@ Route::middleware([
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::middleware(['role:admin|super-admin'])->group(function () {
-        Route::middleware(['role:super-admin'])->group(function () {
-            Route::resource('/user', UserController::class);
-        });
+       Route::prefix('admin')->group(function () {
+            Route::resource('/question', QuestionController::class);
+            Route::middleware(['role:super-admin'])->group(function () {
+                Route::resource('/user', UserController::class);
+            });
+       });
     });
 });
