@@ -140,7 +140,7 @@ class QuestionController extends Controller
                     'document_file_id' => $imageId,
                 ]);
             }
-            return redirect()->route('question.index')->banner('Question updated successfully');
+            return redirect()->route('question.show',$id)->banner('Question updated successfully');
         });
     }
 
