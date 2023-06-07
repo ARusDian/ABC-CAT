@@ -29,7 +29,7 @@ class DocumentFile extends Model
     }
 
     static function createFile(string $disk, string $path, string|File $file): DocumentFile {
-       Storage::disk($disk)->put($path, $file);
+        Storage::disk($disk)->put($path, $file);
         return DocumentFile::create([
             'disk' => $disk,
             'path' => $path

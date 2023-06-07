@@ -2,6 +2,7 @@
 
 use App\Actions\Fortify\UserProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LearningMaterialController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -39,6 +40,7 @@ Route::middleware([
     Route::middleware(['role:admin|super-admin'])->group(function () {
        Route::prefix('admin')->group(function () {
             Route::resource('/question', QuestionController::class);
+            Route::resource('/learning-material', LearningMaterialController::class);
             Route::middleware(['role:super-admin'])->group(function () {
                 Route::resource('/user', UserController::class);
             });

@@ -61,12 +61,12 @@ class QuestionController extends Controller
                 $editorContent = str_replace($image, url('/').'/storage/'.$files->path, $editorContent);
                 array_push($submittedImagesId, $files->id);
             }
-            $newProgramCommitte = Question::create([
+            $newQuestion = Question::create([
                 'content' => $editorContent,
             ]);
             forEach($submittedImagesId as $imageId) {
                 QuestionImage::create([
-                    'question_id' => $newProgramCommitte->id,
+                    'question_id' => $newQuestion->id,
                     'document_file_id' => $imageId,
                 ]);
             }

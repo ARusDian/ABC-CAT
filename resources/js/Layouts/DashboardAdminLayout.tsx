@@ -72,6 +72,11 @@ export default function DashboardAdminLayout({
                         Pertanyaan
                     </ResponsiveNavLink>
                 </li>
+                <li>
+                    <ResponsiveNavLink href={route('learning-material.index')} active={route().current('learning-material.index')}>
+                        Materi Pembelajaran
+                    </ResponsiveNavLink>
+                </li>
             </ul>
         </Box>
     );
