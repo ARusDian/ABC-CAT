@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import React, { MouseEventHandler, ReactNode } from 'react';
 
 interface Props {
@@ -14,14 +15,16 @@ export default function AddNewHeader(props: Props) {
                 {props.titleIcon || null} {props.title}
             </label>
             <div className="flex ">
-                <button
+                <Button
                     id={props.id}
                     type="button"
-                    className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
                     onClick={props.onClick}
+                    variant="contained"
+                    color="primary"
+                    size="large"
                 >
                     {props.newIcon || null} Tambah
-                </button>
+                </Button>
             </div>
         </div>
     );

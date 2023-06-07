@@ -6,6 +6,8 @@ import route from 'ziggy-js';
 import DashboardAdminLayout from '@/Layouts/DashboardAdminLayout';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { QuestionModel } from '@/Models/Question';
+import AdminTableLayout from '@/Layouts/AdminTableLayout';
+import { Button } from '@mui/material';
 
 interface Props {
     questions: Array<QuestionModel>,
@@ -18,48 +20,38 @@ export default function Index(props: Props) {
 
     ] as MRT_ColumnDef<QuestionModel>[];
     return (
-        <DashboardAdminLayout title="questions">
-            <div className="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-3">
-                    <div className="p-6 sm:px-20 bg-white border-b border-gray-200">
-                        <div className="flex justify-between">
-                            <div className="mt-8 text-2xl">
-                                questions
-                            </div>
-                            <div className="">
-                                <InertiaLink
-                                    href={route('question.create')}
-                                    className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold">
-                                    Tambah Pertanyaan
-                                </InertiaLink>
-                            </div>
-                        </div>
-                        <div className="mt-6 text-gray-500">
-                            <MaterialReactTable
-                                columns={dataColumns}
-                                data={questions}
-                                enableColumnActions
-                                enableColumnFilters
-                                enablePagination
-                                enableSorting
-                                enableBottomToolbar
-                                enableTopToolbar
-                                enableRowActions
-                                enableRowNumbers
-                                muiTableBodyRowProps={{ hover: false }}
-                                renderRowActions={({ row }) => (
-                                    <div className="flex items-center justify-center gap-2">
-                                        <InertiaLink href={route('question.show', row.original.id)}
-                                            className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold">
-                                            Show
-                                        </InertiaLink>
-                                    </div>
-                                )}
-                            />
-                        </div>
+        <AdminTableLayout
+            title="Pertanyaan"
+            addRoute={route('question.create')}
+            addRouteTitle="Tambah Pertanyaan"
+        >
+            <MaterialReactTable
+                columns={dataColumns}
+                data={questions}
+                enableColumnActions
+                enableColumnFilters
+                enablePagination
+                enableSorting
+                enableBottomToolbar
+                enableTopToolbar
+                enableRowActions
+                enableRowNumbers
+                muiTableBodyRowProps={{ hover: false }}
+                renderRowActions={({ row }) => (
+                    <div className="flex items-center justify-center gap-2">
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color='primary'
+                            size="large"
+                        >
+                            <InertiaLink href={route('question.show', row.original.id)}>
+                                Show
+                            </InertiaLink>
+                        </Button>
                     </div>
-                </div>
-            </div>
-        </DashboardAdminLayout>
+                )}
+            />
+        </AdminTableLayout>
     );
 }

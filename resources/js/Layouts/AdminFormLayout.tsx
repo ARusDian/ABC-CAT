@@ -1,7 +1,7 @@
 import { InertiaLink } from '@inertiajs/inertia-react';
 import React from 'react';
-import route from 'ziggy-js';
 import DashboardAdminLayout from './DashboardAdminLayout';
+import { Button } from '@mui/material';
 
 export interface Props {
   title: string;
@@ -19,11 +19,15 @@ export default function AdminFormLayout(props: React.PropsWithChildren<Props>) {
           <div className="flex justify-between">
             <div className="text-2xl">{title}</div>
             {backRoute ? (
-              <button className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold">
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+              >
                 <InertiaLink href={backRoute}>
                   {backRouteTitle ?? 'Kembali'}
                 </InertiaLink>
-              </button>
+              </Button>
             ) : null}
           </div>
 

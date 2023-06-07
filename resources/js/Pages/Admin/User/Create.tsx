@@ -6,6 +6,8 @@ import { NewUser, Role } from '@/types';
 import { InertiaLink, useForm } from '@inertiajs/inertia-react';
 
 import Form from './Form';
+import AdminFormLayout from '@/Layouts/AdminFormLayout';
+import { Button } from '@mui/material';
 
 interface Props{
     roles : Array<Role>,
@@ -37,37 +39,29 @@ export default function Create(props: Props) {
     }
 
     return (
-        <AppLayout title={'Tambah User'}>
-            <div className="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <div className="flex justify-between">
-                        <div className="text-2xl">
-                            Tambah User
-                        </div>
-                        <button className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold">
-                            <InertiaLink href={route('user.index')}>
-                                Kembali
-                            </InertiaLink>
-                        </button>
-                    </div>
-                    <form className="flex-col gap-5 py-5" onSubmit={onSubmit}>
-                        <Form
-                            form={form}
-                            roles = {props.roles}
-                            className="my-5 mx-2"
-                        />
-                        <div className="flex justify-end">
-                            <button
-                                className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold m-5 mt-10 w-1/2"
-                                type="submit"
-                                disabled={form.processing}
-                            >
-                                Submit
-                            </button>   
-                        </div>
-                    </form>
+        <AdminFormLayout
+            title="Tambah User"
+            backRoute={route('user.index')}
+            backRouteTitle="Kembali"
+        >
+            <form className="flex-col gap-5 py-5" onSubmit={onSubmit}>
+                <Form
+                    form={form}
+                    roles={props.roles}
+                    className="my-5 mx-2"
+                />
+                <div className="flex justify-end">
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color='primary'
+                        size="large"
+                        disabled={form.processing}
+                    >
+                        Submit
+                    </Button>
                 </div>
-            </div>
-        </AppLayout>
+            </form>
+        </AdminFormLayout>
     )
 }

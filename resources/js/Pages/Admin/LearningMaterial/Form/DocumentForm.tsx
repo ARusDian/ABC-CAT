@@ -8,6 +8,7 @@ import { InertiaFormProps } from '@inertiajs/inertia-react';
 import { BaseLearningMaterialDocumentModel, BaseLearningMaterialModel, createDefaultLearningMaterialDocument } from '@/Models/LearningMaterial';
 import InputLabel from '@/Components/Jetstream/InputLabel';
 import PDFViewer from '@/Components/PDFViewer';
+import { Button } from '@mui/material';
 
 
 
@@ -26,8 +27,6 @@ export default function DocumentForm(props: Props) {
             props.onChange(props.documents);
         };
     }
-
-
 
     return (
         <div className={`flex-col gap-5 my-8 ${props.className}`}>
@@ -87,15 +86,21 @@ export default function DocumentForm(props: Props) {
                                                 <InputError message={errors.getChild('documents', 'file')} className="mt-2" />
                                             </div>
                                         </div>
-                                        <button
-                                            className="bg-red-500 text-white hover:bg-red-600 py-3 px-5 rounded-lg text-md font-semibold"
-                                            type="button"
+                                        <div
+                                            className='my-3'
                                             onClick={handleChange(_ => {
                                                 props.documents.splice(index, 1);
                                             })}
                                         >
-                                            Hapus
-                                        </button>
+                                            <Button
+                                                type="button"
+                                                variant="contained"
+                                                color="error"
+                                                size="large"
+                                            >
+                                                Hapus
+                                            </Button>
+                                        </div>
                                     </div>
                                     <div
                                         className="mt-4 flex items-center justify-center"

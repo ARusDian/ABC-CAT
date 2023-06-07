@@ -7,6 +7,8 @@ import { createInertiaApp } from '@inertiajs/inertia-react';
 import { InertiaProgress } from '@inertiajs/progress';
 import { RouteContext } from '@/Hooks/useRoute';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './muiTheme';
 
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
@@ -20,9 +22,11 @@ createInertiaApp({
     ),
   setup({ el, App, props }) {
     return render(
-      <RouteContext.Provider value={(window as any).route}>
-        <App {...props} />
-      </RouteContext.Provider>,
+      <ThemeProvider theme={theme}>
+        <RouteContext.Provider value={(window as any).route}>
+          <App {...props} />
+        </RouteContext.Provider>
+      </ThemeProvider>,
       el,
     );
   },
