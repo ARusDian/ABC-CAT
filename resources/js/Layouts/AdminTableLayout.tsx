@@ -34,7 +34,8 @@ export default function AdminTableLayout(
                   ) : null}
                 </div>
               </div>
-              <div></div>
+
+              <div className="mt-6 text-gray-500">{props.children}</div>
             </div>
           </div>
         </div>
