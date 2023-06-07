@@ -29,7 +29,7 @@ export default function AdminTableLayout(
                     >
                       {props.add_route_title
                         ? props.add_route_title
-                        : 'Tambah {props.title}'}
+                        : `Tambah ${props.title}`}
                     </InertiaLink>
                   ) : null}
                 </div>
