@@ -6,21 +6,22 @@ import DashboardAdminLayout from './DashboardAdminLayout';
 export interface Props {
   title: string;
 
-  back_route?: string;
-  back_route_title?: string;
+  backRoute?: string;
+  backRouteTitle?: string;
 }
 
 export default function AdminFormLayout(props: React.PropsWithChildren<Props>) {
+  const { backRoute, backRouteTitle, title } = props;
   return (
-    <DashboardAdminLayout title={'Tambah User'}>
+    <DashboardAdminLayout title={title}>
       <div className="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-3">
           <div className="flex justify-between">
-            <div className="text-2xl">Tambah Soal</div>
-            {props.back_route ? (
+            <div className="text-2xl">{title}</div>
+            {backRoute ? (
               <button className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold">
-                <InertiaLink href={route(props.back_route)}>
-                  {props.back_route_title ?? "Kembali" }
+                <InertiaLink href={backRoute}>
+                  {backRouteTitle ?? 'Kembali'}
                 </InertiaLink>
               </button>
             ) : null}
