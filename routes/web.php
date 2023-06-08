@@ -2,6 +2,7 @@
 
 use App\Actions\Fortify\UserProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExerciseQuestionController;
 use App\Http\Controllers\LearningMaterialController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
@@ -38,12 +39,13 @@ Route::middleware([
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::middleware(['role:admin|super-admin'])->group(function () {
-       Route::prefix('admin')->group(function () {
+        Route::prefix('admin')->group(function () {
+            Route::resource("/exercise-question", ExerciseQuestionController::class);
             Route::resource('/question', QuestionController::class);
             Route::resource('/learning-material', LearningMaterialController::class);
             Route::middleware(['role:super-admin'])->group(function () {
                 Route::resource('/user', UserController::class);
             });
-       });
+        });
     });
 });
