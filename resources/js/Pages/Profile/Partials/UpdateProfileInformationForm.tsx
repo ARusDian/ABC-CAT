@@ -18,8 +18,6 @@ interface Props {
 }
 
 export default function UpdateProfileInformationForm({ user }: Props) {
-
-
   const form = useForm({
     _method: 'PUT',
     name: user.name,
@@ -221,7 +219,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
           <div className="col-span-6 sm:col-span-4">
             <InputLabel htmlFor="NIDN">NIDN</InputLabel>
             <TextInput
-              id='NIDN'
+              id="NIDN"
               type="text"
               className="mt-1 block w-full"
               value={form.data.NIDN}
@@ -233,7 +231,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
           <div className="col-span-6 sm:col-span-4">
             <InputLabel htmlFor="NIP_NIPH">NIP/NIPH</InputLabel>
             <TextInput
-              id='NIP_NIPH'
+              id="NIP_NIPH"
               type="text"
               className="mt-1 block w-full"
               value={form.data.NIP_NIPH}

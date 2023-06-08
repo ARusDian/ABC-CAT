@@ -32,13 +32,11 @@ export default function AdminTableLayout({
                   <div className="mt-8 text-2xl">{title}</div>
                   <div className="">
                     {addRoute ? (
-                      <InertiaLink
-                        href={addRoute}
-                      >
+                      <InertiaLink href={addRoute}>
                         <Button
                           variant="contained"
                           color="primary"
-                          size='large'
+                          size="large"
                         >
                           {addRouteTitle ?? `Tambah ${title}`}
                         </Button>

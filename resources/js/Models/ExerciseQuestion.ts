@@ -1,7 +1,7 @@
 import { QuestionModel } from './Question';
 
 export interface ExerciseQuestionFormModel {
-    name: string;
+  name: string;
 }
 
 export interface ExerciseQuestionModel {

@@ -31,10 +31,8 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <div className='py-5'>
-          <div className="text-lg">
-            {children}
-          </div>
+        <div className="py-5">
+          <div className="text-lg">{children}</div>
         </div>
       )}
     </div>
@@ -77,10 +75,7 @@ export default function Register() {
     <AuthenticationCard>
       <Head title="Register" />
 
-      <form
-        onSubmit={onSubmit}
-        className=''
-      >
+      <form onSubmit={onSubmit} className="">
         <Tabs
           value={tabIndex}
           onChange={handleOnTabChange}
@@ -90,8 +85,8 @@ export default function Register() {
           aria-label="full width tabs example"
           centered
         >
-          <Tab {...a11yProps(0)} label="Data Diri"/>
-          <Tab {...a11yProps(1)} label="Data Akun"/>
+          <Tab {...a11yProps(0)} label="Data Diri" />
+          <Tab {...a11yProps(1)} label="Data Akun" />
         </Tabs>
         <TabPanel index={0} value={tabIndex}>
           <div>
@@ -115,7 +110,9 @@ export default function Register() {
               type="text"
               className="mt-1 block w-full"
               value={form.data.phone_number}
-              onChange={e => form.setData('phone_number', e.currentTarget.value)}
+              onChange={e =>
+                form.setData('phone_number', e.currentTarget.value)
+              }
               required
             />
             <InputError className="mt-2" message={form.errors.phone_number} />
@@ -134,7 +131,7 @@ export default function Register() {
             </select>
             <InputError className="mt-2" message={form.errors.role} />
           </div> */}
-          <div className='flex justify-between mt-4 gap-5'>
+          <div className="flex justify-between mt-4 gap-5">
             <InertiaLink
               href={route('login')}
               className="underline text-sm text-gray-900 hover:text-gray-900"
@@ -142,7 +139,7 @@ export default function Register() {
               Already registered?
             </InertiaLink>
             <button
-              className='inline-flex items-center px-4 py-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition'
+              className="inline-flex items-center px-4 py-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
               onClick={() => setTabIndex(1)}
             >
               Selanjutnya
@@ -178,7 +175,9 @@ export default function Register() {
           </div>
 
           <div className="mt-4">
-            <InputLabel htmlFor="password_confirmation">Confirm Password</InputLabel>
+            <InputLabel htmlFor="password_confirmation">
+              Confirm Password
+            </InputLabel>
             <TextInput
               id="password_confirmation"
               type="password"
@@ -190,7 +189,10 @@ export default function Register() {
               required
               autoComplete="new-password"
             />
-            <InputError className="mt-2" message={form.errors.password_confirmation} />
+            <InputError
+              className="mt-2"
+              message={form.errors.password_confirmation}
+            />
           </div>
 
           {page.props.jetstream.hasTermsAndPrivacyPolicyFeature && (
@@ -201,7 +203,9 @@ export default function Register() {
                     name="terms"
                     id="terms"
                     checked={form.data.terms}
-                    onChange={e => form.setData('terms', e.currentTarget.checked)}
+                    onChange={e =>
+                      form.setData('terms', e.currentTarget.checked)
+                    }
                     required
                   />
 
@@ -235,9 +239,8 @@ export default function Register() {
             Already registered?
           </InertiaLink>
           <div className="flex items-center justify-between mt-4">
-            
             <button
-              className='inline-flex items-center px-4 py-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition'
+              className="inline-flex items-center px-4 py-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
               onClick={() => setTabIndex(0)}
             >
               Kembali

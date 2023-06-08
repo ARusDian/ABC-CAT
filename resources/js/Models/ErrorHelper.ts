@@ -1,83 +1,83 @@
 type Unpacked<T> = T extends (infer U)[] ? U : T;
 
 export class BaseErrorHelper<T> {
-    constructor(public errors: any) { }
+  constructor(public errors: any) {}
 
-    getChildPrefix<K extends keyof T>(index: K): string {
-        return String(index);
+  getChildPrefix<K extends keyof T>(index: K): string {
+    return String(index);
+  }
+
+  getError(index: any): string {
+    return this.errors[index];
+  }
+
+  getAny(index: any, nameInto = index): string {
+    let indexName = this.getChildPrefix(index);
+    let string = this.getError(indexName);
+
+    if (string != null) {
+      string = string.replace(indexName, String(nameInto));
     }
 
-    getError(index: any): string {
-        return this.errors[index];
-    }
+    return string;
+  }
 
-    getAny(index: any, nameInto = index): string {
-        let indexName = this.getChildPrefix(index);
-        let string = this.getError(indexName);
+  get(index: keyof T, nameInto: string = String(index)): string {
+    return this.getAny(index, nameInto);
+  }
 
-        if (string != null) {
-            string = string.replace(indexName, String(nameInto));
-        }
+  getChild<K extends keyof T, K2 extends keyof T[K]>(
+    index: K,
+    name: K2,
+    nameInto: string = String(index),
+  ) {
+    return this.getAny(`${String(index)}.${String(name)}`, nameInto);
+  }
 
-        return string;
-    }
+  child<K extends keyof T>(index: K): ErrorChild<NonNullable<T[K]>> {
+    return new ErrorChild<T[K]>(this.getChildPrefix(index), this.errors);
+  }
 
-    get(index: keyof T, nameInto: string = String(index)): string {
-        return this.getAny(index, nameInto);
-    }
-
-    getChild<K extends keyof T, K2 extends keyof T[K]>(
-        index: K,
-        name: K2,
-        nameInto: string = String(index),
-    ) {
-        return this.getAny(`${String(index)}.${String(name)}`, nameInto);
-    }
-
-    child<K extends keyof T>(index: K): ErrorChild<NonNullable<T[K]>> {
-        return new ErrorChild<T[K]>(this.getChildPrefix(index), this.errors);
-    }
-
-    childArray<K extends keyof T>(
-        name: K,
-        index: number,
-    ): ErrorArrayChild<NonNullable<Unpacked<T[K]>>> {
-        return new ErrorArrayChild<Unpacked<T[K]>>(
-            this.getChildPrefix(name),
-            index,
-            this.errors,
-        );
-    }
+  childArray<K extends keyof T>(
+    name: K,
+    index: number,
+  ): ErrorArrayChild<NonNullable<Unpacked<T[K]>>> {
+    return new ErrorArrayChild<Unpacked<T[K]>>(
+      this.getChildPrefix(name),
+      index,
+      this.errors,
+    );
+  }
 }
 
 export class ErrorHelper<T> extends BaseErrorHelper<T> {
-    constructor(public errors: Record<keyof T, string>) {
-        super(errors);
-    }
+  constructor(public errors: Record<keyof T, string>) {
+    super(errors);
+  }
 
-    getChildPrefix<K extends keyof T>(index: K): string {
-        return String(index);
-    }
+  getChildPrefix<K extends keyof T>(index: K): string {
+    return String(index);
+  }
 }
 
 export class ErrorChild<T> extends BaseErrorHelper<T> {
-    constructor(public prefix: string, public errors: any) {
-        super(errors);
-    }
+  constructor(public prefix: string, public errors: any) {
+    super(errors);
+  }
 
-    getChildPrefix<K extends keyof T>(index: K): string {
-        return `${this.prefix}.${String(index)}`;
-    }
+  getChildPrefix<K extends keyof T>(index: K): string {
+    return `${this.prefix}.${String(index)}`;
+  }
 }
 
 export class ErrorArrayChild<T> extends BaseErrorHelper<T> {
-    constructor(public prefix: string, public index: number, public errors: any) {
-        super(errors);
-    }
+  constructor(public prefix: string, public index: number, public errors: any) {
+    super(errors);
+  }
 
-    getChildPrefix<K extends keyof T>(index: K): string {
-        return `${this.prefix}.${this.index}.${String(index)}`;
-    }
+  getChildPrefix<K extends keyof T>(index: K): string {
+    return `${this.prefix}.${this.index}.${String(index)}`;
+  }
 }
 
 // export class ErrorHelper {

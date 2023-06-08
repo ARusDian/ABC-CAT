@@ -19,11 +19,7 @@ export default function AdminFormLayout(props: React.PropsWithChildren<Props>) {
           <div className="flex justify-between">
             <div className="text-2xl">{title}</div>
             {backRoute ? (
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-              >
+              <Button variant="contained" color="primary" size="large">
                 <InertiaLink href={backRoute}>
                   {backRouteTitle ?? 'Kembali'}
                 </InertiaLink>

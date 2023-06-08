@@ -1,14 +1,14 @@
 export interface BaseQuestionModel {
-    id?: number;
-    content: string;
-    images?: string[];
-    answer?: AnswerModel;
+  id?: number;
+  content: string;
+  images?: string[];
+  answer?: AnswerModel;
 }
 
 export interface QuestionModel extends BaseQuestionModel {
-    id: number;
+  id: number;
 }
 
 interface AnswerModel {
-    id?: number;
+  id?: number;
 }

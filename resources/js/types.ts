@@ -10,7 +10,7 @@ export interface Team {
   updated_at: DateTime;
 }
 
-export interface BaseUser{
+export interface BaseUser {
   id?: number;
   name: string;
   email: string;
@@ -19,7 +19,7 @@ export interface BaseUser{
 }
 
 export interface NewUser extends BaseUser {
-  password?: string
+  password?: string;
 }
 
 export interface User extends BaseUser {

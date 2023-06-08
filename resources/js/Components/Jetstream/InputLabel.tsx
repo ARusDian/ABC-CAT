@@ -11,10 +11,7 @@ export default function InputLabel({
   children,
 }: PropsWithChildren<Props>) {
   return (
-    <label
-      className="block font-medium text-sm text-black"
-      htmlFor={htmlFor}
-    >
+    <label className="block font-medium text-sm text-black" htmlFor={htmlFor}>
       {value || children}
     </label>
   );

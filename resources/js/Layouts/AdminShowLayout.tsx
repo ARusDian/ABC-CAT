@@ -18,8 +18,16 @@ interface Props {
 }
 
 export default function Index(props: React.PropsWithChildren<Props>) {
-  const { title, headerTitle, backRoute, backRouteTitle, editRoute, editRouteTitle, onDelete, deleteTitle } =
-    props;
+  const {
+    title,
+    headerTitle,
+    backRoute,
+    backRouteTitle,
+    editRoute,
+    editRouteTitle,
+    onDelete,
+    deleteTitle,
+  } = props;
   return (
     <DashboardAdminLayout title={title}>
       <div className="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -29,31 +37,16 @@ export default function Index(props: React.PropsWithChildren<Props>) {
               <div className="mt-8 text-2xl">{headerTitle}</div>
               <div className="flex flex-col md:flex-row gap-3">
                 {backRoute ? (
-                  <InertiaLink
-                    href={backRoute}
-                    className='my-auto'
-                  >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size='large'
-                    >
+                  <InertiaLink href={backRoute} className="my-auto">
+                    <Button variant="contained" color="primary" size="large">
                       {backRouteTitle ?? 'Kembali'}
                     </Button>
                   </InertiaLink>
                 ) : null}
 
                 {editRoute ? (
-                  <InertiaLink
-                    href={editRoute}
-                    className='my-auto'
-                  >
-                    <Button
-                      variant="contained"
-                      color="warning"
-                      size='large'
-
-                    >
+                  <InertiaLink href={editRoute} className="my-auto">
+                    <Button variant="contained" color="warning" size="large">
                       {editRouteTitle ?? 'Edit'}
                     </Button>
                   </InertiaLink>
@@ -65,7 +58,7 @@ export default function Index(props: React.PropsWithChildren<Props>) {
                       variant="contained"
                       color="error"
                       onClick={onDelete}
-                      size='large'
+                      size="large"
                     >
                       <label htmlFor="my-modal">{deleteTitle ?? 'Hapus'}</label>
                     </Button>
