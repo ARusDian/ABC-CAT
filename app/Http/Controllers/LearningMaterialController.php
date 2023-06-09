@@ -45,15 +45,9 @@ class LearningMaterialController extends Controller
             $images = $request->images ?? [];
             $availableImages = [];
             $editorContent = $request->description;
-
-            foreach($images as $image) {
-                if (str_contains($editorContent, $image)) {
-                    array_push($availableImages, $image);
-                }
-            }
             $submittedImagesId = [];
 
-            foreach($availableImages as $i=>$image) {
+            foreach($images as $i=>$image) {
                 $newImage = str_replace('"', '', $image);
                 $newImage = preg_replace('/^data:image\/(png|jpeg|jpg);base64,/', '', $newImage);
                 $newImage = str_replace(' ', '+', $newImage);
@@ -123,18 +117,11 @@ class LearningMaterialController extends Controller
         return DB::transaction(function() use ($request, $id){
             // content
             $images = $request->images ?? [];
-            $availableImages = [];
             $editorContent = $request->description;
             $learningMaterialDescriptionImages = LearningMaterialDescriptionImage::with('documentFile')->where('learning_material_id', $id)->get();
-
-            foreach($images as $image) {
-                if (str_contains($editorContent, $image)) {
-                    array_push($availableImages, $image);
-                }
-            }
             $submittedImagesId = [];
 
-            foreach($availableImages as $i=>$image) {
+            foreach($images as $i=>$image) {
                 $newImage = str_replace('"', '', $image);
                 $newImage = preg_replace('/^data:image\/(png|jpeg|jpg);base64,/', '', $newImage);
                 $newImage = str_replace(' ', '+', $newImage);

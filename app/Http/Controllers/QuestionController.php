@@ -44,14 +44,9 @@ class QuestionController extends Controller
             $images = $request->images ?? [];
             $availableImages = [];
             $editorContent = $request->content;
-            foreach($images as $image) {
-                if (str_contains($editorContent, $image)) {
-                    array_push($availableImages, $image);
-                }
-            }
             
             $submittedImagesId = [];
-            foreach($availableImages as $i=>$image) {
+            foreach($images as $i=>$image) {
                 $newImage = str_replace('"', '', $image);
                 $newImage = preg_replace('/^data:image\/(png|jpeg|jpg);base64,/', '', $newImage);
                 $newImage = str_replace(' ', '+', $newImage);
