@@ -1,6 +1,6 @@
 import React from 'react';
 import APITokenManager from '@/Pages/API/Partials/APITokenManager';
-import AppLayout from '@/Layouts/DashboardAdminLayout';
+import AppLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { ApiToken } from '@/types';
 
 interface Props {
