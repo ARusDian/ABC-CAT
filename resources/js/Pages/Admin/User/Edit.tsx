@@ -1,12 +1,12 @@
 import React from 'react';
 import route from 'ziggy-js';
 
-import AppLayout from '@/Layouts/DashboardAdminLayout';
+import AppLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { NewUser, Role } from '@/types';
 import { InertiaLink, useForm } from '@inertiajs/inertia-react';
 
 import Form from './Form';
-import AdminFormLayout from '@/Layouts/AdminFormLayout';
+import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
 
 interface Props {

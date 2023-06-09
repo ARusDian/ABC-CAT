@@ -4,7 +4,7 @@ import route from 'ziggy-js';
 import { useForm } from '@inertiajs/inertia-react';
 
 import Form from './Form';
-import AdminFormLayout from '@/Layouts/AdminFormLayout';
+import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { ExerciseQuestionFormModel } from '@/Models/ExerciseQuestion';
 
 interface Props {}

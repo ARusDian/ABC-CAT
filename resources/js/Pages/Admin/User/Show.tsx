@@ -1,7 +1,7 @@
 import React from 'react';
 import route from 'ziggy-js';
 
-import DashboardAdminLayout from '@/Layouts/DashboardAdminLayout';
+import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { User } from '@/types';
 import { Inertia } from '@inertiajs/inertia';
 import { InertiaLink } from '@inertiajs/inertia-react';

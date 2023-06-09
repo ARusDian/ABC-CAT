@@ -1,4 +1,4 @@
-import DashboardAdminLayout from '@/Layouts/DashboardAdminLayout';
+import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import React from 'react';
 import route from 'ziggy-js';

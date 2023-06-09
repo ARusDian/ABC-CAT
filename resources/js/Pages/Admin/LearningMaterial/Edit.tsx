@@ -1,7 +1,7 @@
 import React from 'react';
 import route from 'ziggy-js';
 
-import DashboardAdminLayout from '@/Layouts/DashboardAdminLayout';
+import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { InertiaLink, useForm } from '@inertiajs/inertia-react';
 
 import Form from './Form/Form';
@@ -9,7 +9,7 @@ import {
   BaseLearningMaterialModel,
   LearningMaterialModel,
 } from '@/Models/LearningMaterial';
-import AdminFormLayout from '@/Layouts/AdminFormLayout';
+import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
 
 interface Props {
