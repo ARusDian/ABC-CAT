@@ -2,7 +2,7 @@ import React from 'react';
 
 import SectionBorder from '@/Components/Jetstream/SectionBorder';
 import useTypedPage from '@/Hooks/useTypedPage';
-import DashboardAdminLayout from '@/Layouts/DashboardAdminLayout';
+import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm';
 import LogoutOtherBrowserSessions from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm';
 import TwoFactorAuthenticationForm from '@/Pages/Profile/Partials/TwoFactorAuthenticationForm';
