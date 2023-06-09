@@ -100,7 +100,7 @@ function logout(e: React.FormEvent) {
   Inertia.post(route('logout'));
 }
 
-export default function MiniDrawer({ title, renderHeader, children }: PropsWithChildren<Props>) {
+export default function DashboardAdminLayout({ title, renderHeader, children }: PropsWithChildren<Props>) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   const toggleDrawer =
