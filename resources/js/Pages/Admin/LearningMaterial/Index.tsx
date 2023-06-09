@@ -4,7 +4,7 @@ import route from 'ziggy-js';
 
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { LearningMaterialModel } from '@/Models/LearningMaterial';
-import AdminTableLayout from '@/Layouts/AdminTableLayout';
+import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { Button } from '@mui/material';
 
 interface Props {

@@ -1,13 +1,10 @@
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
-import { confirmAlert } from 'react-confirm-alert';
 import route from 'ziggy-js';
 
-import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { InertiaLink } from '@inertiajs/inertia-react';
-import { QuestionModel } from '@/Models/Question';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
-import AdminTableLayout from '@/Layouts/AdminTableLayout';
+import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 
 interface Props {
   exercise_questions: Array<ExerciseQuestionModel>;

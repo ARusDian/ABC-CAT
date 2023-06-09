@@ -1,4 +1,4 @@
-import AdminShowLayout from '@/Layouts/AdminShowLayout';
+import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import React from 'react';
 import route from 'ziggy-js';
@@ -13,6 +13,7 @@ export default function Show(props: Props) {
   return (
     <AdminShowLayout
       title="Latihan Soal"
+      headerTitle="Data Latihan Soal"
       editRoute={route('exercise-question.edit', exercise_question.id)}
       backRoute={route('exercise-question.index')}
     >

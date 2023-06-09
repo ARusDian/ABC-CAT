@@ -1,13 +1,10 @@
-import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
-import { InertiaLink } from '@inertiajs/inertia-react';
 import React from 'react';
 import route from 'ziggy-js';
 import parse from 'html-react-parser';
 import { Inertia } from '@inertiajs/inertia';
-import { Dialog, DialogContent } from '@mui/material';
 import { LearningMaterialModel } from '@/Models/LearningMaterial';
 import PDFViewer from '@/Components/PDFViewer';
-import AdminShowLayout from '@/Layouts/AdminShowLayout';
+import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 
 interface Props {
   learningMaterial: LearningMaterialModel;

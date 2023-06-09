@@ -1,9 +1,6 @@
 import React from 'react';
 import route from 'ziggy-js';
-
-import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
-import { InertiaLink, useForm } from '@inertiajs/inertia-react';
-
+import { useForm } from '@inertiajs/inertia-react';
 import Form from './Form';
 import { BaseQuestionModel } from '@/Models/Question';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';

@@ -1,4 +1,4 @@
-import AdminTableLayout from "@/Layouts/AdminTableLayout";
+import AdminTableLayout from "@/Layouts/Admin/AdminTableLayout";
 import React from "react";
 import route from "ziggy-js";
 

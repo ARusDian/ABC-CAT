@@ -1,12 +1,8 @@
 import React from 'react';
 import route from 'ziggy-js';
-
-import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { User } from '@/types';
 import { Inertia } from '@inertiajs/inertia';
-import { InertiaLink } from '@inertiajs/inertia-react';
-import { Dialog, DialogContent } from '@mui/material';
-import AdminShowLayout from '@/Layouts/AdminShowLayout';
+import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 
 interface Props {
   user: User;
