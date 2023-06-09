@@ -48,6 +48,7 @@
     "pdfjs-dist": "^3.7.107",
     "react": "^18.2.0",
     "react-confirm-alert": "^3.0.6",
+    "react-countdown": "^2.3.5",
     "react-dom": "^18.2.0",
     "react-pdf": "^7.0.3",
     "react-select": "^5.7.2",
