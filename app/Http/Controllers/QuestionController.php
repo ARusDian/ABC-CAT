@@ -40,23 +40,22 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
         //
-        $images = $request->images ?? [];
-        $availableImages = [];
-        $editorContent = $request->content;
-
-        return DB::transaction(function () use ($request, $images, $availableImages, $editorContent) {
-           foreach($images as $image) {
-            if (str_contains($editorContent, $image)) {
-                array_push($availableImages, $image);
-            }
+        return DB::transaction(function () use ($request) {
+            $images = $request->images ?? [];
+            $availableImages = [];
+            $editorContent = $request->content;
+            foreach($images as $image) {
+                if (str_contains($editorContent, $image)) {
+                    array_push($availableImages, $image);
+                }
             }
             
             $submittedImagesId = [];
-            foreach($availableImages as $image) {
+            foreach($availableImages as $i=>$image) {
                 $newImage = str_replace('"', '', $image);
                 $newImage = preg_replace('/^data:image\/(png|jpeg|jpg);base64,/', '', $newImage);
                 $newImage = str_replace(' ', '+', $newImage);
-                $imageName = md5(Carbon::now()).'.png';
+                $imageName = md5(Carbon::now().$i).'.png';
                 $files = DocumentFile::createFile('public', 'questionImages/'.$imageName, base64_decode($newImage));
                 $editorContent = str_replace($image, url('/').'/storage/'.$files->path, $editorContent);
                 array_push($submittedImagesId, $files->id);
@@ -116,11 +115,11 @@ class QuestionController extends Controller
         $submittedImagesId = [];
 
         return DB::transaction(function () use ($request, $images, $availableImages, $editorContent, $storedPageContentImages, $id, $submittedImagesId) {
-            foreach($availableImages as $image) {
+            foreach($availableImages as $i=>$image) {
                 $newImage = str_replace('"', '', $image);
                 $newImage = preg_replace('/^data:image\/(png|jpeg|jpg);base64,/', '', $newImage);
                 $newImage = str_replace(' ', '+', $newImage);
-                $imageName = md5(Carbon::now()).'.png';
+                $imageName =md5(Carbon::now().$i).'.png';
                 $files = DocumentFile::createFile('public', 'questionImages/'.$imageName, base64_decode($newImage));
                 $editorContent = str_replace($image, url('/').'/storage/'.$files->path, $editorContent);
                 array_push($submittedImagesId, $files->id);
