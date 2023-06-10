@@ -154,7 +154,7 @@ export default function DashboardLayout({
                 className="text-3xl md:ml-20 bg-blue-400 text-white hover:bg-blue-600 px-3 py-2"
                 onClick={toggleDrawer(!isSidebarOpen)}
               >
-                <MenuIcon fontSize="large" /> Admin
+                <MenuIcon fontSize="large" /> Siswa
               </button>
             </div>
             <div className="mr-3 relative">

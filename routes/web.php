@@ -31,6 +31,10 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/exam', function () {
+    return Inertia::render('Student/Exam/TemplateExam');
+})->name('exam');
+
 
 Route::middleware([
     'auth:sanctum',
@@ -39,6 +43,10 @@ Route::middleware([
 ])->group(function () {
     Route::get('/user/profile', [UserProfileController::class, 'show'])->name('profile.show');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::middleware(['role:student'])->group(function () {
+        Route::prefix('student')->group(function () {
+        });
+    });
     Route::middleware(['role:admin|super-admin'])->group(function () {
         Route::prefix('admin')->group(function () {
             Route::resource("exercise-question", ExerciseQuestionController::class);
