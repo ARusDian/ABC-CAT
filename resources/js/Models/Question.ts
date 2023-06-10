@@ -2,6 +2,7 @@ export interface BaseQuestionModel {
   content: string;
   images: string[];
   weight: number;
+  time_limit: number;
 }
 
 export interface QuestionModel extends BaseQuestionModel {

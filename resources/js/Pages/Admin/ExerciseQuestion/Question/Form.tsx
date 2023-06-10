@@ -20,8 +20,8 @@ interface Props {
 }
 
 export type Test = {
-    name: string;
-}
+  name: string;
+};
 
 export default function Form(props: Props) {
   const form = props.form;
@@ -36,6 +36,14 @@ export default function Form(props: Props) {
           inputProps={{ step: 'any' }}
           label="Bobot Soal"
           defaultValue={form.formState.defaultValues?.weight}
+        />
+
+        <TextField
+          {...form.register('time_limit', { valueAsNumber: true })}
+          type="number"
+          inputProps={{ step: 'any' }}
+          label="Batas Waktu (menit)"
+          defaultValue={form.formState.defaultValues?.time_limit}
         />
 
         <Controller
@@ -129,6 +137,7 @@ function PilihanForm({
             <Controller
               name="answers.right_answer"
               control={form.control}
+              key={it.id}
               render={({ field }) => {
                 return (
                   <FormControlLabel

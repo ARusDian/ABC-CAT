@@ -60,6 +60,7 @@ class ExerciseQuestionQuestionController extends Controller
             $answers = $request->answers;
             $type = $request->type;
             $weight = $request->weight;
+            $time_limit = $request->time_limit;
 
             $submittedImagesId = [];
             foreach ($images as $image) {
@@ -69,7 +70,6 @@ class ExerciseQuestionQuestionController extends Controller
                 }
             }
 
-            $beforeAnswers = $answers;
             if ($type == 'pilihan') {
                 foreach ($answers['choices'] as $key => $answer) {
                     $content = $answer['content'];
@@ -83,12 +83,13 @@ class ExerciseQuestionQuestionController extends Controller
                     $answers['choices'][$key] = $content;
                 }
             }
+
             $newQuestion = Question::create([
                 'exercise_question_id' => $exercise_question,
                 'content' => $editorContent,
-                // masukin contentnya answer aja
                 'answers' => $answers,
                 'type' => $type,
+                'time_limit' => $time_limit,
                 'weight' => $weight,
             ]);
 
@@ -129,14 +130,19 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $exercise_question, $id)
     {
 
-        return DB::transaction(function () use ($request, $id) {
+        return DB::transaction(function () use ($request, $exercise_question, $id) {
             $storedPageContentImages = QuestionImage::where('question_id', $id)->get();
             $images = $request->images ?? [];
             $answers = $request->answers;
             $editorContent = $request->content;
+            $answers = $request->answers;
+            $type = $request->type;
+            $weight = $request->weight;
+            $time_limit = $request->time_limit;
+
             $submittedImagesId = [];
             foreach ($images as $image) {
                 $files = null;
@@ -155,9 +161,26 @@ class ExerciseQuestionQuestionController extends Controller
                 }
             }
 
+            if ($type == 'pilihan') {
+                foreach ($answers['choices'] as $key => $answer) {
+                    $content = $answer['content'];
+                    foreach ($answer['images'] as $image) {
+                        if (str_contains($content, $image)) {
+                            $files = $this->replaceImage($image, $content);
+                            array_push($submittedImagesId, $files->id);
+                        }
+                    }
+
+                    $answers['choices'][$key] = $content;
+                }
+            }
+
             $question = Question::find($id)->update([
                 'content' => $editorContent,
                 'answers' => $answers,
+                'type' => $type,
+                'time_limit' => $time_limit,
+                'weight' => $weight,
             ]);
 
             foreach ($storedPageContentImages as $storedImage) {
@@ -172,7 +195,8 @@ class ExerciseQuestionQuestionController extends Controller
                     'document_file_id' => $imageId,
                 ]);
             }
-            return redirect()->route('question.show', $id)->banner('Question updated successfully');
+
+            return redirect()->route('exercise-question.question.show', [$exercise_question, $id])->banner('Question updated successfully');
         });
     }
 

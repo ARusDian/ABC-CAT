@@ -1,11 +1,11 @@
 import React from 'react';
 import route from 'ziggy-js';
 
-import DashboardAdminLayout from '@/Layouts/DashboardAdminLayout';
+import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
 
 import Form from './Form';
 import { BaseQuestionModel, QuestionFormModel } from '@/Models/Question';
-import AdminFormLayout from '@/Layouts/AdminFormLayout';
+import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { useForm } from 'react-hook-form';
@@ -22,6 +22,7 @@ export default function Create(props: Props) {
       images: [],
       weight: 1,
       type: 'pilihan',
+            time_limit: 120,
       answers: {
         right_answer: 0,
         choices: [
