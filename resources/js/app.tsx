@@ -9,6 +9,7 @@ import { RouteContext } from '@/Hooks/useRoute';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './muiTheme';
+import { ConfirmProvider } from 'material-ui-confirm';
 
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
@@ -23,9 +24,12 @@ createInertiaApp({
   setup({ el, App, props }) {
     return render(
       <ThemeProvider theme={theme}>
-        <RouteContext.Provider value={(window as any).route}>
-          <App {...props} />
-        </RouteContext.Provider>
+        <ConfirmProvider>
+          <RouteContext.Provider value={(window as any).route}>
+            <App {...props} />
+          </RouteContext.Provider>
+        </ConfirmProvider>
+
       </ThemeProvider>,
       el,
     );
