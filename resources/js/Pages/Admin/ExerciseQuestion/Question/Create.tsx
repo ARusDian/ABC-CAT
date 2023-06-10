@@ -22,7 +22,7 @@ export default function Create(props: Props) {
       images: [],
       weight: 1,
       type: 'pilihan',
-            time_limit: 120,
+      time_limit: 120,
       answers: {
         right_answer: 0,
         choices: [

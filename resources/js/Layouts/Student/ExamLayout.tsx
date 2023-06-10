@@ -9,30 +9,26 @@ import { Box } from '@mui/material';
 import { Head } from '@inertiajs/inertia-react';
 
 interface Props {
-    title: string;
-    renderHeader?(): JSX.Element;
-    isAdministrator?: boolean;
+  title: string;
+  renderHeader?(): JSX.Element;
+  isAdministrator?: boolean;
 }
 
 export default function DashboardAdminLayout({
-    title,
-    renderHeader,
-    children,
+  title,
+  renderHeader,
+  children,
 }: PropsWithChildren<Props>) {
-    return (
-        <div className='h-screen bg-gradient-to-b from-white to-blue-100'>
-            <Head
-                title={title || "ABC"}
-            />
-            <Banner />
-            <nav className="flex justify-between w-full sticky bg-sky-300 py-10 px-10">
-                <div className="flex gap-3 max-w-6xl mx-10">
-                    <span className='text-3xl font-bold'>
-                        {title || "ABC"}
-                   </span>
-                </div>
-            </nav>
-            {children}
+  return (
+    <div className="h-screen bg-gradient-to-b from-white to-blue-100">
+      <Head title={title || 'ABC'} />
+      <Banner />
+      <nav className="flex justify-between w-full sticky bg-sky-300 py-10 px-10">
+        <div className="flex gap-3 max-w-6xl mx-10">
+          <span className="text-3xl font-bold">{title || 'ABC'}</span>
         </div>
-    );
+      </nav>
+      {children}
+    </div>
+  );
 }

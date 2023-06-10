@@ -9,17 +9,16 @@ export interface QuestionModel extends BaseQuestionModel {
   id: number;
 }
 
-
-export interface QuestionFormModel extends BaseQuestionModel, AnswerTypeFormModel {
-
-};
+export interface QuestionFormModel
+  extends BaseQuestionModel,
+    AnswerTypeFormModel {}
 
 export interface AnswerTypePilihanModel {
   type: 'pilihan';
   answers: {
-    choices: string[],
+    choices: string[];
     right_answer: number;
-  }
+  };
 }
 
 export type AnswerTypeModel = AnswerTypePilihanModel;
@@ -30,10 +29,9 @@ export interface AnswerTypePilihanFormModel {
     choices: {
       images: string[];
       content: string;
-    }[]
+    }[];
     right_answer: number;
-  }
+  };
 }
 
 export type AnswerTypeFormModel = AnswerTypePilihanFormModel;
-

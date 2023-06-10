@@ -29,7 +29,6 @@ createInertiaApp({
             <App {...props} />
           </RouteContext.Provider>
         </ConfirmProvider>
-
       </ThemeProvider>,
       el,
     );

@@ -4,7 +4,14 @@ import Banner from '@/Components/Jetstream/Banner';
 import ResponsiveNavLink from '@/Components/Jetstream/ResponsiveNavLink';
 import { Inertia } from '@inertiajs/inertia';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { Box, CSSObject, Divider, IconButton, Theme, styled, } from '@mui/material';
+import {
+  Box,
+  CSSObject,
+  Divider,
+  IconButton,
+  Theme,
+  styled,
+} from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -14,9 +21,8 @@ import route from 'ziggy-js';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import DashboardIcon from '@mui/icons-material/Dashboard'; 
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import QuizIcon from '@mui/icons-material/Quiz';
-
 
 interface Props {
   title: string;
@@ -60,7 +66,7 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: prop => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
@@ -77,30 +83,33 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: prop => prop !== 'open',
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  ...(open && {
+    ...openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme),
   }),
-);
-
+  ...(!open && {
+    ...closedMixin(theme),
+    '& .MuiDrawer-paper': closedMixin(theme),
+  }),
+}));
 
 function logout(e: React.FormEvent) {
   e.preventDefault();
   Inertia.post(route('logout'));
 }
 
-export default function DashboardAdminLayout({ title, renderHeader, children }: PropsWithChildren<Props>) {
+export default function DashboardAdminLayout({
+  title,
+  renderHeader,
+  children,
+}: PropsWithChildren<Props>) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   const toggleDrawer =
@@ -116,21 +125,17 @@ export default function DashboardAdminLayout({ title, renderHeader, children }: 
     };
 
   const sideBar = () => (
-    <Box
-      sx={{ width: 250 }}
-      role="presentation"
-    >
+    <Box sx={{ width: 250 }} role="presentation">
       <ul className="my-10">
         <li>
           <ResponsiveNavLink
             href={route('dashboard')}
             active={route().current('dashboard')}
           >
-            <span
-              className={isSidebarOpen ? 'mr-0' : 'mr-4'}
-            >
-              <DashboardIcon fontSize='large' />
-            </span>Dashboard
+            <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
+              <DashboardIcon fontSize="large" />
+            </span>
+            Dashboard
           </ResponsiveNavLink>
         </li>
         <li>
@@ -138,11 +143,10 @@ export default function DashboardAdminLayout({ title, renderHeader, children }: 
             href={route('user.index')}
             active={route().current('user.index')}
           >
-            <span
-              className={isSidebarOpen ? 'mr-0' : 'mr-4'}
-            >
-              <ManageAccountsIcon fontSize='large' />
-            </span>Pengguna
+            <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
+              <ManageAccountsIcon fontSize="large" />
+            </span>
+            Pengguna
           </ResponsiveNavLink>
         </li>
         <li>
@@ -150,11 +154,10 @@ export default function DashboardAdminLayout({ title, renderHeader, children }: 
             href={route('question.index')}
             active={route().current('question.index')}
           >
-            <span
-              className={isSidebarOpen ? 'mr-0' : 'mr-4'}
-            >
-              <QuizIcon fontSize='large' />
-            </span>Pertanyaan
+            <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
+              <QuizIcon fontSize="large" />
+            </span>
+            Pertanyaan
           </ResponsiveNavLink>
         </li>
         <li>
@@ -162,11 +165,10 @@ export default function DashboardAdminLayout({ title, renderHeader, children }: 
             href={route('learning-material.index')}
             active={route().current('learning-material.index')}
           >
-            <span
-              className={isSidebarOpen ? 'mr-0' : 'mr-4'}
-            >
-              <LibraryBooksIcon fontSize='large' />
-            </span>Materi Pembelajaran
+            <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
+              <LibraryBooksIcon fontSize="large" />
+            </span>
+            Materi Pembelajaran
           </ResponsiveNavLink>
         </li>
       </ul>
@@ -175,9 +177,7 @@ export default function DashboardAdminLayout({ title, renderHeader, children }: 
 
   return (
     <div>
-      <Head
-        title={title ||"ABC"}
-      />
+      <Head title={title || 'ABC'} />
       <Banner />
       <Box sx={{ display: 'flex' }}>
         <AppBar position="fixed" open={isSidebarOpen}>
@@ -205,7 +205,9 @@ export default function DashboardAdminLayout({ title, renderHeader, children }: 
                   Manage Account
                 </div>
 
-                <DropdownLink href={route('profile.show')}>Profile</DropdownLink>
+                <DropdownLink href={route('profile.show')}>
+                  Profile
+                </DropdownLink>
 
                 <div className="border-t border-gray-100"></div>
 
@@ -219,7 +221,7 @@ export default function DashboardAdminLayout({ title, renderHeader, children }: 
         </AppBar>
         <Drawer variant="permanent" open={isSidebarOpen}>
           <DrawerHeader>
-            <IconButton onClick={(toggleDrawer(!isSidebarOpen))}>
+            <IconButton onClick={toggleDrawer(!isSidebarOpen)}>
               <ChevronLeftIcon />
             </IconButton>
           </DrawerHeader>

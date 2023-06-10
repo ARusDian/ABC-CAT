@@ -15,7 +15,7 @@ export default function Show(props: Props) {
   const dataColumns = [
     {
       header: 'Nama',
-            // accessorKey:
+      // accessorKey:
       // accessorKey: 'name',
     },
   ] as MRT_ColumnDef<QuestionModel>[];
@@ -44,7 +44,10 @@ export default function Show(props: Props) {
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
             <InertiaLink
-              href={route('exercise-question.question.show', [exercise_question.id, row.original.id])}
+              href={route('exercise-question.question.show', [
+                exercise_question.id,
+                row.original.id,
+              ])}
               className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
             >
               Show
