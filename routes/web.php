@@ -2,6 +2,7 @@
 
 use App\Actions\Fortify\UserProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExerciseQuestionController;
 use App\Http\Controllers\ExerciseQuestionQuestionController;
 use App\Http\Controllers\LearningMaterialController;
@@ -31,9 +32,9 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/exam', function () {
-    return Inertia::render('Student/Exam/TemplateExam');
-})->name('exam');
+// Route::get('/exam', function () {
+//     return Inertia::render('Student/Exam/TemplateExam');
+// })->name('exam');
 
 
 Route::middleware([
@@ -45,6 +46,11 @@ Route::middleware([
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::middleware(['role:student'])->group(function () {
         Route::prefix('student')->group(function () {
+            Route::prefix('exam')->as('exam.')->group(function () {
+                Route::get('{exercise_question}', [ExamController::class, 'show'])->name('show');
+                Route::post('{exercise_question}', [ExamController::class, 'attempt'])->name("attempt");
+                Route::post('{exercise_question}/finish', [ExamController::class, 'finish'])->name('finish');
+            });
         });
     });
     Route::middleware(['role:admin|super-admin'])->group(function () {

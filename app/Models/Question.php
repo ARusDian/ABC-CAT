@@ -12,5 +12,5 @@ class Question extends Model
     protected $casts = [
         'answers' => 'json',
     ];
-    protected $fillable = ['content', 'answers', 'type', 'weight', 'time_limit', 'exercise_question_id'];
+    protected $fillable = ['content', 'answers', 'type', 'weight', 'time_limit', 'exercise_question_id', 'answer'];
 }

@@ -29,12 +29,21 @@ export default function Welcome({
       {canLogin ? (
         <div className="hidden fixed top-0 right-0 px-6 py-4 sm:block">
           {page.props.user ? (
-            <InertiaLink
-              href={route('dashboard')}
-              className="text-sm text-gray-700 dark:text-gray-500 underline"
-            >
-              Dashboard
-            </InertiaLink>
+            <>
+              <InertiaLink
+                href={route('dashboard')}
+                className="text-sm text-gray-700 dark:text-gray-500 underline"
+              >
+                Dashboard
+              </InertiaLink>
+              <InertiaLink
+                href={route('logout')}
+                                method="POST"
+                className="ml-4 text-sm text-gray-700 dark:text-gray-500 underline"
+              >
+                Logout
+              </InertiaLink>
+            </>
           ) : (
             <>
               <InertiaLink

@@ -58,6 +58,7 @@ class ExerciseQuestionQuestionController extends Controller
             $images = $request->images ?? [];
             $editorContent = $request->content;
             $answers = $request->answers;
+            $answer = $request->answer;
             $type = $request->type;
             $weight = $request->weight;
             $time_limit = $request->time_limit;
@@ -88,6 +89,7 @@ class ExerciseQuestionQuestionController extends Controller
                 'exercise_question_id' => $exercise_question,
                 'content' => $editorContent,
                 'answers' => $answers,
+                'answer' => $answer,
                 'type' => $type,
                 'time_limit' => $time_limit,
                 'weight' => $weight,

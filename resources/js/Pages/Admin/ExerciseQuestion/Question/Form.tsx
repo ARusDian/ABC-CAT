@@ -135,7 +135,7 @@ function PilihanForm({
         {answerArray.fields.map((it, index) => {
           return (
             <Controller
-              name="answers.right_answer"
+              name="answer"
               control={form.control}
               key={it.id}
               render={({ field }) => {

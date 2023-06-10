@@ -3,9 +3,10 @@ export interface BaseQuestionModel {
   images: string[];
   weight: number;
   time_limit: number;
+  answer?: any;
 }
 
-export interface QuestionModel extends BaseQuestionModel {
+export interface QuestionModel extends BaseQuestionModel, AnswerTypeModel {
   id: number;
 }
 
@@ -17,7 +18,6 @@ export interface AnswerTypePilihanModel {
   type: 'pilihan';
   answers: {
     choices: string[];
-    right_answer: number;
   };
 }
 
@@ -30,7 +30,6 @@ export interface AnswerTypePilihanFormModel {
       images: string[];
       content: string;
     }[];
-    right_answer: number;
   };
 }
 
