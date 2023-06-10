@@ -1,14 +1,38 @@
 export interface BaseQuestionModel {
-  id?: number;
   content: string;
-  images?: string[];
-  answer?: AnswerModel;
+  images: string[];
+  weight: number;
 }
 
 export interface QuestionModel extends BaseQuestionModel {
   id: number;
 }
 
-interface AnswerModel {
-  id?: number;
+
+export interface QuestionFormModel extends BaseQuestionModel, AnswerTypeFormModel {
+
+};
+
+export interface AnswerTypePilihanModel {
+  type: 'pilihan';
+  answers: {
+    choices: string[],
+    right_answer: number;
+  }
 }
+
+export type AnswerTypeModel = AnswerTypePilihanModel;
+
+export interface AnswerTypePilihanFormModel {
+  type: 'pilihan';
+  answers: {
+    choices: {
+      images: string[];
+      content: string;
+    }[]
+    right_answer: number;
+  }
+}
+
+export type AnswerTypeFormModel = AnswerTypePilihanFormModel;
+

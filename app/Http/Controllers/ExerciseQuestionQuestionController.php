@@ -6,12 +6,13 @@ use App\Models\Question;
 use App\Models\QuestionImage;
 use App\Models\DocumentFile;
 use App\Http\Controllers\Controller;
+use App\Models\ExerciseQuestion;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
-class QuestionController extends Controller
+class ExerciseQuestionQuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,10 +29,11 @@ class QuestionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($exercise_question)
     {
-        //
-        return Inertia::render('Admin/Question/Create');
+        return Inertia::render('Admin/ExerciseQuestion/Question/Create', [
+            'exercise_question' => ExerciseQuestion::findOrFail($exercise_question)
+        ]);
     }
 
     public function replaceImage(&$image, &$editor): DocumentFile
@@ -49,34 +51,45 @@ class QuestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $exercise_question)
     {
-        return DB::transaction(function () use ($request) {
+
+        return DB::transaction(function () use ($request, $exercise_question) {
             $images = $request->images ?? [];
             $editorContent = $request->content;
             $answers = $request->answers;
+            $type = $request->type;
+            $weight = $request->weight;
 
             $submittedImagesId = [];
             foreach ($images as $image) {
-                $files = null;
                 if (str_contains($editorContent, $image)) {
                     $files = $this->replaceImage($image, $editorContent);
-                }
-
-                foreach ($answers as &$answer) {
-                    if (str_contains($answer, $image)) {
-                        $files = $this->replaceImage($image, $answer);
-                    }
-                }
-
-                if ($files != null) {
                     array_push($submittedImagesId, $files->id);
                 }
             }
 
+            $beforeAnswers = $answers;
+            if ($type == 'pilihan') {
+                foreach ($answers['choices'] as $key => $answer) {
+                    $content = $answer['content'];
+                    foreach ($answer['images'] as $image) {
+                        if (str_contains($content, $image)) {
+                            $files = $this->replaceImage($image, $content);
+                            array_push($submittedImagesId, $files->id);
+                        }
+                    }
+
+                    $answers['choices'][$key] = $content;
+                }
+            }
             $newQuestion = Question::create([
+                'exercise_question_id' => $exercise_question,
                 'content' => $editorContent,
+                // masukin contentnya answer aja
                 'answers' => $answers,
+                'type' => $type,
+                'weight' => $weight,
             ]);
 
             foreach ($submittedImagesId as $imageId) {
@@ -85,7 +98,7 @@ class QuestionController extends Controller
                     'document_file_id' => $imageId,
                 ]);
             }
-            return redirect()->route('question.index')->banner('Question created successfully');
+            return redirect()->route('exercise-question.show', [$exercise_question])->banner('Question created successfully');
         });
     }
 
@@ -118,6 +131,7 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         return DB::transaction(function () use ($request, $id) {
             $storedPageContentImages = QuestionImage::where('question_id', $id)->get();
             $images = $request->images ?? [];

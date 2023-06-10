@@ -9,5 +9,8 @@ class Question extends Model
 {
     use HasFactory;
 
-    protected $fillable=['content'];
+    protected $casts = [
+        'answers' => 'json',
+    ];
+    protected $fillable = ['content', 'answers', 'type', 'weight', 'exercise_question_id'];
 }

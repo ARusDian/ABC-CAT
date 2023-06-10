@@ -8,5 +8,5 @@ export interface ExerciseQuestionModel {
   id: string;
   name: string;
 
-  questions?: QuestionModel;
+  questions?: QuestionModel[];
 }
