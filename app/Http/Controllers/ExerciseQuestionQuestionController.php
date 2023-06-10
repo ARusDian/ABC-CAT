@@ -89,7 +89,7 @@ class ExerciseQuestionQuestionController extends Controller
                 'exercise_question_id' => $exercise_question,
                 'content' => $editorContent,
                 'answers' => $answers,
-                'answer' => $answer,
+                'answer' => $request->answer,
                 'type' => $type,
                 'time_limit' => $time_limit,
                 'weight' => $weight,
