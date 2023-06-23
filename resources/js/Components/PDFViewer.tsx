@@ -52,7 +52,7 @@ export default function PDFViewer(props: Props) {
         </div>
         <div style={{ height: '600px' }} id="pdfviewer">
           <Viewer
-            fileUrl={asset('public', document.document_file.path!)}
+            fileUrl={asset('public', document.document_file.path!) as string}
             plugins={[toolbarPluginInstance]}
           />
         </div>

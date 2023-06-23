@@ -8,6 +8,7 @@ export interface BaseQuestionModel {
 
 export interface QuestionModel extends BaseQuestionModel, AnswerTypeModel {
   id: number;
+  exercise_question_id: number;
 }
 
 export interface QuestionFormModel

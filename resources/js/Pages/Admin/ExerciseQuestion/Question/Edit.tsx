@@ -2,12 +2,17 @@ import React from 'react';
 import route from 'ziggy-js';
 
 import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
-import { InertiaLink, useForm } from '@inertiajs/inertia-react';
+import { useForm } from 'react-hook-form';
 
 import Form from './Form';
-import { BaseQuestionModel, QuestionModel } from '@/Models/Question';
+import {
+  BaseQuestionModel,
+  QuestionFormModel,
+  QuestionModel,
+} from '@/Models/Question';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
+import { Inertia } from '@inertiajs/inertia';
 
 interface Props {
   question: QuestionModel;
@@ -15,35 +20,64 @@ interface Props {
 
 export default function Edit(props: Props) {
   const question = props.question;
-  let form = useForm<BaseQuestionModel>({
-    content: question.content,
-    images: [],
+  let form = useForm<QuestionFormModel>({
+    defaultValues: async () => ({
+      content: question.content,
+      time_limit: question.time_limit,
+      weight: question.weight,
+      answer: question.answer,
+      type: question.type,
+      answers: {
+        choices: question.answers.choices.map(it => ({
+          content: it,
+          images: [],
+        })),
+      },
+
+      images: question.images,
+    }),
   });
 
-  function onSubmit(e: React.FormEvent) {
-    console.log(form.data);
-    e.preventDefault();
+  function onSubmit(data: QuestionFormModel) {
+    console.log(data);
+
     form.clearErrors();
+    Inertia.post(
+      route('question.update', question.id),
+      {
+        _method: 'PUT',
+        ...data,
+      } as any,
+      {
+        onError: errors => {},
+      },
+    );
     // php does'nt support PUT so...
     // @ts-ignore
-    form.data._method = 'PUT';
-    form.post(route('question.update', question.id), {
-      onError: errors => {
-        console.log(errors);
-      },
-      onSuccess: () => {
-        console.log('success');
-      },
-    });
+    // form.data._method = 'PUT';
+    // form.post(route('question.update', question.id), {
+    //   onError: errors => {
+    //     console.log(errors);
+    //   },
+    //   onSuccess: () => {
+    //     console.log('success');
+    //   },
+    // });
   }
 
   return (
     <AdminFormLayout
       title="Edit Pertanyaan"
-      backRoute={route('question.show', question.id)}
+      backRoute={route('exercise-question.question.show', [
+        question.exercise_question_id,
+        question.id,
+      ])}
       backRouteTitle="Kembali"
     >
-      <form className="flex-col gap-5 py-5" onSubmit={onSubmit}>
+      <form
+        className="flex-col gap-5 py-5"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <Form form={form} className="my-5 mx-2" />
         <div className="flex justify-end">
           <Button
@@ -51,7 +85,7 @@ export default function Edit(props: Props) {
             variant="contained"
             color="warning"
             size="large"
-            disabled={form.processing}
+            disabled={form.formState.isSubmitted}
           >
             Update
           </Button>

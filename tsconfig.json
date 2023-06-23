@@ -10,16 +10,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@/*": [
-        "./resources/js/*"
-      ]
+      "@/*": ["./resources/js/*"]
     },
-    "types": [
-      "vite/client"
-    ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./@types"
-    ],
-  }
+    "types": ["vite/client"],
+    "typeRoots": ["./node_modules/@types", "./@types"]
+  },
+  "include": ["./resources/js/**/*"]
 }

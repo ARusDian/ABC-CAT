@@ -108,12 +108,11 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($exercise_question, $id)
     {
-        //
-        $question = Question::find($id);
-        return Inertia::render('Admin/Question/Show', [
-            'question' => $question
+        return Inertia::render('Admin/ExerciseQuestion/Question/Show', [
+            'question' => fn () => Question::find($id),
+            'exercise_question_id' => $exercise_question,
         ]);
     }
 
@@ -124,7 +123,7 @@ class ExerciseQuestionQuestionController extends Controller
     {
         //
         $question = Question::find($id);
-        return Inertia::render('Admin/Question/Edit', [
+        return Inertia::render('Admin/ExerciseQuestion/Question/Edit', [
             'question' => $question
         ]);
     }

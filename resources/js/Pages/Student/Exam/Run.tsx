@@ -191,15 +191,14 @@ export default function Run({ exam }: Props) {
                       color="warning"
                       className="w-1/2"
                       onClick={() => {
-                      const value
-                     = answerArray.fields[currentQuestion];
-                      answerArray.update(currentQuestion, {
-                      ...value,
-                        state: {
+                        const value = answerArray.fields[currentQuestion];
+                        answerArray.update(currentQuestion, {
+                          ...value,
+                          state: {
                             ...value.state,
-                            flag: !value.state?.flag
-                        }
-                      })
+                            flag: !value.state?.flag,
+                          },
+                        });
                         // const newAnswers = [...answers];
                         // newAnswers[currentQuestion] = {
                         //   answerId: newAnswers[currentQuestion]?.answerId,

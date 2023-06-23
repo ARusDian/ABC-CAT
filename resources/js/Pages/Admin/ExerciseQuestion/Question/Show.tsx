@@ -15,9 +15,9 @@ export default function Index(props: Props) {
     <AdminShowLayout
       title={`Pertanyaan ${question.id}`}
       headerTitle={'Data Pertanyaan'}
-      backRoute={route('question.index')}
+      backRoute={route('exercise-question.show', [question.exercise_question_id])}
       backRouteTitle="Kembali"
-      editRoute={route('question.edit', question.id)}
+      editRoute={route('exercise-question.question.edit', [question.exercise_question_id, question.id])}
       editRouteTitle="Edit"
       onDelete={() => {
         Inertia.post(route('question.destroy', question.id), {

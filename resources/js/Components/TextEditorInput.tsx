@@ -9,7 +9,7 @@ import JoditEditor from 'jodit-react';
 
 interface JoditProps {
   contentValue: string;
-  contentValueHandler: Dispatch<SetStateAction<string>>;
+  contentValueHandler?: (newValue: string) => void;
   imageValue: string[];
   imageValueHandler: Dispatch<SetStateAction<string[]>>;
   editorRef?: any;
@@ -27,6 +27,8 @@ export default function TextEditorInput({
     imageValue.push(src);
     imageValueHandler(imageValue);
   };
+
+    console.log({contentValue});
 
   const config = useMemo(
     () => ({
@@ -94,7 +96,7 @@ export default function TextEditorInput({
           ref={editorRef}
           value={contentValue}
           config={config}
-          onBlur={newContent => contentValueHandler(newContent)}
+          onBlur={newContent => contentValueHandler?.(newContent)}
         />
       </div>
     </div>

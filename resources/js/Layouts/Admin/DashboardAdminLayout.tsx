@@ -151,8 +151,8 @@ export default function DashboardAdminLayout({
         </li>
         <li>
           <ResponsiveNavLink
-            href={route('question.index')}
-            active={route().current('question.index')}
+            href={route('exercise-question.index')}
+            active={route().current('exercise-question.index')}
           >
             <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
               <QuizIcon fontSize="large" />

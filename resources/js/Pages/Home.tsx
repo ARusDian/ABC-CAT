@@ -1,4 +1,3 @@
-import BuyDialogForm from '@/Components/BuyDialogForm';
 import AppLayout from '@/Layouts/AppLayout';
 import { asset } from '@/Models/Helper';
 import { Tab, Tabs } from '@mui/material';
@@ -169,7 +168,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <BuyDialogForm open={open} closeHandler={handleClose} />
     </AppLayout>
   );
 }

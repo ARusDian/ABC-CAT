@@ -1,0 +1,62 @@
+.menu-item {
+  background-color: transparent;
+  border: none;
+  border-radius: 0.4rem;
+  color: #0d0d0d;
+  height: 1.75rem;
+  margin-right: 0.25rem;
+  padding: 0.25rem;
+
+  svg {
+    fill: currentColor;
+    height: 100%;
+    width: 100%;
+  }
+
+  &:hover,
+  &.is-active {
+    background-color: #0d0d0d;
+    color: #fff;
+  }
+}
+
+.menu-dropdown {
+  background-color: transparent;
+  border: none;
+  border-radius: 0.4rem;
+  color: #0d0d0d;
+  height: 1.75rem;
+  margin-left: 0.25rem;
+
+
+  &:hover,
+  &.is-active {
+    background-color: #0d0d0d;
+    color: #fff;
+  }
+}
+
+.dropdown {
+  display: none;
+}
+
+.dropdown.show {
+  display: block;
+  z-index: 50;
+  position: absolute;
+  background-color: white;
+}
+
+.dropdown-submenu {
+  position: absolute;
+  left: 100%;
+
+  &.custom-children {
+    color: #0d0d0d;
+    background-color: transparent;
+  }
+}
+
+.editor__header {
+  display: flex;
+}

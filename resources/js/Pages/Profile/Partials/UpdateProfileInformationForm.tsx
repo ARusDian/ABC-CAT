@@ -9,7 +9,7 @@ import PrimaryButton from '@/Components/Jetstream/PrimaryButton';
 import SecondaryButton from '@/Components/Jetstream/SecondaryButton';
 import TextInput from '@/Components/Jetstream/TextInput';
 import useRoute from '@/Hooks/useRoute';
-import { User, UserProfile } from '@/types';
+import { User } from '@/types';
 import { Inertia } from '@inertiajs/inertia';
 import { useForm, usePage } from '@inertiajs/inertia-react';
 
