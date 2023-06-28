@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DocumentFile;
 use App\Models\ExerciseQuestion;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -87,5 +88,11 @@ class ExerciseQuestionController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function uploadImage(Request $request, $exercise_question) {
+        $file =  $request->file('file');
+
+        return DocumentFile::createFile('public', "exercise-question/$exercise_question", $file, auth()->id());
     }
 }

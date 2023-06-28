@@ -58,6 +58,13 @@ Route::middleware([
             Route::resource("exercise-question", ExerciseQuestionController::class);
             Route::resource("exercise-question.question", ExerciseQuestionQuestionController::class);
 
+            Route::post(
+                '/exercise-question/{exercise_question}/upload',
+                [ExerciseQuestionController::class, 'uploadImage']
+            )->name('exercise-question.upload-image');
+            // Route::name(, ExerciseQuestionQuestionController::class);
+
+
             Route::resource('/learning-material', LearningMaterialController::class);
             Route::middleware(['role:super-admin'])->group(function () {
                 Route::resource('/user', UserController::class);
