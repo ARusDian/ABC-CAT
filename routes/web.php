@@ -6,7 +6,6 @@ use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExerciseQuestionController;
 use App\Http\Controllers\ExerciseQuestionQuestionController;
 use App\Http\Controllers\LearningMaterialController;
-use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -58,7 +57,6 @@ Route::middleware([
             Route::resource("exercise-question", ExerciseQuestionController::class);
             Route::resource("exercise-question.question", ExerciseQuestionQuestionController::class);
 
-            Route::resource('/question', QuestionController::class);
             Route::resource('/learning-material', LearningMaterialController::class);
             Route::middleware(['role:super-admin'])->group(function () {
                 Route::resource('/user', UserController::class);
