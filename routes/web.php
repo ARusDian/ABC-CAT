@@ -2,6 +2,7 @@
 
 use App\Actions\Fortify\UserProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DocumentFileController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExerciseQuestionController;
 use App\Http\Controllers\ExerciseQuestionQuestionController;
@@ -64,3 +65,5 @@ Route::middleware([
         });
     });
 });
+
+Route::get('/file/{file}/file', [DocumentFileController::class, 'showFile']);

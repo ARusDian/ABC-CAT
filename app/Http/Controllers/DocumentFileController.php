@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\File;
+use App\Models\DocumentFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Storage;
 
 class DocumentFileController extends Controller
 {
@@ -35,15 +36,15 @@ class DocumentFileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(File $file)
+    public function showFile(DocumentFile $file)
     {
-        //
+        return Storage::disk($file->disk)->response($file->path);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(File $file)
+    public function edit(DocumentFile $file)
     {
         //
     }
@@ -51,7 +52,7 @@ class DocumentFileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, File $file)
+    public function update(Request $request, DocumentFile $file)
     {
         //
     }
@@ -59,7 +60,7 @@ class DocumentFileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(File $file)
+    public function destroy(DocumentFile $file)
     {
         //
     }
