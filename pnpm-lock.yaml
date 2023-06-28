@@ -67,6 +67,9 @@ dependencies:
   '@tiptap/extension-task-list':
     specifier: ^2.0.3
     version: 2.0.3(@tiptap/core@2.0.3)
+  '@tiptap/extension-text':
+    specifier: ^2.0.3
+    version: 2.0.3(@tiptap/core@2.0.3)
   '@tiptap/extension-text-align':
     specifier: ^2.0.3
     version: 2.0.3(@tiptap/core@2.0.3)

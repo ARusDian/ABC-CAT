@@ -1,6 +1,10 @@
+export type EditorValue = {
+  type: 'tiptap';
+  content: object;
+};
+
 export interface BaseQuestionModel {
-  content: string;
-  images: string[];
+  question: EditorValue;
   weight: number;
   time_limit: number;
   answer?: any;
@@ -8,30 +12,28 @@ export interface BaseQuestionModel {
 
 export interface QuestionModel extends BaseQuestionModel, AnswerTypeModel {
   id: number;
-  exercise_question_id: number;
+  exercise_question_id: string;
 }
 
-export interface QuestionFormModel
-  extends BaseQuestionModel,
-    AnswerTypeFormModel {}
+export interface QuestionFormModel extends QuestionModel {}
 
 export interface AnswerTypePilihanModel {
   type: 'pilihan';
   answers: {
-    choices: string[];
+    choices: EditorValue[];
   };
 }
 
 export type AnswerTypeModel = AnswerTypePilihanModel;
+//
+// export interface AnswerTypePilihanFormModel {
+//   type: 'pilihan';
+//   answers: {
+//     choices: {
+//       images: string[];
+//       content: string;
+//     }[];
+//   };
+// }
 
-export interface AnswerTypePilihanFormModel {
-  type: 'pilihan';
-  answers: {
-    choices: {
-      images: string[];
-      content: string;
-    }[];
-  };
-}
-
-export type AnswerTypeFormModel = AnswerTypePilihanFormModel;
+// export type AnswerTypeFormModel = AnswerTypePilihanFormModel;

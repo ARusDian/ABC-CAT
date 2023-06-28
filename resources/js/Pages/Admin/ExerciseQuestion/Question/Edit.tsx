@@ -21,21 +21,14 @@ interface Props {
 export default function Edit(props: Props) {
   const question = props.question;
   let form = useForm<QuestionFormModel>({
-    defaultValues: async () => ({
-      content: question.content,
+    defaultValues: {
+      question: question.question,
       time_limit: question.time_limit,
       weight: question.weight,
       answer: question.answer,
       type: question.type,
-      answers: {
-        choices: question.answers.choices.map(it => ({
-          content: it,
-          images: [],
-        })),
-      },
-
-      images: question.images,
-    }),
+      answers: question.answers,
+    },
   });
 
   function onSubmit(data: QuestionFormModel) {
@@ -78,7 +71,11 @@ export default function Edit(props: Props) {
         className="flex-col gap-5 py-5"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <Form form={form} className="my-5 mx-2" />
+        <Form
+          form={form}
+          className="my-5 mx-2"
+          exerciseQuestionId={props.question.exercise_question_id}
+        />
         <div className="flex justify-end">
           <Button
             type="submit"

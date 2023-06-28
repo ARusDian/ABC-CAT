@@ -18,18 +18,32 @@ interface Props {
 export default function Create(props: Props) {
   let form = useForm<QuestionFormModel>({
     defaultValues: {
-      content: '',
-      images: [],
+      question: {
+        type: 'tiptap',
+        content: {},
+      },
       weight: 1,
       type: 'pilihan',
       time_limit: 120,
-        answer: 0,
+      answer: 0,
       answers: {
         choices: [
-          { content: '', images: [] },
-          { content: '', images: [] },
-          { content: '', images: [] },
-          { content: '', images: [] },
+          {
+            type: 'tiptap',
+            content: {},
+          },
+          {
+            type: 'tiptap',
+            content: {},
+          },
+          {
+            type: 'tiptap',
+            content: {},
+          },
+          {
+            type: 'tiptap',
+            content: {},
+          },
         ],
       },
     },
@@ -62,7 +76,7 @@ export default function Create(props: Props) {
         className="flex-col gap-5 py-5"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <Form form={form} className="my-5 mx-2" />
+        <Form form={form} className="my-5 mx-2" exerciseQuestionId={props.exercise_question.id}/>
         <div className="flex justify-end">
           <Button
             type="submit"

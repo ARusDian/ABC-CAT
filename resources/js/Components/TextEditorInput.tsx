@@ -28,8 +28,6 @@ export default function TextEditorInput({
     imageValueHandler(imageValue);
   };
 
-    console.log({contentValue});
-
   const config = useMemo(
     () => ({
       readonly: false,

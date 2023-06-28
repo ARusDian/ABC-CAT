@@ -7,11 +7,12 @@ import Countdown from 'react-countdown';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { Inertia } from '@inertiajs/inertia';
 import route from 'ziggy-js';
+import QuestionEditor from '@/Components/QuestionEditor';
 
 export interface Props {
   exam: {
     id: string;
-    exercise_question_id: number;
+    exercise_question_id: string;
 
     answers: {
       id: number;
@@ -140,7 +141,13 @@ export default function Run({ exam }: Props) {
                 </div>
                 <div className="border-t border-gray-500 w-auto h-auto p-3 flex flex-col gap-3">
                   <div className="porse text-md">
-                    {parse(answers[currentQuestion].question.content)}
+                    <QuestionEditor
+                      exerciseQuestionId={exam.exercise_question_id}
+                      content={
+                        answers[currentQuestion].question.question.content
+                      }
+                      disableMenu
+                    />
                   </div>
                   <div className="flex flex-col gap-3">
                     {answerArray.fields[
@@ -177,7 +184,13 @@ export default function Run({ exam }: Props) {
                                 /* answers[currentQuestion]?.answerId === answer.id */
                               }
                             />
-                            <div className="prose mx-auto">{parse(answer)}</div>
+                            <div className="prose mx-auto">
+                              <QuestionEditor
+                                content={answer.content}
+                                exerciseQuestionId={exam.exercise_question_id}
+                                disableMenu
+                              />
+                            </div>
                           </div>
                         </div>
                       );
