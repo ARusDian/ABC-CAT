@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('learning_material_description_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('learning_material_id')->constrained()->onDelete('cascade');
+            $table->foreignId('learning_material_id')->constrained(null, 'id', 'learning_material_id_fk')->onDelete('cascade');
             $table->foreignId('document_file_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
