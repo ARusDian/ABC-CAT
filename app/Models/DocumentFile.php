@@ -28,11 +28,12 @@ class DocumentFile extends Model
         $this->touch();
     }
 
-    static function createFile(string $disk, string $path, string|File $file): DocumentFile {
-        Storage::disk($disk)->put($path, $file);
+    static function createFile(string $disk, string $path, string|File $file, $user_id = null): DocumentFile {
+        $path = Storage::disk($disk)->put($path, $file);
         return DocumentFile::create([
             'disk' => $disk,
-            'path' => $path
+            'path' => $path,
+            'user_id' => $user_id
         ]);
     }
 }
