@@ -21,7 +21,7 @@ import FontFamily from '@tiptap/extension-font-family';
 import KopSurat1 from './Editor/Extensions/KopSurat1';
 import { FontSize } from './Editor/Extensions/FontSize';
 import TandaTangan1 from './Editor/Extensions/TandaTangan1';
-import {Image} from './Editor/Extensions/Image';
+import { Image } from './Editor/Extensions/Image';
 
 export interface CustomEditorOption {
   canSign: boolean;
@@ -34,12 +34,14 @@ interface Props {
   editable: boolean;
 }
 
-export function useEditor(props: Partial<Props> & Partial<CustomEditorOption> = {}) {
+export function useEditor(
+  props: Partial<Props> & Partial<CustomEditorOption> = {},
+) {
   let { content, override, editable, ...custom } = props;
   return useEditorTiptap({
     extensions: [
       LiteralTab,
-      StarterKit,
+      StarterKit.configure({}),
       Placeholder.configure({
         placeholder: 'Write here',
       }),
@@ -50,7 +52,10 @@ export function useEditor(props: Partial<Props> & Partial<CustomEditorOption> = 
       Link.configure({
         openOnClick: false,
       }),
-            Image,
+      Image.configure({
+        inline: true,
+        allowBase64: true,
+      }),
       TableHeader,
       TableRow,
       TableCell.extend({

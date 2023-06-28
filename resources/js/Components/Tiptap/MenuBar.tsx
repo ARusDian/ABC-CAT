@@ -1,13 +1,18 @@
 import 'remixicon/fonts/remixicon.css';
 import { Editor } from '@tiptap/react';
 
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import './MenuItem.scss';
 import MenuItem, { MenuProps } from './MenuItem';
+import { Inertia } from '@inertiajs/inertia';
+import axios from 'axios';
+import route from 'ziggy-js';
 
 interface Props {
   editor: Editor;
   closeMenu?: () => void;
+
+  uploadImage?: (file: File) => Promise<{ id: string; disk: 'public' }>;
 }
 
 interface Divider {
@@ -74,7 +79,34 @@ function InsertTableMenu({ closeMenu, editor }: Props) {
 }
 
 export default function MenuBar(props: Props) {
-  let editor = props.editor;
+  let { editor, uploadImage } = props;
+
+  const [files, setFiles] = useState<FileList | null>(null);
+
+  React.useEffect(() => {
+    (async () => {
+      if (files && files.length > 0 && uploadImage) {
+        for (const file of files) {
+
+          const response = await uploadImage(file);
+
+
+          editor
+            .chain()
+            .focus()
+            .setImage({
+              id: response.id,
+              disk: response.disk,
+              // src: `/storage/${response.data.path}`
+            })
+            .run();
+          // form.append(`file[${index}]`, file);
+        }
+      }
+
+      setFiles(null);
+    })();
+  }, [files]);
 
   const items: Array<MenuI | Divider> = [
     {
@@ -220,67 +252,46 @@ export default function MenuBar(props: Props) {
       action: () => editor.chain().focus().redo().run(),
     },
     {
+      title: 'Upload image',
+      isActive: () => uploadImage != undefined,
+      icon: 'gallery-upload-line',
+      children: props => {
+        if (files == null) {
+          return (
+            <input
+              type="file"
+              accept="image/*"
+              onChange={event => {
+                setFiles(event.target.files ?? new FileList());
+                // for (const file of event.target.files ?? []) {
+                //   file.stream
+                // }
+                // console.log(event.target.files);
+                // props.closeMenu?.();
+              }}
+            ></input>
+          );
+        } else {
+          return <div>Loading</div>;
+        }
+      },
+    },
+    {
       title: 'Table',
       subMenu: [
         {
           title: 'Insert Table',
           children: ({ closeMenu }) => {
-            return <InsertTableMenu editor={editor} closeMenu={closeMenu} />;
+            return (
+              <InsertTableMenu
+                editor={editor}
+                closeMenu={closeMenu}
+                uploadImage={uploadImage}
+              />
+            );
           },
         },
       ],
-    },
-
-    {
-      title: 'Kop Surat',
-      action: () =>
-        editor
-          .chain()
-          .focus()
-          .insertContent('<kop-surat-1><p></p></kop-surat-1><p></p>')
-          .run(),
-    },
-
-    {
-      title: 'Tanda Tangan',
-      action: () => {
-        editor
-          .chain()
-          .insertTable({ rows: 1, cols: 3, withHeaderRow: false })
-          .focus()
-
-          // // set jabatan
-          // .goToNextCell()
-          // .goToNextCell()
-          // .insertContent('<p style="text-align: center">Jabatan</p>')
-          // .goToNextCell()
-          //
-          // set sign
-          .goToNextCell()
-          .goToNextCell()
-          .insertContent('<tanda-tangan-1></tanda-tangan-1>')
-          .goToNextCell()
-          // // Set nama
-          // .goToNextCell()
-          // .goToNextCell()
-          // .insertContent('<p style="text-align: center">Nama</p>')
-          // .goToNextCell()
-          // // set NIP
-          // .goToNextCell()
-          // .goToNextCell()
-          // .insertContent('<p style="text-align: center">NIP</p>')
-          // select table
-          .selectParentNode()
-          .selectParentNode()
-          .selectParentNode()
-          .selectParentNode()
-          .run();
-
-        // set border to none
-        // idk why it doesn't work if before run()
-        editor.commands.setCellAttribute("borderType", "none");
-      },
-      isActive: () => editor.isActive('tanda-tangan-1'),
     },
   ];
 
