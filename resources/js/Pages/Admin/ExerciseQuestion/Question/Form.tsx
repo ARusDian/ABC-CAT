@@ -118,7 +118,7 @@ function PilihanForm({
         );
       })}
 
-      <RadioGroup>
+      <RadioGroup defaultValue={form.formState.defaultValues?.answer}>
         {answerArray.fields.map((it, index) => {
           return (
             <Controller
@@ -128,7 +128,7 @@ function PilihanForm({
               render={({ field }) => {
                 return (
                   <FormControlLabel
-                    value={it.id}
+                    value={index}
                     control={
                       <Radio
                         ref={field.ref}
