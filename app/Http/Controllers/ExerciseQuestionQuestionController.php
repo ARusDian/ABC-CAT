@@ -108,10 +108,10 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($id, $exercise_question)
     {
         //
-        $question = Question::find($id);
+        $question = Question::find($exercise_question);
         return Inertia::render('Admin/Question/Show', [
             'question' => $question
         ]);

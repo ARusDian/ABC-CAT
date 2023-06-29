@@ -32,12 +32,16 @@ Route::get('/', function () {
     ]);
 });
 
-// Route::get('/exam', function () {
-//     return Inertia::render('Student/Exam/TemplateExam');
-// })->name('exam');
+Route::get('/exam', function () {
+    return Inertia::render('Student/Exam/TemplateExam');
+})->name('exam');
+
+Route::get('/evaluation', function () {
+    return Inertia::render('Student/Exam/Evaluation');
+})->name('exam');
 
 
-Route::middleware([
+Route::middleware([ 
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',

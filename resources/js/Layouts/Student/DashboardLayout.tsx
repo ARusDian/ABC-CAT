@@ -148,10 +148,10 @@ export default function DashboardLayout({
       <Banner />
       <Box sx={{ display: 'flex' }}>
         <AppBar position="fixed" open={isSidebarOpen}>
-          <nav className="flex justify-between w-full sticky bg-blue-400 py-5 px-7 shadow shadow-sky-400/50">
-            <div className="flex gap-3 max-w-6xl mr-30">
+          <nav className="flex justify-between w-full sticky bg-blue-400 py-5 pr-7 shadow shadow-sky-400/50">
+            <div className="flex gap-3 mr-30">
               <button
-                className="text-3xl md:ml-20 bg-blue-400 text-white hover:bg-blue-600 px-3 py-2"
+                className="text-3xl  bg-blue-400 text-white hover:bg-blue-600 px-3 py-2"
                 onClick={toggleDrawer(!isSidebarOpen)}
               >
                 <MenuIcon fontSize="large" /> Siswa
@@ -162,7 +162,7 @@ export default function DashboardLayout({
                 align="right"
                 width="48"
                 renderTrigger={() => (
-                  <button className="flex text-sm text-white border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
+                  <button className="flex text-sm text-white pt-1 border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
                     <SettingsIcon fontSize="large" />
                   </button>
                 )}

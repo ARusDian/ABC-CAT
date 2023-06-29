@@ -49,6 +49,7 @@ export default function Show(props: Props) {
                 row.original.id,
               ])}
               className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
+              
             >
               Show
             </InertiaLink>
