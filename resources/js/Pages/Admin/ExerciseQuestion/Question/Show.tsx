@@ -38,7 +38,7 @@ export default function Index(props: Props) {
           <QuestionEditor
             content={props.question.question.content}
             exerciseQuestionId={props.question.exercise_question_id}
-            disableMenu
+            disableEdit
           />
         </div>
       </div>

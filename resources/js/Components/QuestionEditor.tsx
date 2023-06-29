@@ -11,13 +11,15 @@ interface Props {
 
   exerciseQuestionId: string;
 
-  disableMenu?: boolean;
+  disableEdit?: boolean;
   // onBlur: (editor: Editor) =>
 }
 
 export default function QuestionEditor(props: Props) {
+  const editable = props.disableEdit !== true;
   const editor = useEditor({
     content: props.content,
+    editable,
     override: {
       onBlur: ({ editor }) => {
         props.onBlur?.(editor.getJSON());
@@ -49,10 +51,7 @@ export default function QuestionEditor(props: Props) {
       editor={editor}
       editorRef={editorRef}
       onChange={props.onBlur}
-
-
-      disableMenu={props.disableMenu}
-
+      disableMenu={props.disableEdit}
       uploadImage={onUploadImage}
     />
   );

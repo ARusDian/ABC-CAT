@@ -52,6 +52,7 @@ export default function Create(props: Props) {
   function onSubmit(e: QuestionFormModel) {
     console.log(e);
     form.clearErrors();
+
     Inertia.post(
       route('exercise-question.question.store', props.exercise_question.id),
       e as any,
@@ -69,7 +70,7 @@ export default function Create(props: Props) {
   return (
     <AdminFormLayout
       title="Tambah Pertanyaan"
-      backRoute={route('question.index')}
+      backRoute={route('exercise-question.show', [props.exercise_question.id])}
       backRouteTitle="Kembali"
     >
       <form

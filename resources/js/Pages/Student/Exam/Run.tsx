@@ -146,7 +146,7 @@ export default function Run({ exam }: Props) {
                       content={
                         answers[currentQuestion].question.question.content
                       }
-                      disableMenu
+                      disableEdit
                     />
                   </div>
                   <div className="flex flex-col gap-3">
@@ -188,7 +188,7 @@ export default function Run({ exam }: Props) {
                               <QuestionEditor
                                 content={answer.content}
                                 exerciseQuestionId={exam.exercise_question_id}
-                                disableMenu
+                                disableEdit
                               />
                             </div>
                           </div>
