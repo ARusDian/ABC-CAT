@@ -45,6 +45,7 @@ class ExerciseQuestionQuestionController extends Controller
                 'required',
                 Rule::in(['pilihan']),
             ],
+            'weight' => 'required|numeric',
             'answer' => 'required',
         ])->validate();
     }
