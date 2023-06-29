@@ -35,13 +35,15 @@ export default function Edit(props: Props) {
 
     form.clearErrors();
     Inertia.post(
-      route('question.update', question.id),
+      route('exercise-question.question.update', [question.exercise_question_id, question.id]),
       {
         _method: 'PUT',
         ...data,
       } as any,
       {
-        onError: errors => {},
+        onError: errors => {
+          console.log(errors);
+        },
       },
     );
     // php does'nt support PUT so...
