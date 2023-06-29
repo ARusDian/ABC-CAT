@@ -142,6 +142,7 @@ export default function Run({ exam }: Props) {
                 <div className="border-t border-gray-500 w-auto h-auto p-3 flex flex-col gap-3">
                   <div className="porse text-md">
                     <QuestionEditor
+                      key={currentQuestion}
                       exerciseQuestionId={exam.exercise_question_id}
                       content={
                         answers[currentQuestion].question.question.content
@@ -149,7 +150,7 @@ export default function Run({ exam }: Props) {
                       disableEdit
                     />
                   </div>
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-3" key={currentQuestion}>
                     {answerArray.fields[
                       currentQuestion
                     ].question.answers.choices.map((answer, index) => {
