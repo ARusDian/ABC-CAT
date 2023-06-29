@@ -17,7 +17,12 @@ class Exam extends Model
         'finished',
     ];
 
-    public function answers(): HasMany {
+    protected $casts = [
+        'expire_in' => 'datetime'
+    ];
+
+    public function answers(): HasMany
+    {
         return $this->hasMany(ExamAnswer::class);
     }
 }

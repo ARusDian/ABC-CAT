@@ -34,11 +34,13 @@ class ExerciseQuestionController extends Controller
     {
 
         $data = $request->validate([
-            'name' => 'required|string'
+            'name' => 'required|string',
+            'time_limit' => 'required|numeric',
         ]);
 
         $exercise = ExerciseQuestion::create([
-            'name' => $data['name']
+            'name' => $data['name'],
+            'time_limit' => $data['time_limit'],
         ]);
 
         return redirect()->route('exercise-question.show', [$exercise->id])->banner('Soal Latihan berhasil dibuat');
@@ -70,13 +72,15 @@ class ExerciseQuestionController extends Controller
     public function update(Request $request, string $id)
     {
         $data = $request->validate([
-            'name' => 'required|string'
+            'name' => 'required|string',
+            'time_limit' => 'required|numeric',
         ]);
 
 
         $exercise = ExerciseQuestion::findOrFail($id);
         $exercise->update([
-            'name' => $data['name']
+            'name' => $data['name'],
+            'time_limit' => $data['time_limit'],
         ]);
 
         return redirect()->route('exercise-question.show', [$id])->banner("Soal Lathian berhasil diedit");
@@ -90,7 +94,8 @@ class ExerciseQuestionController extends Controller
         //
     }
 
-    public function uploadImage(Request $request, $exercise_question) {
+    public function uploadImage(Request $request, $exercise_question)
+    {
         $file =  $request->file('file');
 
         return DocumentFile::createFile('public', "exercise-question/$exercise_question", $file, auth()->id());

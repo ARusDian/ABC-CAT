@@ -40,14 +40,6 @@ export default function Form(props: Props) {
           defaultValue={form.formState.defaultValues?.weight}
         />
 
-        <TextField
-          {...form.register('time_limit', { valueAsNumber: true })}
-          type="number"
-          inputProps={{ step: 'any' }}
-          label="Batas Waktu (menit)"
-          defaultValue={form.formState.defaultValues?.time_limit}
-        />
-
         <Controller
           name="question.content"
           control={form.control}

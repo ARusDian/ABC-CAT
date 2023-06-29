@@ -27,7 +27,12 @@ export default function Show(props: Props) {
       editRoute={route('exercise-question.edit', exercise_question.id)}
       backRoute={route('exercise-question.index')}
     >
+      <div>
       {exercise_question.name}
+      </div>
+      <div>
+        Batas waktu: {parseFloat(exercise_question.time_limit.toFixed(2))} Menit
+      </div>
 
       <MaterialReactTable
         columns={dataColumns}

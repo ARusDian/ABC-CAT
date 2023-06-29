@@ -6,7 +6,6 @@ export type EditorValue = {
 export interface BaseQuestionModel {
   question: EditorValue;
   weight: number;
-  time_limit: number;
   answer?: any;
 }
 

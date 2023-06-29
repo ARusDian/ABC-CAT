@@ -1,24 +1,24 @@
 import React from 'react';
 import route from 'ziggy-js';
 
-import { useForm } from '@inertiajs/inertia-react';
-
 import Form from './Form';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { ExerciseQuestionFormModel } from '@/Models/ExerciseQuestion';
+import { useForm } from 'react-hook-form';
+import { Inertia } from '@inertiajs/inertia';
 
 interface Props {}
 
 export default function Create(props: Props) {
   let form = useForm<ExerciseQuestionFormModel>({
-    name: '',
+    defaultValues: {
+      name: '',
+      time_limit: 120,
+    },
   });
 
-  function onSubmit(e: React.FormEvent) {
-    console.log(form.data);
-    e.preventDefault();
-    form.clearErrors();
-    form.post(route('exercise-question.store'), {
+  function onSubmit(e: ExerciseQuestionFormModel) {
+    Inertia.post(route('exercise-question.store'), e as any, {
       onError: errors => {
         console.log(errors);
       },
@@ -32,7 +32,11 @@ export default function Create(props: Props) {
       title="Tambah Soal Latihan"
       backRoute={route('exercise-question.index')}
     >
-      <Form form={form} submitTitle="Create" onSubmit={onSubmit} />
+      <Form
+        form={form}
+        submitTitle="Create"
+        onSubmit={form.handleSubmit(onSubmit)}
+      />
     </AdminFormLayout>
   );
 }

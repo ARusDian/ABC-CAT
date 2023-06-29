@@ -23,7 +23,6 @@ export default function Edit(props: Props) {
   let form = useForm<QuestionFormModel>({
     defaultValues: {
       question: question.question,
-      time_limit: question.time_limit,
       weight: question.weight,
       answer: question.answer,
       type: question.type,

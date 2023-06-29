@@ -1,14 +1,14 @@
 import React from 'react';
 import route from 'ziggy-js';
 
-import { useForm } from '@inertiajs/inertia-react';
-
 import Form from './Form';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import {
   ExerciseQuestionFormModel,
   ExerciseQuestionModel,
 } from '@/Models/ExerciseQuestion';
+import { useForm } from 'react-hook-form';
+import { Inertia } from '@inertiajs/inertia';
 
 interface Props {
   exercise_question: ExerciseQuestionModel;
@@ -16,22 +16,26 @@ interface Props {
 
 export default function Create(props: Props) {
   let form = useForm<ExerciseQuestionFormModel>({
-    name: props.exercise_question.name,
+    defaultValues: {
+      name: props.exercise_question.name,
+      time_limit: props.exercise_question.time_limit,
+    },
   });
 
   const onSubmit = React.useCallback(
-    (e: React.FormEvent) => {
-      console.log(form.data);
-      e.preventDefault();
-      form.clearErrors();
-      form.put(route('exercise-question.update', props.exercise_question.id), {
-        onError: errors => {
-          console.log(errors);
+    (e: ExerciseQuestionFormModel) => {
+      Inertia.put(
+        route('exercise-question.update', props.exercise_question.id),
+        e as any,
+        {
+          onError: errors => {
+            console.log(errors);
+          },
+          onSuccess: () => {
+            console.log('success');
+          },
         },
-        onSuccess: () => {
-          console.log('success');
-        },
-      });
+      );
     },
     [props.exercise_question],
   );
@@ -41,7 +45,11 @@ export default function Create(props: Props) {
       title="Tambah Soal Latihan"
       backRoute={route('exercise-question.show', props.exercise_question.id)}
     >
-      <Form form={form} submitTitle="Edit" onSubmit={onSubmit} />
+      <Form
+        form={form}
+        submitTitle="Edit"
+        onSubmit={form.handleSubmit(onSubmit)}
+      />
     </AdminFormLayout>
   );
 }

@@ -10,7 +10,12 @@ class ExerciseQuestion extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name'
+        'name',
+        'time_limit',
+    ];
+
+    protected $casts = [
+        'time_limit' => 'float',
     ];
 
     public function questions(): HasMany

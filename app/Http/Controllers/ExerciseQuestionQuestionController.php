@@ -45,7 +45,6 @@ class ExerciseQuestionQuestionController extends Controller
                 'required',
                 Rule::in(['pilihan']),
             ],
-            'time_limit' => 'required|numeric',
             'answer' => 'required',
         ])->validate();
     }
@@ -64,7 +63,6 @@ class ExerciseQuestionQuestionController extends Controller
             $newQuestion = Question::create([
                 'exercise_question_id' => $exercise_question,
                 'weight' => $data['weight'],
-                'time_limit' => $data['time_limit'],
 
                 'type' => $data['type'],
                 'question' => $data['question'],
@@ -117,7 +115,6 @@ class ExerciseQuestionQuestionController extends Controller
 
             $question = Question::find($id)->update([
                 'weight' => $data['weight'],
-                'time_limit' => $data['time_limit'],
 
                 'type' => $data['type'],
                 'question' => $data['question'],
