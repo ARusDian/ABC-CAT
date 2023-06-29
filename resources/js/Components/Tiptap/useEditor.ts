@@ -18,14 +18,10 @@ import TableCell from '@tiptap/extension-table-cell';
 import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from '@tiptap/extension-text-style';
 import FontFamily from '@tiptap/extension-font-family';
-import KopSurat1 from './Editor/Extensions/KopSurat1';
 import { FontSize } from './Editor/Extensions/FontSize';
-import TandaTangan1 from './Editor/Extensions/TandaTangan1';
 import { Image } from './Editor/Extensions/Image';
 
 export interface CustomEditorOption {
-  canSign: boolean;
-  canUploadKopSuratImage: boolean;
 }
 
 interface Props {
@@ -78,12 +74,6 @@ export function useEditor(
       FontFamily,
       FontSize,
 
-      KopSurat1.configure({
-        canUploadImage: custom?.canUploadKopSuratImage ?? false,
-      }),
-      TandaTangan1.configure({
-        canSign: custom?.canSign ?? false,
-      }),
     ],
 
     content: content,
