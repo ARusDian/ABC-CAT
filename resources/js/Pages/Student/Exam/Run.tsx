@@ -13,6 +13,7 @@ export interface Props {
   exam: {
     id: string;
     exercise_question_id: string;
+    expire_in: string;
 
     answers: {
       id: number;
@@ -26,7 +27,7 @@ export interface Props {
 }
 
 export default function Run({ exam }: Props) {
-  const time = Date.now() + 50000;
+  const time = new Date(Date.parse(exam.expire_in));
   const { answers } = exam;
 
   const form = useForm({
@@ -40,7 +41,7 @@ export default function Run({ exam }: Props) {
 
   const [currentQuestion, setCurrentQuestion] = React.useState(0);
 
-  const renderer = ({
+  const countdownRenderer = ({
     hours,
     minutes,
     seconds,
@@ -76,7 +77,7 @@ export default function Run({ exam }: Props) {
             <div className="text-xl lg:text-xl font-bold flex justify-between p-3">
               <div>Nama Ujian</div>
               <div className="border border-gray-900 px-3">
-                <Countdown date={time} renderer={renderer} />
+                <Countdown date={time} renderer={countdownRenderer} />
               </div>
             </div>
             <div className="flex flex-col-reverse md:flex-row  border-t-2 border-gray-800">
