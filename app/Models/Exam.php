@@ -25,4 +25,19 @@ class Exam extends Model
     {
         return $this->hasMany(ExamAnswer::class);
     }
+
+    public function scopeOfExercise($query, $exercise_question_id)
+    {
+        return $query->where('exercise_question_id', $exercise_question_id);
+    }
+
+    public function scopeOfUser($query, $user_id)
+    {
+        return $query->where("user_id", $user_id);
+    }
+
+    public function scopeOfFinished($query, bool $finished)
+    {
+        return $query->where("finished", $finished);
+    }
 }

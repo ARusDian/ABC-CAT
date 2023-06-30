@@ -46,7 +46,7 @@ Route::middleware([
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::middleware(['role:student'])->group(function () {
         Route::prefix('student')->group(function () {
-            Route::prefix('exam')->as('exam.')->group(function () {
+            Route::prefix('/exam')->as('exam.')->group(function () {
                 Route::get('{exercise_question}', [ExamController::class, 'show'])->name('show');
                 Route::post('{exercise_question}', [ExamController::class, 'attempt'])->name("attempt");
                 Route::post('{exercise_question}/finish', [ExamController::class, 'finish'])->name('finish');

@@ -41,10 +41,13 @@ class ExamController extends Controller
      */
     public function show($exercise_id)
     {
-        $exam = Exam::with(['answers.question'])->where('exercise_question_id', $exercise_id)->where('finished', false)->first();
+        $exam = Exam::with(['answers.question'])
+            ->ofExercise($exercise_id)
+            ->ofUser(auth()->id())
+            ->ofFinished(false)
+            ->first();
 
         if ($exam != null) {
-
             return Inertia::render('Student/Exam/Run', [
                 'exam' => $exam
             ]);
@@ -59,7 +62,10 @@ class ExamController extends Controller
 
     public function finish($exercise_id)
     {
-        $exam = Exam::where('exercise_question_id', $exercise_id)->where('finished', false)->firstOrFail();
+        $exam = Exam::ofExercise($exercise_id)
+            ->ofUser(auth()->id())
+            ->ofFinished(false)
+            ->firstOrFail();
 
         $exam->update([
             'finished' => true
