@@ -12,7 +12,8 @@ interface Props {
   exerciseQuestionId: string;
 
   disableEdit?: boolean;
-  // onBlur: (editor: Editor) =>
+
+  editorRef?: React.MutableRefObject<Editor | null>;
 }
 
 export default function QuestionEditor(props: Props) {
@@ -26,6 +27,12 @@ export default function QuestionEditor(props: Props) {
       },
     },
   });
+
+  React.useEffect(() => {
+    if (props.editorRef) {
+      props.editorRef.current = editor;
+    }
+  }, [editor]);
 
   const onUploadImage = React.useCallback(
     async (file: File) => {

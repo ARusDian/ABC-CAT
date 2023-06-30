@@ -65,6 +65,15 @@ export default function Run({ exam }: Props) {
     }
   };
 
+  // use ref instead of setting key for performance reason
+  const questionEditorRef = React.useRef<Editor | null>(null);
+
+  React.useEffect(() => {
+    questionEditorRef?.current?.commands?.setContent(
+      answers[currentQuestion].question.question.content,
+    );
+  }, [currentQuestion]);
+
   function onSelesaiUjian() {
     Inertia.post(route('exam.finish', exam.exercise_question_id));
   }
@@ -143,18 +152,24 @@ export default function Run({ exam }: Props) {
                 <div className="border-t border-gray-500 w-auto h-auto p-3 flex flex-col gap-3">
                   <div className="porse text-md">
                     <QuestionEditor
-                      key={currentQuestion}
                       exerciseQuestionId={exam.exercise_question_id}
+                      editorRef={questionEditorRef}
                       content={
                         answers[currentQuestion].question.question.content
                       }
                       disableEdit
                     />
                   </div>
-                  <div className="flex flex-col gap-3" key={currentQuestion}>
+                  <div className="flex flex-col gap-3">
                     {answerArray.fields[
                       currentQuestion
                     ].question.answers.choices.map((answer, index) => {
+                      // use ref instead of setting key for performance reason
+                      const editorRef = React.useRef<Editor | null>(null);
+
+                      React.useEffect(() => {
+                        editorRef?.current?.commands.setContent(answer.content);
+                      }, [currentQuestion]);
                       return (
                         <div className="flex justify-between" key={index}>
                           <div className="flex gap-3">
@@ -188,6 +203,7 @@ export default function Run({ exam }: Props) {
                             />
                             <div className="prose mx-auto">
                               <QuestionEditor
+                                editorRef={editorRef}
                                 content={answer.content}
                                 exerciseQuestionId={exam.exercise_question_id}
                                 disableEdit
