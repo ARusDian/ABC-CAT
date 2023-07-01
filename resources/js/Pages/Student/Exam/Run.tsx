@@ -2,19 +2,27 @@ import ExamLayout from '@/Layouts/Student/ExamLayout';
 import Button from '@mui/material/Button';
 import React from 'react';
 import Countdown from 'react-countdown';
-import {
-  UseFieldArrayReturn,
-  useFieldArray,
-  useForm,
-} from 'react-hook-form';
+import { UseFieldArrayReturn, useFieldArray, useForm } from 'react-hook-form';
 import { Inertia } from '@inertiajs/inertia';
 import route from 'ziggy-js';
 import QuestionEditor from '@/Components/QuestionEditor';
 import { Editor } from '@tiptap/react';
-import { ExamModel } from '@/Models/Exam';
+import { ExamAnswerModel, ExamModel } from '@/Models/Exam';
+import { useDebounce, useSearchParam } from 'react-use';
+import axios from 'axios';
 
 export interface Props {
   exam: ExamModel;
+}
+
+export interface Task {
+  exam_answer_id: string;
+
+  state: {
+    mark: boolean;
+  };
+
+  answer: any;
 }
 
 export default function Run({ exam }: Props) {
@@ -28,9 +36,9 @@ export default function Run({ exam }: Props) {
   const answerArray = useFieldArray({
     control: form.control,
     name: 'answers',
-  });
 
-  const [currentQuestion, setCurrentQuestion] = React.useState(0);
+    keyName: 'idHash',
+  });
 
   const countdownRenderer = ({
     hours,
@@ -59,11 +67,79 @@ export default function Run({ exam }: Props) {
   // use ref instead of setting key for performance reason
   const questionEditorRef = React.useRef<Editor | null>(null);
 
+  const [stateQueue, setStateQueue] = React.useState<Task[]>([]);
+
+  // const [currentQuestion, setCurrentQuestion] = React.useState(0);
+  const currentQuestion =
+    (parseInt(useSearchParam('question') ?? '1') || 1) - 1;
+
+  const setCurrentQuestion = React.useCallback((index: number) => {
+    const url = new URL(location.toString());
+    url.searchParams.set('question', (index + 1).toString());
+    history.pushState({}, '', url);
+  }, []);
+
+  const [previousQueuePromise, setPreviousQueuePromise] =
+    React.useState<Promise<Task[]> | null>(null);
+
+  useDebounce(
+    () => {
+      if (stateQueue.length == 0) {
+        return;
+      }
+
+      const queuePromise = (async () => {
+        const prev = await previousQueuePromise;
+
+        // so if the previous attempt is failed, this can retry it
+        const queue = [...(prev ?? []), ...stateQueue];
+
+        // clear queue
+        setStateQueue([]);
+
+        try {
+          let response = await axios.post(route('exam.update', exam.id), {
+            _method: 'put',
+            exam_id: exam.id,
+            queue,
+          });
+
+          if (response.data['finished']) {
+            // TODO: create exam attempt page
+            location.reload();
+          }
+
+          return [];
+        } catch (e) {
+          return queue;
+        }
+      })();
+
+      setPreviousQueuePromise(queuePromise);
+    },
+    1000,
+    [stateQueue],
+  );
+
+  const addStateQueue = (task: Task) => {
+    setStateQueue([...stateQueue, task]);
+  };
+
   React.useEffect(() => {
     questionEditorRef?.current?.commands?.setContent(
       answers[currentQuestion].question.question.content,
     );
   }, [currentQuestion]);
+
+  const updateAnswer = (answer: ExamAnswerModel) => {
+    answerArray.update(currentQuestion, answer);
+
+    addStateQueue({
+      exam_answer_id: answer.id,
+      state: answer.state,
+      answer: answer.answer,
+    });
+  };
 
   function onSelesaiUjian() {
     Inertia.post(route('exam.finish', exam.exercise_question_id));
@@ -156,6 +232,7 @@ export default function Run({ exam }: Props) {
                       currentQuestion={currentQuestion}
                       exam={exam}
                       answerArray={answerArray}
+                      updateAnswer={updateAnswer}
                     />
                   </div>
                   <div className="flex justify-end">
@@ -169,6 +246,13 @@ export default function Run({ exam }: Props) {
                           ...value,
                           state: {
                             ...value.state,
+                            mark: !value.state?.mark,
+                          },
+                        });
+                        updateAnswer({
+                          ...value,
+                          state: {
+                            ...(value.state ?? {}),
                             mark: !value.state?.mark,
                           },
                         });
@@ -200,51 +284,53 @@ function PilihanAnswerForm({
   answerArray,
   exam,
   currentQuestion,
+
+  updateAnswer,
 }: {
-  answerArray: UseFieldArrayReturn<ExamModel, 'answers'>;
+  answerArray: UseFieldArrayReturn<ExamModel, 'answers', 'idHash'>;
   exam: ExamModel;
   currentQuestion: number;
+
+  updateAnswer: (answer: ExamAnswerModel) => void;
 }) {
+  const answers = answerArray.fields[currentQuestion].question.answers;
+
   return (
     <div>
-      {answerArray.fields[currentQuestion].question.answers.choices.map(
-        (answer, index) => {
-          // use ref instead of setting key for performance reason
-          const editorRef = React.useRef<Editor | null>(null);
+      {answers.choices.map((answer, index) => {
+        // use ref instead of setting key for performance reason
+        const editorRef = React.useRef<Editor | null>(null);
 
-          React.useEffect(() => {
-            editorRef?.current?.commands.setContent(answer.content);
-          }, [currentQuestion]);
-          return (
-            <div className="flex justify-between" key={index}>
-              <div className="flex gap-3">
-                <input
-                  type="radio"
-                  name="answer"
-                  onChange={() => {
-                    answerArray.update(currentQuestion, {
-                      ...answerArray.fields[currentQuestion],
-                      answer: index,
-                    });
-                  }}
-                  checked={
-                    answerArray.fields[currentQuestion].answer == index
-                    /* answers[currentQuestion]?.answerId === answer.id */
-                  }
+        React.useEffect(() => {
+          editorRef?.current?.commands.setContent(answer.content);
+        }, [currentQuestion]);
+        return (
+          <div className="flex justify-between" key={index}>
+            <div className="flex gap-3">
+              <input
+                type="radio"
+                name="answer"
+                // defaultValue={form.}
+                onChange={() => {
+                  updateAnswer({
+                    ...answerArray.fields[currentQuestion],
+                    answer: index,
+                  });
+                }}
+                checked={answerArray.fields[currentQuestion].answer == index}
+              />
+              <div className="prose mx-auto">
+                <QuestionEditor
+                  editorRef={editorRef}
+                  content={answer.content}
+                  exerciseQuestionId={exam.exercise_question_id}
+                  disableEdit
                 />
-                <div className="prose mx-auto">
-                  <QuestionEditor
-                    editorRef={editorRef}
-                    content={answer.content}
-                    exerciseQuestionId={exam.exercise_question_id}
-                    disableEdit
-                  />
-                </div>
               </div>
             </div>
-          );
-        },
-      )}
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -110,9 +110,48 @@ class ExamController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Exam $exam)
+    public function update(Request $request)
     {
-        //
+        return \DB::transaction(function () use ($request) {
+
+            $data = $request->validate([
+                'exam_id' => 'numeric',
+                'queue' => [
+                    'exam_answer_id' => 'required',
+                    'state' => 'nullable',
+                    'answer' => 'nullable'
+                ]
+            ]);
+
+            $exam = Exam::findOrFail($data['exam_id']);
+
+            if ($exam->finished) {
+                return [
+                    'finished' => true
+                ];
+            }
+
+
+            foreach ($data['queue'] as $queue) {
+                $answer = ExamAnswer::where('id', $queue['exam_answer_id'])
+                    ->where('exam_id', $exam->id)
+                    ->firstOrFail();
+
+                $answer->state = $queue['state'] ?? null;
+                $answer->answer = $queue['answer'] ?? null;
+
+                $answer->save();
+            }
+
+            if ($exam->expire_in < Carbon::now()) {
+                $exam->finished = true;
+                $exam->save();
+            }
+
+            return [
+                'finished' => $exam->finished
+            ];
+        });
     }
 
     /**

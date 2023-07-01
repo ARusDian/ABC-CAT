@@ -9,8 +9,8 @@ export interface ExamModel {
 }
 
 export interface ExamAnswerModel {
-  id: number;
-  exam_id: number;
+  id: string;
+  exam_id: string;
   answer: any;
   state: {
     mark: boolean;
