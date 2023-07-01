@@ -16,20 +16,12 @@ interface Props {
 
   onDelete?: () => any;
   deleteTitle?: string;
+  onDeleteMessage?: string;
+  isRestore?: boolean;
 }
 
 export default function Index(props: React.PropsWithChildren<Props>) {
   const confirm = useConfirm();
-
-  const handleDelete = () => {
-    confirm({
-      description: `Ini akan menghapus ${headerTitle} selamanya.`,
-      confirmationButtonProps: { autoFocus: true },
-    })
-      .then(onDelete)
-      .catch(() => console.log('Deletion cancelled.'));
-  };
-
   const {
     title,
     headerTitle,
@@ -39,7 +31,20 @@ export default function Index(props: React.PropsWithChildren<Props>) {
     editRouteTitle,
     onDelete,
     deleteTitle,
+    onDeleteMessage,
+    isRestore,
   } = props;
+
+  const handleDelete = () => {
+    confirm({
+      description: onDeleteMessage || `Ini akan menghapus ${headerTitle} selamanya.`,
+      confirmationButtonProps: { autoFocus: true },
+    })
+      .then(onDelete)
+      .catch(() => console.log('Deletion cancelled.'));
+  };
+
+
   return (
     <DashboardAdminLayout title={title}>
       <div className="p-6 sm:px-20 bg-white border-b border-gray-200 flex flex-col gap-3">
@@ -66,7 +71,7 @@ export default function Index(props: React.PropsWithChildren<Props>) {
               <div className="flex flex-col justify-center">
                 <Button
                   variant="contained"
-                  color="error"
+                  color={isRestore ? 'success' : 'error'}
                   onClick={handleDelete}
                   size="large"
                 >

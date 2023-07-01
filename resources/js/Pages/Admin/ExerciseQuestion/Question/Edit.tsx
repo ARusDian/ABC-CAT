@@ -27,6 +27,7 @@ export default function Edit(props: Props) {
       answer: question.answer,
       type: question.type,
       answers: question.answers,
+      explanation: question.explanation,
     },
   });
 

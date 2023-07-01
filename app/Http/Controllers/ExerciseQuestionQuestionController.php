@@ -97,7 +97,7 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit($exercise_question,$id)
     {
         //
         $question = Question::find($id);
@@ -132,12 +132,25 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($exercise_question,$id)
     {
-        return DB::transaction(function () use ($id) {
+        return DB::transaction(function () use ($exercise_question,$id) {
             $question = Question::find($id);
-            $question->delete();
-            return redirect()->route('question.index')->banner('Question deleted successfully');
+            $question->update([
+                'is_active' => false
+            ]);
+            return redirect()->route('exercise-question.show', [$exercise_question])->banner('Question deleted successfully');
+        });
+    }
+
+    public function restore($exercise_question,$id)
+    {
+        return DB::transaction(function () use ($exercise_question,$id) {
+            $question = Question::find($id);
+            $question->update([
+                'is_active' => true
+            ]);
+            return redirect()->route('exercise-question.show', [$exercise_question])->banner('Question restored successfully');
         });
     }
 }

@@ -58,6 +58,7 @@ Route::middleware([
         Route::prefix('admin')->group(function () {
             Route::resource("exercise-question", ExerciseQuestionController::class);
             Route::resource("exercise-question.question", ExerciseQuestionQuestionController::class);
+            Route::post("exercise-question/{exercise_question}/question/{question}/restore", [ExerciseQuestionQuestionController::class, 'restore'])->name('exercise-question.question.restore');
 
             Route::post(
                 '/exercise-question/{exercise_question}/upload',

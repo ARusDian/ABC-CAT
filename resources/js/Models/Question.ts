@@ -8,6 +8,7 @@ export interface BaseQuestionModel {
   weight: number;
   answer?: any;
   explanation: EditorValue;
+  is_active: boolean;
 }
 
 export interface QuestionModel extends BaseQuestionModel, AnswerTypeModel {

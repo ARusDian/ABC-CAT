@@ -27,5 +27,7 @@ class Question extends Model
 
         'answer',
         'answers',
+
+        'is_active',
     ];
 }
