@@ -19,6 +19,7 @@ export default function Create(props: Props) {
     defaultValues: {
       name: props.exercise_question.name,
       time_limit: props.exercise_question.time_limit,
+      number_of_question: props.exercise_question.number_of_question,
     },
   });
 

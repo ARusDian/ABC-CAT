@@ -12,6 +12,7 @@ class ExerciseQuestion extends Model
     protected $fillable = [
         'name',
         'time_limit',
+        'number_of_question',
     ];
 
     protected $casts = [

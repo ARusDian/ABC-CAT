@@ -14,6 +14,7 @@ export default function Create(props: Props) {
     defaultValues: {
       name: '',
       time_limit: 120,
+      number_of_question: 50,
     },
   });
 

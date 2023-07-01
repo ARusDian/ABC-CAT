@@ -31,10 +31,21 @@ export default function Form({ form, submitTitle, onSubmit }: Props) {
         {...form.register("time_limit", {
           valueAsNumber: true
         })}
-        // onChange={v => form.setData('time_limit', v.target.value)}
         defaultValue={form.formState.defaultValues?.time_limit}
         error={form.formState.errors.time_limit != null}
         helperText={form.formState.errors.time_limit?.message}
+        fullWidth
+      />
+
+      <TextField
+        label="Jumlah Soal"
+        type="number"
+        {...form.register("number_of_question", {
+          valueAsNumber: true
+        })}
+        defaultValue={form.formState.defaultValues?.number_of_question}
+        error={form.formState.errors.number_of_question != null}
+        helperText={form.formState.errors.number_of_question?.message}
         fullWidth
       />
 

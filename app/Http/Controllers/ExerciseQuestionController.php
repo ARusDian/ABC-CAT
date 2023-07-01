@@ -6,6 +6,7 @@ use App\Models\DocumentFile;
 use App\Models\ExerciseQuestion;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Validator;
 
 class ExerciseQuestionController extends Controller
 {
@@ -16,6 +17,14 @@ class ExerciseQuestionController extends Controller
     {
         return Inertia::render("Admin/ExerciseQuestion/Index", [
             'exercise_questions' => fn () => ExerciseQuestion::all()
+        ]);
+    }
+
+    public function validateData($data) {
+        return Validator::make($data, [
+            'name' => 'required|string',
+            'time_limit' => 'required|numeric',
+            'number_of_question' => 'required|numeric',
         ]);
     }
 
@@ -32,16 +41,9 @@ class ExerciseQuestionController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $this->validateData($request->all());
 
-        $data = $request->validate([
-            'name' => 'required|string',
-            'time_limit' => 'required|numeric',
-        ]);
-
-        $exercise = ExerciseQuestion::create([
-            'name' => $data['name'],
-            'time_limit' => $data['time_limit'],
-        ]);
+        $exercise = ExerciseQuestion::create($data);
 
         return redirect()->route('exercise-question.show', [$exercise->id])->banner('Soal Latihan berhasil dibuat');
     }
@@ -71,17 +73,11 @@ class ExerciseQuestionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $data = $request->validate([
-            'name' => 'required|string',
-            'time_limit' => 'required|numeric',
-        ]);
+        $data = $this->validateData($request->all());
 
 
         $exercise = ExerciseQuestion::findOrFail($id);
-        $exercise->update([
-            'name' => $data['name'],
-            'time_limit' => $data['time_limit'],
-        ]);
+        $exercise->update($data);
 
         return redirect()->route('exercise-question.show', [$id])->banner("Soal Lathian berhasil diedit");
     }
