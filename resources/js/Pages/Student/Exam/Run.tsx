@@ -295,15 +295,28 @@ function PilihanAnswerForm({
 }) {
   const answers = answerArray.fields[currentQuestion].question.answers;
 
+  // store editor ref to prevent re-creating editor
+  const arrayEditorRef = React.useRef<React.MutableRefObject<Editor | null>[]>(
+    [],
+  );
+
+  while (arrayEditorRef.current.length < answers.choices.length) {
+    arrayEditorRef.current.push({ current: null });
+  }
+
+  React.useEffect(() => {
+    answers.choices.map((answer, index) => {
+      const editorRef = arrayEditorRef.current[index];
+
+      editorRef?.current?.commands.setContent(answer.content);
+    });
+  }, [currentQuestion]);
+
   return (
     <div>
       {answers.choices.map((answer, index) => {
-        // use ref instead of setting key for performance reason
-        const editorRef = React.useRef<Editor | null>(null);
+        const editorRef = arrayEditorRef.current[index];
 
-        React.useEffect(() => {
-          editorRef?.current?.commands.setContent(answer.content);
-        }, [currentQuestion]);
         return (
           <div className="flex justify-between" key={index}>
             <div className="flex gap-3">
