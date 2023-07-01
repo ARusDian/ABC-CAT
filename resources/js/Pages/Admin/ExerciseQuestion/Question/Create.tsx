@@ -44,7 +44,15 @@ export default function Create(props: Props) {
             type: 'tiptap',
             content: {},
           },
+          {
+            type: 'tiptap',
+            content: {},
+          },
         ],
+      },
+      explanation: {
+        type: 'tiptap',
+        content: {},
       },
     },
   });

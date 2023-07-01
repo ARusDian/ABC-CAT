@@ -7,6 +7,7 @@ export interface BaseQuestionModel {
   question: EditorValue;
   weight: number;
   answer?: any;
+  explanation: EditorValue;
 }
 
 export interface QuestionModel extends BaseQuestionModel, AnswerTypeModel {

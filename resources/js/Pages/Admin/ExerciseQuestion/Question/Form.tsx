@@ -67,6 +67,26 @@ export default function Form(props: Props) {
             exerciseQuestionId={props.exerciseQuestionId}
           />
         ) : null}
+        <Controller
+          name="explanation.content"
+          control={form.control}
+          render={({ field }) => {
+            return (
+              <>
+                <InputLabel htmlFor="name">Penjelasan Jawaban</InputLabel>
+                <QuestionEditor
+                  content={field.value}
+                  onBlur={field.onChange}
+                  exerciseQuestionId={props.exerciseQuestionId}
+                />
+                <InputError
+                  className="mt-2"
+                  message={form.formState.errors.question?.message}
+                />
+              </>
+            );
+          }}
+        />
       </div>
     </div>
   );

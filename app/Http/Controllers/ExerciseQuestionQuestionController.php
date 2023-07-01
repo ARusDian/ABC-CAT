@@ -40,6 +40,7 @@ class ExerciseQuestionQuestionController extends Controller
     {
         return Validator::make($data, [
             'question' => 'required',
+            'explanation' => 'required',
             'answers' => 'required|array',
             'type' => [
                 'required',
@@ -55,7 +56,6 @@ class ExerciseQuestionQuestionController extends Controller
      */
     public function store(Request $request, $exercise_question)
     {
-
         return DB::transaction(function () use ($request, $exercise_question) {
             $data = $this->validateData($request->all());
 
@@ -67,6 +67,7 @@ class ExerciseQuestionQuestionController extends Controller
 
                 'type' => $data['type'],
                 'question' => $data['question'],
+                'explanation' => $data['explanation'],
 
                 'answer' => $data['answer'],
                 'answers' => $data['answers'],

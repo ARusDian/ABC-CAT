@@ -13,6 +13,7 @@ interface Props {
 
 export default function Index(props: Props) {
   const question = props.question;
+  console.log(question);
   return (
     <AdminShowLayout
       title={`Pertanyaan ${question.id}`}
@@ -34,9 +35,50 @@ export default function Index(props: Props) {
       deleteTitle="Hapus"
     >
       <div className="border-2 border-gray-200 p-5">
-        <div className="prose mx-auto">
+        <label>Pertanyaan</label>
+        <div className="mx-auto border">
           <QuestionEditor
             content={props.question.question.content}
+            exerciseQuestionId={props.question.exercise_question_id}
+            disableEdit
+          />
+        </div>
+      </div>
+      {
+        props.question.type == 'pilihan' ? (
+          <div className="border-2 border-gray-200 p-5">
+            <label>Pilihan Ganda :</label>
+            {
+              props.question.answers.choices.map((choice, index) => {
+                return (
+                  <div>
+                    <label>Pilihan {(String.fromCharCode(65 + index))}</label>
+                    <div className="mx-auto border">
+                      <QuestionEditor
+                        content={choice.content}
+                        exerciseQuestionId={props.question.exercise_question_id}
+                        disableEdit
+                      />
+                    </div>
+                  </div>
+                )
+              })
+            }
+          </div>
+        ) : (
+          <div className="border-2 border-gray-200 p-5">
+            <label>Jawaban</label>
+            <div className="mx-auto border">
+              Essay
+            </div>
+          </div>
+        )
+      }
+      <div className="border-2 border-gray-200 p-5">
+        <label>Penjelasan Jawaban</label>
+        <div className="mx-auto border">
+          <QuestionEditor
+            content={props.question.explanation.content}
             exerciseQuestionId={props.question.exercise_question_id}
             disableEdit
           />

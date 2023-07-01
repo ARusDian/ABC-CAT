@@ -13,7 +13,7 @@ class Question extends Model
         'answers' => 'json',
         'question' => 'json',
         'answer' => 'json',
-
+        'explanation' => 'json',
     ];
     protected $fillable = [
         // 'content', 'answers', 'type', 'weight', 'time_limit', 'exercise_question_id', 'answer'
@@ -23,6 +23,7 @@ class Question extends Model
 
         'type',
         'question',
+        'explanation',
 
         'answer',
         'answers',
