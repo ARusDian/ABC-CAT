@@ -2,6 +2,7 @@ import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { QuestionModel } from '@/Models/Question';
 import { InertiaLink } from '@inertiajs/inertia-react';
+import { Button } from '@mui/material';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
@@ -27,13 +28,24 @@ export default function Show(props: Props) {
       editRoute={route('exercise-question.edit', exercise_question.id)}
       backRoute={route('exercise-question.index')}
     >
-      <div>
-      {exercise_question.name}
-      </div>
-      <div>
-        Batas waktu: {parseFloat(exercise_question.time_limit.toFixed(2))} Menit
-      </div>
 
+      <div className='flex justify-between'>
+        <div className=" text-lg">
+          <p>
+            {exercise_question.name}
+          </p>
+          <p>
+            Batas waktu: <span className='font-semibold'>{parseFloat(exercise_question.time_limit.toFixed(2))}</span> Menit
+          </p>
+        </div>
+        <InertiaLink
+          href={route('exercise-question.question.create', exercise_question.id)}
+        >
+          <Button variant="contained" color="primary" size="large">
+            Tambah Soal
+          </Button>
+        </InertiaLink>
+      </div>
       <MaterialReactTable
         columns={dataColumns}
         data={exercise_question.questions ?? []}
@@ -60,11 +72,7 @@ export default function Show(props: Props) {
           </div>
         )}
       />
-      <InertiaLink
-        href={route('exercise-question.question.create', exercise_question.id)}
-      >
-        Add
-      </InertiaLink>
+
     </AdminShowLayout>
   );
 }
