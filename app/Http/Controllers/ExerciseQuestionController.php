@@ -25,7 +25,7 @@ class ExerciseQuestionController extends Controller
             'name' => 'required|string',
             'time_limit' => 'required|numeric',
             'number_of_question' => 'required|numeric',
-        ]);
+        ])->validate();
     }
 
     /**
