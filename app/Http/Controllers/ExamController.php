@@ -85,9 +85,7 @@ class ExamController extends Controller
                 'finished' => false,
             ]);
 
-            foreach (($exercise->questions->filter( function ($question) {
-                return $question['is_active'] == true;
-            }))->shuffle()->take($exercise->number_of_question) as $question) {
+            foreach (($exercise->questions->filter(fn ($q) => $q['is_active']))->shuffle()->take($exercise->number_of_question) as $question) {
                 ExamAnswer::create([
                     'exam_id' => $exam->id,
                     'question_id' => $question->id,
