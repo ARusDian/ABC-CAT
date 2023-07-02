@@ -8,7 +8,7 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
-[*.{ts,tsx,js,jsx}]
+[*.{ts,tsx,js,jsx,json}]
 indent_size = 2
 
 [*.md]
