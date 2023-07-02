@@ -10,6 +10,7 @@ import { Editor } from '@tiptap/react';
 import { ExamAnswerModel, ExamModel } from '@/Models/Exam';
 import { useDebounce, useSearchParam } from 'react-use';
 import axios from 'axios';
+import ReactLoading from "react-loading";
 
 export interface Props {
   exam: ExamModel;
@@ -79,8 +80,11 @@ export default function Run({ exam }: Props) {
     history.pushState({}, '', url);
   }, []);
 
+
   const [previousQueuePromise, setPreviousQueuePromise] =
     React.useState<Promise<Task[]> | null>(null);
+
+  const [isUpdating, setIsUpdating] = React.useState(false);
 
   useDebounce(
     () => {
@@ -98,6 +102,7 @@ export default function Run({ exam }: Props) {
         setStateQueue([]);
 
         try {
+          setIsUpdating(true);
           let response = await axios.post(route('exam.update', exam.id), {
             _method: 'put',
             exam_id: exam.id,
@@ -108,7 +113,7 @@ export default function Run({ exam }: Props) {
             // TODO: create exam attempt page
             location.reload();
           }
-
+          setIsUpdating(false);
           return [];
         } catch (e) {
           return queue;
@@ -179,10 +184,10 @@ export default function Run({ exam }: Props) {
                               it.state?.mark
                                 ? 'warning'
                                 : it.answer
-                                ? 'primary'
-                                : currentQuestion === index
-                                ? 'success'
-                                : 'inherit'
+                                  ? 'primary'
+                                  : currentQuestion === index
+                                    ? 'success'
+                                    : 'inherit'
                             }
                             onClick={() => setCurrentQuestion(index)}
                             key={index}
@@ -207,13 +212,25 @@ export default function Run({ exam }: Props) {
               </div>
               <div className="w-full md:w-2/3 border-b-2 border-gray-800">
                 <div className="flex flex-col gap-5">
-                  <div className="flex justify-between p-3">
+                  <div className="flex justify-between p-3 h-20 py-auto">
                     <div className="font-bold text-lg">
                       Soal {currentQuestion + 1}
                     </div>
-                    <div className="font-bold text-lg">{`${
-                      currentQuestion + 1
-                    }/${answers.length}`}</div>
+                    <div className="font-bold text-lg flex gap-3">
+                      <p>
+                        {
+                          isUpdating
+                            ? <div className='flex gap-2'>
+                              <ReactLoading color="#1964AD" type='spin'  />
+                            </div>
+                            :
+                            ""
+                        }
+                      </p>
+                      <p>
+                        {`${currentQuestion + 1}/${answers.length}`}
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <div className="border-t border-gray-500 w-auto h-auto p-3 flex flex-col gap-3">
