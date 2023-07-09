@@ -24,7 +24,7 @@ class ExerciseQuestionQuestionController extends Controller
         //
         $questions = Question::all();
         return Inertia::render('Admin/Question/Index', [
-            'questions' => $questions
+            'questions' => $questions,
         ]);
     }
 
@@ -34,25 +34,33 @@ class ExerciseQuestionQuestionController extends Controller
     public function create($exercise_question)
     {
         return Inertia::render('Admin/ExerciseQuestion/Question/Create', [
-            'exercise_question' => ExerciseQuestion::findOrFail($exercise_question)
+            'exercise_question' => ExerciseQuestion::findOrFail(
+                $exercise_question,
+            ),
         ]);
     }
 
     public function validateData($data)
     {
-        $validator =  Validator::make($data, [
+        $validator = Validator::make($data, [
             'question' => 'required',
             'explanation' => 'required',
             'answers' => 'required|array',
             'type' => [
                 'required',
-                Rule::in([array_map(fn ($e) => $e->name, QuestionTypeEnum::cases())]),
+                Rule::in([
+                    array_map(fn($e) => $e->name, QuestionTypeEnum::cases()),
+                ]),
             ],
             'weight' => 'required|numeric',
             'answer' => 'required',
         ]);
 
-        $validator->sometimes("answers.choices", "array", fn (Fluent $item) => $item->type == QuestionTypeEnum::Pilihan->name);
+        $validator->sometimes(
+            'answers.choices',
+            'array',
+            fn(Fluent $item) => $item->type == QuestionTypeEnum::Pilihan->name,
+        );
 
         return $validator->validate();
     }
@@ -85,7 +93,9 @@ class ExerciseQuestionQuestionController extends Controller
                     'document_file_id' => $imageId,
                 ]);
             }
-            return redirect()->route('exercise-question.show', [$exercise_question])->banner('Question created successfully');
+            return redirect()
+                ->route('exercise-question.show', [$exercise_question])
+                ->banner('Question created successfully');
         });
     }
 
@@ -95,7 +105,7 @@ class ExerciseQuestionQuestionController extends Controller
     public function show($exercise_question, $id)
     {
         return Inertia::render('Admin/ExerciseQuestion/Question/Show', [
-            'question' => fn () => Question::find($id),
+            'question' => fn() => Question::find($id),
             'exercise_question_id' => $exercise_question,
         ]);
     }
@@ -103,12 +113,12 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($exercise_question,$id)
+    public function edit($exercise_question, $id)
     {
         //
         $question = Question::find($id);
         return Inertia::render('Admin/ExerciseQuestion/Question/Edit', [
-            'question' => $question
+            'question' => $question,
         ]);
     }
 
@@ -117,8 +127,11 @@ class ExerciseQuestionQuestionController extends Controller
      */
     public function update(Request $request, $exercise_question, $id)
     {
-
-        return DB::transaction(function () use ($request, $exercise_question, $id) {
+        return DB::transaction(function () use (
+            $request,
+            $exercise_question,
+            $id,
+        ) {
             $data = $this->validateData($request->all());
 
             $question = Question::find($id)->update([
@@ -131,32 +144,41 @@ class ExerciseQuestionQuestionController extends Controller
                 'answers' => $data['answers'],
             ]);
 
-            return redirect()->route('exercise-question.question.show', [$exercise_question, $id])->banner('Question updated successfully');
+            return redirect()
+                ->route('exercise-question.question.show', [
+                    $exercise_question,
+                    $id,
+                ])
+                ->banner('Question updated successfully');
         });
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($exercise_question,$id)
+    public function destroy($exercise_question, $id)
     {
-        return DB::transaction(function () use ($exercise_question,$id) {
+        return DB::transaction(function () use ($exercise_question, $id) {
             $question = Question::find($id);
             $question->update([
-                'is_active' => false
+                'is_active' => false,
             ]);
-            return redirect()->route('exercise-question.show', [$exercise_question])->banner('Question deleted successfully');
+            return redirect()
+                ->route('exercise-question.show', [$exercise_question])
+                ->banner('Question deleted successfully');
         });
     }
 
-    public function restore($exercise_question,$id)
+    public function restore($exercise_question, $id)
     {
-        return DB::transaction(function () use ($exercise_question,$id) {
+        return DB::transaction(function () use ($exercise_question, $id) {
             $question = Question::find($id);
             $question->update([
-                'is_active' => true
+                'is_active' => true,
             ]);
-            return redirect()->route('exercise-question.show', [$exercise_question])->banner('Question restored successfully');
+            return redirect()
+                ->route('exercise-question.show', [$exercise_question])
+                ->banner('Question restored successfully');
         });
     }
 }

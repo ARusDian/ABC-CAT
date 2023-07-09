@@ -35,32 +35,37 @@ class LearningMaterialDescriptionImageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LearningMaterialDescriptionImage $learningMaterialDescriptionImage)
-    {
+    public function show(
+        LearningMaterialDescriptionImage $learningMaterialDescriptionImage,
+    ) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(LearningMaterialDescriptionImage $learningMaterialDescriptionImage)
-    {
+    public function edit(
+        LearningMaterialDescriptionImage $learningMaterialDescriptionImage,
+    ) {
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LearningMaterialDescriptionImage $learningMaterialDescriptionImage)
-    {
+    public function update(
+        Request $request,
+        LearningMaterialDescriptionImage $learningMaterialDescriptionImage,
+    ) {
         //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(LearningMaterialDescriptionImage $learningMaterialDescriptionImage)
-    {
+    public function destroy(
+        LearningMaterialDescriptionImage $learningMaterialDescriptionImage,
+    ) {
         //
     }
 }

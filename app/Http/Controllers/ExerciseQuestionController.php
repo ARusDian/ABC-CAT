@@ -15,12 +15,13 @@ class ExerciseQuestionController extends Controller
      */
     public function index()
     {
-        return Inertia::render("Admin/ExerciseQuestion/Index", [
-            'exercise_questions' => fn () => ExerciseQuestion::all()
+        return Inertia::render('Admin/ExerciseQuestion/Index', [
+            'exercise_questions' => fn() => ExerciseQuestion::all(),
         ]);
     }
 
-    public function validateData($data) {
+    public function validateData($data)
+    {
         return Validator::make($data, [
             'name' => 'required|string',
             'time_limit' => 'required|numeric',
@@ -33,7 +34,7 @@ class ExerciseQuestionController extends Controller
      */
     public function create()
     {
-        return Inertia::render("Admin/ExerciseQuestion/Create", []);
+        return Inertia::render('Admin/ExerciseQuestion/Create', []);
     }
 
     /**
@@ -45,7 +46,9 @@ class ExerciseQuestionController extends Controller
 
         $exercise = ExerciseQuestion::create($data);
 
-        return redirect()->route('exercise-question.show', [$exercise->id])->banner('Soal Latihan berhasil dibuat');
+        return redirect()
+            ->route('exercise-question.show', [$exercise->id])
+            ->banner('Soal Latihan berhasil dibuat');
     }
 
     /**
@@ -53,8 +56,10 @@ class ExerciseQuestionController extends Controller
      */
     public function show(string $id)
     {
-        return Inertia::render("Admin/ExerciseQuestion/Show", [
-            'exercise_question' => fn () => ExerciseQuestion::with(['questions'])->findOrFail($id)
+        return Inertia::render('Admin/ExerciseQuestion/Show', [
+            'exercise_question' => fn() => ExerciseQuestion::with([
+                'questions',
+            ])->findOrFail($id),
         ]);
     }
 
@@ -63,8 +68,8 @@ class ExerciseQuestionController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render("Admin/ExerciseQuestion/Edit", [
-            'exercise_question' => fn () => ExerciseQuestion::findOrFail($id)
+        return Inertia::render('Admin/ExerciseQuestion/Edit', [
+            'exercise_question' => fn() => ExerciseQuestion::findOrFail($id),
         ]);
     }
 
@@ -75,11 +80,12 @@ class ExerciseQuestionController extends Controller
     {
         $data = $this->validateData($request->all());
 
-
         $exercise = ExerciseQuestion::findOrFail($id);
         $exercise->update($data);
 
-        return redirect()->route('exercise-question.show', [$id])->banner("Soal Lathian berhasil diedit");
+        return redirect()
+            ->route('exercise-question.show', [$id])
+            ->banner('Soal Lathian berhasil diedit');
     }
 
     /**
@@ -92,8 +98,13 @@ class ExerciseQuestionController extends Controller
 
     public function uploadImage(Request $request, $exercise_question)
     {
-        $file =  $request->file('file');
+        $file = $request->file('file');
 
-        return DocumentFile::createFile('public', "exercise-question/$exercise_question", $file, auth()->id());
+        return DocumentFile::createFile(
+            'public',
+            "exercise-question/$exercise_question",
+            $file,
+            auth()->id(),
+        );
     }
 }

@@ -51,8 +51,10 @@ class LearningMaterialDocumentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, LearningMaterialDocument $learningMaterialDocument)
-    {
+    public function update(
+        Request $request,
+        LearningMaterialDocument $learningMaterialDocument,
+    ) {
         //
     }
 

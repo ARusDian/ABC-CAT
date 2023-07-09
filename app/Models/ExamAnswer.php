@@ -10,16 +10,11 @@ class ExamAnswer extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'exam_id',
-        'question_id',
-        'answer',
-        'state'
-    ];
+    protected $fillable = ['exam_id', 'question_id', 'answer', 'state'];
 
     protected $casts = [
         'answer' => 'json',
-        'state' => 'json'
+        'state' => 'json',
     ];
 
     public function question(): BelongsTo

@@ -9,10 +9,7 @@ class LearningMaterialDescriptionImage extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'learning_material_id',
-        'document_file_id',
-    ];
+    protected $fillable = ['learning_material_id', 'document_file_id'];
 
     public function learningMaterial()
     {

@@ -18,7 +18,7 @@ class Exam extends Model
     ];
 
     protected $casts = [
-        'expire_in' => 'datetime'
+        'expire_in' => 'datetime',
     ];
 
     public function answers(): HasMany
@@ -33,11 +33,11 @@ class Exam extends Model
 
     public function scopeOfUser($query, $user_id)
     {
-        return $query->where("user_id", $user_id);
+        return $query->where('user_id', $user_id);
     }
 
     public function scopeOfFinished($query, bool $finished)
     {
-        return $query->where("finished", $finished);
+        return $query->where('finished', $finished);
     }
 }

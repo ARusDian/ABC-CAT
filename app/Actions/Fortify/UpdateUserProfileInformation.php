@@ -20,8 +20,18 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'phone_number' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
+            'phone_number' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('users')->ignore($user->id),
+            ],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
         ])->validateWithBag('updateProfileInformation');
 
@@ -29,22 +39,28 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->updateProfilePhoto($input['photo']);
         }
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
+        if (
+            $input['email'] !== $user->email &&
+            $user instanceof MustVerifyEmail
+        ) {
             $this->updateVerifiedUser($user, $input);
         } else {
-            $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
-            ])->save();
+            $user
+                ->forceFill([
+                    'name' => $input['name'],
+                    'email' => $input['email'],
+                ])
+                ->save();
         }
         if ($input['phone_number'] !== $user->phone_number) {
-            $user->forceFill([
-                'phone_number' => $input['phone_number'],
-            ])->save();
+            $user
+                ->forceFill([
+                    'phone_number' => $input['phone_number'],
+                ])
+                ->save();
         }
 
-        if($input['NIM'] !== null){
+        if ($input['NIM'] !== null) {
             $user->userProfile()->update([
                 'NIM' => $input['NIM'],
             ]);
@@ -60,11 +76,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     protected function updateVerifiedUser($user, array $input)
     {
-        $user->forceFill([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'email_verified_at' => null,
-        ])->save();
+        $user
+            ->forceFill([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'email_verified_at' => null,
+            ])
+            ->save();
 
         $user->sendEmailVerificationNotification();
     }

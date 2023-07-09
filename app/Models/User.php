@@ -26,12 +26,7 @@ class User extends Authenticatable
      *
      * @var string[]
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'phone_number',
-        'password',
-    ];
+    protected $fillable = ['name', 'email', 'phone_number', 'password'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -59,11 +54,10 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    protected $appends = ['profile_photo_url'];
 
-    public function isAdmin() {
-        return $this->hasAnyRole(['admin','super-admin']);
+    public function isAdmin()
+    {
+        return $this->hasAnyRole(['admin', 'super-admin']);
     }
 }

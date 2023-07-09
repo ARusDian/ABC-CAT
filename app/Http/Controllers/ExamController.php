@@ -48,16 +48,18 @@ class ExamController extends Controller
             ->first();
 
         if ($exam != null) {
-            $exam->answers->each(fn ($answer) => $answer->question->setHidden(['answer']));
+            $exam->answers->each(
+                fn($answer) => $answer->question->setHidden(['answer']),
+            );
 
             return Inertia::render('Student/Exam/Run', [
-                'exam' => $exam
+                'exam' => $exam,
             ]);
         } else {
             $exercise = ExerciseQuestion::find($exercise_id);
 
             return Inertia::render('Student/Exam/Show', [
-                'exercise_question' => $exercise
+                'exercise_question' => $exercise,
             ]);
         }
     }
@@ -70,18 +72,19 @@ class ExamController extends Controller
             ->firstOrFail();
 
         $exam->update([
-            'finished' => true
+            'finished' => true,
         ]);
     }
 
     public function attempt($exercise_id)
     {
         return \DB::transaction(function () use ($exercise_id) {
-
             /**
              * @var \App\Models\ExerciseQuestion $exercise
              */
-            $exercise = ExerciseQuestion::with(['questions'])->findOrFail($exercise_id);
+            $exercise = ExerciseQuestion::with(['questions'])->findOrFail(
+                $exercise_id,
+            );
             $expire_in = Carbon::now()->addMinutes($exercise->time_limit);
 
             $exam = Exam::create([
@@ -91,17 +94,22 @@ class ExamController extends Controller
                 'finished' => false,
             ]);
 
-            foreach (($exercise->questions->filter(fn ($q) => $q['is_active']))->shuffle()->take($exercise->number_of_question) as $question) {
+            foreach (
+                $exercise->questions
+                    ->filter(fn($q) => $q['is_active'])
+                    ->shuffle()
+                    ->take($exercise->number_of_question)
+                as $question
+            ) {
                 ExamAnswer::create([
                     'exam_id' => $exam->id,
                     'question_id' => $question->id,
                     'state' => null,
-                    'answer' => null
+                    'answer' => null,
                 ]);
             }
 
-
-            return redirect()->route("exam.show", [$exercise->id]);
+            return redirect()->route('exam.show', [$exercise->id]);
         });
     }
 
@@ -119,24 +127,22 @@ class ExamController extends Controller
     public function update(Request $request)
     {
         return \DB::transaction(function () use ($request) {
-
             $data = $request->validate([
                 'exam_id' => 'numeric',
                 'queue' => [
                     'exam_answer_id' => 'required',
                     'state' => 'nullable',
-                    'answer' => 'nullable'
-                ]
+                    'answer' => 'nullable',
+                ],
             ]);
 
             $exam = Exam::findOrFail($data['exam_id']);
 
             if ($exam->finished) {
                 return [
-                    'finished' => true
+                    'finished' => true,
                 ];
             }
-
 
             foreach ($data['queue'] as $queue) {
                 $answer = ExamAnswer::where('id', $queue['exam_answer_id'])
@@ -155,7 +161,7 @@ class ExamController extends Controller
             }
 
             return [
-                'finished' => $exam->finished
+                'finished' => $exam->finished,
             ];
         });
     }

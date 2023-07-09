@@ -9,8 +9,5 @@ class questionImage extends Model
 {
     use HasFactory;
 
-    protected $fillable=[
-        'question_id',
-        'document_file_id'
-    ];
+    protected $fillable = ['question_id', 'document_file_id'];
 }

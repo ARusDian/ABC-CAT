@@ -19,12 +19,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(!Auth::user()->isAdmin()){
+        if (!Auth::user()->isAdmin()) {
             return redirect()->route('home');
         }
         $user = User::with('roles')->get();
         return Inertia::render('Admin/User/Index', [
-            'users' => $user
+            'users' => $user,
         ]);
     }
 
@@ -38,7 +38,7 @@ class UserController extends Controller
         //
         $roles = Role::all();
         return Inertia::render('Admin/User/Create', [
-            'roles' => $roles
+            'roles' => $roles,
         ]);
     }
 
@@ -51,7 +51,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        return DB::transaction( function () use ($request) {
+        return DB::transaction(function () use ($request) {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
@@ -68,7 +68,9 @@ class UserController extends Controller
             foreach ($validated['roles'] as $role) {
                 $user->assignRole($role['id']);
             }
-            return redirect()->route('user.index')->banner('New User Created Successfully');
+            return redirect()
+                ->route('user.index')
+                ->banner('New User Created Successfully');
         });
     }
 
@@ -100,7 +102,7 @@ class UserController extends Controller
         $roles = Role::all();
         return Inertia::render('Admin/User/Edit', [
             'user' => $user,
-            'roles' => $roles
+            'roles' => $roles,
         ]);
     }
 
@@ -114,7 +116,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        return DB::transaction( function () use ($request, $id) {
+        return DB::transaction(function () use ($request, $id) {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|',
@@ -122,21 +124,23 @@ class UserController extends Controller
                 'roles.*.id' => 'required|exists:roles',
                 'phone_number' => 'required|string',
             ]);
-            
+
             $user = User::findOrFail($id);
             $user->update([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'phone_number' => $validated['phone_number'],
             ]);
-            if(isset($validated['password'])){
+            if (isset($validated['password'])) {
                 $user->update([
                     'password' => Hash::make($validated['password']),
                 ]);
             }
-            $user->syncRoles($validated['roles']??[]);
+            $user->syncRoles($validated['roles'] ?? []);
             $user->save();
-            return redirect()->route('user.show',$id)->banner('User Updated Successfully');
+            return redirect()
+                ->route('user.show', $id)
+                ->banner('User Updated Successfully');
         });
     }
 
@@ -151,6 +155,8 @@ class UserController extends Controller
         //
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('user.index')->banner('User Deleted Successfully');
+        return redirect()
+            ->route('user.index')
+            ->banner('User Deleted Successfully');
     }
 }

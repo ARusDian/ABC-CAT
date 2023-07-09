@@ -22,7 +22,7 @@ class LearningMaterialController extends Controller
         //
         $learningMaterials = LearningMaterial::all();
         return Inertia::render('Admin/LearningMaterial/Index', [
-            'learningMaterials' => $learningMaterials
+            'learningMaterials' => $learningMaterials,
         ]);
     }
 
@@ -47,16 +47,27 @@ class LearningMaterialController extends Controller
             $editorContent = $request->description;
             $submittedImagesId = [];
 
-            foreach($images as $i=>$image) {
+            foreach ($images as $i => $image) {
                 $newImage = str_replace('"', '', $image);
-                $newImage = preg_replace('/^data:image\/(png|jpeg|jpg);base64,/', '', $newImage);
+                $newImage = preg_replace(
+                    '/^data:image\/(png|jpeg|jpg);base64,/',
+                    '',
+                    $newImage,
+                );
                 $newImage = str_replace(' ', '+', $newImage);
-                $imageName = md5(Carbon::now().$i).'.png';
-                $files = DocumentFile::createFile('public', 'learnMaterialDescImg/'.$imageName, base64_decode($newImage));
+                $imageName = md5(Carbon::now() . $i) . '.png';
+                $files = DocumentFile::createFile(
+                    'public',
+                    'learnMaterialDescImg/' . $imageName,
+                    base64_decode($newImage),
+                );
 
-                $editorContent = str_replace($image, url('/').'/storage/'.$files->path, $editorContent);
+                $editorContent = str_replace(
+                    $image,
+                    url('/') . '/storage/' . $files->path,
+                    $editorContent,
+                );
                 array_push($submittedImagesId, $files->id);
-                
             }
 
             $learningMaterial = LearningMaterial::create([
@@ -64,25 +75,43 @@ class LearningMaterialController extends Controller
                 'description' => $editorContent,
             ]);
 
-            foreach($submittedImagesId as $imageId) {
+            foreach ($submittedImagesId as $imageId) {
                 LearningMaterialDescriptionImage::create([
                     'learning_material_id' => $learningMaterial->id,
                     'document_file_id' => $imageId,
                 ]);
             }
-            foreach($request->documents as $i=>$document) {
-                $documentName = md5(Carbon::now().$i).'.'.$document['document_file']['file']->getClientOriginalExtension();
-                $documentFile = DocumentFile::createFile('public', 'learnMaterialDoc/'.$documentName, base64_decode(chunk_split(base64_encode(file_get_contents($document['document_file']['file'])))));
+            foreach ($request->documents as $i => $document) {
+                $documentName =
+                    md5(Carbon::now() . $i) .
+                    '.' .
+                    $document['document_file'][
+                        'file'
+                    ]->getClientOriginalExtension();
+                $documentFile = DocumentFile::createFile(
+                    'public',
+                    'learnMaterialDoc/' . $documentName,
+                    base64_decode(
+                        chunk_split(
+                            base64_encode(
+                                file_get_contents(
+                                    $document['document_file']['file'],
+                                ),
+                            ),
+                        ),
+                    ),
+                );
                 LearningMaterialDocument::create([
-                    'caption' => $document['caption']   ,
+                    'caption' => $document['caption'],
                     'learning_material_id' => $learningMaterial->id,
                     'document_file_id' => $documentFile->id,
                 ]);
             }
-            return redirect()->route('learning-material.index')->with('success', 'Learning Material created successfully');
-        });        
+            return redirect()
+                ->route('learning-material.index')
+                ->with('success', 'Learning Material created successfully');
+        });
     }
-    
 
     /**
      * Display the specified resource.
@@ -90,9 +119,11 @@ class LearningMaterialController extends Controller
     public function show($id)
     {
         //
-        $learningMaterial = LearningMaterial::with('documents.documentFile')->find($id);
+        $learningMaterial = LearningMaterial::with(
+            'documents.documentFile',
+        )->find($id);
         return Inertia::render('Admin/LearningMaterial/Show', [
-            'learningMaterial' => $learningMaterial
+            'learningMaterial' => $learningMaterial,
         ]);
     }
 
@@ -102,9 +133,11 @@ class LearningMaterialController extends Controller
     public function edit($id)
     {
         //
-        $learningMaterial = LearningMaterial::with('documents.documentFile')->find($id);
+        $learningMaterial = LearningMaterial::with(
+            'documents.documentFile',
+        )->find($id);
         return Inertia::render('Admin/LearningMaterial/Edit', [
-            'learningMaterial' => $learningMaterial
+            'learningMaterial' => $learningMaterial,
         ]);
     }
 
@@ -114,23 +147,38 @@ class LearningMaterialController extends Controller
     public function update(Request $request, $id)
     {
         //
-        return DB::transaction(function() use ($request, $id){
+        return DB::transaction(function () use ($request, $id) {
             // content
             $images = $request->images ?? [];
             $editorContent = $request->description;
-            $learningMaterialDescriptionImages = LearningMaterialDescriptionImage::with('documentFile')->where('learning_material_id', $id)->get();
+            $learningMaterialDescriptionImages = LearningMaterialDescriptionImage::with(
+                'documentFile',
+            )
+                ->where('learning_material_id', $id)
+                ->get();
             $submittedImagesId = [];
 
-            foreach($images as $i=>$image) {
+            foreach ($images as $i => $image) {
                 $newImage = str_replace('"', '', $image);
-                $newImage = preg_replace('/^data:image\/(png|jpeg|jpg);base64,/', '', $newImage);
+                $newImage = preg_replace(
+                    '/^data:image\/(png|jpeg|jpg);base64,/',
+                    '',
+                    $newImage,
+                );
                 $newImage = str_replace(' ', '+', $newImage);
-                $imageName = md5(Carbon::now().$i).'.png';
-                $files = DocumentFile::createFile('public', 'learnMaterialDescImg/'.$imageName, base64_decode($newImage));
+                $imageName = md5(Carbon::now() . $i) . '.png';
+                $files = DocumentFile::createFile(
+                    'public',
+                    'learnMaterialDescImg/' . $imageName,
+                    base64_decode($newImage),
+                );
 
-                $editorContent = str_replace($image, url('/').'/storage/'.$files->path, $editorContent);
+                $editorContent = str_replace(
+                    $image,
+                    url('/') . '/storage/' . $files->path,
+                    $editorContent,
+                );
                 array_push($submittedImagesId, $files->id);
-                
             }
 
             $learningMaterial = LearningMaterial::find($id);
@@ -138,16 +186,16 @@ class LearningMaterialController extends Controller
                 'title' => $request->title,
                 'description' => $editorContent,
             ]);
-            
-            foreach($learningMaterialDescriptionImages as $image) {
-                if(!in_array($image->documentFile->id, $submittedImagesId)){
+
+            foreach ($learningMaterialDescriptionImages as $image) {
+                if (!in_array($image->documentFile->id, $submittedImagesId)) {
                     $image->documentFile->deleteFile();
                     $image->documentFile->delete();
                     $image->delete();
                 }
             }
 
-            foreach($submittedImagesId as $imageId) {
+            foreach ($submittedImagesId as $imageId) {
                 LearningMaterialDescriptionImage::create([
                     'learning_material_id' => $learningMaterial->id,
                     'document_file_id' => $imageId,
@@ -155,65 +203,107 @@ class LearningMaterialController extends Controller
             }
             // end content edit
 
-
             // Edit Document
 
-            $deletedDocumentsId = array_diff($learningMaterial->documents->pluck('id')->toArray(), array_column($request->documents, 'id'));
-            $learningMaterialDocuments = LearningMaterialDocument::with('documentFile')->where('learning_material_id', $id)->get();
+            $deletedDocumentsId = array_diff(
+                $learningMaterial->documents->pluck('id')->toArray(),
+                array_column($request->documents, 'id'),
+            );
+            $learningMaterialDocuments = LearningMaterialDocument::with(
+                'documentFile',
+            )
+                ->where('learning_material_id', $id)
+                ->get();
             if (count($deletedDocumentsId) > 0) {
-                foreach($learningMaterialDocuments as $document) {
-                    if(in_array($document->id, $deletedDocumentsId)){
+                foreach ($learningMaterialDocuments as $document) {
+                    if (in_array($document->id, $deletedDocumentsId)) {
                         $document->documentFile->deleteFile();
                         $document->documentFile->delete();
                         $document->delete();
                     }
                 }
             }
-            foreach($request->documents as $i=>$document) {
+            foreach ($request->documents as $i => $document) {
                 $documentFile = null;
-                if(isset($document['document_file']['id'])){
-                    $documentFile = DocumentFile::find($document['document_file']['id']);
-                    if(isset($document['document_file']['file'])){
-                        $documentFile->replaceFile($document['document_file']['file']);
+                if (isset($document['document_file']['id'])) {
+                    $documentFile = DocumentFile::find(
+                        $document['document_file']['id'],
+                    );
+                    if (isset($document['document_file']['file'])) {
+                        $documentFile->replaceFile(
+                            $document['document_file']['file'],
+                        );
                     }
-                }else{
-                    $documentName = md5(Carbon::now().$i).'.'.$document['document_file']['file']->getClientOriginalExtension();
-                    $documentFile = DocumentFile::createFile('public', 'learnMaterialDoc/'.$documentName, base64_decode(chunk_split(base64_encode(file_get_contents($document['document_file']['file'])))));
+                } else {
+                    $documentName =
+                        md5(Carbon::now() . $i) .
+                        '.' .
+                        $document['document_file'][
+                            'file'
+                        ]->getClientOriginalExtension();
+                    $documentFile = DocumentFile::createFile(
+                        'public',
+                        'learnMaterialDoc/' . $documentName,
+                        base64_decode(
+                            chunk_split(
+                                base64_encode(
+                                    file_get_contents(
+                                        $document['document_file']['file'],
+                                    ),
+                                ),
+                            ),
+                        ),
+                    );
                 }
-                LearningMaterialDocument::updateOrCreate([
-                    'id' => $document['id'] ?? null
-                ],[
-                    'caption' => $document['caption']   ,
-                    'learning_material_id' => $learningMaterial->id,
-                    'document_file_id' => $documentFile->id,
-                ]);
+                LearningMaterialDocument::updateOrCreate(
+                    [
+                        'id' => $document['id'] ?? null,
+                    ],
+                    [
+                        'caption' => $document['caption'],
+                        'learning_material_id' => $learningMaterial->id,
+                        'document_file_id' => $documentFile->id,
+                    ],
+                );
             }
-            return redirect()->route('learning-material.show',$id)->with('success', 'Learning Material updated successfully');
+            return redirect()
+                ->route('learning-material.show', $id)
+                ->with('success', 'Learning Material updated successfully');
         });
     }
- 
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
         //
-        return DB::transaction(function() use ($id){
+        return DB::transaction(function () use ($id) {
             $learningMaterial = LearningMaterial::find($id);
-            $learningMaterialDocuments = LearningMaterialDocument::with('documentFile')->where('learning_material_id', $id)->get();
-            $learningMaterialDescriptionImages = LearningMaterialDescriptionImage::with('documentFile')->where('learning_material_id', $id)->get();
-            foreach($learningMaterialDocuments as $document) {
+            $learningMaterialDocuments = LearningMaterialDocument::with(
+                'documentFile',
+            )
+                ->where('learning_material_id', $id)
+                ->get();
+            $learningMaterialDescriptionImages = LearningMaterialDescriptionImage::with(
+                'documentFile',
+            )
+                ->where('learning_material_id', $id)
+                ->get();
+            foreach ($learningMaterialDocuments as $document) {
                 $document->documentFile->deleteFile();
                 $document->documentFile->delete();
                 $document->delete();
             }
-            foreach($learningMaterialDescriptionImages as $image) {
+            foreach ($learningMaterialDescriptionImages as $image) {
                 $image->documentFile->deleteFile();
                 $image->documentFile->delete();
                 $image->delete();
             }
             $learningMaterial->delete();
-            return redirect()->route('learning-material.index')->with('success', 'Learning Material deleted successfully');
+            return redirect()
+                ->route('learning-material.index')
+                ->with('success', 'Learning Material deleted successfully');
         });
     }
 }
