@@ -48,6 +48,8 @@ class ExamController extends Controller
             ->first();
 
         if ($exam != null) {
+            $exam->answers->each(fn ($answer) => $answer->question->setHidden(['answer']));
+
             return Inertia::render('Student/Exam/Run', [
                 'exam' => $exam
             ]);
