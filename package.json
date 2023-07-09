@@ -86,6 +86,17 @@
     "tabWidth": 2,
     "trailingComma": "all",
     "printWidth": 80,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "plugins": ["@prettier/plugin-php"],
+    "overrides": [
+      {
+        "files": "*.php",
+        "options": {
+          "phpVersion": "8.0",
+          "tabWidth": 4
+        }
+
+      }
+    ]
   }
 }
