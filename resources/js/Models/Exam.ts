@@ -1,4 +1,4 @@
-import { QuestionModel } from "./Question";
+import { QuestionModel } from './Question';
 
 export interface ExamModel {
   id: string;

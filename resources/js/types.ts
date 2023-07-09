@@ -36,7 +36,7 @@ export interface User extends BaseUser {
     NIM: string;
     NIDN: string;
     NIP_NIPH: string;
-  }
+  };
 }
 
 export type InertiaSharedProps<T = {}> = T & {

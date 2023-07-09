@@ -21,8 +21,7 @@ import FontFamily from '@tiptap/extension-font-family';
 import { FontSize } from './Editor/Extensions/FontSize';
 import { Image } from './Editor/Extensions/Image';
 
-export interface CustomEditorOption {
-}
+export interface CustomEditorOption {}
 
 interface Props {
   override: Partial<EditorOptions>;
@@ -73,7 +72,6 @@ export function useEditor(
       TextStyle,
       FontFamily,
       FontSize,
-
     ],
 
     content: content,

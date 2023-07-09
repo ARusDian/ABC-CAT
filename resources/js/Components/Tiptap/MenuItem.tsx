@@ -118,7 +118,7 @@ export default function MenuItem(props: Props) {
           aria-expanded={dropdown ? 'true' : 'false'}
           onClick={() => setDropdown(prev => !prev)}
           style={{ verticalAlign: 'middle' }}
-                    type="button"
+          type="button"
           className={classNames('menu-dropdown', {
             'is-active': isActive && isActive(),
             hidden: !canClick,
@@ -163,11 +163,8 @@ export default function MenuItem(props: Props) {
         ) : depth > 0 ? (
           <>{title ? `${title} ` : ''}</>
         ) : icon == null ? (
-          <>
-            {title}
-          </>
-
-            ) : (
+          <>{title}</>
+        ) : (
           <>
             <i className={`ri-${icon}`} />
           </>

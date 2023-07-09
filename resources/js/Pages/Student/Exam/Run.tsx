@@ -10,7 +10,7 @@ import { Editor } from '@tiptap/react';
 import { ExamAnswerModel, ExamModel } from '@/Models/Exam';
 import { useDebounce, useSearchParam } from 'react-use';
 import axios from 'axios';
-import ReactLoading from "react-loading";
+import ReactLoading from 'react-loading';
 
 export interface Props {
   exam: ExamModel;
@@ -79,7 +79,6 @@ export default function Run({ exam }: Props) {
     url.searchParams.set('question', (index + 1).toString());
     history.pushState({}, '', url);
   }, []);
-
 
   const [previousQueuePromise, setPreviousQueuePromise] =
     React.useState<Promise<Task[]> | null>(null);
@@ -184,10 +183,10 @@ export default function Run({ exam }: Props) {
                               it.state?.mark
                                 ? 'warning'
                                 : it.answer
-                                  ? 'primary'
-                                  : currentQuestion === index
-                                    ? 'success'
-                                    : 'inherit'
+                                ? 'primary'
+                                : currentQuestion === index
+                                ? 'success'
+                                : 'inherit'
                             }
                             onClick={() => setCurrentQuestion(index)}
                             key={index}
@@ -218,18 +217,15 @@ export default function Run({ exam }: Props) {
                     </div>
                     <div className="font-bold text-lg flex gap-3">
                       <p>
-                        {
-                          isUpdating
-                            ? <div className='flex gap-2'>
-                              <ReactLoading color="#1964AD" type='spin'  />
-                            </div>
-                            :
-                            ""
-                        }
+                        {isUpdating ? (
+                          <div className="flex gap-2">
+                            <ReactLoading color="#1964AD" type="spin" />
+                          </div>
+                        ) : (
+                          ''
+                        )}
                       </p>
-                      <p>
-                        {`${currentQuestion + 1}/${answers.length}`}
-                      </p>
+                      <p>{`${currentQuestion + 1}/${answers.length}`}</p>
                     </div>
                   </div>
                 </div>

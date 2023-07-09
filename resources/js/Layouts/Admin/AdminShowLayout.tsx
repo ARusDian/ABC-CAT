@@ -37,13 +37,13 @@ export default function Index(props: React.PropsWithChildren<Props>) {
 
   const handleDelete = () => {
     confirm({
-      description: onDeleteMessage || `Ini akan menghapus ${headerTitle} selamanya.`,
+      description:
+        onDeleteMessage || `Ini akan menghapus ${headerTitle} selamanya.`,
       confirmationButtonProps: { autoFocus: true },
     })
       .then(onDelete)
       .catch(() => console.log('Deletion cancelled.'));
   };
-
 
   return (
     <DashboardAdminLayout title={title}>

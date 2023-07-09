@@ -36,7 +36,10 @@ export default function Edit(props: Props) {
 
     form.clearErrors();
     Inertia.post(
-      route('exercise-question.question.update', [question.exercise_question_id, question.id]),
+      route('exercise-question.question.update', [
+        question.exercise_question_id,
+        question.id,
+      ]),
       {
         _method: 'PUT',
         ...data,

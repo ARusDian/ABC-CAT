@@ -84,7 +84,11 @@ export default function Create(props: Props) {
         className="flex-col gap-5 py-5"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <Form form={form} className="my-5 mx-2" exerciseQuestionId={props.exercise_question.id}/>
+        <Form
+          form={form}
+          className="my-5 mx-2"
+          exerciseQuestionId={props.exercise_question.id}
+        />
         <div className="flex justify-end">
           <Button
             type="submit"

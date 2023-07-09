@@ -14,7 +14,12 @@ export default function Show(props: Props) {
     <>
       {props.exercise_question.name}
 
-      <InertiaLink href={route("exam.attempt", [props.exercise_question.id])} method="POST">Attempt</InertiaLink>
+      <InertiaLink
+        href={route('exam.attempt', [props.exercise_question.id])}
+        method="POST"
+      >
+        Attempt
+      </InertiaLink>
     </>
   );
 }

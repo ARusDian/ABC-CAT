@@ -89,5 +89,4 @@ const questions = [
   },
 ];
 
-export default function TemplateExam({}: Props) {
-}
+export default function TemplateExam({}: Props) {}

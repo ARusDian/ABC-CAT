@@ -28,8 +28,8 @@ export default function Form({ form, submitTitle, onSubmit }: Props) {
       <TextField
         label="Batas Waktu (Menit)"
         type="number"
-        {...form.register("time_limit", {
-          valueAsNumber: true
+        {...form.register('time_limit', {
+          valueAsNumber: true,
         })}
         defaultValue={form.formState.defaultValues?.time_limit}
         error={form.formState.errors.time_limit != null}
@@ -40,8 +40,8 @@ export default function Form({ form, submitTitle, onSubmit }: Props) {
       <TextField
         label="Jumlah Soal"
         type="number"
-        {...form.register("number_of_question", {
-          valueAsNumber: true
+        {...form.register('number_of_question', {
+          valueAsNumber: true,
         })}
         defaultValue={form.formState.defaultValues?.number_of_question}
         error={form.formState.errors.number_of_question != null}

@@ -28,18 +28,22 @@ export default function Show(props: Props) {
       editRoute={route('exercise-question.edit', exercise_question.id)}
       backRoute={route('exercise-question.index')}
     >
-
-      <div className='flex justify-between'>
+      <div className="flex justify-between">
         <div className=" text-lg">
+          <p>{exercise_question.name}</p>
           <p>
-            {exercise_question.name}
-          </p>
-          <p>
-            Batas waktu: <span className='font-semibold'>{parseFloat(exercise_question.time_limit.toFixed(2))}</span> Menit
+            Batas waktu:{' '}
+            <span className="font-semibold">
+              {parseFloat(exercise_question.time_limit.toFixed(2))}
+            </span>{' '}
+            Menit
           </p>
         </div>
         <InertiaLink
-          href={route('exercise-question.question.create', exercise_question.id)}
+          href={route(
+            'exercise-question.question.create',
+            exercise_question.id,
+          )}
         >
           <Button variant="contained" color="primary" size="large">
             Tambah Soal
@@ -72,7 +76,6 @@ export default function Show(props: Props) {
           </div>
         )}
       />
-
     </AdminShowLayout>
   );
 }

@@ -13,7 +13,13 @@ interface Props {
   disableMenu?: boolean;
 }
 
-export default function EditorInput({ editor, editorRef, onChange, uploadImage, disableMenu }: Props) {
+export default function EditorInput({
+  editor,
+  editorRef,
+  onChange,
+  uploadImage,
+  disableMenu,
+}: Props) {
   const onChangeCallback = React.useCallback(() => {
     onChange?.call?.(null, editor?.getJSON()!);
   }, [editor, onChange]);
@@ -22,11 +28,15 @@ export default function EditorInput({ editor, editorRef, onChange, uploadImage, 
       {editor && disableMenu !== true && (
         <>
           {' '}
-          <MenuBar editor={editor} uploadImage={uploadImage}/>
+          <MenuBar editor={editor} uploadImage={uploadImage} />
           <div className="border-t border-gray-400"></div>
         </>
       )}
-      <EditorContent editor={editor} ref={editorRef} onChange={onChangeCallback} />
+      <EditorContent
+        editor={editor}
+        ref={editorRef}
+        onChange={onChangeCallback}
+      />
     </>
   );
 }

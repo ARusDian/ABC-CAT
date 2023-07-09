@@ -28,18 +28,26 @@ export default function Index(props: Props) {
       ])}
       editRouteTitle="Edit"
       onDelete={() => {
-        question.is_active ?
-        Inertia.delete(route('exercise-question.question.destroy', [
-          question.exercise_question_id,
-          question.id,
-        ])) :
-          Inertia.post(route('exercise-question.question.restore', [
-            question.exercise_question_id,
-            question.id,
-          ]))
+        question.is_active
+          ? Inertia.delete(
+              route('exercise-question.question.destroy', [
+                question.exercise_question_id,
+                question.id,
+              ]),
+            )
+          : Inertia.post(
+              route('exercise-question.question.restore', [
+                question.exercise_question_id,
+                question.id,
+              ]),
+            );
       }}
       deleteTitle={question.is_active ? 'Hapus' : 'Restore'}
-      onDeleteMessage={question.is_active ? `Ini akan menghapus pertanyaan.` : `Ini akan mengembalikan pertanyaan.`}
+      onDeleteMessage={
+        question.is_active
+          ? `Ini akan menghapus pertanyaan.`
+          : `Ini akan mengembalikan pertanyaan.`
+      }
       isRestore={!question.is_active}
     >
       <div className="border-2 border-gray-200 p-5">
@@ -52,36 +60,30 @@ export default function Index(props: Props) {
           />
         </div>
       </div>
-      {
-        props.question.type == 'Pilihan' ? (
-          <div className="border-2 border-gray-200 p-5">
-            <label>Pilihan Ganda :</label>
-            {
-              props.question.answers.choices.map((choice, index) => {
-                return (
-                  <div key={index}>
-                    <label>Pilihan {numberToUpperCase(index)}</label>
-                    <div className="mx-auto border">
-                      <QuestionEditor
-                        content={choice.content}
-                        exerciseQuestionId={props.question.exercise_question_id}
-                        disableEdit
-                      />
-                    </div>
-                  </div>
-                )
-              })
-            }
-          </div>
-        ) : (
-          <div className="border-2 border-gray-200 p-5">
-            <label>Jawaban</label>
-            <div className="mx-auto border">
-              Essay
-            </div>
-          </div>
-        )
-      }
+      {props.question.type == 'Pilihan' ? (
+        <div className="border-2 border-gray-200 p-5">
+          <label>Pilihan Ganda :</label>
+          {props.question.answers.choices.map((choice, index) => {
+            return (
+              <div key={index}>
+                <label>Pilihan {numberToUpperCase(index)}</label>
+                <div className="mx-auto border">
+                  <QuestionEditor
+                    content={choice.content}
+                    exerciseQuestionId={props.question.exercise_question_id}
+                    disableEdit
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="border-2 border-gray-200 p-5">
+          <label>Jawaban</label>
+          <div className="mx-auto border">Essay</div>
+        </div>
+      )}
       <div className="border-2 border-gray-200 p-5">
         <label>Jawaban Benar</label>
         <p>pilihan {numberToUpperCase(props.question.answer)}</p>

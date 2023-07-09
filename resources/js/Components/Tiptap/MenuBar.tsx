@@ -87,9 +87,7 @@ export default function MenuBar(props: Props) {
     (async () => {
       if (files && files.length > 0 && uploadImage) {
         for (const file of files) {
-
           const response = await uploadImage(file);
-
 
           editor
             .chain()
