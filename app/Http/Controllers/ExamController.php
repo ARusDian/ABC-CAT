@@ -72,10 +72,14 @@ class ExamController extends Controller
         ]);
     }
 
-    public function attempt($exercise)
+    public function attempt($exercise_id)
     {
-        return \DB::transaction(function () use ($exercise) {
-            $exercise = ExerciseQuestion::with(['questions'])->findOrFail($exercise);
+        return \DB::transaction(function () use ($exercise_id) {
+
+            /**
+             * @var \App\Models\ExerciseQuestion $exercise
+             */
+            $exercise = ExerciseQuestion::with(['questions'])->findOrFail($exercise_id);
             $expire_in = Carbon::now()->addMinutes($exercise->time_limit);
 
             $exam = Exam::create([

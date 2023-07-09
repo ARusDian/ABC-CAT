@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\QuestionTypeEnum;
 use App\Models\Question;
 use App\Models\QuestionImage;
 use App\Http\Controllers\Controller;
 use App\Models\ExerciseQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Fluent;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Validator;
@@ -38,17 +40,21 @@ class ExerciseQuestionQuestionController extends Controller
 
     public function validateData($data)
     {
-        return Validator::make($data, [
+        $validator =  Validator::make($data, [
             'question' => 'required',
             'explanation' => 'required',
             'answers' => 'required|array',
             'type' => [
                 'required',
-                Rule::in(['pilihan']),
+                Rule::in([array_map(fn ($e) => $e->name, QuestionTypeEnum::cases())]),
             ],
             'weight' => 'required|numeric',
             'answer' => 'required',
-        ])->validate();
+        ]);
+
+        $validator->sometimes("answers.choices", "array", fn (Fluent $item) => $item->type == QuestionTypeEnum::Pilihan->name);
+
+        return $validator->validate();
     }
 
     /**

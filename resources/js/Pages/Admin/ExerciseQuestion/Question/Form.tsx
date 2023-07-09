@@ -61,7 +61,7 @@ export default function Form(props: Props) {
           }}
         />
 
-        {form.getValues('type') == 'pilihan' ? (
+        {form.getValues('type') == 'Pilihan' ? (
           <PilihanForm
             form={form}
             exerciseQuestionId={props.exerciseQuestionId}

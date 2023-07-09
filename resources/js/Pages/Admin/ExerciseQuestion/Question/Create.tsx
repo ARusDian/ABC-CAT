@@ -23,8 +23,7 @@ export default function Create(props: Props) {
         content: {},
       },
       weight: 1,
-      type: 'pilihan',
-      time_limit: 120,
+      type: 'Pilihan',
       answer: 0,
       answers: {
         choices: [

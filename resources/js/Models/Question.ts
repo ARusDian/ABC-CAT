@@ -19,7 +19,7 @@ export interface QuestionModel extends BaseQuestionModel, AnswerTypeModel {
 export interface QuestionFormModel extends QuestionModel {}
 
 export interface AnswerTypePilihanModel {
-  type: 'pilihan';
+  type: 'Pilihan';
   answers: {
     choices: EditorValue[];
   };

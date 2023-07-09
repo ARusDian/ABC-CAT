@@ -53,7 +53,7 @@ export default function Index(props: Props) {
         </div>
       </div>
       {
-        props.question.type == 'pilihan' ? (
+        props.question.type == 'Pilihan' ? (
           <div className="border-2 border-gray-200 p-5">
             <label>Pilihan Ganda :</label>
             {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\QuestionTypeEnum;
 
 class Question extends Model
 {
@@ -14,7 +15,9 @@ class Question extends Model
         'question' => 'json',
         'answer' => 'json',
         'explanation' => 'json',
+        'type' => QuestionTypeEnum::class,
     ];
+
     protected $fillable = [
         // 'content', 'answers', 'type', 'weight', 'time_limit', 'exercise_question_id', 'answer'
         'exercise_question_id',
