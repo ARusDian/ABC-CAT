@@ -6,6 +6,7 @@ import { Inertia } from '@inertiajs/inertia';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import EditorInput from '@/Components/Tiptap/EditorInput';
 import QuestionEditor from '@/Components/QuestionEditor';
+import { numberToUpperCase } from '@/Utils/Convert';
 
 interface Props {
   question: QuestionModel;
@@ -27,7 +28,7 @@ export default function Index(props: Props) {
       ])}
       editRouteTitle="Edit"
       onDelete={() => {
-        question.is_active ? 
+        question.is_active ?
         Inertia.delete(route('exercise-question.question.destroy', [
           question.exercise_question_id,
           question.id,
@@ -36,7 +37,6 @@ export default function Index(props: Props) {
             question.exercise_question_id,
             question.id,
           ]))
-        
       }}
       deleteTitle={question.is_active ? 'Hapus' : 'Restore'}
       onDeleteMessage={question.is_active ? `Ini akan menghapus pertanyaan.` : `Ini akan mengembalikan pertanyaan.`}
@@ -59,8 +59,8 @@ export default function Index(props: Props) {
             {
               props.question.answers.choices.map((choice, index) => {
                 return (
-                  <div>
-                    <label>Pilihan {(String.fromCharCode(65 + index))}</label>
+                  <div key={index}>
+                    <label>Pilihan {numberToUpperCase(index)}</label>
                     <div className="mx-auto border">
                       <QuestionEditor
                         content={choice.content}
@@ -84,11 +84,11 @@ export default function Index(props: Props) {
       }
       <div className="border-2 border-gray-200 p-5">
         <label>Jawaban Benar</label>
-        <p>pilihan {String.fromCharCode(65 + props.question.answer)}</p>
+        <p>pilihan {numberToUpperCase(props.question.answer)}</p>
         <label>Penjelasan Jawaban</label>
         <div className="mx-auto border">
           <QuestionEditor
-            content={props.question.explanation.content}
+            content={props.question.explanation?.content ?? null}
             exerciseQuestionId={props.question.exercise_question_id}
             disableEdit
           />
