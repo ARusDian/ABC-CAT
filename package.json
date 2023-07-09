@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "format": "prettier -w app/**/*.php resources"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
@@ -88,11 +89,11 @@
     "printWidth": 80,
     "arrowParens": "avoid",
     "plugins": ["@prettier/plugin-php"],
+    "phpVersion": "8.0",
     "overrides": [
       {
         "files": "*.php",
         "options": {
-          "phpVersion": "8.0",
           "tabWidth": 4
         }
 
