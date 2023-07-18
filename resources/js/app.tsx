@@ -2,7 +2,6 @@ import './bootstrap';
 import '../css/app.css';
 
 import React from 'react';
-import { render } from 'react-dom';
 import { createInertiaApp } from '@inertiajs/inertia-react';
 import { InertiaProgress } from '@inertiajs/progress';
 import { RouteContext } from '@/Hooks/useRoute';
@@ -10,6 +9,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './muiTheme';
 import { ConfirmProvider } from 'material-ui-confirm';
+import { createRoot } from 'react-dom/client';
 
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
@@ -22,7 +22,8 @@ createInertiaApp({
       import.meta.glob('./Pages/**/*.tsx'),
     ),
   setup({ el, App, props }) {
-    return render(
+    const root = createRoot(el);
+    return root.render(
       <ThemeProvider theme={theme}>
         <ConfirmProvider>
           <RouteContext.Provider value={(window as any).route}>
@@ -30,7 +31,6 @@ createInertiaApp({
           </RouteContext.Provider>
         </ConfirmProvider>
       </ThemeProvider>,
-      el,
     );
   },
 });
