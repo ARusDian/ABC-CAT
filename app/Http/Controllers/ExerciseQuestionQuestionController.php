@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ExerciseQuestionTypeEnum;
 use App\Enums\QuestionTypeEnum;
 use App\Models\Question;
 use App\Models\QuestionImage;
@@ -31,12 +32,20 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($exercise_question)
+    public function create(ExerciseQuestion $exercise_question)
     {
-        return Inertia::render('Admin/ExerciseQuestion/Question/Create', [
-            'exercise_question' => ExerciseQuestion::findOrFail(
-                $exercise_question,
-            ),
+        $view = null;
+        switch ($exercise_question->type) {
+            case ExerciseQuestionTypeEnum::Pilihan:
+                $view = 'Admin/ExerciseQuestion/Question/Create';
+                break;
+            case ExerciseQuestionTypeEnum::Kecermatan:
+                $view = 'Admin/ExerciseQuestion/Kecermatan/Create';
+                break;
+        }
+
+        return Inertia::render($view, [
+            'exercise_question' => $exercise_question,
         ]);
     }
 
@@ -44,13 +53,13 @@ class ExerciseQuestionQuestionController extends Controller
     {
         $validator = Validator::make($data, [
             'question' => 'required',
-            'explanation' => 'required',
+            'explanation' => 'nullable',
             'answers' => 'required|array',
             'type' => [
                 'required',
-                Rule::in([
-                    array_map(fn($e) => $e->name, QuestionTypeEnum::cases()),
-                ]),
+                Rule::in(
+                    QuestionTypeEnum::casesString()
+                ),
             ],
             'weight' => 'required|numeric',
             'answer' => 'required',
@@ -59,7 +68,7 @@ class ExerciseQuestionQuestionController extends Controller
         $validator->sometimes(
             'answers.choices',
             'array',
-            fn(Fluent $item) => $item->type == QuestionTypeEnum::Pilihan->name,
+            fn (Fluent $item) => $item->type == QuestionTypeEnum::Pilihan->name,
         );
 
         return $validator->validate();
@@ -99,13 +108,52 @@ class ExerciseQuestionQuestionController extends Controller
         });
     }
 
+    public function storeMany(Request $request, $exercise_question)
+    {
+        return \DB::transaction(function () use ($request, $exercise_question) {
+            $all = $request->validate([
+                'type' => ['required', Rule::in(QuestionTypeEnum::casesString())],
+                'weight' => 'required|numeric',
+                'stores' => 'required|array',
+            ]);
+
+            $questions = [];
+
+            foreach ($all['stores'] as $store) {
+                $data = [
+                    'type' => $all['type'],
+                    'weight' => $all['weight'],
+                    ...$store
+                ];
+
+                $data = $this->validateData($data);
+
+                $questions[] = Question::create([
+                    'exercise_question_id' => $exercise_question,
+                    'weight' => $data['weight'],
+
+                    'type' => $data['type'],
+                    'question' => $data['question'],
+                    'explanation' => $data['explanation'] ?? [],
+
+                    'answer' => $data['answer'],
+                    'answers' => $data['answers'],
+                ]);
+            }
+
+            return redirect()
+                ->route('exercise-question.show', [$exercise_question])
+                ->banner('Question created successfully');
+        });
+    }
+
     /**
      * Display the specified resource.
      */
     public function show($exercise_question, $id)
     {
         return Inertia::render('Admin/ExerciseQuestion/Question/Show', [
-            'question' => fn() => Question::find($id),
+            'question' => fn () => Question::find($id),
             'exercise_question_id' => $exercise_question,
         ]);
     }

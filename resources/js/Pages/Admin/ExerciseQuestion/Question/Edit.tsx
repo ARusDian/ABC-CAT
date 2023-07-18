@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 
 import Form from './Form';
 import {
-  BaseQuestionModel,
   QuestionFormModel,
   QuestionModel,
 } from '@/Models/Question';
@@ -21,14 +20,7 @@ interface Props {
 export default function Edit(props: Props) {
   const question = props.question;
   let form = useForm<QuestionFormModel>({
-    defaultValues: {
-      question: question.question,
-      weight: question.weight,
-      answer: question.answer,
-      type: question.type,
-      answers: question.answers,
-      explanation: question.explanation,
-    },
+    defaultValues: question,
   });
 
   function onSubmit(data: QuestionFormModel) {

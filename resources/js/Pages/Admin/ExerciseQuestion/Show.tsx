@@ -31,6 +31,7 @@ export default function Show(props: Props) {
       <div className="flex justify-between">
         <div className=" text-lg">
           <p>{exercise_question.name}</p>
+          <p>Type: {exercise_question.type}</p>
           <p>
             Batas waktu:{' '}
             <span className="font-semibold">

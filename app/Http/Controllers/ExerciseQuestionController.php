@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ExerciseQuestionTypeEnum;
 use App\Models\DocumentFile;
 use App\Models\ExerciseQuestion;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Validator;
 
@@ -24,6 +26,10 @@ class ExerciseQuestionController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|string',
+            'type' => [
+                'required',
+                Rule::in(ExerciseQuestionTypeEnum::casesString())
+            ],
             'time_limit' => 'required|numeric',
             'number_of_question' => 'required|numeric',
         ])->validate();

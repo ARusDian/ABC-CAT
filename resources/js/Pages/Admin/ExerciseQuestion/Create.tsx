@@ -3,7 +3,10 @@ import route from 'ziggy-js';
 
 import Form from './Form';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
-import { ExerciseQuestionFormModel } from '@/Models/ExerciseQuestion';
+import {
+  DEFAULT_EXERCISE_QUESTION_TYPE,
+  ExerciseQuestionFormModel,
+} from '@/Models/ExerciseQuestion';
 import { useForm } from 'react-hook-form';
 import { Inertia } from '@inertiajs/inertia';
 
@@ -13,6 +16,7 @@ export default function Create(props: Props) {
   let form = useForm<ExerciseQuestionFormModel>({
     defaultValues: {
       name: '',
+      type: DEFAULT_EXERCISE_QUESTION_TYPE,
       time_limit: 120,
       number_of_question: 50,
     },

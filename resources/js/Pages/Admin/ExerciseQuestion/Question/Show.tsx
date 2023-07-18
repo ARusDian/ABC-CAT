@@ -7,6 +7,7 @@ import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import EditorInput from '@/Components/Tiptap/EditorInput';
 import QuestionEditor from '@/Components/QuestionEditor';
 import { numberToUpperCase } from '@/Utils/Convert';
+import { QuestionShow } from '@/Components/QuestionShow';
 
 interface Props {
   question: QuestionModel;
@@ -53,11 +54,7 @@ export default function Index(props: Props) {
       <div className="border-2 border-gray-200 p-5">
         <label>Pertanyaan</label>
         <div className="mx-auto border">
-          <QuestionEditor
-            content={props.question.question.content}
-            exerciseQuestionId={props.question.exercise_question_id}
-            disableEdit
-          />
+          <QuestionShow question={props.question} />
         </div>
       </div>
       {props.question.type == 'Pilihan' ? (
@@ -78,6 +75,18 @@ export default function Index(props: Props) {
             );
           })}
         </div>
+      ) : props.question.type == 'Kecermatan' ? (
+        <div className="border-2 border-gray-200 p-5">
+          <label>Pilihan: </label>
+          {props.question.answers.choices.map((choice, index) => {
+            return (
+              <div key={index}>
+                <label>Pilihan {numberToUpperCase(index)}</label>
+                <div className="mx-auto border">{choice}</div>
+              </div>
+            );
+          })}
+        </div>
       ) : (
         <div className="border-2 border-gray-200 p-5">
           <label>Jawaban</label>
@@ -87,14 +96,18 @@ export default function Index(props: Props) {
       <div className="border-2 border-gray-200 p-5">
         <label>Jawaban Benar</label>
         <p>pilihan {numberToUpperCase(props.question.answer)}</p>
-        <label>Penjelasan Jawaban</label>
-        <div className="mx-auto border">
-          <QuestionEditor
-            content={props.question.explanation?.content ?? null}
-            exerciseQuestionId={props.question.exercise_question_id}
-            disableEdit
-          />
-        </div>
+        {props.question.type == 'Pilihan' ? (
+          <>
+            <label>Penjelasan Jawaban</label>
+            <div className="mx-auto border">
+              <QuestionEditor
+                content={props.question.explanation?.content ?? null}
+                exerciseQuestionId={props.question.exercise_question_id}
+                disableEdit
+              />
+            </div>
+          </>
+        ) : null}
       </div>
     </AdminShowLayout>
   );

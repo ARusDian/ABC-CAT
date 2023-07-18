@@ -7,6 +7,7 @@ import {
   BaseQuestionModel,
   QuestionFormModel,
   QuestionModel,
+  QuestionPilihanFormModel,
 } from '@/Models/Question';
 import React, { useRef } from 'react';
 import { Controller, UseFormReturn, useFieldArray } from 'react-hook-form';
@@ -25,6 +26,10 @@ interface Props {
 export type Test = {
   name: string;
 };
+
+function isQuestionPilihanFormModel(form: UseFormReturn<any>): form is UseFormReturn<QuestionPilihanFormModel> {
+  return form.getValues("type") == "Pilihan";
+}
 
 export default function Form(props: Props) {
   const form = props.form;
@@ -61,7 +66,7 @@ export default function Form(props: Props) {
           }}
         />
 
-        {form.getValues('type') == 'Pilihan' ? (
+        {isQuestionPilihanFormModel(form) ? (
           <PilihanForm
             form={form}
             exerciseQuestionId={props.exerciseQuestionId}
@@ -92,7 +97,7 @@ export default function Form(props: Props) {
   );
 }
 
-type QuestionFormPilihanModel = QuestionModel & AnswerTypePilihanModel;
+type QuestionFormPilihanModel = BaseQuestionModel & AnswerTypePilihanModel;
 
 function PilihanForm({
   form,

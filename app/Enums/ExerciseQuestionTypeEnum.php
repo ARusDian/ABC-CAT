@@ -2,9 +2,11 @@
 
 namespace App\Enums;
 
-enum QuestionTypeEnum
+enum ExerciseQuestionTypeEnum
 {
     case Pilihan;
+
+        // only allow kecermatan in question type
     case Kecermatan;
 
     public static function casesString() {

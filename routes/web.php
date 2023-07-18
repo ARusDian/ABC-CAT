@@ -56,14 +56,19 @@ Route::middleware([
     });
     Route::middleware(['role:admin|super-admin'])->group(function () {
         Route::prefix('admin')->group(function () {
-            Route::resource("exercise-question", ExerciseQuestionController::class);
-            Route::resource("exercise-question.question", ExerciseQuestionQuestionController::class);
-            Route::post("exercise-question/{exercise_question}/question/{question}/restore", [ExerciseQuestionQuestionController::class, 'restore'])->name('exercise-question.question.restore');
+            Route::prefix("exercise-question")->name("exercise-question.")->group(function () {
+                Route::resource("", ExerciseQuestionController::class)->parameter("", "exercise_question");
+                Route::prefix("{exercise_question}/")->group(function () {
+                    Route::resource("question", ExerciseQuestionQuestionController::class);
+                    Route::post("create-many", [ExerciseQuestionQuestionController::class, 'storeMany'])->name("question.store-many");
+                    Route::post("question/{question}/restore", [ExerciseQuestionQuestionController::class, 'restore'])->name('question.restore');
 
-            Route::post(
-                '/exercise-question/{exercise_question}/upload',
-                [ExerciseQuestionController::class, 'uploadImage']
-            )->name('exercise-question.upload-image');
+                    Route::post(
+                        'upload',
+                        [ExerciseQuestionController::class, 'uploadImage']
+                    )->name('upload-image');
+                });
+            });
             // Route::name(, ExerciseQuestionQuestionController::class);
 
 

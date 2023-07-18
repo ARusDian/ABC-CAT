@@ -60,18 +60,6 @@ export default function Create(props: Props) {
     console.log(e);
     form.clearErrors();
 
-    Inertia.post(
-      route('exercise-question.question.store', props.exercise_question.id),
-      e as any,
-      {
-        onError: errors => {
-          console.log(errors);
-        },
-        onSuccess: () => {
-          console.log('success');
-        },
-      },
-    );
   }
 
   return (

@@ -1,6 +1,14 @@
-import { ExerciseQuestionFormModel } from '@/Models/ExerciseQuestion';
+import {
+  DEFAULT_EXERCISE_QUESTION_TYPE,
+  EXERCISE_QUESTION_TYPE,
+  ExerciseQuestionFormModel,
+} from '@/Models/ExerciseQuestion';
 import { InertiaFormProps } from '@inertiajs/inertia-react';
 import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
@@ -36,6 +44,22 @@ export default function Form({ form, submitTitle, onSubmit }: Props) {
         helperText={form.formState.errors.time_limit?.message}
         fullWidth
       />
+
+      <FormControl fullWidth>
+        <InputLabel>Tipe Soal</InputLabel>
+
+        <Select
+          defaultValue={form.formState.defaultValues?.type}
+          label="Tipe Soal"
+          {...form.register('type')}
+        >
+          {EXERCISE_QUESTION_TYPE.map(it => (
+            <MenuItem key={it} value={it}>
+              {it}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
       <TextField
         label="Jumlah Soal"

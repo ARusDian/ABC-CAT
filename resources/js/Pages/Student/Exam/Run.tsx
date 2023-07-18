@@ -7,10 +7,16 @@ import { Inertia } from '@inertiajs/inertia';
 import route from 'ziggy-js';
 import QuestionEditor from '@/Components/QuestionEditor';
 import { Editor } from '@tiptap/react';
-import { ExamAnswerModel, ExamModel } from '@/Models/Exam';
+import { ExamAnswerModel, ExamModel, ExamPilihanModel } from '@/Models/Exam';
 import { useDebounce, useSearchParam } from 'react-use';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
+import { QuestionShow } from '@/Components/QuestionShow';
+import {
+  QuestionKecermatanModel,
+  QuestionPilihanModel,
+} from '@/Models/Question';
+import Typography from '@mui/material/Typography';
 
 export interface Props {
   exam: ExamModel;
@@ -126,13 +132,19 @@ export default function Run({ exam }: Props) {
   );
 
   const addStateQueue = (task: Task) => {
+    setIsUpdating(true);
     setStateQueue([...stateQueue, task]);
   };
 
   React.useEffect(() => {
-    questionEditorRef?.current?.commands?.setContent(
-      answers[currentQuestion].question.question.content,
-    );
+    const current = answers[currentQuestion];
+    switch (current.question.type) {
+      case 'Pilihan':
+        questionEditorRef?.current?.commands?.setContent(
+          current.question.question.content,
+        );
+        break;
+    }
   }, [currentQuestion]);
 
   const updateAnswer = (answer: ExamAnswerModel) => {
@@ -231,22 +243,29 @@ export default function Run({ exam }: Props) {
                 </div>
                 <div className="border-t border-gray-500 w-auto h-auto p-3 flex flex-col gap-3">
                   <div className="porse text-md">
-                    <QuestionEditor
-                      exerciseQuestionId={exam.exercise_question_id}
+                    <QuestionShow
+                      question={answers[currentQuestion].question}
                       editorRef={questionEditorRef}
-                      content={
-                        answers[currentQuestion].question.question.content
-                      }
-                      disableEdit
                     />
                   </div>
                   <div className="flex flex-col gap-3">
-                    <PilihanAnswerForm
-                      currentQuestion={currentQuestion}
-                      exam={exam}
-                      answerArray={answerArray}
-                      updateAnswer={updateAnswer}
-                    />
+                    {answerArray.fields[currentQuestion].question.type ==
+                    'Pilihan' ? (
+                      <PilihanAnswerForm
+                        currentQuestion={currentQuestion}
+                        exam={exam}
+                        answerArray={answerArray}
+                        updateAnswer={updateAnswer}
+                      />
+                    ) : answerArray.fields[currentQuestion].question.type ==
+                      'Kecermatan' ? (
+                      <KecermatanAnswerForm
+                        currentQuestion={currentQuestion}
+                        exam={exam}
+                        answerArray={answerArray}
+                        updateAnswer={updateAnswer}
+                      />
+                    ) : null}
                   </div>
                   <div className="flex justify-end">
                     <Button
@@ -306,7 +325,9 @@ function PilihanAnswerForm({
 
   updateAnswer: (answer: ExamAnswerModel) => void;
 }) {
-  const answers = answerArray.fields[currentQuestion].question.answers;
+  const question = answerArray.fields[currentQuestion]
+    .question as QuestionPilihanModel;
+  const answers = question.answers;
 
   // store editor ref to prevent re-creating editor
   const arrayEditorRef = React.useRef<React.MutableRefObject<Editor | null>[]>(
@@ -352,6 +373,61 @@ function PilihanAnswerForm({
                   exerciseQuestionId={exam.exercise_question_id}
                   disableEdit
                 />
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function KecermatanAnswerForm({
+  answerArray,
+  exam,
+  currentQuestion,
+
+  updateAnswer,
+}: {
+  answerArray: UseFieldArrayReturn<ExamModel, 'answers', 'idHash'>;
+  exam: ExamModel;
+  currentQuestion: number;
+
+  updateAnswer: (answer: ExamAnswerModel) => void;
+}) {
+  const question = answerArray.fields[currentQuestion]
+    .question as QuestionKecermatanModel;
+  const answers = question.answers;
+
+  // store editor ref to prevent re-creating editor
+  const arrayEditorRef = React.useRef<React.MutableRefObject<Editor | null>[]>(
+    [],
+  );
+
+  while (arrayEditorRef.current.length < answers.choices.length) {
+    arrayEditorRef.current.push({ current: null });
+  }
+
+  return (
+    <div>
+      {answers.choices.map((answer, index) => {
+        return (
+          <div className="flex justify-between" key={index}>
+            <div className="flex gap-3">
+              <input
+                type="radio"
+                name="answer"
+                // defaultValue={form.}
+                onChange={() => {
+                  updateAnswer({
+                    ...answerArray.fields[currentQuestion],
+                    answer: index,
+                  });
+                }}
+                checked={answerArray.fields[currentQuestion].answer == index}
+              />
+              <div className="prose mx-auto">
+                <Typography>{answer}</Typography>
               </div>
             </div>
           </div>

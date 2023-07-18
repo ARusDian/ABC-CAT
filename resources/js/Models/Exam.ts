@@ -1,4 +1,4 @@
-import { QuestionModel } from './Question';
+import { AnswerTypePilihanModel, QuestionGenericModel, QuestionModel, QuestionPilihanModel } from './Question';
 
 export interface ExamModel {
   id: string;
@@ -17,4 +17,17 @@ export interface ExamAnswerModel {
   };
 
   question: QuestionModel;
+}
+
+export type ExamAnswerGenericModel<QuestionModel> = ExamAnswerModel & { question: QuestionModel };
+
+export type ExamAnswerPilihanModel = ExamAnswerGenericModel<QuestionPilihanModel>;
+
+export interface ExamGenericModel<QuestionModel> {
+  answers: (ExamAnswerGenericModel<QuestionModel>)[]
+
+}
+
+export interface ExamPilihanModel extends ExamGenericModel<QuestionPilihanModel> {
+  //
 }

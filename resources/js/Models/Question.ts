@@ -4,37 +4,49 @@ export type EditorValue = {
 };
 
 export interface BaseQuestionModel {
-  question: EditorValue;
+  id?: number;
+  exercise_question_id?: string;
   weight: number;
-  answer?: any;
-  explanation: EditorValue;
   is_active: boolean;
 }
 
-export interface QuestionModel extends BaseQuestionModel, AnswerTypeModel {
+
+export type QuestionModel = BaseQuestionModel & AnswerTypeModel & {
   id: number;
   exercise_question_id: string;
-}
+};
 
-export interface QuestionFormModel extends QuestionModel {}
+export type QuestionFormModel = BaseQuestionModel & AnswerTypeModel;
 
 export interface AnswerTypePilihanModel {
   type: 'Pilihan';
+  question: EditorValue;
   answers: {
     choices: EditorValue[];
   };
+  explanation: EditorValue;
+  answer: number;
 }
 
-export type AnswerTypeModel = AnswerTypePilihanModel;
-//
-// export interface AnswerTypePilihanFormModel {
-//   type: 'pilihan';
-//   answers: {
-//     choices: {
-//       images: string[];
-//       content: string;
-//     }[];
-//   };
-// }
+export interface AnswerTypeKecermatanModel {
+  type: 'Kecermatan';
+  question: {
+    questions: string[];
+  };
+  answers: {
+    choices: string[];
+  };
+  answer: number;
+  explanation: undefined;
+}
 
-// export type AnswerTypeFormModel = AnswerTypePilihanFormModel;
+export type QuestionGenericModel<T> =  BaseQuestionModel & T;
+
+export type QuestionPilihanModel = QuestionGenericModel<AnswerTypePilihanModel>;
+export type QuestionKecermatanModel = QuestionGenericModel<AnswerTypeKecermatanModel>;
+
+export type AnswerTypeModel = AnswerTypePilihanModel | AnswerTypeKecermatanModel;
+
+export type QuestionFormGenericModel<T> = BaseQuestionModel & T;
+export type QuestionPilihanFormModel = QuestionFormGenericModel<AnswerTypePilihanModel>;
+export type QuestionKecermatanFormModel = QuestionFormGenericModel<AnswerTypeKecermatanModel>;
