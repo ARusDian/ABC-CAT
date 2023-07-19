@@ -240,7 +240,7 @@ export default function DashboardAdminLayout({
           {sideBar()}
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <div className="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8 my-10">
+          <div className="py-12 mx-auto sm:px-6 lg:px-8 my-10">
             <div className="overflow-hidden shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 p-5">
               {children}
             </div>
