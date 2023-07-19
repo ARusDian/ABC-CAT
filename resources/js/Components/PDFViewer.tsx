@@ -12,6 +12,7 @@ import { BaseLearningMaterialDocumentModel } from '@/Models/LearningMaterial';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/toolbar/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import { getStorageFileUrl } from '@/Models/FileModel';
 
 interface Props {
   document: BaseLearningMaterialDocumentModel;
@@ -36,7 +37,7 @@ export default function PDFViewer(props: Props) {
 
   return (
     <div className="border border-gray-300 rounded-md p-2 h-1.2 w-6/12 mx-auto">
-      <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.7.107/build/pdf.worker.js">
+      <Worker workerUrl={asset('root', "assets/js/pdf.worker.js")!}>
         <div
           style={{
             alignItems: 'center',
@@ -50,9 +51,9 @@ export default function PDFViewer(props: Props) {
             {renderDefaultToolbar(transform)}
           </Toolbar>
         </div>
-        <div style={{ height: '600px' }} id="pdfviewer">
+        <div style={{ height: '800px' }} id="pdfviewer">
           <Viewer
-            fileUrl={asset('public', document.document_file.path!) as string}
+            fileUrl={getStorageFileUrl(document.document_file) as string}
             plugins={[toolbarPluginInstance]}
           />
         </div>

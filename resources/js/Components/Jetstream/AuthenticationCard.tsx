@@ -15,7 +15,7 @@ export default function AuthenticationCard({
         <div className="card glass py-5 w-full md:w-3/4 mt-10 lg:mt-0">
           <div className="card-body ">
             <div className="flex flex-col text-black">
-              <img src={asset('root', 'assets/logo.png')} className="mx-auto" />
+              <img src={asset('root', 'assets/image/logo.png')} className="mx-auto" />
             </div>
             <div className="mt-6 py-4 sm:rounded-lg ">{children}</div>
           </div>
