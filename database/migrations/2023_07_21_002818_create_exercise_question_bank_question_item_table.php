@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exam_types', function (Blueprint $table) {
+        Schema::create('exercise_question_bank_question_item', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("exercise_question_id")->constrained(null, 'id', 'exercise_question_id');
+            $table->foreignId("bank_question_item_id")->constrained(null, 'id', 'bank_question_item_id');
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exam_types');
+        Schema::dropIfExists('exercise_question_bank_question_item');
     }
 };

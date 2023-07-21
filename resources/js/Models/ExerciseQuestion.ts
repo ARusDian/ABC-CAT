@@ -1,4 +1,4 @@
-import { QuestionModel } from './Question';
+import { BankQuestionItemModel } from './BankQuestionItem';
 
 export interface ExerciseQuestionFormModel {
   name: string;
@@ -13,7 +13,7 @@ export interface ExerciseQuestionModel {
   time_limit: number;
   number_of_question: number;
 
-  questions?: QuestionModel[];
+  questions?: BankQuestionItemModel[];
 
   type: ExerciseQuestionType;
 }

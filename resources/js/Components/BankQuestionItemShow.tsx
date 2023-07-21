@@ -1,18 +1,19 @@
 import { QuestionModel } from '@/Models/Question';
-import React from 'react';
-import QuestionEditor from './QuestionEditor';
+import React, { Ref } from 'react';
+import BankQuestionItemEditor from './BankQuestionItemEditor';
 import { Editor } from '@tiptap/react';
+import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 
-export function QuestionShow(props: {
-  question: QuestionModel;
+export function BankQuestionItemShow(props: {
+  question: BankQuestionItemModel;
   editorRef?: React.MutableRefObject<Editor | null>;
 }) {
   switch (props.question.type) {
     case 'Pilihan':
       return (
-        <QuestionEditor
+        <BankQuestionItemEditor
           content={props.question.question.content}
-          exerciseQuestionId={props.question.exercise_question_id}
+          bankQuestionId={props.question.bank_question_id}
           disableEdit
         />
       );

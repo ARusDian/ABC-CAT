@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('questions', function (Blueprint $table) {
-            //
-            $table->json('explanation');
+        Schema::create('bank_questions', function (Blueprint $table) {
+            $table->id();
+            $table->string("name");
+            $table->string("type");
+            $table->timestamps();
         });
     }
 
@@ -22,9 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('questions', function (Blueprint $table) {
-            //
-            $table->dropColumn('explanation');
-        });
+        Schema::dropIfExists('bank_questions');
     }
 };

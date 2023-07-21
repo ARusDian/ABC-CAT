@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Enums\ExerciseQuestionTypeEnum;
+use App\Enums\BankQuestionTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ExerciseQuestion extends Model
 {
@@ -14,11 +14,11 @@ class ExerciseQuestion extends Model
 
     protected $casts = [
         'time_limit' => 'float',
-        'type' => ExerciseQuestionTypeEnum::class,
+        'type' => BankQuestionTypeEnum::class,
     ];
 
-    public function questions(): HasMany
+    public function questions(): BelongsToMany
     {
-        return $this->hasMany(Question::class);
+        return $this->belongsToMany(BankQuestionItem::class);
     }
 }

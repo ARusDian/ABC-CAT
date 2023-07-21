@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exam_sessions', function (Blueprint $table) {
+        Schema::create('exam_answers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("exam_id");
+            $table->foreignId("bank_question_item_id")->constrained();
+            $table->json("answer")->nullable();
+            $table->json("state")->nullable();
             $table->timestamps();
         });
     }
@@ -22,6 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exam_sessions');
+        Schema::dropIfExists('exam_answers');
     }
 };
+

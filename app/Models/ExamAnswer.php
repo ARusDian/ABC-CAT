@@ -10,7 +10,7 @@ class ExamAnswer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['exam_id', 'question_id', 'answer', 'state'];
+    protected $fillable = ['exam_id', 'bank_question_item_id', 'answer', 'state'];
 
     protected $casts = [
         'answer' => 'json',
@@ -19,6 +19,6 @@ class ExamAnswer extends Model
 
     public function question(): BelongsTo
     {
-        return $this->belongsTo(Question::class);
+        return $this->belongsTo(BankQuestionItem::class, 'bank_question_item_id');
     }
 }

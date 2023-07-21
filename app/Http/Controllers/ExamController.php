@@ -36,27 +36,33 @@ class ExamController extends Controller
         //
     }
 
+    public function getInProgressExam($exercise_id)
+    {
+        return Exam::with(['answers.question'])
+            ->ofExercise($exercise_id)
+            ->ofUser(auth()->id())
+            ->ofFinished(false)
+            ->first();
+    }
+
     /**
      * Display the specified resource.
      */
     public function show($exercise_id)
     {
-        $exam = Exam::with(['answers.question'])
-            ->ofExercise($exercise_id)
-            ->ofUser(auth()->id())
-            ->ofFinished(false)
-            ->first();
+        $exam = $this->getInProgressExam($exercise_id);
 
         if ($exam != null) {
             $exam->answers->each(
-                fn($answer) => $answer->question->setHidden(['answer']),
+                fn ($answer) => $answer->question->setHidden(['answer']),
             );
 
             return Inertia::render('Student/Exam/Run', [
                 'exam' => $exam,
             ]);
         } else {
-            $exercise = ExerciseQuestion::find($exercise_id);
+
+            $exercise = ExerciseQuestion::findOrFail($exercise_id);
 
             return Inertia::render('Student/Exam/Show', [
                 'exercise_question' => $exercise,
@@ -78,7 +84,13 @@ class ExamController extends Controller
 
     public function attempt($exercise_id)
     {
+        $exam = $this->getInProgressExam($exercise_id);
+
+        if ($exam) {
+            return redirect()->route("exam.show", [$exercise_id]);
+        }
         return \DB::transaction(function () use ($exercise_id) {
+
             /**
              * @var \App\Models\ExerciseQuestion $exercise
              */
@@ -94,16 +106,14 @@ class ExamController extends Controller
                 'finished' => false,
             ]);
 
-            foreach (
-                $exercise->questions
-                    ->filter(fn($q) => $q['is_active'])
+            foreach ($exercise->questions
+                    ->filter(fn ($q) => $q['is_active'])
                     ->shuffle()
                     ->take($exercise->number_of_question)
-                as $question
-            ) {
+                as $question) {
                 ExamAnswer::create([
                     'exam_id' => $exam->id,
-                    'question_id' => $question->id,
+                    'bank_question_item_id' => $question->id,
                     'state' => null,
                     'answer' => null,
                 ]);

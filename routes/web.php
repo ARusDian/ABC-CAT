@@ -1,6 +1,8 @@
 <?php
 
 use App\Actions\Fortify\UserProfileController;
+use App\Http\Controllers\BankQuestionController;
+use App\Http\Controllers\BankQuestionItemController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentFileController;
 use App\Http\Controllers\ExamController;
@@ -58,8 +60,10 @@ Route::middleware([
         Route::prefix('admin')->group(function () {
             Route::prefix("exercise-question")->name("exercise-question.")->group(function () {
                 Route::resource("", ExerciseQuestionController::class)->parameter("", "exercise_question");
+                Route::get("import/bank-question/{bank_question}", [ExerciseQuestionController::class, 'importFromBank'])->name("import");
+                Route::put("{exercise_question}/import", [ExerciseQuestionController::class, 'importUpdate'])->name("import.update");
                 Route::prefix("{exercise_question}/")->group(function () {
-                    Route::resource("question", ExerciseQuestionQuestionController::class);
+                    Route::resource("question", BankQuestionItemController::class);
                     Route::post("create-many", [ExerciseQuestionQuestionController::class, 'storeMany'])->name("question.store-many");
                     Route::post("question/{question}/restore", [ExerciseQuestionQuestionController::class, 'restore'])->name('question.restore');
 
@@ -69,7 +73,21 @@ Route::middleware([
                     )->name('upload-image');
                 });
             });
-            // Route::name(, ExerciseQuestionQuestionController::class);
+
+            Route::prefix("bank-question")->name("bank-question.")->group(function () {
+                Route::resource("", BankQuestionController::class)->parameter("", "bank_question");
+                Route::prefix("{bank_question}/")->group(function () {
+                    Route::resource("item", BankQuestionItemController::class);
+                    Route::get("create-question", [BankQuestionController::class, 'createPacketQuestion']);
+                    Route::post("item/{question}/restore", [BankQuestionItemCOntroller::class, 'restore'])->name('item.restore');
+                    Route::post("create-many", [BankQuestionItemCOntroller::class, 'storeMany'])->name("item.store-many");
+
+                    Route::post(
+                        'upload',
+                        [ExerciseQuestionController::class, 'uploadImage']
+                    )->name('upload-image');
+                });
+            });
 
 
             Route::resource('/learning-material', LearningMaterialController::class);

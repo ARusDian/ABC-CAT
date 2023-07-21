@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ExerciseQuestionTypeEnum;
+use App\Models\BankQuestion;
 use App\Models\DocumentFile;
 use App\Models\ExerciseQuestion;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class ExerciseQuestionController extends Controller
     public function index()
     {
         return Inertia::render('Admin/ExerciseQuestion/Index', [
-            'exercise_questions' => fn() => ExerciseQuestion::all(),
+            'exercise_questions' => fn () => ExerciseQuestion::all(),
         ]);
     }
 
@@ -32,6 +33,8 @@ class ExerciseQuestionController extends Controller
             ],
             'time_limit' => 'required|numeric',
             'number_of_question' => 'required|numeric',
+            'bank_question_items' => 'array',
+            'bank_question_items.*' => 'numeric',
         ])->validate();
     }
 
@@ -52,9 +55,22 @@ class ExerciseQuestionController extends Controller
 
         $exercise = ExerciseQuestion::create($data);
 
+        $exercise->questions()->syncWithoutDetaching($data['bank_question_items']);
+
         return redirect()
             ->route('exercise-question.show', [$exercise->id])
             ->banner('Soal Latihan berhasil dibuat');
+    }
+
+    public function importFromBank($id)
+    {
+        $bank_question = BankQuestion::with(['items'])->findOrFail($id);
+        $exercise_question = ExerciseQuestion::whereType($bank_question->type->name)->get();
+
+        return Inertia::render('Admin/ExerciseQuestion/Import', [
+            'bank_question' => $bank_question,
+            'exercise_questions' => $exercise_question,
+        ]);
     }
 
     /**
@@ -63,7 +79,7 @@ class ExerciseQuestionController extends Controller
     public function show(string $id)
     {
         return Inertia::render('Admin/ExerciseQuestion/Show', [
-            'exercise_question' => fn() => ExerciseQuestion::with([
+            'exercise_question' => fn () => ExerciseQuestion::with([
                 'questions',
             ])->findOrFail($id),
         ]);
@@ -75,7 +91,7 @@ class ExerciseQuestionController extends Controller
     public function edit(string $id)
     {
         return Inertia::render('Admin/ExerciseQuestion/Edit', [
-            'exercise_question' => fn() => ExerciseQuestion::findOrFail($id),
+            'exercise_question' => fn () => ExerciseQuestion::findOrFail($id),
         ]);
     }
 
@@ -94,23 +110,27 @@ class ExerciseQuestionController extends Controller
             ->banner('Soal Lathian berhasil diedit');
     }
 
+    public function importUpdate(Request $request, string $id)
+    {
+        $data = $request->validate([
+            'bank_question_items' => 'required|array',
+            'bank_question_items.*' => 'numeric',
+        ]);
+
+        $exercise_question = ExerciseQuestion::findOrFail($id);
+
+        $exercise_question->questions()->sync($data['bank_question_items'] ?? []);
+
+        return redirect()
+            ->route('exercise-question.show', [$exercise_question->id])
+            ->banner('Soal Latihan berhasil dibuat');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
         //
-    }
-
-    public function uploadImage(Request $request, $exercise_question)
-    {
-        $file = $request->file('file');
-
-        return DocumentFile::createFile(
-            'public',
-            "exercise-question/$exercise_question",
-            $file,
-            auth()->id(),
-        );
     }
 }

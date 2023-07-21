@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('bank_question_item_exercise_question', function (Blueprint $table) {
             $table->id();
-            $table->longText('content');
+            $table->foreignId("exercise_question_id")->constrained(null, 'id', 'exercise_question_id_bqieq');
+            $table->foreignId("bank_question_item_id")->constrained(null, 'id', 'bank_question_item_id_bqieq');
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('bank_question_item_exercise_question');
     }
 };

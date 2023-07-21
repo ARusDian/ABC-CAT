@@ -11,9 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists("exam_answers");
+        Schema::dropIfExists("exams");
+        Schema::dropIfExists("question_images");
+        Schema::dropIfExists("questions");
+        Schema::dropIfExists("exercise_questions");
         Schema::create('exercise_questions', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->string("type");
+            $table->decimal("time_limit");
+            $table->unsignedINteger("number_of_question");
             $table->timestamps();
         });
     }

@@ -16,8 +16,8 @@ import { UseFormReturn } from 'react-hook-form';
 interface Props {
   form: UseFormReturn<ExerciseQuestionFormModel>;
   className?: string;
-  onSubmit: (e: React.FormEvent) => any;
-  submitTitle: string;
+  onSubmit?: (e: React.FormEvent) => any;
+  submitTitle?: string;
 }
 
 export default function Form({ form, submitTitle, onSubmit }: Props) {
@@ -73,9 +73,11 @@ export default function Form({ form, submitTitle, onSubmit }: Props) {
         fullWidth
       />
 
-      <Button type="submit" disabled={form.formState.isSubmitting} fullWidth>
-        {submitTitle}
-      </Button>
+      {submitTitle != null ? (
+        <Button type="submit" disabled={form.formState.isSubmitting} fullWidth>
+          {submitTitle}
+        </Button>
+      ) : null}
     </form>
   );
 }

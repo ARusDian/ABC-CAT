@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ExerciseQuestionTypeEnum
+enum BankQuestionTypeEnum
 {
     case Pilihan;
 
@@ -11,7 +11,8 @@ enum ExerciseQuestionTypeEnum
      */
     case Kecermatan;
 
-    public static function casesString() {
+    public static function casesString()
+    {
         return array_map(fn ($q) => $q->name, Self::cases());
     }
 }

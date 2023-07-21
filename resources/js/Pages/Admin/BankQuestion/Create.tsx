@@ -3,21 +3,22 @@ import route from 'ziggy-js';
 
 import Form from './Form';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
-import {
-  DEFAULT_EXERCISE_QUESTION_TYPE,
-  ExerciseQuestionFormModel,
-} from '@/Models/ExerciseQuestion';
 import { useForm } from 'react-hook-form';
 import { Inertia } from '@inertiajs/inertia';
-import { useDefaultExerciseQuestionFormModel } from '@/Hooks/useDefaultExerciseQuestionForm';
+import { BankQuestionFormModel, DEFAULT_BANK_QUESTION_TYPE } from '@/Models/BankQuestion';
 
 interface Props {}
 
 export default function Create(props: Props) {
-  let form = useDefaultExerciseQuestionFormModel();
+  let form = useForm<BankQuestionFormModel>({
+    defaultValues: {
+      name: '',
+      type: DEFAULT_BANK_QUESTION_TYPE,
+    },
+  });
 
-  function onSubmit(e: ExerciseQuestionFormModel) {
-    Inertia.post(route('exercise-question.store'), e as any, {
+  function onSubmit(e: BankQuestionFormModel) {
+    Inertia.post(route('bank-question.store'), e as any, {
       onError: errors => {
         console.log(errors);
       },
@@ -29,7 +30,7 @@ export default function Create(props: Props) {
   return (
     <AdminFormLayout
       title="Tambah Soal Latihan"
-      backRoute={route('exercise-question.index')}
+      backRoute={route('bank-question.index')}
     >
       <Form
         form={form}

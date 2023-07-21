@@ -1,6 +1,6 @@
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
+import { BankQuestionModel } from '@/Models/BankQuestion';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
-import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import { Button } from '@mui/material';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
@@ -8,51 +8,55 @@ import React from 'react';
 import route from 'ziggy-js';
 
 interface Props {
-  exercise_question: ExerciseQuestionModel;
+  bank_question: BankQuestionModel;
 }
 
 export default function Show(props: Props) {
-  const { exercise_question } = props;
+  const { bank_question } = props;
   const dataColumns = [
     {
       header: 'Nama',
       accessorKey: 'name',
     },
+    {
+      header: 'type',
+      accessorKey: 'type',
+    },
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
   return (
     <AdminShowLayout
-      title="Latihan Soal"
-      headerTitle="Data Latihan Soal"
-      editRoute={route('exercise-question.edit', exercise_question.id)}
-      backRoute={route('exercise-question.index')}
+      title="Bank Soal"
+      headerTitle="Data Bank Soal"
+      editRoute={route('bank-question.edit', bank_question.id)}
+      backRoute={route('bank-question.index')}
     >
-      <div className="flex justify-between">
+      <div className="flex">
         <div className=" text-lg">
-          <p>{exercise_question.name}</p>
-          <p>Type: {exercise_question.type}</p>
-          <p>
-            Batas waktu:{' '}
-            <span className="font-semibold">
-              {parseFloat(exercise_question.time_limit.toFixed(2))}
-            </span>{' '}
-            Menit
-          </p>
+          <p>{bank_question.name}</p>
+          <p>Type: {bank_question.type}</p>
         </div>
-        <InertiaLink
-          href={route(
-            'exercise-question.question.create',
-            exercise_question.id,
-          )}
-        >
-          <Button variant="contained" color="primary" size="large">
-            Tambah Soal
-          </Button>
-        </InertiaLink>
+        <div className="flex place-content-end grow gap-2">
+          <InertiaLink
+            href={route('bank-question.item.create', bank_question.id)}
+          >
+            <Button variant="contained" color="primary" size="large">
+              Tambah Soal
+            </Button>
+          </InertiaLink>
+
+          <InertiaLink
+            href={route('exercise-question.import', bank_question.id)}
+          >
+            <Button variant="contained" color="primary" size="large">
+              Bikin Paket Soal
+            </Button>
+          </InertiaLink>
+        </div>
       </div>
       <MaterialReactTable
         columns={dataColumns}
-        data={exercise_question.questions ?? []}
+        data={bank_question.items ?? []}
         enableColumnActions
         enableColumnFilters
         enablePagination
@@ -65,8 +69,8 @@ export default function Show(props: Props) {
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
             <InertiaLink
-              href={route('exercise-question.question.show', [
-                exercise_question.id,
+              href={route('bank-question.item.show', [
+                bank_question.id,
                 row.original.id,
               ])}
               className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
