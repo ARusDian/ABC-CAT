@@ -94,9 +94,6 @@ dependencies:
   classnames:
     specifier: ^2.3.2
     version: 2.3.2
-  custom-react-accordion:
-    specifier: ^1.0.4
-    version: 1.0.4(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
   html-react-parser:
     specifier: ^4.0.0
     version: 4.0.0(react@18.2.0)
@@ -135,7 +132,7 @@ dependencies:
     version: 7.45.0(react@18.2.0)
   react-loading:
     specifier: ^2.0.3
-    version: 2.0.3(react@18.2.0)
+    version: 2.0.3(prop-types@15.8.1)(react@18.2.0)
   react-pdf:
     specifier: ^7.1.2
     version: 7.1.2(react-dom@18.2.0)(react@18.2.0)
@@ -197,7 +194,7 @@ devDependencies:
     version: 10.4.14(postcss@8.4.24)
   laravel-mix:
     specifier: ^6.0.49
-    version: 6.0.49(@babel/core@7.22.5)(postcss@8.4.24)
+    version: 6.0.49(@babel/core@7.22.5)(@babel/plugin-proposal-object-rest-spread@7.20.7)(@babel/plugin-syntax-dynamic-import@7.8.3)(@babel/plugin-transform-runtime@7.22.5)(@babel/preset-env@7.22.5)(postcss@8.4.24)(webpack-cli@4.10.0)(webpack@5.88.0)
   laravel-vite-plugin:
     specifier: ^0.7.8
     version: 0.7.8(vite@4.3.9)
@@ -3438,7 +3435,7 @@ packages:
       webpack-cli: 4.x.x
     dependencies:
       webpack: 5.88.0(webpack-cli@4.10.0)
-      webpack-cli: 4.10.0(webpack-dev-server@4.15.1)(webpack@5.88.0)
+      webpack-cli: 4.10.0(webpack@5.88.0)
     dev: true
 
   /@webpack-cli/info@1.5.0(webpack-cli@4.10.0):
@@ -3447,10 +3444,10 @@ packages:
       webpack-cli: 4.x.x
     dependencies:
       envinfo: 7.9.0
-      webpack-cli: 4.10.0(webpack-dev-server@4.15.1)(webpack@5.88.0)
+      webpack-cli: 4.10.0(webpack@5.88.0)
     dev: true
 
-  /@webpack-cli/serve@1.7.0(webpack-cli@4.10.0)(webpack-dev-server@4.15.1):
+  /@webpack-cli/serve@1.7.0(webpack-cli@4.10.0):
     resolution: {integrity: sha512-oxnCNGj88fL+xzV+dacXs44HcDwf1ovs3AuEzvP7mqXw7fQntqIhQ1BRmynh4qEKQSSSRSWVyXRjmTbZIX9V2Q==}
     peerDependencies:
       webpack-cli: 4.x.x
@@ -3459,8 +3456,7 @@ packages:
       webpack-dev-server:
         optional: true
     dependencies:
-      webpack-cli: 4.10.0(webpack-dev-server@4.15.1)(webpack@5.88.0)
-      webpack-dev-server: 4.15.1(webpack-cli@4.10.0)(webpack@5.88.0)
+      webpack-cli: 4.10.0(webpack@5.88.0)
     dev: true
 
   /@xobotyi/scrollbar-width@1.9.5:
@@ -3512,8 +3508,10 @@ packages:
     dev: false
     optional: true
 
-  /ajv-formats@2.1.1:
+  /ajv-formats@2.1.1(ajv@8.12.0):
     resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
+    peerDependencies:
+      ajv: ^8.0.0
     peerDependenciesMeta:
       ajv:
         optional: true
@@ -4461,19 +4459,6 @@ packages:
 
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
-
-  /custom-react-accordion@1.0.4(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-SJzDML0VfnEmW8NY20yBGB0AsG6hcvkrvm4BhA21f7V3OPdntQy+sWbcut9keZZL1veJSmDlrsBsut6AQoTSnw==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      prop-types: ^15.7.2
-      react: ^17.0.1
-      react-dom: ^17.0.1
-    dependencies:
-      prop-types: 15.8.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
 
   /dash-get@1.0.2:
     resolution: {integrity: sha512-4FbVrHDwfOASx7uQVxeiCTo7ggSdYZbqs8lH+WU6ViypPlDbe9y6IP5VVUDQBv9DcnyaiPT5XT0UWHgJ64zLeQ==}
@@ -5798,13 +5783,19 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
-  /laravel-mix@6.0.49(@babel/core@7.22.5)(postcss@8.4.24):
+  /laravel-mix@6.0.49(@babel/core@7.22.5)(@babel/plugin-proposal-object-rest-spread@7.20.7)(@babel/plugin-syntax-dynamic-import@7.8.3)(@babel/plugin-transform-runtime@7.22.5)(@babel/preset-env@7.22.5)(postcss@8.4.24)(webpack-cli@4.10.0)(webpack@5.88.0):
     resolution: {integrity: sha512-bBMFpFjp26XfijPvY5y9zGKud7VqlyOE0OWUcPo3vTBY5asw8LTjafAbee1dhfLz6PWNqDziz69CP78ELSpfKw==}
     engines: {node: '>=12.14.0'}
     hasBin: true
     peerDependencies:
       '@babel/core': ^7.15.8
+      '@babel/plugin-proposal-object-rest-spread': ^7.15.6
+      '@babel/plugin-syntax-dynamic-import': ^7.8.3
+      '@babel/plugin-transform-runtime': ^7.15.8
+      '@babel/preset-env': ^7.15.8
       postcss: ^8.3.11
+      webpack: ^5.60.0
+      webpack-cli: ^4.9.1
     dependencies:
       '@babel/core': 7.22.5
       '@babel/plugin-proposal-object-rest-spread': 7.20.7(@babel/core@7.22.5)
@@ -5851,7 +5842,7 @@ packages:
       terser-webpack-plugin: 5.3.9(webpack@5.88.0)
       vue-style-loader: 4.1.3
       webpack: 5.88.0(webpack-cli@4.10.0)
-      webpack-cli: 4.10.0(webpack-dev-server@4.15.1)(webpack@5.88.0)
+      webpack-cli: 4.10.0(webpack@5.88.0)
       webpack-dev-server: 4.15.1(webpack-cli@4.10.0)(webpack@5.88.0)
       webpack-merge: 5.9.0
       webpack-notifier: 1.15.0
@@ -5860,8 +5851,6 @@ packages:
     transitivePeerDependencies:
       - '@swc/core'
       - '@types/webpack'
-      - '@webpack-cli/generators'
-      - '@webpack-cli/migrate'
       - bufferutil
       - debug
       - esbuild
@@ -5869,7 +5858,6 @@ packages:
       - ts-node
       - uglify-js
       - utf-8-validate
-      - webpack-bundle-analyzer
     dev: true
 
   /laravel-vite-plugin@0.7.8(vite@4.3.9):
@@ -7459,12 +7447,13 @@ packages:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
     dev: false
 
-  /react-loading@2.0.3(react@18.2.0):
+  /react-loading@2.0.3(prop-types@15.8.1)(react@18.2.0):
     resolution: {integrity: sha512-Vdqy79zq+bpeWJqC+xjltUjuGApyoItPgL0vgVfcJHhqwU7bAMKzysfGW/ADu6i0z0JiOCRJjo+IkFNkRNbA3A==}
     peerDependencies:
       prop-types: ^15.6.0
       react: '>=0.14.0'
     dependencies:
+      prop-types: 15.8.1
       react: 18.2.0
     dev: false
 
@@ -7827,7 +7816,7 @@ packages:
     dependencies:
       '@types/json-schema': 7.0.12
       ajv: 8.12.0
-      ajv-formats: 2.1.1
+      ajv-formats: 2.1.1(ajv@8.12.0)
       ajv-keywords: 5.1.0(ajv@8.12.0)
     dev: true
 
@@ -8643,7 +8632,7 @@ packages:
     dev: false
     optional: true
 
-  /webpack-cli@4.10.0(webpack-dev-server@4.15.1)(webpack@5.88.0):
+  /webpack-cli@4.10.0(webpack@5.88.0):
     resolution: {integrity: sha512-NLhDfH/h4O6UOy+0LSso42xvYypClINuMNBVVzX4vX98TmTaTUxwRbXdhucbFMd2qLaCTcLq/PdYrvi8onw90w==}
     engines: {node: '>=10.13.0'}
     hasBin: true
@@ -8666,7 +8655,7 @@ packages:
       '@discoveryjs/json-ext': 0.5.7
       '@webpack-cli/configtest': 1.2.0(webpack-cli@4.10.0)(webpack@5.88.0)
       '@webpack-cli/info': 1.5.0(webpack-cli@4.10.0)
-      '@webpack-cli/serve': 1.7.0(webpack-cli@4.10.0)(webpack-dev-server@4.15.1)
+      '@webpack-cli/serve': 1.7.0(webpack-cli@4.10.0)
       colorette: 2.0.20
       commander: 7.2.0
       cross-spawn: 7.0.3
@@ -8675,7 +8664,6 @@ packages:
       interpret: 2.2.0
       rechoir: 0.7.1
       webpack: 5.88.0(webpack-cli@4.10.0)
-      webpack-dev-server: 4.15.1(webpack-cli@4.10.0)(webpack@5.88.0)
       webpack-merge: 5.9.0
     dev: true
 
@@ -8735,7 +8723,7 @@ packages:
       sockjs: 0.3.24
       spdy: 4.0.2
       webpack: 5.88.0(webpack-cli@4.10.0)
-      webpack-cli: 4.10.0(webpack-dev-server@4.15.1)(webpack@5.88.0)
+      webpack-cli: 4.10.0(webpack@5.88.0)
       webpack-dev-middleware: 5.3.3(webpack@5.88.0)
       ws: 8.13.0
     transitivePeerDependencies:
@@ -8810,7 +8798,7 @@ packages:
       tapable: 2.2.1
       terser-webpack-plugin: 5.3.9(webpack@5.88.0)
       watchpack: 2.4.0
-      webpack-cli: 4.10.0(webpack-dev-server@4.15.1)(webpack@5.88.0)
+      webpack-cli: 4.10.0(webpack@5.88.0)
       webpack-sources: 3.2.3
     transitivePeerDependencies:
       - '@swc/core'
