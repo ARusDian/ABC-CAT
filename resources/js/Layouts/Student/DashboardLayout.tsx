@@ -23,6 +23,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import QuizIcon from '@mui/icons-material/Quiz';
+import { asset } from '@/Models/Helper';
 
 interface Props {
   title: string;
@@ -144,7 +145,11 @@ export default function DashboardLayout({
 
   return (
     <div>
-      <Head title={title || 'ABC'} />
+      <Head >
+        <title>{title || 'ABC CAT'}</title>
+        <meta name="description" content="ABC CAT" />
+        <link rel="icon" href={asset('root', 'assets/image/icon.png')} />
+      </Head>
       <Banner />
       <Box sx={{ display: 'flex' }}>
         <AppBar position="absolute" open={isSidebarOpen}>
