@@ -22,6 +22,7 @@ export default function Show({
   user,
 }: Props) {
   const page = useTypedPage();
+  // TODO: CHANGE TO BAHASA INDONESIA
   return (
     <LayoutProfile title={'Profile'} user={user}>
       <div>
