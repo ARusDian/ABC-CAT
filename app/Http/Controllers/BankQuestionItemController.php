@@ -162,7 +162,7 @@ class BankQuestionItemController extends Controller
         //
         $question = BankQuestionItem::find($id);
         return Inertia::render('Admin/BankQuestion/Question/Edit', [
-            'item' => $question,
+            'question' => $question,
         ]);
     }
 
