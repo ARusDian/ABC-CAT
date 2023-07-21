@@ -94,6 +94,9 @@ dependencies:
   classnames:
     specifier: ^2.3.2
     version: 2.3.2
+  custom-react-accordion:
+    specifier: ^1.0.4
+    version: 1.0.4(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
   html-react-parser:
     specifier: ^4.0.0
     version: 4.0.0(react@18.2.0)
@@ -4458,6 +4461,19 @@ packages:
 
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
+
+  /custom-react-accordion@1.0.4(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-SJzDML0VfnEmW8NY20yBGB0AsG6hcvkrvm4BhA21f7V3OPdntQy+sWbcut9keZZL1veJSmDlrsBsut6AQoTSnw==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      prop-types: ^15.7.2
+      react: ^17.0.1
+      react-dom: ^17.0.1
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /dash-get@1.0.2:
     resolution: {integrity: sha512-4FbVrHDwfOASx7uQVxeiCTo7ggSdYZbqs8lH+WU6ViypPlDbe9y6IP5VVUDQBv9DcnyaiPT5XT0UWHgJ64zLeQ==}

@@ -147,7 +147,7 @@ export default function DashboardLayout({
       <Head title={title || 'ABC'} />
       <Banner />
       <Box sx={{ display: 'flex' }}>
-        <AppBar position="fixed" open={isSidebarOpen}>
+        <AppBar position="absolute" open={isSidebarOpen}>
           <nav className="flex justify-between w-full sticky bg-blue-400 py-5 px-7 shadow shadow-sky-400/50">
             <div className="flex gap-3 max-w-6xl mr-30">
               <button
@@ -194,10 +194,8 @@ export default function DashboardLayout({
           {sideBar()}
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <div className="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8 my-10">
-            <div className="overflow-hidden shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 p-5">
-              {children}
-            </div>
+          <div className="my-20 p-5">
+            {children}
           </div>
         </Box>
       </Box>

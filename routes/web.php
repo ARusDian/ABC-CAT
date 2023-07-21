@@ -29,6 +29,10 @@ Route::get('/', function () {
     return redirect (route('login'));
 });
 
+route::get('/test', function () {
+    return Inertia::render('Student/PROTOTYPEVIEW/ExamList');
+})->name('test');
+
 // Route::get('/exam', function () {
 //     return Inertia::render('Student/Exam/TemplateExam');
 // })->name('exam');
