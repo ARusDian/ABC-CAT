@@ -49,7 +49,7 @@ export default function Show(props: Props) {
             href={route('exercise-question.import', bank_question.id)}
           >
             <Button variant="contained" color="primary" size="large">
-              Bikin Paket Soal
+              Buat Paket Soal
             </Button>
           </InertiaLink>
         </div>

@@ -97,47 +97,34 @@ export default function Show(props: Props) {
       backRoute={route('bank-question.index')}
     >
       {/* {exercise_questions && exercise_questions?.length > 0 ? ( */}
-      <Select
-        label="Tipe"
-        value={type}
-        onChange={e => setType(e.target.value as number)}
-      >
-        <MenuItem value={1}>Buat Baru</MenuItem>
-        <MenuItem value={2}>Sudah Ada</MenuItem>
-      </Select>
+      <div className='flex flex-col gap-3 my-3'>
+        <Select
+          label="Tipe"
+          value={type}
+          onChange={e => setType(e.target.value as number)}
+        >
+          <MenuItem value={1}>Buat Baru</MenuItem>
+          <MenuItem value={2}>Sudah Ada</MenuItem>
+        </Select>
 
-      {type == 1 ? (
-        <Form form={form} />
-      ) : (
-        <>
-          <Select
-            label="Soal Latihan"
-            value={exerciseId}
-            onChange={e => setExerciseId(e.target.value as string)}
-          >
-            {exercise_questions?.map(it => (
-              <MenuItem key={it.id} value={it.id}>
-                {it.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </>
-      )}
-
-      <Button
-        onClick={() => {
-          if (Object.keys(rowSelection).length == 0) {
-            const obje = Object.fromEntries(
-              bank_question?.items?.map(it => [it.id, true]) ?? [],
-            );
-            setRowSelection(obje);
-          } else {
-            setRowSelection({});
-          }
-        }}
-      >
-        Select All
-      </Button>
+        {type == 1 ? (
+          <Form form={form} />
+        ) : (
+          <>
+            <Select
+              label="Soal Latihan"
+              value={exerciseId}
+              onChange={e => setExerciseId(e.target.value as string)}
+            >
+              {exercise_questions?.map(it => (
+                <MenuItem key={it.id} value={it.id}>
+                  {it.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </>
+        )}
+      </div>
       <MaterialReactTable
         columns={dataColumns}
         data={bank_question.items ?? []}
@@ -168,11 +155,33 @@ export default function Show(props: Props) {
             </InertiaLink>
           </div>
         )}
+        renderTopToolbarCustomActions={() => (
+          <div className='flex gap-3 justify-around'>
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={() => {
+                if (Object.keys(rowSelection).length == 0) {
+                  const obje = Object.fromEntries(
+                    bank_question?.items?.map(it => [it.id, true]) ?? [],
+                  );
+                  setRowSelection(obje);
+                } else {
+                  setRowSelection({});
+                }
+              }}
+            >
+              Pilih Semua
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={form.handleSubmit(onSubmit)}>
+              Buat
+            </Button>
+          </div>
+        )}
       />
-
-      <div className="flex place-content-end">
-        <Button onClick={form.handleSubmit(onSubmit)}>Submit</Button>
-      </div>
     </AdminFormLayout>
   );
 }
