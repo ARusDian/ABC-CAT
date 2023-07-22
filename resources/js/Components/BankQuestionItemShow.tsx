@@ -7,11 +7,13 @@ import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 export function BankQuestionItemShow(props: {
   question: BankQuestionItemModel;
   editorRef?: React.MutableRefObject<Editor | null>;
+  editorClassName?: string;
 }) {
   switch (props.question.type) {
     case 'Pilihan':
       return (
         <BankQuestionItemEditor
+          editorClassName={props.editorClassName}
           content={props.question.question.content}
           bankQuestionId={props.question.bank_question_id}
           disableEdit

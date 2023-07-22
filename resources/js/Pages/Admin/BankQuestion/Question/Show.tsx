@@ -101,7 +101,10 @@ export default function Index(props: Props) {
       <CustomTabPanel value={tabValue} index={0}>
         <label className='text-lg'>Pertanyaan</label>
         <div className="mx-auto border rounded-2xl">
-          <BankQuestionItemShow question={props.item} />
+          <BankQuestionItemShow
+            question={props.item}
+            editorClassName='h-full'
+          />
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={tabValue} index={1}>
@@ -116,6 +119,7 @@ export default function Index(props: Props) {
                     <QuestionEditor
                       content={choice.content}
                       exerciseQuestionId={props.item.bank_question_id}
+                      editorClassName='h-full'
                       disableEdit
                     />
                   </div>
@@ -152,7 +156,8 @@ export default function Index(props: Props) {
             <div className="mx-auto border rounded-2xl">
               <QuestionEditor
                 content={props.item.explanation?.content ?? null}
-                exerciseQuestionId={props.item.bank_question_id}
+                  exerciseQuestionId={props.item.bank_question_id}
+                  editorClassName='h-full'
                 disableEdit
               />
             </div>

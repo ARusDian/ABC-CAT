@@ -13,6 +13,7 @@ export function QuestionShow(props: {
         <QuestionEditor
           content={props.question.question.content}
           exerciseQuestionId={props.question.exercise_question_id}
+          editorClassName='h-full'
           disableEdit
         />
       );

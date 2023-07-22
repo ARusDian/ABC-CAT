@@ -246,6 +246,7 @@ export default function Run({ exam }: Props) {
                     <QuestionShow
                       question={answers[currentQuestion].question}
                       editorRef={questionEditorRef}
+
                     />
                   </div>
                   <div className="flex flex-col gap-3">
@@ -371,6 +372,7 @@ function PilihanAnswerForm({
                   editorRef={editorRef}
                   content={answer.content}
                   exerciseQuestionId={exam.exercise_question_id}
+                  editorClassName='h-full'
                   disableEdit
                 />
               </div>

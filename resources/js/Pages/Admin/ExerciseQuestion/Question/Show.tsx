@@ -117,6 +117,7 @@ export default function Index(props: Props) {
                     <QuestionEditor
                       content={choice.content}
                       exerciseQuestionId={props.question.exercise_question_id}
+                      editorClassName='h-full'
                       disableEdit
                     />
                   </div>
@@ -157,7 +158,8 @@ export default function Index(props: Props) {
           <div className="mx-auto border rounded-lg">
               <QuestionEditor
                 content={props.question.explanation?.content ?? null}
-                exerciseQuestionId={props.question.exercise_question_id}
+                  exerciseQuestionId={props.question.exercise_question_id}
+                  editorClassName='h-full'
                 disableEdit
               />
             </div>

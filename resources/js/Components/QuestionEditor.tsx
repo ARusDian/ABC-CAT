@@ -14,6 +14,8 @@ interface Props {
   disableEdit?: boolean;
 
   editorRef?: React.MutableRefObject<Editor | null>;
+
+  editorClassName?: string;
 }
 
 export default function QuestionEditor(props: Props) {
@@ -24,6 +26,11 @@ export default function QuestionEditor(props: Props) {
     override: {
       onBlur: ({ editor }) => {
         props.onBlur?.(editor.getJSON());
+      },
+      editorProps: {
+        attributes: {
+          class: props.editorClassName ?? 'h-min-96',
+        },
       },
     },
   });
@@ -42,7 +49,6 @@ export default function QuestionEditor(props: Props) {
         route('exercise-question.upload-image', [props.exerciseQuestionId]),
         form,
       );
-
       return {
         id: response.data.id,
         disk: response.data.disk,
