@@ -68,7 +68,7 @@ Route::middleware([
 
                     Route::post(
                         'upload',
-                        [ExerciseQuestionController::class, 'uploadImage']
+                        [BankQuestionController::class, 'uploadImage']
                     )->name('upload-image');
                 });
             });
@@ -83,7 +83,7 @@ Route::middleware([
 
                     Route::post(
                         'upload',
-                        [ExerciseQuestionController::class, 'uploadImage']
+                        [BankQuestionController::class, 'uploadImage']
                     )->name('upload-image');
                 });
             });
