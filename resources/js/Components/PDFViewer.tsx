@@ -12,6 +12,8 @@ import { BaseLearningMaterialDocumentModel } from '@/Models/LearningMaterial';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/toolbar/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import workerUrl from "pdfjs-dist/build/pdf.worker.min.js?url"
+
 import { getStorageFileUrl } from '@/Models/FileModel';
 
 interface Props {
@@ -35,9 +37,11 @@ export default function PDFViewer(props: Props) {
     Print: () => <></>,
   });
 
+  console.log(workerUrl);
+
   return (
     <div className="border border-gray-300 rounded-md p-2 h-1.2 w-6/12 mx-auto">
-      <Worker workerUrl={asset('root', "assets/js/pdf.worker.js")!}>
+      <Worker workerUrl={workerUrl}>
         <div
           style={{
             alignItems: 'center',
