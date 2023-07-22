@@ -45,6 +45,14 @@ class ExamController extends Controller
             ->first();
     }
 
+    public function checkFinished(Exam $exam)
+    {
+        if ($exam->isExpired() && !$exam->finished) {
+            $exam->finished = true;
+            $exam->save();
+        }
+    }
+
     /**
      * Display the specified resource.
      */
@@ -53,21 +61,30 @@ class ExamController extends Controller
         $exam = $this->getInProgressExam($exercise_id);
 
         if ($exam != null) {
-            $exam->answers->each(
-                fn ($answer) => $answer->question->setHidden(['answer']),
-            );
+            $this->checkFinished($exam);
 
-            return Inertia::render('Student/Exam/Run', [
-                'exam' => $exam,
-            ]);
-        } else {
+            if (!$exam->finished) {
 
-            $exercise = ExerciseQuestion::findOrFail($exercise_id);
+                $exam->answers->each(
+                    function ($answer) {
+                        $answer->setHidden(['score']);
+                        $answer->question->setHidden(['answer' ,'score']);
+                    }
+                );
 
-            return Inertia::render('Student/Exam/Show', [
-                'exercise_question' => $exercise,
-            ]);
+                return Inertia::render('Student/Exam/Run', [
+                    'exam' => $exam,
+                ]);
+            }
         }
+
+
+        $exercise = ExerciseQuestion::findOrFail($exercise_id);
+
+        return Inertia::render('Student/Exam/Show', [
+            'exercise_question' => $exercise,
+            'exams' => Exam::ofUser(auth()->id())->get()
+        ]);
     }
 
     public function finish($exercise_id)
@@ -165,10 +182,7 @@ class ExamController extends Controller
                 $answer->save();
             }
 
-            if ($exam->expire_in < Carbon::now()) {
-                $exam->finished = true;
-                $exam->save();
-            }
+            $this->checkFinished($exam);
 
             return [
                 'finished' => $exam->finished,
