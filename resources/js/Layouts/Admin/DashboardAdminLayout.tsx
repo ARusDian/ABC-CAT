@@ -183,6 +183,17 @@ export default function DashboardAdminLayout({
             Materi Pembelajaran
           </ResponsiveNavLink>
         </li>
+        <li>
+          <ResponsiveNavLink
+            href={route('exam-monitor.index')}
+            active={route().current('exam-monitor.index')}
+          >
+            <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
+              <LibraryBooksIcon fontSize="large" />
+            </span>
+            Materi Pembelajaran
+          </ResponsiveNavLink>
+        </li>
       </ul>
     </Box>
   );

@@ -10,7 +10,7 @@ class ExamAnswer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['exam_id', 'bank_question_item_id', 'answer', 'state'];
+    protected $fillable = ['exam_id', 'bank_question_item_id', 'answer', 'state', 'score'];
 
     protected $casts = [
         'answer' => 'json',

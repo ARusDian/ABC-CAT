@@ -5,20 +5,25 @@ import EditorInput from './Tiptap/EditorInput';
 import axios from 'axios';
 import route from 'ziggy-js';
 
-interface Props {
+export type Props = {
   content: Content | null;
-  onBlur?: (json: object) => void;
-
+  onBlur: (json: object) => void;
   bankQuestionId: string;
-
-  disableEdit?: boolean;
-
   editorRef?: React.MutableRefObject<Editor | null>;
-
   editorClassName?: string;
+
+  disableEdit?: false;
+} | {
+  content: Content | null;
+  disableEdit: true;
+  editorRef?: React.MutableRefObject<Editor | null>;
+  editorClassName?: string;
+
+  onBlur?: undefined;
+  bankQuestionId?: undefined;
 }
 
-export default function QuestionEditor(props: Props) {
+export default function BankQuestionItemEditor(props: Props) {
   const editable = props.disableEdit !== true;
   const editor = useEditor({
     content: props.content,
@@ -43,6 +48,12 @@ export default function QuestionEditor(props: Props) {
 
   const onUploadImage = React.useCallback(
     async (file: File) => {
+      const { bankQuestionId } = props;
+
+      if (!bankQuestionId) {
+        return null;
+      }
+
       let form = new FormData();
       form.append('file', file);
       const response = await axios.postForm(

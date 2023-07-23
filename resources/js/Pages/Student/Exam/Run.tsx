@@ -17,6 +17,8 @@ import {
   QuestionPilihanModel,
 } from '@/Models/Question';
 import Typography from '@mui/material/Typography';
+import { BankQuestionItemShow } from '@/Components/BankQuestionItemShow';
+import Answer from './Answer';
 
 export interface Props {
   exam: ExamModel;
@@ -194,7 +196,7 @@ export default function Run({ exam }: Props) {
                             color={
                               it.state?.mark
                                 ? 'warning'
-                                : it.answer
+                                : it.answer != undefined
                                 ? 'primary'
                                 : currentQuestion === index
                                 ? 'success'
@@ -228,7 +230,7 @@ export default function Run({ exam }: Props) {
                       Soal {currentQuestion + 1}
                     </div>
                     <div className="font-bold text-lg flex gap-3">
-                      <p>
+                      <div>
                         {isUpdating ? (
                           <div className="flex gap-2">
                             <ReactLoading color="#1964AD" type="spin" />
@@ -236,38 +238,23 @@ export default function Run({ exam }: Props) {
                         ) : (
                           ''
                         )}
-                      </p>
+                      </div>
                       <p>{`${currentQuestion + 1}/${answers.length}`}</p>
                     </div>
                   </div>
                 </div>
                 <div className="border-t border-gray-500 w-auto h-auto p-3 flex flex-col gap-3">
-                  <div className="porse text-md">
-                    <QuestionShow
-                      question={answers[currentQuestion].question}
-                      editorRef={questionEditorRef}
-
-                    />
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    {answerArray.fields[currentQuestion].question.type ==
-                    'Pilihan' ? (
-                      <PilihanAnswerForm
-                        currentQuestion={currentQuestion}
-                        exam={exam}
-                        answerArray={answerArray}
-                        updateAnswer={updateAnswer}
-                      />
-                    ) : answerArray.fields[currentQuestion].question.type ==
-                      'Kecermatan' ? (
-                      <KecermatanAnswerForm
-                        currentQuestion={currentQuestion}
-                        exam={exam}
-                        answerArray={answerArray}
-                        updateAnswer={updateAnswer}
-                      />
-                    ) : null}
-                  </div>
+                  <Answer
+                    answer={answerArray.fields[currentQuestion]}
+                    questionEditorRef={questionEditorRef}
+                    updateAnswer={answer => {
+                      console.log(answer)
+                      updateAnswer({
+                        ...answers[currentQuestion],
+                        answer: answer.answer,
+                      });
+                    }}
+                  />
                   <div className="flex justify-end">
                     <Button
                       variant="contained"
@@ -289,13 +276,6 @@ export default function Run({ exam }: Props) {
                             mark: !value.state?.mark,
                           },
                         });
-                        // const newAnswers = [...answers];
-                        // newAnswers[currentQuestion] = {
-                        //   answerId: newAnswers[currentQuestion]?.answerId,
-                        //   questionId: questions[currentQuestion].id,
-                        //   flag: !newAnswers[currentQuestion]?.flag,
-                        // };
-                        // setAnswers(newAnswers);
                       }}
                     >
                       {answerArray.fields[currentQuestion].state?.mark
@@ -358,6 +338,7 @@ function PilihanAnswerForm({
               <input
                 type="radio"
                 name="answer"
+                disabled={updateAnswer == null}
                 // defaultValue={form.}
                 onChange={() => {
                   updateAnswer({
@@ -372,7 +353,7 @@ function PilihanAnswerForm({
                   editorRef={editorRef}
                   content={answer.content}
                   exerciseQuestionId={exam.exercise_question_id}
-                  editorClassName='h-full'
+                  editorClassName="h-full"
                   disableEdit
                 />
               </div>
@@ -419,7 +400,7 @@ function KecermatanAnswerForm({
               <input
                 type="radio"
                 name="answer"
-                // defaultValue={form.}
+                disabled={updateAnswer == null}
                 onChange={() => {
                   updateAnswer({
                     ...answerArray.fields[currentQuestion],

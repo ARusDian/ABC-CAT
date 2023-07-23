@@ -15,7 +15,6 @@ export function BankQuestionItemShow(props: {
         <BankQuestionItemEditor
           editorClassName={props.editorClassName}
           content={props.question.question.content}
-          bankQuestionId={props.question.bank_question_id}
           disableEdit
         />
       );

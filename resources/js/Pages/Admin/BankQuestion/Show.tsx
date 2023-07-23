@@ -13,6 +13,7 @@ interface Props {
 
 export default function Show(props: Props) {
   const { bank_question } = props;
+
   const dataColumns = [
     {
       header: 'Nama',

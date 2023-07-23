@@ -12,7 +12,7 @@ interface Props {
   editor: Editor;
   closeMenu?: () => void;
 
-  uploadImage?: (file: File) => Promise<{ id: string; disk: 'public' }>;
+  uploadImage?: (file: File) => Promise<{ id: string; disk: 'public' } | null>;
 }
 
 interface Divider {
@@ -89,15 +89,17 @@ export default function MenuBar(props: Props) {
         for (const file of files) {
           const response = await uploadImage(file);
 
-          editor
-            .chain()
-            .focus()
-            .setImage({
-              id: response.id,
-              disk: response.disk,
-              // src: `/storage/${response.data.path}`
-            })
-            .run();
+          if (response) {
+            editor
+              .chain()
+              .focus()
+              .setImage({
+                id: response.id,
+                disk: response.disk,
+                // src: `/storage/${response.data.path}`
+              })
+              .run();
+          }
           // form.append(`file[${index}]`, file);
         }
       }

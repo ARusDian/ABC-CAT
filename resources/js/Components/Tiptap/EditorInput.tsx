@@ -8,7 +8,7 @@ interface Props {
   editorRef?: React.MutableRefObject<any>;
   onChange?: (json: object) => void;
 
-  uploadImage?: (file: File) => Promise<{ id: string; disk: 'public' }>;
+  uploadImage?: (file: File) => Promise<{ id: string; disk: 'public' } | null>;
 
   disableMenu?: boolean;
 }

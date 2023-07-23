@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Exam extends Model
@@ -19,11 +22,26 @@ class Exam extends Model
 
     protected $casts = [
         'expire_in' => 'datetime',
+        'finished_at' => 'datetime',
+    ];
+
+    protected $appends = [
+        'finished'
     ];
 
     public function answers(): HasMany
     {
         return $this->hasMany(ExamAnswer::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function exerciseQuestion(): BelongsTo
+    {
+        return $this->belongsTo(ExerciseQuestion::class);
     }
 
     public function scopeOfExercise($query, $exercise_question_id)
@@ -38,6 +56,20 @@ class Exam extends Model
 
     public function scopeOfFinished($query, bool $finished)
     {
-        return $query->where('finished', $finished);
+        if ($finished) {
+            return $query->whereNotNull('finished_at');
+        } else {
+            return $query->whereNull('finished_at');
+        }
+    }
+
+    public function isExpired(): bool
+    {
+        return $this->expire_in < Carbon::now();
+    }
+
+    public function finished(): Attribute
+    {
+        return Attribute::get(fn () => $this->finished_at != null);
     }
 }

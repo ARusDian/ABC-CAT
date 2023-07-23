@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BankQuestionItemTypeEnum;
 use App\Models\Exam;
 use App\Http\Controllers\Controller;
 use App\Models\ExamAnswer;
@@ -48,8 +49,22 @@ class ExamController extends Controller
     public function checkFinished(Exam $exam)
     {
         if ($exam->isExpired() && !$exam->finished) {
-            $exam->finished = true;
+            $exam->finished_at = $exam->expired_in->minimum();
             $exam->save();
+        }
+    }
+
+    public function calculateScore(ExamAnswer $exam): float
+    {
+        switch ($exam->question->type) {
+            case BankQuestionItemTypeEnum::Pilihan:
+            case BankQuestionItemTypeEnum::Kecermatan:
+                if ($exam->answer == $exam->question->answer) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+                break;
         }
     }
 
@@ -68,7 +83,7 @@ class ExamController extends Controller
                 $exam->answers->each(
                     function ($answer) {
                         $answer->setHidden(['score']);
-                        $answer->question->setHidden(['answer' ,'score']);
+                        $answer->question->setHidden(['answer']);
                     }
                 );
 
@@ -83,7 +98,19 @@ class ExamController extends Controller
 
         return Inertia::render('Student/Exam/Show', [
             'exercise_question' => $exercise,
-            'exams' => Exam::ofUser(auth()->id())->get()
+            'exams' => Exam::withSum('answers', 'score')->withCount('answers')->ofUser(auth()->id())->get()
+        ]);
+    }
+
+    public function showAttempt($exercise_question, Exam $exam)
+    {
+        if (!$exam->finished)
+        {
+            return abort(404);
+        }
+
+        return Inertia::render('Student/Exam/ShowAttempt', [
+            'exam' => $exam->load('answers.question'),
         ]);
     }
 
@@ -124,15 +151,16 @@ class ExamController extends Controller
             ]);
 
             foreach ($exercise->questions
-                    ->filter(fn ($q) => $q['is_active'])
-                    ->shuffle()
-                    ->take($exercise->number_of_question)
+                ->filter(fn ($q) => $q['is_active'])
+                ->shuffle()
+                ->take($exercise->number_of_question)
                 as $question) {
                 ExamAnswer::create([
                     'exam_id' => $exam->id,
                     'bank_question_item_id' => $question->id,
                     'state' => null,
                     'answer' => null,
+                    'score' => 0,
                 ]);
             }
 
@@ -174,10 +202,12 @@ class ExamController extends Controller
             foreach ($data['queue'] as $queue) {
                 $answer = ExamAnswer::where('id', $queue['exam_answer_id'])
                     ->where('exam_id', $exam->id)
+                    ->with(['question'])
                     ->firstOrFail();
 
                 $answer->state = $queue['state'] ?? null;
                 $answer->answer = $queue['answer'] ?? null;
+                $answer->score = $this->calculateScore($answer);
 
                 $answer->save();
             }

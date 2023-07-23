@@ -8,6 +8,7 @@ use App\Http\Controllers\DocumentFileController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExerciseQuestionController;
 use App\Http\Controllers\ExerciseQuestionQuestionController;
+use App\Http\Controllers\Instructor\ExamMonitorController;
 use App\Http\Controllers\LearningMaterialController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -52,9 +53,11 @@ Route::middleware([
                 Route::put('{exercise_question}', [ExamController::class, 'update'])->name('update');
                 Route::post('{exercise_question}', [ExamController::class, 'attempt'])->name("attempt");
                 Route::post('{exercise_question}/finish', [ExamController::class, 'finish'])->name('finish');
+                Route::get("{exercise_question}/attempt/{exam}", [ExamController::class, 'showAttempt'])->name('show.attempt');
             });
         });
     });
+
     Route::middleware(['role:admin|super-admin'])->group(function () {
         Route::prefix('admin')->group(function () {
             Route::prefix("exercise-question")->name("exercise-question.")->group(function () {
@@ -62,7 +65,7 @@ Route::middleware([
                 Route::get("import/bank-question/{bank_question}", [ExerciseQuestionController::class, 'importFromBank'])->name("import");
                 Route::put("{exercise_question}/import", [ExerciseQuestionController::class, 'importUpdate'])->name("import.update");
                 Route::prefix("{exercise_question}/")->group(function () {
-                    Route::resource("question", BankQuestionItemController::class);
+                    Route::resource("question", ExerciseQuestionQuestionController::class);
                     Route::post("create-many", [ExerciseQuestionQuestionController::class, 'storeMany'])->name("question.store-many");
                     Route::post("question/{question}/restore", [ExerciseQuestionQuestionController::class, 'restore'])->name('question.restore');
 
@@ -89,6 +92,7 @@ Route::middleware([
             });
 
 
+            Route::resource("exam-monitor", ExamMonitorController::class);
             Route::resource('/learning-material', LearningMaterialController::class);
             Route::middleware(['role:super-admin'])->group(function () {
                 Route::resource('/user', UserController::class);
