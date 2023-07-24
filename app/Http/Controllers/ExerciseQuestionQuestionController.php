@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ExerciseQuestionTypeEnum;
 use App\Enums\QuestionTypeEnum;
 use App\Models\Question;
-use App\Models\BankQuestionitem;
+use App\Models\BankQuestionItem;
 
 use App\Models\QuestionImage;
 use App\Http\Controllers\Controller;
