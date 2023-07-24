@@ -50,6 +50,16 @@ export default function Show(props: Props) {
               Tambah Soal
             </InertiaLink>
           </Button>
+          <Button variant="contained" color="primary" size="large">
+            <InertiaLink
+              href={route(
+                'exercise-question.leaderboard',
+                exercise_question.id,
+              )}
+            >
+              Leaderboard
+            </InertiaLink>
+          </Button>
         </div>
       </div>
       <MaterialReactTable

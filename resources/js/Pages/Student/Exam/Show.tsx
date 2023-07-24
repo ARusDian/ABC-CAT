@@ -79,15 +79,6 @@ export default function Show(props: Props) {
             </div>
           )}
         />
-        {/* {props.exams.map(it => { */}
-        {/*   return ( */}
-        {/*     <div key={it.id}> */}
-        {/*       <div>{new Date(it.created_at).toLocaleString()}</div> */}
-        {/*       <div> */}
-        {/*       </div> */}
-        {/*     </div> */}
-        {/*   ); */}
-        {/* })} */}
       </div>
     </DashboardLayout>
   );

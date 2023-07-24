@@ -63,8 +63,9 @@ Route::middleware([
             Route::prefix("exercise-question")->name("exercise-question.")->group(function () {
                 Route::resource("", ExerciseQuestionController::class)->parameter("", "exercise_question");
                 Route::get("import/bank-question/{bank_question}", [ExerciseQuestionController::class, 'importFromBank'])->name("import");
-                Route::put("{exercise_question}/import", [ExerciseQuestionController::class, 'importUpdate'])->name("import.update");
                 Route::prefix("{exercise_question}/")->group(function () {
+                    Route::get("leaderboard", [ExerciseQuestionController::class, 'leaderboard'])->name("leaderboard");
+                    Route::put("import", [ExerciseQuestionController::class, 'importUpdate'])->name("import.update");
                     Route::resource("question", ExerciseQuestionQuestionController::class);
                     Route::post("create-many", [ExerciseQuestionQuestionController::class, 'storeMany'])->name("question.store-many");
                     Route::post("question/{question}/restore", [ExerciseQuestionQuestionController::class, 'restore'])->name('question.restore');

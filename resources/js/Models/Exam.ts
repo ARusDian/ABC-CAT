@@ -6,6 +6,7 @@ import { BankQuestionItemKecermatanModel, BankQuestionItemModel, BankQuestionIte
 export interface ExamModel {
   id: string;
   exercise_question_id: string;
+  user_id: string;
   expire_in: string;
   finished: boolean;
 
@@ -15,6 +16,9 @@ export interface ExamModel {
   answers: ExamAnswerModel[];
   exercise_question: ExerciseQuestionModel;
   user: User;
+
+  answers_sum_score: number;
+  answers_count: number;
 }
 
 export interface BaseExamAnswerModel {

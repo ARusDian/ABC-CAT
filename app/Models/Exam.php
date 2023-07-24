@@ -63,6 +63,15 @@ class Exam extends Model
         }
     }
 
+    public function scopeWithScore($query, bool $state = true)
+    {
+        if ($state) {
+            return $query->withSum('answers', 'score')->withCount('answers');
+        } else {
+            return $query;
+        }
+    }
+
     public function isExpired(): bool
     {
         return $this->expire_in < Carbon::now();

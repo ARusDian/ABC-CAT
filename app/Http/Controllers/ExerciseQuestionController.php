@@ -85,6 +85,16 @@ class ExerciseQuestionController extends Controller
         ]);
     }
 
+    public function leaderboard(string $id)
+    {
+        return Inertia::render('Admin/ExerciseQuestion/Leaderboard', [
+            'exercise_question' => fn () => ExerciseQuestion::with([
+                'exams' => fn ($q) => $q->withScore(),
+                'exams.user' ,
+            ])->findOrFail($id)
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

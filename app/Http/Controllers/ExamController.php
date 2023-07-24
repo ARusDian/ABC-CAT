@@ -98,7 +98,7 @@ class ExamController extends Controller
 
         return Inertia::render('Student/Exam/Show', [
             'exercise_question' => $exercise,
-            'exams' => Exam::withSum('answers', 'score')->withCount('answers')->ofUser(auth()->id())->get()
+            'exams' => Exam::withScore()->ofUser(auth()->id())->get()
         ]);
     }
 
