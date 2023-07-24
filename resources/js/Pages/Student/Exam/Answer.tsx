@@ -8,21 +8,33 @@ import {
 } from '@/Models/Exam';
 import Typography from '@mui/material/Typography';
 import { Editor } from '@tiptap/react';
-import React, { MutableRefObject } from 'react';
+import React from 'react';
 
 interface Props {
   answer: ExamAnswerModel;
-  questionEditorRef?: MutableRefObject<Editor | null>;
   updateAnswer?: (answer: { answer: any }) => void;
   isEvaluation?: boolean;
 }
 
 export default function Answer({
   answer,
-  questionEditorRef,
   updateAnswer,
   isEvaluation = false,
 }: Props) {
+
+
+  // use ref instead of setting key for performance reason
+  const questionEditorRef = React.useRef<Editor | null>(null);
+
+  React.useEffect(() => {
+    switch (answer.question.type) {
+      case 'Pilihan':
+        questionEditorRef?.current?.commands?.setContent(
+          answer.question.question.content,
+        );
+        break;
+    }
+  }, [answer.id]);
 
   return (
     <div className='border-b'>

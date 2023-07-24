@@ -73,9 +73,6 @@ export default function Run({ exam }: Props) {
     }
   };
 
-  // use ref instead of setting key for performance reason
-  const questionEditorRef = React.useRef<Editor | null>(null);
-
   const [stateQueue, setStateQueue] = React.useState<Task[]>([]);
 
   // const [currentQuestion, setCurrentQuestion] = React.useState(0);
@@ -139,17 +136,6 @@ export default function Run({ exam }: Props) {
     // console.log('addStateQueue', [...stateQueue, task]);
     setStateQueue([...stateQueue, task]);
   };
-
-  React.useEffect(() => {
-    const current = answers[currentQuestion];
-    switch (current.question.type) {
-      case 'Pilihan':
-        questionEditorRef?.current?.commands?.setContent(
-          current.question.question.content,
-        );
-        break;
-    }
-  }, [currentQuestion]);
 
   const updateAnswer = (answer: ExamAnswerModel) => {
     answerArray.update(currentQuestion, answer);
@@ -248,7 +234,6 @@ export default function Run({ exam }: Props) {
                 <div className="border-t border-gray-500 w-auto h-auto p-3 flex flex-col gap-3">
                   <Answer
                     answer={answerArray.fields[currentQuestion]}
-                    questionEditorRef={questionEditorRef}
                     updateAnswer={answer => {
                       updateAnswer({
                         ...answers[currentQuestion],
