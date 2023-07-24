@@ -12,25 +12,34 @@ import React, { MutableRefObject } from 'react';
 
 interface Props {
   answer: ExamAnswerModel;
-  questionEditorRef?: MutableRefObject<Editor | null>;
   updateAnswer?: (answer: { answer: any }) => void;
   isEvaluation?: boolean;
 }
 
 export default function Answer({
   answer,
-  questionEditorRef,
   updateAnswer,
   isEvaluation = false,
 }: Props) {
+  const questionEditorRef = React.useRef<Editor | null>(null);
+  const explanationEditorRef = React.useRef<Editor | null>(null);
+
+  React.useEffect(() => {
+    switch (answer.question.type) {
+      case 'Pilihan':
+        questionEditorRef?.current?.commands?.setContent(answer.question.question.content);
+        explanationEditorRef?.current?.commands?.setContent(answer.question.explanation.content);
+        break;
+    }
+  })
 
   return (
-    <div className='px-3'>
+    <div className="px-3">
       <div className="prose">
         <BankQuestionItemShow
           question={answer.question}
           editorRef={questionEditorRef}
-          editorClassName=''
+          editorClassName=""
         />
       </div>
 
@@ -50,18 +59,17 @@ export default function Answer({
       </div>
       {isEvaluation ? (
         <div className="bg-yellow-100 rounded-md p-3">
-          <div className="text-lg font-bold">
-            Pembahasan :
-          </div>
+          <div className="text-lg font-bold">Pembahasan :</div>
           <div className="text-lg">
             <BankQuestionItemEditor
               content={answer.question.explanation?.content ?? null}
-              editorClassName=''
+              editorRef={explanationEditorRef}
+              editorClassName=""
               disableEdit
             />
           </div>
         </div>
-        ) : null}
+      ) : null}
     </div>
   );
 }
@@ -94,21 +102,29 @@ function PilihanAnswerForm({
   }, [answer.id]);
 
   return (
-    <div className='flex flex-col gap-1'>
+    <div className="flex flex-col gap-1">
       {choices.map((choice, index) => {
         const editorRef = arrayEditorRef.current[index];
         const isCorrect = answer.question.answer == index;
         return (
-          <div className={`flex justify-between rounded-lg px-3 ${isEvaluation ? (
-            parseInt(answer.answer) === index ? (
-              isCorrect ? "bg-green-200" : "bg-red-200"
-            ) : isCorrect ? "bg-green-200" : ""
-          ) : ""}`}
-            key={index}>
+          <div
+            className={`flex justify-between rounded-lg px-3 ${
+              isEvaluation
+                ? parseInt(answer.answer) === index
+                  ? isCorrect
+                    ? 'bg-green-200'
+                    : 'bg-red-200'
+                  : isCorrect
+                  ? 'bg-green-200'
+                  : ''
+                : ''
+            }`}
+            key={index}
+          >
             <div className="flex gap-3">
               <input
                 type="radio"
-                className='my-auto'
+                className="my-auto"
                 name={`answer-${answer.id}`}
                 disabled={updateAnswer == null}
                 onChange={() => {
