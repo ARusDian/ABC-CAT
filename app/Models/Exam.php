@@ -17,7 +17,7 @@ class Exam extends Model
         'user_id',
         'exercise_question_id',
         'expire_in',
-        'finished',
+        'finished_at',
     ];
 
     protected $casts = [

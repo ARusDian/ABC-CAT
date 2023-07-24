@@ -122,7 +122,7 @@ class ExamController extends Controller
             ->firstOrFail();
 
         $exam->update([
-            'finished' => true,
+            'finished_at' => $exam->expire_in->minimum(),
         ]);
     }
 
@@ -147,7 +147,7 @@ class ExamController extends Controller
                 'user_id' => auth()->id(),
                 'exercise_question_id' => $exercise->id,
                 'expire_in' => $expire_in,
-                'finished' => false,
+                'finished' => null,
             ]);
 
             foreach ($exercise->questions
