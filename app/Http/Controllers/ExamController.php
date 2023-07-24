@@ -39,7 +39,9 @@ class ExamController extends Controller
 
     public function getInProgressExam($exercise_id)
     {
-        return Exam::with(['answers.question'])
+        return Exam::with(['answers.question', 'exerciseQuestion' => function($query){
+            $query->select('id','name');
+        }])
             ->ofExercise($exercise_id)
             ->ofUser(auth()->id())
             ->ofFinished(false)

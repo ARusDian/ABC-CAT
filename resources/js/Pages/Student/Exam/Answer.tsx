@@ -8,36 +8,24 @@ import {
 } from '@/Models/Exam';
 import Typography from '@mui/material/Typography';
 import { Editor } from '@tiptap/react';
-import React from 'react';
+import React, { MutableRefObject } from 'react';
 
 interface Props {
   answer: ExamAnswerModel;
+  questionEditorRef?: MutableRefObject<Editor | null>;
   updateAnswer?: (answer: { answer: any }) => void;
   isEvaluation?: boolean;
 }
 
 export default function Answer({
   answer,
+  questionEditorRef,
   updateAnswer,
   isEvaluation = false,
 }: Props) {
 
-
-  // use ref instead of setting key for performance reason
-  const questionEditorRef = React.useRef<Editor | null>(null);
-
-  React.useEffect(() => {
-    switch (answer.question.type) {
-      case 'Pilihan':
-        questionEditorRef?.current?.commands?.setContent(
-          answer.question.question.content,
-        );
-        break;
-    }
-  }, [answer.id]);
-
   return (
-    <div className='border-b'>
+    <div className='px-3'>
       <div className="prose">
         <BankQuestionItemShow
           question={answer.question}
@@ -60,6 +48,20 @@ export default function Answer({
           />
         ) : null}
       </div>
+      {isEvaluation ? (
+        <div className="bg-yellow-100 rounded-md p-3">
+          <div className="text-lg font-bold">
+            Pembahasan :
+          </div>
+          <div className="text-lg">
+            <BankQuestionItemEditor
+              content={answer.question.explanation?.content ?? null}
+              editorClassName=''
+              disableEdit
+            />
+          </div>
+        </div>
+        ) : null}
     </div>
   );
 }
@@ -92,18 +94,18 @@ function PilihanAnswerForm({
   }, [answer.id]);
 
   return (
-    <div>
+    <div className='flex flex-col gap-1'>
       {choices.map((choice, index) => {
         const editorRef = arrayEditorRef.current[index];
         const isCorrect = answer.question.answer == index;
         return (
-          <div className={`flex justify-between rounded ${isEvaluation ? (
+          <div className={`flex justify-between rounded-lg px-3 ${isEvaluation ? (
             parseInt(answer.answer) === index ? (
               isCorrect ? "bg-green-200" : "bg-red-200"
             ) : isCorrect ? "bg-green-200" : ""
           ) : ""}`}
             key={index}>
-            <div className="flex gap-1 my-auto">
+            <div className="flex gap-3">
               <input
                 type="radio"
                 className='my-auto'

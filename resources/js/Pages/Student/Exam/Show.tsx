@@ -18,7 +18,6 @@ type Model = ExamModel & {
 };
 
 export default function Show(props: Props) {
-  console.log(props.exams);
 
   const dataColumns = [
     {
@@ -44,18 +43,7 @@ export default function Show(props: Props) {
 
   return (
     <DashboardLayout title={props.exercise_question.name}>
-      <Button>
-        <InertiaLink
-          href={route('exam.attempt', [props.exercise_question.id])}
-          method="POST"
-          as="p"
-        >
-          Attempt
-        </InertiaLink>
-      </Button>
-
       <div>
-        Attempt
         <MaterialReactTable
           columns={dataColumns}
           data={props.exams}
@@ -78,6 +66,19 @@ export default function Show(props: Props) {
               </InertiaLink>
             </div>
           )}
+          renderTopToolbarCustomActions={() => (
+            <Button
+              variant="contained"
+              color="primary"
+            >
+              <InertiaLink
+                href={route('exam.attempt', [props.exercise_question.id])}
+                method="POST"
+              >
+                Mulai Ujian
+              </InertiaLink>
+            </Button>
+            )}
         />
       </div>
     </DashboardLayout>
