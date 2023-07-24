@@ -147,7 +147,6 @@ class ExamController extends Controller
                 'user_id' => auth()->id(),
                 'exercise_question_id' => $exercise->id,
                 'expire_in' => $expire_in,
-                'finished' => null,
             ]);
 
             foreach ($exercise->questions
