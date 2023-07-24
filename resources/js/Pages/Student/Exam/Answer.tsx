@@ -25,11 +25,12 @@ export default function Answer({
 }: Props) {
 
   return (
-    <div>
-      <div className="porse text-md">
+    <div className='border-b'>
+      <div className="prose">
         <BankQuestionItemShow
           question={answer.question}
           editorRef={questionEditorRef}
+          editorClassName=''
         />
       </div>
 
@@ -38,6 +39,7 @@ export default function Answer({
           <PilihanAnswerForm
             answer={answer as ExamAnswerPilihanModel}
             updateAnswer={updateAnswer}
+            isEvaluation={isEvaluation}
           />
         ) : answer.question.type == 'Kecermatan' ? (
           <KecermatanAnswerForm
@@ -69,7 +71,6 @@ function PilihanAnswerForm({
   while (arrayEditorRef.current.length < choices.length) {
     arrayEditorRef.current.push({ current: null });
   }
-
   React.useEffect(() => {
     choices.map((choice, index) => {
       const editorRef = arrayEditorRef.current[index];
@@ -82,15 +83,20 @@ function PilihanAnswerForm({
     <div>
       {choices.map((choice, index) => {
         const editorRef = arrayEditorRef.current[index];
-        const isCorrent = answer.question
+        const isCorrect = answer.question.answer == index;
         return (
-          <div className="flex justify-between" key={index}>
-            <div className="flex gap-3">
+          <div className={`flex justify-between rounded ${isEvaluation ? (
+            parseInt(answer.answer) === index ? (
+              isCorrect ? "bg-green-200" : "bg-red-200"
+            ) : isCorrect ? "bg-green-200" : ""
+          ) : ""}`}
+            key={index}>
+            <div className="flex gap-1 my-auto">
               <input
                 type="radio"
-                name="answer"
+                className='my-auto'
+                name={`answer-${answer.id}`}
                 disabled={updateAnswer == null}
-                // defaultValue={form.}
                 onChange={() => {
                   updateAnswer?.({
                     answer: index,
@@ -98,11 +104,11 @@ function PilihanAnswerForm({
                 }}
                 checked={answer.answer == index}
               />
-              <div className="prose mx-auto">
+              <div className="prose">
                 <BankQuestionItemEditor
                   editorRef={editorRef}
                   content={choice.content}
-                  editorClassName="h-full"
+                  editorClassName=""
                   disableEdit
                 />
               </div>
