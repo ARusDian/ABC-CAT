@@ -104,6 +104,7 @@ export default function Run({ exam }: Props) {
 
         // so if the previous attempt is failed, this can retry it
         const queue = [...(prev ?? []), ...stateQueue];
+        console.log(queue);
 
         // clear queue
         setStateQueue([]);
@@ -129,12 +130,13 @@ export default function Run({ exam }: Props) {
 
       setPreviousQueuePromise(queuePromise);
     },
-    1000,
+    2000,
     [stateQueue],
   );
 
   const addStateQueue = (task: Task) => {
     setIsUpdating(true);
+    // console.log('addStateQueue', [...stateQueue, task]);
     setStateQueue([...stateQueue, task]);
   };
 
@@ -248,7 +250,6 @@ export default function Run({ exam }: Props) {
                     answer={answerArray.fields[currentQuestion]}
                     questionEditorRef={questionEditorRef}
                     updateAnswer={answer => {
-                      console.log(answer)
                       updateAnswer({
                         ...answers[currentQuestion],
                         answer: answer.answer,
