@@ -31,7 +31,7 @@ Route::get('/', function () {
 });
 
 route::get('/test', function () {
-    return Inertia::render('Student/PROTOTYPEVIEW/ExamList');
+    return Inertia::render('Student/PROTOTYPEVIEW/Result');
 })->name('test');
 
 // Route::get('/exam', function () {
@@ -48,7 +48,7 @@ Route::middleware([
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::middleware(['role:student'])->group(function () {
         Route::prefix('student')->group(function () {
-            Route::prefix('/exam')->as('exam.')->group(function () {
+            Route::prefix('exam')->as('exam.')->group(function () {
                 Route::get('{exercise_question}', [ExamController::class, 'show'])->name('show');
                 Route::put('{exercise_question}', [ExamController::class, 'update'])->name('update');
                 Route::post('{exercise_question}', [ExamController::class, 'attempt'])->name("attempt");

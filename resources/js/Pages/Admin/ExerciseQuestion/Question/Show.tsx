@@ -8,10 +8,16 @@ import EditorInput from '@/Components/Tiptap/EditorInput';
 import QuestionEditor from '@/Components/QuestionEditor';
 import { numberToUpperCase } from '@/Utils/Convert';
 import { QuestionShow } from '@/Components/QuestionShow';
-import { Tabs, Tab } from '@mui/material';
+import { Tabs, Tab, Button } from '@mui/material';
+import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
+import { InertiaLink } from '@inertiajs/inertia-react';
+import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
+import { BankQuestionItemShow } from '@/Components/BankQuestionItemShow';
+import BankQuestionItemEditor from '@/Components/BankQuestionItemEditor';
 
 interface Props {
-  question: QuestionModel;
+  question: BankQuestionItemModel;
+  exercise_question_id: string;
 }
 
 interface TabPanelProps {
@@ -49,7 +55,7 @@ function a11yProps(index: number) {
 }
 
 export default function Index(props: Props) {
-  const question = props.question;
+  const { question, exercise_question_id } = props;
   const [tabValue, setTabValue] = React.useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -60,28 +66,23 @@ export default function Index(props: Props) {
       title={`Pertanyaan ${question.id}`}
       headerTitle={'Data Pertanyaan'}
       backRoute={route('exercise-question.show', [
-        question.exercise_question_id,
+        exercise_question_id,
       ])}
       backRouteTitle="Kembali"
-      editRoute={route('exercise-question.question.edit', [
-        question.exercise_question_id,
-        question.id,
-      ])}
-      editRouteTitle="Edit"
       onDelete={() => {
         question.is_active
           ? Inertia.delete(
-              route('exercise-question.question.destroy', [
-                question.exercise_question_id,
-                question.id,
-              ]),
-            )
+            route('exercise-question.question.destroy', [
+              exercise_question_id,
+              question.id,
+            ]),
+          )
           : Inertia.post(
-              route('exercise-question.question.restore', [
-                question.exercise_question_id,
-                question.id,
-              ]),
-            );
+            route('exercise-question.question.restore', [
+              exercise_question_id,
+              question.id,
+            ]),
+          );
       }}
       deleteTitle={question.is_active ? 'Hapus' : 'Restore'}
       onDeleteMessage={
@@ -91,6 +92,19 @@ export default function Index(props: Props) {
       }
       isRestore={!question.is_active}
     >
+      <div className='flex justify-end'>
+        <Button
+          variant="contained"
+          color="info"
+          size="large"
+        >
+          <InertiaLink
+            href={route('bank-question.item.show', [question.bank_question_id, question.id])}
+          >
+            Bank Soal
+          </InertiaLink>
+        </Button>
+      </div>
       <div className="border-t pt-2">
         <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example" centered>
           <Tab label="Soal" {...a11yProps(0)} />
@@ -101,7 +115,7 @@ export default function Index(props: Props) {
       <CustomTabPanel value={tabValue} index={0}>
         <label className='text-lg'>Pertanyaan</label>
         <div className="mx-auto border rounded-lg">
-          <QuestionShow question={props.question} />
+          <BankQuestionItemShow question={props.question} />
         </div>
       </CustomTabPanel>
 
@@ -114,9 +128,8 @@ export default function Index(props: Props) {
                 <div key={index}>
                   <label className='text-lg'>Pilihan {numberToUpperCase(index)}</label>
                   <div className="mx-auto border rounded-lg">
-                    <QuestionEditor
+                    <BankQuestionItemEditor
                       content={choice.content}
-                      exerciseQuestionId={props.question.exercise_question_id}
                       editorClassName='h-full'
                       disableEdit
                     />
@@ -139,34 +152,33 @@ export default function Index(props: Props) {
           </div>
         ) : (
           <div className="border-2 border-gray-200 p-5">
-                <label className='text-lg'>Jawaban</label>
-                <div className="mx-auto border rounded-lg">Essay</div>
+            <label className='text-lg'>Jawaban</label>
+            <div className="mx-auto border rounded-lg">Essay</div>
           </div>
-          )}
+        )}
       </CustomTabPanel>
 
 
-    
-  <CustomTabPanel value={tabValue} index={2}>
 
-      <div className="border-2 border-gray-200 p-5">
-      <label className='text-lg'>Jawaban Benar</label>
-        <p>pilihan {numberToUpperCase(props.question.answer)}</p>
-        {props.question.type == 'Pilihan' ? (
-          <>
-          <label className='text-lg'>Penjelasan Jawaban</label>
-          <div className="mx-auto border rounded-lg">
-              <QuestionEditor
-                content={props.question.explanation?.content ?? null}
-                  exerciseQuestionId={props.question.exercise_question_id}
+      <CustomTabPanel value={tabValue} index={2}>
+
+        <div className="border-2 border-gray-200 p-5">
+          <label className='text-lg'>Jawaban Benar</label>
+          <p>pilihan {numberToUpperCase(props.question.answer)}</p>
+          {props.question.type == 'Pilihan' ? (
+            <>
+              <label className='text-lg'>Penjelasan Jawaban</label>
+              <div className="mx-auto border rounded-lg">
+                <BankQuestionItemEditor
+                  content={props.question.explanation?.content ?? null}
                   editorClassName='h-full'
-                disableEdit
-              />
-            </div>
-          </>
-        ) : null}
-    </div>
-  </CustomTabPanel>
+                  disableEdit
+                />
+              </div>
+            </>
+          ) : null}
+        </div>
+      </CustomTabPanel>
 
     </AdminShowLayout>
 

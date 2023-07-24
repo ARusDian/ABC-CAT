@@ -14,10 +14,15 @@ interface Props {
   answer: ExamAnswerModel;
   questionEditorRef?: MutableRefObject<Editor | null>;
   updateAnswer?: (answer: { answer: any }) => void;
+  isEvaluation?: boolean;
 }
 
-export default function Answer(props: Props) {
-  const { answer, questionEditorRef, updateAnswer } = props;
+export default function Answer({
+  answer,
+  questionEditorRef,
+  updateAnswer,
+  isEvaluation = false,
+}: Props) {
 
   return (
     <div>
@@ -47,12 +52,12 @@ export default function Answer(props: Props) {
 
 function PilihanAnswerForm({
   answer,
-
+  isEvaluation = false,
   updateAnswer,
 }: {
   // answerArray: UseFieldArrayReturn<ExamModel, 'answers', 'idHash'>;
   answer: ExamAnswerPilihanModel;
-
+  isEvaluation?: boolean;
   updateAnswer?: (answer: { answer: number }) => void;
 }) {
   let choices = answer.question.answers.choices;
@@ -77,7 +82,7 @@ function PilihanAnswerForm({
     <div>
       {choices.map((choice, index) => {
         const editorRef = arrayEditorRef.current[index];
-
+        const isCorrent = answer.question
         return (
           <div className="flex justify-between" key={index}>
             <div className="flex gap-3">

@@ -189,7 +189,7 @@ class BankQuestionItemController extends Controller
             ]);
 
             return redirect()
-                ->route('bank-question.question.show', [
+                ->route('bank-question.item.show', [
                     $bank_question,
                     $id,
                 ])

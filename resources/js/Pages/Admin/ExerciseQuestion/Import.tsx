@@ -58,8 +58,7 @@ export default function Show(props: Props) {
     const bank_question_items = Object.entries(rowSelection)
       .filter(([_, it]) => it)
       .map(([it, _]) => it);
-    console.log(bank_question_items);
-    console.log(type);
+
     if (type == 1) {
       Inertia.post(
         route('exercise-question.store', [exerciseId!]),
@@ -124,7 +123,7 @@ export default function Show(props: Props) {
             </Select>
           </>
         )}
-      </div>
+      </div>  
       <MaterialReactTable
         columns={dataColumns}
         data={bank_question.items ?? []}

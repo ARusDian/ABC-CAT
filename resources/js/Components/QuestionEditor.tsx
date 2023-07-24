@@ -29,7 +29,7 @@ export default function QuestionEditor(props: Props) {
       },
       editorProps: {
         attributes: {
-          class: props.editorClassName ?? 'h-min-96',
+          class: props.editorClassName ?? 'h-full',
         },
       },
     },

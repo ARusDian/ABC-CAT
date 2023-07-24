@@ -112,6 +112,7 @@ export default function Form(props: Props) {
                     content={field.value}
                     onBlur={field.onChange}
                     exerciseQuestionId={props.bankQuestionId}
+                    editorClassName='h-full'
                   />
                   <InputError
                     className="mt-2"
@@ -139,6 +140,7 @@ export default function Form(props: Props) {
                     content={field.value}
                     onBlur={field.onChange}
                     exerciseQuestionId={props.bankQuestionId}
+                    editorClassName='h-full'
                   />
                   <InputError
                     className="mt-2"
@@ -182,6 +184,7 @@ function PilihanForm({
                       content={field.value}
                       onBlur={field.onChange}
                       exerciseQuestionId={exerciseQuestionId}
+                      
                     />
                     <InputError
                       className="mt-2"

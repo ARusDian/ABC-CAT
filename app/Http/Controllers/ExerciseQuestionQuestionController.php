@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\ExerciseQuestionTypeEnum;
 use App\Enums\QuestionTypeEnum;
 use App\Models\Question;
+use App\Models\BankQuestionitem;
+
 use App\Models\QuestionImage;
 use App\Http\Controllers\Controller;
 use App\Models\ExerciseQuestion;
@@ -153,7 +155,7 @@ class ExerciseQuestionQuestionController extends Controller
     public function show($exercise_question, $id)
     {
         return Inertia::render('Admin/ExerciseQuestion/Question/Show', [
-            'question' => fn () => Question::find($id),
+            'question' => fn () => BankQuestionItem::find($id),
             'exercise_question_id' => $exercise_question,
         ]);
     }

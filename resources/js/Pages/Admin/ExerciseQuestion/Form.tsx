@@ -1,3 +1,4 @@
+import InputError from '@/Components/Jetstream/InputError';
 import {
   DEFAULT_EXERCISE_QUESTION_TYPE,
   EXERCISE_QUESTION_TYPE,
@@ -32,6 +33,7 @@ export default function Form({ form, submitTitle, onSubmit }: Props) {
         helperText={form.formState.errors.name?.message}
         fullWidth
       />
+      <InputError message={form.formState.errors.name?.message} />
 
       <TextField
         label="Batas Waktu (Menit)"
@@ -44,6 +46,7 @@ export default function Form({ form, submitTitle, onSubmit }: Props) {
         helperText={form.formState.errors.time_limit?.message}
         fullWidth
       />
+      <InputError message={form.formState.errors.time_limit?.message} />
 
       <FormControl fullWidth>
         <InputLabel>Tipe Soal</InputLabel>
@@ -59,6 +62,7 @@ export default function Form({ form, submitTitle, onSubmit }: Props) {
             </MenuItem>
           ))}
         </Select>
+        <InputError message={form.formState.errors.type?.message} />
       </FormControl>
 
       <TextField
@@ -72,6 +76,7 @@ export default function Form({ form, submitTitle, onSubmit }: Props) {
         helperText={form.formState.errors.number_of_question?.message}
         fullWidth
       />
+      <InputError message={form.formState.errors.number_of_question?.message} />
 
       {submitTitle != null ? (
         <Button type="submit" disabled={form.formState.isSubmitting} fullWidth>
