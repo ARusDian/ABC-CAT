@@ -100,7 +100,7 @@ export default function Index(props: Props) {
       </div>
       <CustomTabPanel value={tabValue} index={0}>
         <label className='text-lg'>Pertanyaan</label>
-        <div className="mx-auto border rounded-2xl">
+        <div className="mx-auto border rounded-2xl p-5">
           <BankQuestionItemShow
             question={props.item}
             editorClassName='h-full'
@@ -115,11 +115,11 @@ export default function Index(props: Props) {
               return (
                 <div key={index} className='mt-4'>
                   <label className='text-lg'>Pilihan {numberToUpperCase(index)}</label>
-                  <div className="mx-auto border rounded-2xl">
+                  <div className="mx-auto border rounded-2xl p-5  ">
                     <QuestionEditor
                       content={choice.content}
                       exerciseQuestionId={props.item.bank_question_id}
-                      editorClassName='h-full'
+                      editorClassName='h-10 h-full'
                       disableEdit
                     />
                   </div>
@@ -134,7 +134,7 @@ export default function Index(props: Props) {
               return (
                 <div key={index} className='mt-3'>
                   <label className='text-lg'>Pilihan {numberToUpperCase(index)}</label>
-                  <div className="mx-auto border rounded-2xl">{choice}</div>
+                  <div className="mx-auto border rounded-2xl p-5">{choice}</div>
                 </div>
               );
             })}
@@ -142,7 +142,7 @@ export default function Index(props: Props) {
         ) : (
           <div className="">
             <label className='text-lg'>Jawaban</label>
-            <div className="mx-auto border rounded-2xl">Essay</div>
+            <div className="mx-auto border rounded-2xl p-5">Essay</div>
           </div>
         )}
       </CustomTabPanel>
@@ -153,7 +153,7 @@ export default function Index(props: Props) {
         {props.item.type == 'Pilihan' ? (
           <>
             <label className='text-lg'>Penjelasan Jawaban</label>
-            <div className="mx-auto border rounded-2xl">
+            <div className="mx-auto border rounded-2xl p-5">
               <QuestionEditor
                 content={props.item.explanation?.content ?? null}
                   exerciseQuestionId={props.item.bank_question_id}

@@ -84,23 +84,25 @@ export default function Form(props: Props) {
       </div>
       <div className="form-control w-full mt-4">
         <CustomTabPanel value={tabValue} index={0}>
-          <TextField
-            {...form.register('name', { required: true })}
-            label="Nama"
-            defaultValue={form.formState.defaultValues?.name}
-            error={form.formState.errors?.name != null}
-            helperText={form.formState.errors?.name?.message}
-          />
+          <div className='flex gap-3'>
+            <TextField
+              {...form.register('name', { required: true })}
+              label="Nama"
+              defaultValue={form.formState.defaultValues?.name}
+              error={form.formState.errors?.name != null}
+              helperText={form.formState.errors?.name?.message}
+            />
 
-          <TextField
-            {...form.register('weight', { valueAsNumber: true })}
-            type="number"
-            inputProps={{ step: 'any' }}
-            label="Bobot Soal"
-            defaultValue={form.formState.defaultValues?.weight}
-            error={form.formState.errors?.weight != null}
-            helperText={form.formState.errors?.weight?.message}
-          />
+            <TextField
+              {...form.register('weight', { valueAsNumber: true })}
+              type="number"
+              inputProps={{ step: 'any' }}
+              label="Bobot Soal"
+              defaultValue={form.formState.defaultValues?.weight}
+              error={form.formState.errors?.weight != null}
+              helperText={form.formState.errors?.weight?.message}
+            />
+          </div>
           <Controller
             name="question.content"
             control={form.control}
@@ -112,7 +114,7 @@ export default function Form(props: Props) {
                     content={field.value}
                     onBlur={field.onChange}
                     exerciseQuestionId={props.bankQuestionId}
-                    editorClassName='h-full'
+                    editorClassName='h-full min-h-[96px] p-3'
                   />
                   <InputError
                     className="mt-2"
@@ -140,7 +142,7 @@ export default function Form(props: Props) {
                     content={field.value}
                     onBlur={field.onChange}
                     exerciseQuestionId={props.bankQuestionId}
-                    editorClassName='h-full'
+                    editorClassName='h-full min-h-[96px] p-3'
                   />
                   <InputError
                     className="mt-2"
@@ -184,7 +186,7 @@ function PilihanForm({
                       content={field.value}
                       onBlur={field.onChange}
                       exerciseQuestionId={exerciseQuestionId}
-                      
+                      editorClassName='h-full min-h-[96px] p-3'
                     />
                     <InputError
                       className="mt-2"
