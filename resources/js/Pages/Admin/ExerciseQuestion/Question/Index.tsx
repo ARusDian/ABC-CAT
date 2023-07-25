@@ -1,10 +1,8 @@
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
-import { confirmAlert } from 'react-confirm-alert';
 import route from 'ziggy-js';
 
-import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react'
 import { QuestionModel } from '@/Models/Question';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { Button } from '@mui/material';
@@ -43,9 +41,9 @@ export default function Index(props: Props) {
               color="primary"
               size="large"
             >
-              <InertiaLink href={route('question.show', row.original.id)}>
+              <Link href={route('question.show', row.original.id)}>
                 Show
-              </InertiaLink>
+              </Link>
             </Button>
           </div>
         )}

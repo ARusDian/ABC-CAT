@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { useForm } from 'react-hook-form';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import { AutoSizer, Grid, List, ScrollSync } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import Checkbox from '@mui/material/Checkbox';
@@ -112,7 +112,7 @@ export default function Create(props: Props) {
       }),
     };
 
-    Inertia.post(
+    router.post(
       route(
         'exercise-question.question.store-many',
         props.exercise_question.id,

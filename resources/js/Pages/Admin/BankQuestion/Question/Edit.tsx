@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import Form from './Form';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import { BankQuestionItemFormModel, BankQuestionItemModel } from '@/Models/BankQuestionItem';
 
 interface Props {
@@ -23,7 +23,7 @@ export default function Edit(props: Props) {
     console.log(data);
 
     form.clearErrors();
-    Inertia.post(
+    router.post(
       route('bank-question.item.update', [
         question.bank_question_id,
         question.id,

@@ -4,7 +4,7 @@ import route from 'ziggy-js';
 import Form from './Form';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { useForm } from 'react-hook-form';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import { BankQuestionFormModel, BankQuestionModel } from '@/Models/BankQuestion';
 
 interface Props {
@@ -21,7 +21,7 @@ export default function Create(props: Props) {
 
   const onSubmit = React.useCallback(
     (e: BankQuestionFormModel) => {
-      Inertia.put(
+      router.put(
         route('bank-question.update', props.bank_question.id),
         e as any,
         {

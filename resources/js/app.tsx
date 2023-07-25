@@ -2,8 +2,7 @@ import './bootstrap';
 import '../css/app.css';
 
 import React from 'react';
-import { createInertiaApp } from '@inertiajs/inertia-react';
-import { InertiaProgress } from '@inertiajs/progress';
+import { createInertiaApp } from '@inertiajs/react';
 import { RouteContext } from '@/Hooks/useRoute';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ThemeProvider } from '@mui/material';
@@ -16,6 +15,7 @@ const appName =
 
 createInertiaApp({
   title: title => `${title} - ${appName}`,
+  progress: { color: '#4B5563' },
   resolve: name =>
     resolvePageComponent(
       `./Pages/${name}.tsx`,
@@ -34,5 +34,3 @@ createInertiaApp({
     );
   },
 });
-
-InertiaProgress.init({ color: '#4B5563' });

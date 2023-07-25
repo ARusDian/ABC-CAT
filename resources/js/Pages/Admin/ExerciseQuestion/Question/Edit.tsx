@@ -11,7 +11,7 @@ import {
 } from '@/Models/Question';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 
 interface Props {
   question: QuestionModel;
@@ -27,7 +27,7 @@ export default function Edit(props: Props) {
     console.log(data);
 
     form.clearErrors();
-    Inertia.post(
+    router.post(
       route('exercise-question.question.update', [
         question.exercise_question_id,
         question.id,

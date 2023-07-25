@@ -5,7 +5,7 @@ import route from 'ziggy-js';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import { AutoSizer, Grid, List, ScrollSync } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import { BankQuestionModel } from '@/Models/BankQuestion';
@@ -110,7 +110,7 @@ export default function Create(props: Props) {
       }),
     };
 
-    Inertia.post(
+    router.post(
       route(
         'bank-question.item.store-many',
         props.bank_question.id,

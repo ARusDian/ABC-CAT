@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { BankQuestionItemFormModel } from '@/Models/BankQuestionItem';
 import { BankQuestionModel } from '@/Models/BankQuestion';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 
 interface Props {
   bank_question: BankQuestionModel;
@@ -59,7 +59,7 @@ export default function Create(props: Props) {
     console.log(e);
     form.clearErrors();
 
-    Inertia.post(
+    router.post(
       route('bank-question.item.store', [props.bank_question.id]),
 
       e as any,

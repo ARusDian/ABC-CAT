@@ -1,7 +1,7 @@
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react'
 import { Button } from '@mui/material';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
@@ -41,24 +41,24 @@ export default function Show(props: Props) {
         </div>
         <div className='flex justify-around my-auto gap-5'>
           <Button variant="contained" color="primary" size="large">
-            <InertiaLink
+            <Link
               href={route(
                 'exercise-question.question.create',
                 exercise_question.id,
               )}
             >
               Tambah Soal
-            </InertiaLink>
+            </Link>
           </Button>
           <Button variant="contained" color="primary" size="large">
-            <InertiaLink
+            <Link
               href={route(
                 'exercise-question.leaderboard',
                 exercise_question.id,
               )}
             >
               Leaderboard
-            </InertiaLink>
+            </Link>
           </Button>
         </div>
       </div>
@@ -77,24 +77,24 @@ export default function Show(props: Props) {
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
             <Button variant="contained" color="primary" size="large">
-              <InertiaLink
+              <Link
                 href={route('exercise-question.question.show', [
                   exercise_question.id,
                   row.original.id,
                 ])}
               >
                 Show
-              </InertiaLink>
+              </Link>
             </Button>
             <Button variant="contained" color="error" size="large">
-              <InertiaLink
+              <Link
                 href={route('exercise-question.question.destroy', [
                   exercise_question.id,
                   row.original.id,
                 ])}
               >
                 Hapus
-              </InertiaLink>
+              </Link>
             </Button>
           </div>
         )}

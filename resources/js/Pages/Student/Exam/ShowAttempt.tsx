@@ -1,9 +1,9 @@
 import { ExamModel } from '@/Models/Exam';
-import React, { useState } from 'react';
+import React from 'react';
 import Answer from './Answer';
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { Button } from '@mui/material';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react'
 import route from 'ziggy-js';
 import { useSearchParam } from 'react-use';
 
@@ -32,14 +32,14 @@ export default function ShowAttempt({exam}: Props) {
           </div>
           <div className="text-lg">
             <Button variant="contained" color="primary" size="large">
-              <InertiaLink
+              <Link
                 href={route(
                   'exam.show',
                   exam.exercise_question_id,
                 )}
               >
                 Kembali
-              </InertiaLink>
+              </Link>
             </Button>
           </div>
         </div>

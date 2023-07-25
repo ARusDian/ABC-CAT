@@ -3,9 +3,8 @@ import Button from '@mui/material/Button';
 import React from 'react';
 import Countdown from 'react-countdown';
 import { useFieldArray, useForm } from 'react-hook-form';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import route from 'ziggy-js';
-import { Editor } from '@tiptap/react';
 import { ExamAnswerModel, ExamModel, ExamPilihanModel } from '@/Models/Exam';
 import { useDebounce, useSearchParam } from 'react-use';
 import axios from 'axios';
@@ -152,7 +151,7 @@ export default function Run({ exam }: Props) {
       description: "Yakin Sudah Selesai Mengerjakan Ujian"
     })
       .then(() => {
-        Inertia.post(route('exam.finish', exam.exercise_question_id));
+        router.post(route('exam.finish', exam.exercise_question_id));
       })
       .catch(() => {
         console.log("Confirmation was rejected");

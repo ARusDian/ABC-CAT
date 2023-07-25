@@ -8,7 +8,7 @@ import InputLabel from '@/Components/Jetstream/InputLabel';
 import PrimaryButton from '@/Components/Jetstream/PrimaryButton';
 import TextInput from '@/Components/Jetstream/TextInput';
 import useRoute from '@/Hooks/useRoute';
-import { Head, InertiaLink, useForm } from '@inertiajs/inertia-react';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 interface Props {
   canResetPassword: boolean;
@@ -83,12 +83,12 @@ export default function Login({ canResetPassword, status }: Props) {
         <div className="flex flex-col space-y-2 md:flex-row md:items-center md:justify-end md:space-y-0 mt-4">
           {canResetPassword && (
             <div>
-              <InertiaLink
+              <Link
                 href={route('password.request')}
                 className="underline text-sm text-gray-900 hover:text-gray-900"
               >
                 Forgot your password?
-              </InertiaLink>
+              </Link>
             </div>
           )}
 

@@ -1,8 +1,8 @@
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react'
 import React from 'react';
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
-import { Head } from '@inertiajs/inertia-react';
+import { Head } from '@inertiajs/react';
 
 interface Props {
   canLogin: boolean;
@@ -30,36 +30,36 @@ export default function Welcome({
         <div className="hidden fixed top-0 right-0 px-6 py-4 sm:block">
           {page.props.user ? (
             <>
-              <InertiaLink
+              <Link
                 href={route('dashboard')}
                 className="text-sm text-gray-700 dark:text-gray-500 underline"
               >
                 Dashboard
-              </InertiaLink>
-              <InertiaLink
+              </Link>
+              <Link
                 href={route('logout')}
-                method="POST"
+                method="post"
                 className="ml-4 text-sm text-gray-700 dark:text-gray-500 underline"
               >
                 Logout
-              </InertiaLink>
+              </Link>
             </>
           ) : (
             <>
-              <InertiaLink
+              <Link
                 href={route('login')}
                 className="text-sm text-gray-700 dark:text-gray-500 underline"
               >
                 Log in
-              </InertiaLink>
+              </Link>
 
               {canRegister ? (
-                <InertiaLink
+                <Link
                   href={route('register')}
                   className="ml-4 text-sm text-gray-700 dark:text-gray-500 underline"
                 >
                   Register
-                </InertiaLink>
+                </Link>
               ) : null}
             </>
           )}

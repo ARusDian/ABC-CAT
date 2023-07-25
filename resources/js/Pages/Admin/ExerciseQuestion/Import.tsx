@@ -1,23 +1,19 @@
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
-import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { BankQuestionModel } from '@/Models/BankQuestion';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react'
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
-import ListItem from '@mui/material/ListItem';
 import MenuItem from '@mui/material/MenuItem';
-import { useDefaultExerciseQuestionFormModel } from '@/Hooks/useDefaultExerciseQuestionForm';
 import Form from './Form';
 import {
   ExerciseQuestionFormModel,
   ExerciseQuestionModel,
 } from '@/Models/ExerciseQuestion';
-import FormHelperText from '@mui/material/FormHelperText';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import { useForm } from 'react-hook-form';
 
 interface Props {
@@ -60,7 +56,7 @@ export default function Show(props: Props) {
       .map(([it, _]) => it);
 
     if (type == 1) {
-      Inertia.post(
+      router.post(
         route('exercise-question.store', [exerciseId!]),
         {
           ...e,
@@ -73,7 +69,7 @@ export default function Show(props: Props) {
         },
       );
     } else if (type == 2) {
-      Inertia.post(
+      router.post(
         route('exercise-question.import.update', [exerciseId!]),
         {
           _method: 'PUT',
@@ -143,7 +139,7 @@ export default function Show(props: Props) {
         muiTableBodyRowProps={{ hover: false }}
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
-            <InertiaLink
+            <Link
               href={route('bank-question.item.show', [
                 bank_question.id,
                 row.original.id,
@@ -151,7 +147,7 @@ export default function Show(props: Props) {
               className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
             >
               Show
-            </InertiaLink>
+            </Link>
           </div>
         )}
         renderTopToolbarCustomActions={() => (

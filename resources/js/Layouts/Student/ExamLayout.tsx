@@ -1,12 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 
 import Banner from '@/Components/Jetstream/Banner';
-import ResponsiveNavLink from '@/Components/Jetstream/ResponsiveNavLink';
-import useRoute from '@/Hooks/useRoute';
-import useTypedPage from '@/Hooks/useTypedPage';
-import { Inertia } from '@inertiajs/inertia';
-import { Box } from '@mui/material';
-import { Head } from '@inertiajs/inertia-react';
+import { Head } from '@inertiajs/react';
 import { asset } from '@/Models/Helper';
 
 interface Props {

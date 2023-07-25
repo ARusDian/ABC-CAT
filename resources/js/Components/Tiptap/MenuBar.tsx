@@ -4,7 +4,7 @@ import { Editor } from '@tiptap/react';
 import React, { Fragment, useState } from 'react';
 import './MenuItem.scss';
 import MenuItem, { MenuProps } from './MenuItem';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import axios from 'axios';
 import route from 'ziggy-js';
 

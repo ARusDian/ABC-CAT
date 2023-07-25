@@ -1,15 +1,11 @@
 import React from 'react';
 import route from 'ziggy-js';
-
-import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
-
 import Form from './Form';
-import { BaseQuestionModel, QuestionFormModel } from '@/Models/Question';
+import { QuestionFormModel } from '@/Models/Question';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { useForm } from 'react-hook-form';
-import { Inertia } from '@inertiajs/inertia';
 
 interface Props {
   exercise_question: ExerciseQuestionModel;

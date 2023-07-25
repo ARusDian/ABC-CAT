@@ -8,7 +8,7 @@ import {
   ExerciseQuestionFormModel,
 } from '@/Models/ExerciseQuestion';
 import { useForm } from 'react-hook-form';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import { useDefaultExerciseQuestionFormModel } from '@/Hooks/useDefaultExerciseQuestionForm';
 
 interface Props {}
@@ -17,7 +17,7 @@ export default function Create(props: Props) {
   let form = useDefaultExerciseQuestionFormModel();
 
   function onSubmit(e: ExerciseQuestionFormModel) {
-    Inertia.post(route('exercise-question.store'), e as any, {
+    router.post(route('exercise-question.store'), e as any, {
       onError: errors => {
         console.log(errors);
       },

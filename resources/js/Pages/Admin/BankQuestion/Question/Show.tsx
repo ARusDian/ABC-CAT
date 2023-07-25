@@ -1,6 +1,6 @@
 import React from 'react';
 import route from 'ziggy-js';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import QuestionEditor from '@/Components/QuestionEditor';
 import { numberToUpperCase } from '@/Utils/Convert';
@@ -68,13 +68,13 @@ export default function Index(props: Props) {
       editRouteTitle="Edit"
       onDelete={() => {
         item.is_active
-          ? Inertia.delete(
+          ? router.delete(
             route('bank-question.item.destroy', [
               item.bank_question_id,
               item.id,
             ]),
           )
-          : Inertia.post(
+          : router.post(
             route('bank-question.item.restore', [
               item.bank_question_id,
               item.id,

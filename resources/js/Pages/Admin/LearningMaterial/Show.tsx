@@ -1,7 +1,7 @@
 import React from 'react';
 import route from 'ziggy-js';
 import parse from 'html-react-parser';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import { LearningMaterialModel } from '@/Models/LearningMaterial';
 import PDFViewer from '@/Components/PDFViewer';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
@@ -22,7 +22,7 @@ export default function Index(props: Props) {
       editRoute={route('learning-material.edit', learningMaterial.id)}
       editRouteTitle="Edit"
       onDelete={() => {
-        Inertia.post(route('learning-material.destroy', learningMaterial.id), {
+        router.post(route('learning-material.destroy', learningMaterial.id), {
           _method: 'DELETE',
         });
       }}

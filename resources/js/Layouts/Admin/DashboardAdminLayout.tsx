@@ -1,8 +1,7 @@
 import React, { PropsWithChildren } from 'react';
-import { Head, InertiaLink } from '@inertiajs/inertia-react';
+import { Head, router } from '@inertiajs/react';
 import Banner from '@/Components/Jetstream/Banner';
 import ResponsiveNavLink from '@/Components/Jetstream/ResponsiveNavLink';
-import { Inertia } from '@inertiajs/inertia';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import {
   Box,
@@ -103,7 +102,8 @@ const Drawer = styled(MuiDrawer, {
 
 function logout(e: React.FormEvent) {
   e.preventDefault();
-  Inertia.post(route('logout'));
+  router.post(route('logout'));
+  // router.post(route('logout'));
 }
 
 export default function DashboardAdminLayout({

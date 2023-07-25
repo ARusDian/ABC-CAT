@@ -1,5 +1,5 @@
 import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react'
 import { Button } from '@mui/material';
 import React from 'react';
 import { useConfirm } from 'material-ui-confirm';
@@ -52,19 +52,19 @@ export default function Index(props: React.PropsWithChildren<Props>) {
           <div className="mt-8 text-2xl">{headerTitle}</div>
           <div className="flex flex-col md:flex-row gap-3">
             {backRoute ? (
-              <InertiaLink href={backRoute} className="my-auto">
+              <Link href={backRoute} className="my-auto">
                 <Button variant="contained" color="primary" size="large">
                   {backRouteTitle ?? 'Kembali'}
                 </Button>
-              </InertiaLink>
+              </Link>
             ) : null}
 
             {editRoute ? (
-              <InertiaLink href={editRoute} className="my-auto">
+              <Link href={editRoute} className="my-auto">
                 <Button variant="contained" color="warning" size="large">
                   {editRouteTitle ?? 'Edit'}
                 </Button>
-              </InertiaLink>
+              </Link>
             ) : null}
 
             {onDelete ? (

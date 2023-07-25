@@ -4,7 +4,6 @@ import {
   EXERCISE_QUESTION_TYPE,
   ExerciseQuestionFormModel,
 } from '@/Models/ExerciseQuestion';
-import { InertiaFormProps } from '@inertiajs/inertia-react';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';

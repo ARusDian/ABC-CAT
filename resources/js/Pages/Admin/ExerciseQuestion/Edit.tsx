@@ -8,7 +8,7 @@ import {
   ExerciseQuestionModel,
 } from '@/Models/ExerciseQuestion';
 import { useForm } from 'react-hook-form';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 
 interface Props {
   exercise_question: ExerciseQuestionModel;
@@ -25,7 +25,7 @@ export default function Create(props: Props) {
 
   const onSubmit = React.useCallback(
     (e: ExerciseQuestionFormModel) => {
-      Inertia.put(
+      router.put(
         route('exercise-question.update', props.exercise_question.id),
         e as any,
         {

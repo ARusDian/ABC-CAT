@@ -10,15 +10,9 @@ dependencies:
   '@headlessui/react':
     specifier: ^1.7.15
     version: 1.7.15(react-dom@18.2.0)(react@18.2.0)
-  '@inertiajs/inertia':
-    specifier: ^0.11.1
-    version: 0.11.1
-  '@inertiajs/inertia-react':
-    specifier: ^0.8.1
-    version: 0.8.1(@inertiajs/inertia@0.11.1)(react@18.2.0)
-  '@inertiajs/progress':
-    specifier: ^0.2.7
-    version: 0.2.7(@inertiajs/inertia@0.11.1)
+  '@inertiajs/react':
+    specifier: ^1.0.9
+    version: 1.0.9(react@18.2.0)
   '@mui/icons-material':
     specifier: ^5.11.16
     version: 5.11.16(@mui/material@5.13.5)(@types/react@18.2.13)(react@18.2.0)
@@ -1897,34 +1891,27 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@inertiajs/inertia-react@0.8.1(@inertiajs/inertia@0.11.1)(react@18.2.0):
-    resolution: {integrity: sha512-9Uu7t4EA9FrcREwWnOU/qW5i4hYFt+uFn5cqP6RGJo8lJS4u8t6Q9358oHuQUKbFEbaIjUu7aslCL3/Istctlg==}
-    peerDependencies:
-      '@inertiajs/inertia': ^0.11.0
-      react: ^16.9.0 || ^17.0.0 || ^18.0.0
+  /@inertiajs/core@1.0.9:
+    resolution: {integrity: sha512-Vd/4akXnY90qwtPJ1nVGtLXYhyGZdDjvQ4rv5qeqFYmqLEARdhDd7Lku1BwkboZX6GSTgDkipBSSGTKuRemOkQ==}
     dependencies:
-      '@inertiajs/inertia': 0.11.1
-      lodash.isequal: 4.5.0
-      react: 18.2.0
-    dev: false
-
-  /@inertiajs/inertia@0.11.1:
-    resolution: {integrity: sha512-btmV53c54oW4Z9XF0YyTdIUnM7ue0ONy3/KJOz6J1C5CYIwimiKfDMpz8ZbGJuxS+SPdOlNsqj2ZhlHslpJRZg==}
-    dependencies:
-      axios: 0.21.4
+      axios: 1.4.0
       deepmerge: 4.3.1
+      nprogress: 0.2.0
       qs: 6.11.2
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /@inertiajs/progress@0.2.7(@inertiajs/inertia@0.11.1):
-    resolution: {integrity: sha512-zxadfLlBPIUvTE9g5k71V/Ayzo8P9kEp4hV4UKywCC2kURufxV7bycbZqU1GeMCFGDT+VRrjXNl676Pwwa1HoQ==}
+  /@inertiajs/react@1.0.9(react@18.2.0):
+    resolution: {integrity: sha512-0H9qwReRhc3QCEONX6B+EYUSDKmJG0pJMeswxB2iq+nmeYO2lgnus9DiknZTeN2Y/iLcSnYvNcgGGSqQus1Qfg==}
     peerDependencies:
-      '@inertiajs/inertia': ^0.6.0 || ^0.7.0 || ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0
+      react: ^16.9.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@inertiajs/inertia': 0.11.1
-      nprogress: 0.2.0
+      '@inertiajs/core': 1.0.9
+      lodash.isequal: 4.5.0
+      react: 18.2.0
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /@jest/expect-utils@29.5.0:
@@ -3669,14 +3656,6 @@ packages:
       postcss: 8.4.24
       postcss-value-parser: 4.2.0
     dev: true
-
-  /axios@0.21.4:
-    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
-    dependencies:
-      follow-redirects: 1.15.2
-    transitivePeerDependencies:
-      - debug
-    dev: false
 
   /axios@1.4.0:
     resolution: {integrity: sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==}

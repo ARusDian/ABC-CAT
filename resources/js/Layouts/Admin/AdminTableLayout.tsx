@@ -1,4 +1,4 @@
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react'
 import React from 'react';
 import route from 'ziggy-js';
 import DashboardAdminLayout from './DashboardAdminLayout';
@@ -29,11 +29,11 @@ export default function AdminTableLayout({
             <div className="mt-8 text-2xl">{title}</div>
             <div className="">
               {addRoute ? (
-                <InertiaLink href={addRoute}>
+                <Link href={addRoute}>
                   <Button variant="contained" color="primary" size="large">
                     {addRouteTitle ?? `Tambah ${title}`}
                   </Button>
-                </InertiaLink>
+                </Link>
               ) : null}
             </div>
           </div>

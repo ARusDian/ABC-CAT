@@ -4,7 +4,7 @@ import route from 'ziggy-js';
 import Form from './Form';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { useForm } from 'react-hook-form';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import { BankQuestionFormModel, DEFAULT_BANK_QUESTION_TYPE } from '@/Models/BankQuestion';
 
 interface Props {}
@@ -18,7 +18,7 @@ export default function Create(props: Props) {
   });
 
   function onSubmit(e: BankQuestionFormModel) {
-    Inertia.post(route('bank-question.store'), e as any, {
+    router.post(route('bank-question.store'), e as any, {
       onError: errors => {
         console.log(errors);
       },

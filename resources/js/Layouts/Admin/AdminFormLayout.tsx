@@ -1,4 +1,4 @@
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react'
 import React from 'react';
 import DashboardAdminLayout from './DashboardAdminLayout';
 import { Button } from '@mui/material';
@@ -18,9 +18,9 @@ export default function AdminFormLayout(props: React.PropsWithChildren<Props>) {
         <div className="text-2xl">{title}</div>
         {backRoute ? (
           <Button variant="contained" color="primary" size="large">
-            <InertiaLink href={backRoute}>
+            <Link href={backRoute}>
               {backRouteTitle ?? 'Kembali'}
-            </InertiaLink>
+            </Link>
           </Button>
         ) : null}
       </div>

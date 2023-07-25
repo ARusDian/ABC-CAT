@@ -1,7 +1,7 @@
 import React from 'react';
 import route from 'ziggy-js';
 import { User } from '@/types';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 
 interface Props {
@@ -29,7 +29,7 @@ export default function Show(props: Props) {
       editRoute={route('user.edit', user.id)}
       editRouteTitle="Edit"
       onDelete={() => {
-        Inertia.post(route('user.destroy', user.id), {
+        router.post(route('user.destroy', user.id), {
           _method: 'DELETE',
         });
       }}

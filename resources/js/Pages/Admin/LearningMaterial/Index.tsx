@@ -2,7 +2,7 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react'
 import { LearningMaterialModel } from '@/Models/LearningMaterial';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { Button } from '@mui/material';
@@ -41,11 +41,11 @@ export default function Index(props: Props) {
               color="primary"
               size="large"
             >
-              <InertiaLink
+              <Link
                 href={route('learning-material.show', row.original.id)}
               >
                 Show
-              </InertiaLink>
+              </Link>
             </Button>
           </div>
         )}

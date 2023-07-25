@@ -4,7 +4,7 @@ import Banner from '@/Components/Jetstream/Banner';
 import ResponsiveNavLink from '@/Components/Jetstream/ResponsiveNavLink';
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import { Box, Drawer } from '@mui/material';
 import { asset } from '@/Models/Helper';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -28,7 +28,7 @@ export default function DashboardAdminLayout({
 
   function logout(e: React.FormEvent) {
     e.preventDefault();
-    Inertia.post(route('logout'));
+    router.post(route('logout'));
   }
 
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);

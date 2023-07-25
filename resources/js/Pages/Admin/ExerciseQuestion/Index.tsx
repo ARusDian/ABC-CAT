@@ -2,7 +2,7 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react'
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 
@@ -37,12 +37,12 @@ export default function Index({ exercise_questions }: Props) {
         muiTableBodyRowProps={{ hover: false }}
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
-            <InertiaLink
+            <Link
               href={route('exercise-question.show', row.original.id)}
               className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
             >
               Show
-            </InertiaLink>
+            </Link>
           </div>
         )}
       />

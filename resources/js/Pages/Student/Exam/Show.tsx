@@ -1,7 +1,7 @@
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react'
 import Button from '@mui/material/Button';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
@@ -58,12 +58,12 @@ export default function Show(props: Props) {
           muiTableBodyRowProps={{ hover: false }}
           renderRowActions={({ row }) => (
             <div className="flex items-center justify-center gap-2">
-              <InertiaLink
+              <Link
                 href={route('exam.show.attempt', [props.exercise_question.id, row.original.id])}
                 className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
               >
                 Show
-              </InertiaLink>
+              </Link>
             </div>
           )}
           renderTopToolbarCustomActions={() => (
@@ -71,12 +71,12 @@ export default function Show(props: Props) {
               variant="contained"
               color="primary"
             >
-              <InertiaLink
+              <Link
                 href={route('exam.attempt', [props.exercise_question.id])}
                 method="POST"
               >
                 Mulai Ujian
-              </InertiaLink>
+              </Link>
             </Button>
             )}
         />

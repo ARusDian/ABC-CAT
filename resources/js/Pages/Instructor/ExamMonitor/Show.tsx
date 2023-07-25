@@ -1,11 +1,6 @@
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
-import { BankQuestionModel } from '@/Models/BankQuestion';
-import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 import { ExamModel } from '@/Models/Exam';
-import { Inertia } from '@inertiajs/inertia';
-import { InertiaLink } from '@inertiajs/inertia-react';
-import { Button } from '@mui/material';
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import { router } from '@inertiajs/react';
 import React from 'react';
 import { useIdle, useInterval } from 'react-use';
 import { AutoSizer, Grid, List, ScrollSync } from 'react-virtualized';
@@ -27,7 +22,7 @@ export default function Show(props: Props) {
   useInterval(() => {
     if (!isIdle) {
       console.log('reloading', re);
-      console.log(Inertia.reload({ only: ['exam'] }));
+      console.log(router.reload({ only: ['exam'] }));
       re.current += 1;
     } else {
       console.log({isIdle});

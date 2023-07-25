@@ -10,8 +10,8 @@ import SecondaryButton from '@/Components/Jetstream/SecondaryButton';
 import TextInput from '@/Components/Jetstream/TextInput';
 import useRoute from '@/Hooks/useRoute';
 import { User } from '@/types';
-import { Inertia } from '@inertiajs/inertia';
-import { useForm, usePage } from '@inertiajs/inertia-react';
+import { router } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 
 interface Props {
   user: User;
@@ -64,7 +64,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
   }
 
   function deletePhoto() {
-    Inertia.delete(route('current-user-photo.destroy'), {
+    router.delete(route('current-user-photo.destroy'), {
       preserveScroll: true,
       onSuccess: () => {
         setPhotoPreview(null);

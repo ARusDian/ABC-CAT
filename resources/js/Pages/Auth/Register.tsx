@@ -9,7 +9,7 @@ import PrimaryButton from '@/Components/Jetstream/PrimaryButton';
 import TextInput from '@/Components/Jetstream/TextInput';
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
-import { Head, InertiaLink, useForm } from '@inertiajs/inertia-react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
@@ -132,12 +132,12 @@ export default function Register() {
             <InputError className="mt-2" message={form.errors.role} />
           </div> */}
           <div className="flex justify-between mt-4 gap-5">
-            <InertiaLink
+            <Link
               href={route('login')}
               className="underline text-sm text-gray-900 hover:text-gray-900"
             >
               Already registered?
-            </InertiaLink>
+            </Link>
             <button
               className="inline-flex items-center px-4 py-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
               onClick={() => setTabIndex(1)}
@@ -232,12 +232,12 @@ export default function Register() {
               </InputLabel>
             </div>
           )}
-          <InertiaLink
+          <Link
             href={route('login')}
             className="inline-flex md:hidden mt-4 underline text-sm text-gray-900 hover:text-gray-900"
           >
             Already registered?
-          </InertiaLink>
+          </Link>
           <div className="flex items-center justify-between mt-4">
             <button
               className="inline-flex items-center px-4 py-2 bg-sky-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
@@ -245,12 +245,12 @@ export default function Register() {
             >
               Kembali
             </button>
-            <InertiaLink
+            <Link
               href={route('login')}
               className="hidden md:inline-flex underline text-sm text-gray-900 hover:text-gray-900"
             >
               Already registered?
-            </InertiaLink>
+            </Link>
             <PrimaryButton
               className={classNames('ml-4', { 'opacity-25': form.processing })}
               disabled={form.processing}
