@@ -1,5 +1,5 @@
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
-import {  ExamModel } from '@/Models/Exam';
+import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { groupBy, maxBy } from 'lodash';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
@@ -24,14 +24,14 @@ export default function Leaderboard(props: Props) {
   }, [props.exercise_question.exams]);
 
   const dataColumns = [
-    {header: 'User', accessorKey: 'user.name'},
+    { header: 'User', accessorKey: 'user.name' },
     {
       header: 'Waktu Mulai',
-      accessorFn: it => (new Date(it.created_at)).toLocaleString()
+      accessorFn: it => new Date(it.created_at).toLocaleString(),
     },
     {
       header: 'Waktu Berakhir',
-      accessorFn: it => (new Date(it.finished_at)).toLocaleString(),
+      accessorFn: it => new Date(it.finished_at).toLocaleString(),
     },
     {
       header: 'Score',
@@ -49,29 +49,29 @@ export default function Leaderboard(props: Props) {
 
   return (
     <AdminTableLayout title="Leaderboard">
-        <MaterialReactTable
-          columns={dataColumns}
-          data={sortedExam}
-          enableColumnActions
-          enableColumnFilters
-          enablePagination
-          enableSorting
-          enableBottomToolbar
-          enableTopToolbar
-          enableRowActions
-          enableRowNumbers
-          muiTableBodyRowProps={{ hover: false }}
-          // renderRowActions={({ row }) => (
-          //   <div className="flex items-center justify-center gap-2">
-          //     <Link
-          //       href={route('exam.show.attempt', [props.exercise_question.id, row.original.id])}
-          //       className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
-          //     >
-          //       Show
-          //     </Link>
-          //   </div>
-          // )}
-        />
+      <MaterialReactTable
+        columns={dataColumns}
+        data={sortedExam}
+        enableColumnActions
+        enableColumnFilters
+        enablePagination
+        enableSorting
+        enableBottomToolbar
+        enableTopToolbar
+        enableRowActions
+        enableRowNumbers
+        muiTableBodyRowProps={{ hover: false }}
+        // renderRowActions={({ row }) => (
+        //   <div className="flex items-center justify-center gap-2">
+        //     <Link
+        //       href={route('exam.show.attempt', [props.exercise_question.id, row.original.id])}
+        //       className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
+        //     >
+        //       Show
+        //     </Link>
+        //   </div>
+        // )}
+      />
     </AdminTableLayout>
   );
 }

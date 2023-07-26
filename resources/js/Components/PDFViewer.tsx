@@ -12,7 +12,7 @@ import { BaseLearningMaterialDocumentModel } from '@/Models/LearningMaterial';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/toolbar/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
-import workerUrl from "pdfjs-dist/build/pdf.worker.min.js?url"
+import workerUrl from 'pdfjs-dist/build/pdf.worker.min.js?url';
 
 import { getStorageFileUrl } from '@/Models/FileModel';
 

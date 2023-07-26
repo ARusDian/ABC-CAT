@@ -2,7 +2,7 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { BankQuestionModel } from '@/Models/BankQuestion';
 import { ExamModel } from '@/Models/Exam';
@@ -11,8 +11,8 @@ interface Props {
   exams: Array<ExamModel>;
 }
 
-export default function Index({ exams}: Props) {
-  console.log(exams)
+export default function Index({ exams }: Props) {
+  console.log(exams);
   const dataColumns = [
     {
       header: 'Nama User',
@@ -28,14 +28,12 @@ export default function Index({ exams}: Props) {
     },
     {
       header: 'Finished',
-      accessorFn: row => `${row.finished == true}`
-    }
+      accessorFn: row => `${row.finished == true}`,
+    },
   ] as MRT_ColumnDef<ExamModel>[];
 
   return (
-    <AdminTableLayout
-      title="Monitor Exam"
-    >
+    <AdminTableLayout title="Monitor Exam">
       <MaterialReactTable
         columns={dataColumns}
         data={exams}

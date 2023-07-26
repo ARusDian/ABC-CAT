@@ -21,7 +21,7 @@ export default function DashboardAdminLayout({
       <Banner />
       <nav className="flex justify-center w-full sticky bg-sky-300 py-5 px-10">
         <div className="flex gap-3 max-w-6xl mx-10">
-          <img  
+          <img
             src={asset('root', 'assets/image/logo.png')}
             alt="logo"
             className="h-20"

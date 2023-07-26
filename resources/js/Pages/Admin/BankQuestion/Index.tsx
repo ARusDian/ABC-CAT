@@ -2,7 +2,7 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { BankQuestionModel } from '@/Models/BankQuestion';
 
@@ -10,8 +10,8 @@ interface Props {
   bank_questions: Array<BankQuestionModel>;
 }
 
-export default function Index({ bank_questions}: Props) {
-  console.log(bank_questions)
+export default function Index({ bank_questions }: Props) {
+  console.log(bank_questions);
   const dataColumns = [
     {
       header: 'Nama',
@@ -20,7 +20,7 @@ export default function Index({ bank_questions}: Props) {
     {
       header: 'Type',
       accessorKey: 'type',
-    }
+    },
   ] as MRT_ColumnDef<BankQuestionModel>[];
 
   return (

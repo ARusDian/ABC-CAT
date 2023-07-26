@@ -144,7 +144,7 @@ export default function DashboardLayout({
 
   return (
     <div>
-      <Head >
+      <Head>
         <title>{title || 'ABC CAT'}</title>
         <meta name="description" content="ABC CAT" />
         <link rel="icon" href={asset('root', 'assets/image/icon.png')} />
@@ -198,9 +198,7 @@ export default function DashboardLayout({
           {sideBar()}
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <div className="my-20 p-5">
-            {children}
-          </div>
+          <div className="my-20 p-5">{children}</div>
         </Box>
       </Box>
     </div>

@@ -10,11 +10,11 @@ export interface BaseQuestionModel {
   is_active: boolean;
 }
 
-
-export type QuestionModel = BaseQuestionModel & AnswerTypeModel & {
-  id: number;
-  exercise_question_id: string;
-};
+export type QuestionModel = BaseQuestionModel &
+  AnswerTypeModel & {
+    id: number;
+    exercise_question_id: string;
+  };
 
 export type QuestionFormModel = BaseQuestionModel & AnswerTypeModel;
 
@@ -40,13 +40,18 @@ export interface AnswerTypeKecermatanModel {
   explanation: undefined;
 }
 
-export type QuestionGenericModel<T> =  BaseQuestionModel & T;
+export type QuestionGenericModel<T> = BaseQuestionModel & T;
 
 export type QuestionPilihanModel = QuestionGenericModel<AnswerTypePilihanModel>;
-export type QuestionKecermatanModel = QuestionGenericModel<AnswerTypeKecermatanModel>;
+export type QuestionKecermatanModel =
+  QuestionGenericModel<AnswerTypeKecermatanModel>;
 
-export type AnswerTypeModel = AnswerTypePilihanModel | AnswerTypeKecermatanModel;
+export type AnswerTypeModel =
+  | AnswerTypePilihanModel
+  | AnswerTypeKecermatanModel;
 
 export type QuestionFormGenericModel<T> = BaseQuestionModel & T;
-export type QuestionPilihanFormModel = QuestionFormGenericModel<AnswerTypePilihanModel>;
-export type QuestionKecermatanFormModel = QuestionFormGenericModel<AnswerTypeKecermatanModel>;
+export type QuestionPilihanFormModel =
+  QuestionFormGenericModel<AnswerTypePilihanModel>;
+export type QuestionKecermatanFormModel =
+  QuestionFormGenericModel<AnswerTypeKecermatanModel>;

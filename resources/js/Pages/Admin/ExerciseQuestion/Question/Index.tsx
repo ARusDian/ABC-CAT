@@ -2,7 +2,7 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import { QuestionModel } from '@/Models/Question';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { Button } from '@mui/material';
@@ -41,9 +41,7 @@ export default function Index(props: Props) {
               color="primary"
               size="large"
             >
-              <Link href={route('question.show', row.original.id)}>
-                Show
-              </Link>
+              <Link href={route('question.show', row.original.id)}>Show</Link>
             </Button>
           </div>
         )}

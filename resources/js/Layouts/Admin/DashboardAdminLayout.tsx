@@ -200,7 +200,7 @@ export default function DashboardAdminLayout({
 
   return (
     <div>
-      <Head >
+      <Head>
         <title>{title || 'ABC CAT'}</title>
         <meta name="description" content="ABC CAT" />
         <link rel="icon" href={asset('root', 'assets/image/icon.png')} />

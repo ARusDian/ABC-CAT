@@ -13,19 +13,21 @@ export function QuestionShow(props: {
         <QuestionEditor
           content={props.question.question.content}
           exerciseQuestionId={props.question.exercise_question_id}
-          editorClassName='h-full'
+          editorClassName="h-full"
           disableEdit
         />
       );
     case 'Kecermatan':
-      return <div className="flex flex-row">
-        {
-          // TODO: kasih view
-          props.question.question.questions.map((it, index) => (
-            <div key={index}>{it}</div>
-          ))
-        }
-      </div>;
+      return (
+        <div className="flex flex-row">
+          {
+            // TODO: kasih view
+            props.question.question.questions.map((it, index) => (
+              <div key={index}>{it}</div>
+            ))
+          }
+        </div>
+      );
   }
   //
 }

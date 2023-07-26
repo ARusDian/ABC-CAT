@@ -55,7 +55,6 @@ export default function Create(props: Props) {
   function onSubmit(e: QuestionFormModel) {
     console.log(e);
     form.clearErrors();
-
   }
 
   return (

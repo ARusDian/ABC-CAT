@@ -27,11 +27,15 @@ export default function Answer({
   React.useEffect(() => {
     switch (answer.question.type) {
       case 'Pilihan':
-        questionEditorRef?.current?.commands?.setContent(answer.question.question.content);
-        explanationEditorRef?.current?.commands?.setContent(answer.question.explanation.content);
+        questionEditorRef?.current?.commands?.setContent(
+          answer.question.question.content,
+        );
+        explanationEditorRef?.current?.commands?.setContent(
+          answer.question.explanation.content,
+        );
         break;
     }
-  })
+  });
 
   return (
     <div className="px-3">

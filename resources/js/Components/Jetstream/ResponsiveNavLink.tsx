@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import classNames from 'classnames';
 import React, { PropsWithChildren } from 'react';
 

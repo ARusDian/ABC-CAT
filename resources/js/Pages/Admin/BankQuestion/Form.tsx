@@ -1,4 +1,7 @@
-import { BANK_QUESTION_TYPE, BankQuestionFormModel } from '@/Models/BankQuestion';
+import {
+  BANK_QUESTION_TYPE,
+  BankQuestionFormModel,
+} from '@/Models/BankQuestion';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';

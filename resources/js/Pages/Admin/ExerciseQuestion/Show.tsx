@@ -1,7 +1,7 @@
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import { Button } from '@mui/material';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
@@ -32,14 +32,16 @@ export default function Show(props: Props) {
           <p>{exercise_question.name}</p>
           <p>Type: {exercise_question.type}</p>
           <p>
-            Batas waktu: {
+            Batas waktu:{' '}
+            {
               <span className="font-semibold">
                 {parseFloat(exercise_question.time_limit.toFixed(2))}
               </span>
-            } Menit
+            }{' '}
+            Menit
           </p>
         </div>
-        <div className='flex justify-around my-auto gap-5'>
+        <div className="flex justify-around my-auto gap-5">
           <Button variant="contained" color="primary" size="large">
             <Link
               href={route(

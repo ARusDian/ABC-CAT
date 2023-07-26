@@ -1,5 +1,5 @@
 import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import { Button } from '@mui/material';
 import React from 'react';
 import { useConfirm } from 'material-ui-confirm';

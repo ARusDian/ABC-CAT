@@ -5,23 +5,25 @@ import EditorInput from './Tiptap/EditorInput';
 import axios from 'axios';
 import route from 'ziggy-js';
 
-export type Props = {
-  content: Content | null;
-  onBlur: (json: object) => void;
-  bankQuestionId: string;
-  editorRef?: React.MutableRefObject<Editor | null>;
-  editorClassName?: string;
+export type Props =
+  | {
+      content: Content | null;
+      onBlur: (json: object) => void;
+      bankQuestionId: string;
+      editorRef?: React.MutableRefObject<Editor | null>;
+      editorClassName?: string;
 
-  disableEdit?: false;
-} | {
-  content: Content | null;
-  disableEdit: true;
-  editorRef?: React.MutableRefObject<Editor | null>;
-  editorClassName?: string;
+      disableEdit?: false;
+    }
+  | {
+      content: Content | null;
+      disableEdit: true;
+      editorRef?: React.MutableRefObject<Editor | null>;
+      editorClassName?: string;
 
-  onBlur?: undefined;
-  bankQuestionId?: undefined;
-}
+      onBlur?: undefined;
+      bankQuestionId?: undefined;
+    };
 
 export default function BankQuestionItemEditor(props: Props) {
   const editable = props.disableEdit !== true;

@@ -16,7 +16,7 @@ interface Props {
 export default function Create(props: Props) {
   let form = useForm<BankQuestionItemFormModel>({
     defaultValues: {
-    name: '',
+      name: '',
       question: {
         type: 'tiptap',
         content: {},

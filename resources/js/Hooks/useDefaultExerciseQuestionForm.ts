@@ -1,6 +1,8 @@
-import { DEFAULT_EXERCISE_QUESTION_TYPE, ExerciseQuestionFormModel } from "@/Models/ExerciseQuestion";
-import { useForm } from "react-hook-form";
-
+import {
+  DEFAULT_EXERCISE_QUESTION_TYPE,
+  ExerciseQuestionFormModel,
+} from '@/Models/ExerciseQuestion';
+import { useForm } from 'react-hook-form';
 
 export function useDefaultExerciseQuestionFormModel() {
   return useForm<ExerciseQuestionFormModel>({

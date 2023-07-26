@@ -10,7 +10,7 @@ import { useDebounce, useSearchParam } from 'react-use';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
 import Answer from './Answer';
-import { useConfirm } from "material-ui-confirm";
+import { useConfirm } from 'material-ui-confirm';
 
 export interface Props {
   exam: ExamModel;
@@ -25,8 +25,6 @@ export interface Task {
 
   answer: any;
 }
-
-
 
 export default function Run({ exam }: Props) {
   const time = new Date(Date.parse(exam.expire_in));
@@ -85,9 +83,8 @@ export default function Run({ exam }: Props) {
     React.useState<Promise<Task[]> | null>(null);
 
   const [isUpdating, setIsUpdating] = React.useState(false);
-  
-  const isLastQuestion = () =>
-    currentQuestion === answers.length - 1;
+
+  const isLastQuestion = () => currentQuestion === answers.length - 1;
   useDebounce(
     () => {
       if (stateQueue.length == 0) {
@@ -147,21 +144,21 @@ export default function Run({ exam }: Props) {
 
   function onSelesaiUjian() {
     confirm({
-      title: "Selesai Ujian",
-      description: "Yakin Sudah Selesai Mengerjakan Ujian"
+      title: 'Selesai Ujian',
+      description: 'Yakin Sudah Selesai Mengerjakan Ujian',
     })
       .then(() => {
         router.post(route('exam.finish', exam.exercise_question_id));
       })
       .catch(() => {
-        console.log("Confirmation was rejected");
+        console.log('Confirmation was rejected');
       });
   }
 
   return (
     <ExamLayout title="ABC-CAT">
-      <div className='flex flex-col mx-7 gap-3 mt-5'>
-        <div className='flex justify-between '>
+      <div className="flex flex-col mx-7 gap-3 mt-5">
+        <div className="flex justify-between ">
           <div />
           <div className="shadow-2xl shadow-blue-400/50 rounded-3xl px-3 py-2 text-red-500 text-xl bg-white">
             <Countdown date={time} renderer={countdownRenderer} />
@@ -187,11 +184,14 @@ export default function Run({ exam }: Props) {
                 <div className="w-full md:w-1/3 md:border-r-2 border-gray-200">
                   <div className="flex flex-col ">
                     <div className="p-3 text-lg">
-                      <span className="font-bold text-2xl">Petunjuk Soal :</span>
+                      <span className="font-bold text-2xl">
+                        Petunjuk Soal :
+                      </span>
                       <p>1. Baca soal dengan teliti</p>
                       <p>2. Pilih jawaban yang menurut anda benar</p>
                       <p>
-                        3. Klik tombol "Kumpulkan Jawaban" untuk mengakhiri ujian
+                        3. Klik tombol "Kumpulkan Jawaban" untuk mengakhiri
+                        ujian
                       </p>
                     </div>
                     <div className="flex flex-col justify-center p-3">
@@ -206,10 +206,10 @@ export default function Run({ exam }: Props) {
                                 it.state?.mark
                                   ? 'warning'
                                   : it.answer != undefined
-                                    ? 'primary'
-                                    : currentQuestion === index
-                                      ? 'success'
-                                      : 'inherit'
+                                  ? 'primary'
+                                  : currentQuestion === index
+                                  ? 'success'
+                                  : 'inherit'
                               }
                               onClick={() => setCurrentQuestion(index)}
                               key={index}
@@ -219,7 +219,7 @@ export default function Run({ exam }: Props) {
                           );
                         })}
                       </div>
-                      <div className='flex justify-between gap-3'>
+                      <div className="flex justify-between gap-3">
                         <Button
                           variant="contained"
                           color="primary"
@@ -264,7 +264,9 @@ export default function Run({ exam }: Props) {
                             ''
                           )}
                         </div>
-                        <p className='text-2xl'>{`${currentQuestion + 1}/${answers.length}`}</p>
+                        <p className="text-2xl">{`${currentQuestion + 1}/${
+                          answers.length
+                        }`}</p>
                       </div>
                     </div>
                   </div>
@@ -285,7 +287,7 @@ export default function Run({ exam }: Props) {
             <div className="flex justify-end">
               <div>
                 <button
-                  className='bg-yellow-500 hover:bg-yellow-700 text-black font-bold py-2 px-8 rounded'
+                  className="bg-yellow-500 hover:bg-yellow-700 text-black font-bold py-2 px-8 rounded"
                   onClick={() => {
                     const value = answerArray.fields[currentQuestion];
                     answerArray.update(currentQuestion, {

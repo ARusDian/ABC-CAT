@@ -5,10 +5,7 @@ import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { useForm } from 'react-hook-form';
 
 import Form from './Form';
-import {
-  QuestionFormModel,
-  QuestionModel,
-} from '@/Models/Question';
+import { QuestionFormModel, QuestionModel } from '@/Models/Question';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
 import { router } from '@inertiajs/react';

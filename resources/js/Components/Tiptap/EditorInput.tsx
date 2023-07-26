@@ -36,7 +36,6 @@ export default function EditorInput({
         editor={editor}
         ref={editorRef}
         onChange={onChangeCallback}
-
       />
     </>
   );

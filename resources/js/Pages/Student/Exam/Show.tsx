@@ -1,7 +1,7 @@
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import Button from '@mui/material/Button';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
@@ -18,15 +18,14 @@ type Model = ExamModel & {
 };
 
 export default function Show(props: Props) {
-
   const dataColumns = [
     {
       header: 'Waktu Mulai',
-      accessorFn: it => (new Date(it.created_at)).toLocaleString()
+      accessorFn: it => new Date(it.created_at).toLocaleString(),
     },
     {
       header: 'Waktu Berakhir',
-      accessorFn: it => (new Date(it.finished_at)).toLocaleString(),
+      accessorFn: it => new Date(it.finished_at).toLocaleString(),
     },
     {
       header: 'Score',
@@ -59,7 +58,10 @@ export default function Show(props: Props) {
           renderRowActions={({ row }) => (
             <div className="flex items-center justify-center gap-2">
               <Link
-                href={route('exam.show.attempt', [props.exercise_question.id, row.original.id])}
+                href={route('exam.show.attempt', [
+                  props.exercise_question.id,
+                  row.original.id,
+                ])}
                 className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
               >
                 Show
@@ -67,10 +69,7 @@ export default function Show(props: Props) {
             </div>
           )}
           renderTopToolbarCustomActions={() => (
-            <Button
-              variant="contained"
-              color="primary"
-            >
+            <Button variant="contained" color="primary">
               <Link
                 href={route('exam.attempt', [props.exercise_question.id])}
                 method="post"
@@ -78,7 +77,7 @@ export default function Show(props: Props) {
                 Mulai Ujian
               </Link>
             </Button>
-            )}
+          )}
         />
       </div>
     </DashboardLayout>

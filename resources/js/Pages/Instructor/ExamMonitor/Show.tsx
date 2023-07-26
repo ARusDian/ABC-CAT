@@ -5,7 +5,7 @@ import React from 'react';
 import { useIdle, useInterval } from 'react-use';
 import { AutoSizer, Grid, List, ScrollSync } from 'react-virtualized';
 import route from 'ziggy-js';
-import workerUrl from "pdfjs-dist/build/pdf.worker.min.js?url"
+import workerUrl from 'pdfjs-dist/build/pdf.worker.min.js?url';
 
 interface Props {
   exam: ExamModel;
@@ -25,7 +25,7 @@ export default function Show(props: Props) {
       console.log(router.reload({ only: ['exam'] }));
       re.current += 1;
     } else {
-      console.log({isIdle});
+      console.log({ isIdle });
     }
   }, 1000);
 

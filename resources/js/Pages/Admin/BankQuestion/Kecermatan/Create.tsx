@@ -1,7 +1,6 @@
 import React from 'react';
 import route from 'ziggy-js';
 
-
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -111,10 +110,7 @@ export default function Create(props: Props) {
     };
 
     router.post(
-      route(
-        'bank-question.item.store-many',
-        props.bank_question.id,
-      ),
+      route('bank-question.item.store-many', props.bank_question.id),
       data as any,
       {
         onError: errors => {

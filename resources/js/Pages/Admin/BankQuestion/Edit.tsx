@@ -5,7 +5,10 @@ import Form from './Form';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { useForm } from 'react-hook-form';
 import { router } from '@inertiajs/react';
-import { BankQuestionFormModel, BankQuestionModel } from '@/Models/BankQuestion';
+import {
+  BankQuestionFormModel,
+  BankQuestionModel,
+} from '@/Models/BankQuestion';
 
 interface Props {
   bank_question: BankQuestionModel;

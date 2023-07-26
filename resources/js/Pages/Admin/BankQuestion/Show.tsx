@@ -1,7 +1,7 @@
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { BankQuestionModel } from '@/Models/BankQuestion';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import { Button } from '@mui/material';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
@@ -38,17 +38,13 @@ export default function Show(props: Props) {
           <p>Type: {bank_question.type}</p>
         </div>
         <div className="flex place-content-end grow gap-2">
-          <Link
-            href={route('bank-question.item.create', bank_question.id)}
-          >
+          <Link href={route('bank-question.item.create', bank_question.id)}>
             <Button variant="contained" color="primary" size="large">
               Tambah Soal
             </Button>
           </Link>
 
-          <Link
-            href={route('exercise-question.import', bank_question.id)}
-          >
+          <Link href={route('exercise-question.import', bank_question.id)}>
             <Button variant="contained" color="primary" size="large">
               Buat Paket Soal
             </Button>

@@ -1,7 +1,7 @@
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { BankQuestionModel } from '@/Models/BankQuestion';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
@@ -92,7 +92,7 @@ export default function Show(props: Props) {
       backRoute={route('bank-question.index')}
     >
       {/* {exercise_questions && exercise_questions?.length > 0 ? ( */}
-      <div className='flex flex-col gap-3 my-3'>
+      <div className="flex flex-col gap-3 my-3">
         <Select
           label="Tipe"
           value={type}
@@ -119,7 +119,7 @@ export default function Show(props: Props) {
             </Select>
           </>
         )}
-      </div>  
+      </div>
       <MaterialReactTable
         columns={dataColumns}
         data={bank_question.items ?? []}
@@ -151,7 +151,7 @@ export default function Show(props: Props) {
           </div>
         )}
         renderTopToolbarCustomActions={() => (
-          <div className='flex gap-3 justify-around'>
+          <div className="flex gap-3 justify-around">
             <Button
               variant="contained"
               color="warning"
@@ -171,7 +171,8 @@ export default function Show(props: Props) {
             <Button
               variant="contained"
               color="primary"
-              onClick={form.handleSubmit(onSubmit)}>
+              onClick={form.handleSubmit(onSubmit)}
+            >
               Buat
             </Button>
           </div>

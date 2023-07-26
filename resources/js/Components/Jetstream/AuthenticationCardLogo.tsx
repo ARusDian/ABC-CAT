@@ -1,5 +1,5 @@
 import { asset } from '@/Models/Helper';
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import React from 'react';
 
 export default function AuthenticationCardLogo() {

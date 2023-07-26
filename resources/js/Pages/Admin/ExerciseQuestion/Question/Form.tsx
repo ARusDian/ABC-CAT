@@ -28,8 +28,10 @@ export type Test = {
   name: string;
 };
 
-function isQuestionPilihanFormModel(form: UseFormReturn<any>): form is UseFormReturn<QuestionPilihanFormModel> {
-  return form.getValues("type") == "Pilihan";
+function isQuestionPilihanFormModel(
+  form: UseFormReturn<any>,
+): form is UseFormReturn<QuestionPilihanFormModel> {
+  return form.getValues('type') == 'Pilihan';
 }
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -48,12 +50,7 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <div className='px-5'>
-          {children}
-        </div>
-
-      )}
+      {value === index && <div className="px-5">{children}</div>}
     </div>
   );
 }
@@ -77,7 +74,12 @@ export default function Form(props: Props) {
   return (
     <div className={`flex-col gap-5 ${props.className}`}>
       <div>
-        <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example" centered>
+        <Tabs
+          value={tabValue}
+          onChange={handleTabChange}
+          aria-label="basic tabs example"
+          centered
+        >
           <Tab label="Soal" {...a11yProps(0)} />
           <Tab label="Pilihan Jawaban" {...a11yProps(1)} />
           <Tab label="Penjelasan" {...a11yProps(2)} />
@@ -92,34 +94,33 @@ export default function Form(props: Props) {
           defaultValue={form.formState.defaultValues?.weight}
         />
         <CustomTabPanel value={tabValue} index={0}>
-        <Controller
-          name="question.content"
-          control={form.control}
-          render={({ field }) => {
-            return (
-              <>
-                <InputLabel htmlFor="name">Soal</InputLabel>
-                <QuestionEditor
-                  content={field.value}
-                  onBlur={field.onChange}
-                  exerciseQuestionId={props.exerciseQuestionId}
-                />
-                <InputError
-                  className="mt-2"
-                  message={form.formState.errors.question?.message}
-                />
-              </>
-            );
-          }}
+          <Controller
+            name="question.content"
+            control={form.control}
+            render={({ field }) => {
+              return (
+                <>
+                  <InputLabel htmlFor="name">Soal</InputLabel>
+                  <QuestionEditor
+                    content={field.value}
+                    onBlur={field.onChange}
+                    exerciseQuestionId={props.exerciseQuestionId}
+                  />
+                  <InputError
+                    className="mt-2"
+                    message={form.formState.errors.question?.message}
+                  />
+                </>
+              );
+            }}
           />
         </CustomTabPanel>
 
         <CustomTabPanel value={tabValue} index={1}>
-
           {isQuestionPilihanFormModel(form) ? (
-          <PilihanForm
-            form={form}
-            exerciseQuestionId={props.exerciseQuestionId}
+            <PilihanForm
+              form={form}
+              exerciseQuestionId={props.exerciseQuestionId}
             />
           ) : null}
         </CustomTabPanel>
@@ -145,7 +146,6 @@ export default function Form(props: Props) {
             }}
           />
         </CustomTabPanel>
-
       </div>
     </div>
   );

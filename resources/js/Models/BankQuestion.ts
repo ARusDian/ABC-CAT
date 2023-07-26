@@ -17,4 +17,4 @@ export const BANK_QUESTION_TYPE = ['Pilihan', 'Kecermatan'] as const;
 
 export const DEFAULT_BANK_QUESTION_TYPE = BANK_QUESTION_TYPE[0];
 
-export type BankQuestionType = typeof BANK_QUESTION_TYPE[number];
+export type BankQuestionType = (typeof BANK_QUESTION_TYPE)[number];

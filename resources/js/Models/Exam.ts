@@ -1,7 +1,17 @@
 import { User } from '@/types';
 import { ExerciseQuestionModel } from './ExerciseQuestion';
-import { AnswerTypePilihanModel, QuestionGenericModel, QuestionKecermatanModel, QuestionModel, QuestionPilihanModel } from './Question';
-import { BankQuestionItemKecermatanModel, BankQuestionItemModel, BankQuestionItemPilihanModel } from './BankQuestionItem';
+import {
+  AnswerTypePilihanModel,
+  QuestionGenericModel,
+  QuestionKecermatanModel,
+  QuestionModel,
+  QuestionPilihanModel,
+} from './Question';
+import {
+  BankQuestionItemKecermatanModel,
+  BankQuestionItemModel,
+  BankQuestionItemPilihanModel,
+} from './BankQuestionItem';
 
 export interface ExamModel {
   id: string;
@@ -33,17 +43,21 @@ export interface BaseExamAnswerModel {
   // question: BankQuestionItemModel;
 }
 
-export type ExamAnswerGenericModel<QuestionModel> = BaseExamAnswerModel & { question: QuestionModel };
+export type ExamAnswerGenericModel<QuestionModel> = BaseExamAnswerModel & {
+  question: QuestionModel;
+};
 
 export type ExamAnswerModel = ExamAnswerGenericModel<BankQuestionItemModel>;
-export type ExamAnswerPilihanModel = ExamAnswerGenericModel<BankQuestionItemPilihanModel>;
-export type ExamAnswerKecermatanModel = ExamAnswerGenericModel<BankQuestionItemKecermatanModel>;
+export type ExamAnswerPilihanModel =
+  ExamAnswerGenericModel<BankQuestionItemPilihanModel>;
+export type ExamAnswerKecermatanModel =
+  ExamAnswerGenericModel<BankQuestionItemKecermatanModel>;
 
 export interface ExamGenericModel<QuestionModel> {
-  answers: (ExamAnswerGenericModel<QuestionModel>)[]
-
+  answers: ExamAnswerGenericModel<QuestionModel>[];
 }
 
-export interface ExamPilihanModel extends ExamGenericModel<QuestionPilihanModel> {
+export interface ExamPilihanModel
+  extends ExamGenericModel<QuestionPilihanModel> {
   //
 }

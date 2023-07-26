@@ -20,14 +20,16 @@ export function BankQuestionItemShow(props: {
         />
       );
     case 'Kecermatan':
-      return <div className="flex flex-row">
-        {
-          // TODO: kasih view
-          props.question.question.questions.map((it, index) => (
-            <div key={index}>{it}</div>
-          ))
-        }
-      </div>;
+      return (
+        <div className="flex flex-row">
+          {
+            // TODO: kasih view
+            props.question.question.questions.map((it, index) => (
+              <div key={index}>{it}</div>
+            ))
+          }
+        </div>
+      );
   }
   //
 }

@@ -30,12 +30,7 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <div className='px-5'>
-          {children}
-        </div>
-
-      )}
+      {value === index && <div className="px-5">{children}</div>}
     </div>
   );
 }
@@ -84,7 +79,7 @@ export default function Form(props: Props) {
       </div>
       <div className="form-control w-full mt-4">
         <CustomTabPanel value={tabValue} index={0}>
-          <div className='flex gap-3'>
+          <div className="flex gap-3">
             <TextField
               {...form.register('name', { required: true })}
               label="Nama"
@@ -114,7 +109,7 @@ export default function Form(props: Props) {
                     content={field.value}
                     onBlur={field.onChange}
                     exerciseQuestionId={props.bankQuestionId}
-                    editorClassName='h-full min-h-[96px] p-3'
+                    editorClassName="h-full min-h-[96px] p-3"
                   />
                   <InputError
                     className="mt-2"
@@ -127,7 +122,10 @@ export default function Form(props: Props) {
         </CustomTabPanel>
         <CustomTabPanel value={tabValue} index={1}>
           {isQuestionPilihanFormModel(form) ? (
-            <PilihanForm form={form} exerciseQuestionId={props.bankQuestionId} />
+            <PilihanForm
+              form={form}
+              exerciseQuestionId={props.bankQuestionId}
+            />
           ) : null}
         </CustomTabPanel>
         <CustomTabPanel value={tabValue} index={2}>
@@ -142,7 +140,7 @@ export default function Form(props: Props) {
                     content={field.value}
                     onBlur={field.onChange}
                     exerciseQuestionId={props.bankQuestionId}
-                    editorClassName='h-full min-h-[96px] p-3'
+                    editorClassName="h-full min-h-[96px] p-3"
                   />
                   <InputError
                     className="mt-2"
@@ -174,7 +172,7 @@ function PilihanForm({
     <>
       {answerArray.fields.map((it, index) => {
         return (
-          <div key={it.id} className='border-b py-3'>
+          <div key={it.id} className="border-b py-3">
             <Controller
               name={`answers.choices.${index}.content`}
               control={form.control}
@@ -186,7 +184,7 @@ function PilihanForm({
                       content={field.value}
                       onBlur={field.onChange}
                       exerciseQuestionId={exerciseQuestionId}
-                      editorClassName='h-full min-h-[96px] p-3'
+                      editorClassName="h-full min-h-[96px] p-3"
                     />
                     <InputError
                       className="mt-2"
@@ -202,7 +200,7 @@ function PilihanForm({
           </div>
         );
       })}
-      <label className='text-lg font-semibold'>
+      <label className="text-lg font-semibold">
         <InputLabel htmlFor="name">Pilihan Jawaban Benar</InputLabel>
       </label>
       <RadioGroup defaultValue={form.formState.defaultValues?.answer}>

@@ -29,12 +29,7 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <div className='px-5'>
-          {children}
-        </div>
-
-      )}
+      {value === index && <div className="px-5">{children}</div>}
     </div>
   );
 }
@@ -57,9 +52,7 @@ export default function Index(props: Props) {
     <AdminShowLayout
       title={`Pertanyaan ${item.id}`}
       headerTitle={'Data Pertanyaan'}
-      backRoute={route('bank-question.show', [
-        item.bank_question_id,
-      ])}
+      backRoute={route('bank-question.show', [item.bank_question_id])}
       backRouteTitle="Kembali"
       editRoute={route('bank-question.item.edit', [
         item.bank_question_id,
@@ -69,17 +62,17 @@ export default function Index(props: Props) {
       onDelete={() => {
         item.is_active
           ? router.delete(
-            route('bank-question.item.destroy', [
-              item.bank_question_id,
-              item.id,
-            ]),
-          )
+              route('bank-question.item.destroy', [
+                item.bank_question_id,
+                item.id,
+              ]),
+            )
           : router.post(
-            route('bank-question.item.restore', [
-              item.bank_question_id,
-              item.id,
-            ]),
-          );
+              route('bank-question.item.restore', [
+                item.bank_question_id,
+                item.id,
+              ]),
+            );
       }}
       deleteTitle={item.is_active ? 'Hapus' : 'Restore'}
       onDeleteMessage={
@@ -99,27 +92,29 @@ export default function Index(props: Props) {
         </div>
       </div>
       <CustomTabPanel value={tabValue} index={0}>
-        <label className='text-lg'>Pertanyaan</label>
+        <label className="text-lg">Pertanyaan</label>
         <div className="mx-auto border rounded-2xl p-5">
           <BankQuestionItemShow
             question={props.item}
-            editorClassName='h-full'
+            editorClassName="h-full"
           />
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={tabValue} index={1}>
         {props.item.type == 'Pilihan' ? (
           <div className="">
-            <label className='text-lg'>Pilihan Ganda :</label>
+            <label className="text-lg">Pilihan Ganda :</label>
             {props.item.answers.choices.map((choice, index) => {
               return (
-                <div key={index} className='mt-4'>
-                  <label className='text-lg'>Pilihan {numberToUpperCase(index)}</label>
+                <div key={index} className="mt-4">
+                  <label className="text-lg">
+                    Pilihan {numberToUpperCase(index)}
+                  </label>
                   <div className="mx-auto border rounded-2xl p-5  ">
                     <QuestionEditor
                       content={choice.content}
                       exerciseQuestionId={props.item.bank_question_id}
-                      editorClassName='h-10 h-full'
+                      editorClassName="h-10 h-full"
                       disableEdit
                     />
                   </div>
@@ -129,11 +124,13 @@ export default function Index(props: Props) {
           </div>
         ) : props.item.type == 'Kecermatan' ? (
           <div className="">
-            <label className='text-lg'>Pilihan: </label>
+            <label className="text-lg">Pilihan: </label>
             {props.item.answers.choices.map((choice, index) => {
               return (
-                <div key={index} className='mt-3'>
-                  <label className='text-lg'>Pilihan {numberToUpperCase(index)}</label>
+                <div key={index} className="mt-3">
+                  <label className="text-lg">
+                    Pilihan {numberToUpperCase(index)}
+                  </label>
                   <div className="mx-auto border rounded-2xl p-5">{choice}</div>
                 </div>
               );
@@ -141,28 +138,28 @@ export default function Index(props: Props) {
           </div>
         ) : (
           <div className="">
-            <label className='text-lg'>Jawaban</label>
+            <label className="text-lg">Jawaban</label>
             <div className="mx-auto border rounded-2xl p-5">Essay</div>
           </div>
         )}
       </CustomTabPanel>
       <CustomTabPanel value={tabValue} index={2}>
-      <div className="">
-          <label  className='text-lg'>Jawaban Benar</label>
-        <p>pilihan {numberToUpperCase(props.item.answer)}</p>
-        {props.item.type == 'Pilihan' ? (
-          <>
-            <label className='text-lg'>Penjelasan Jawaban</label>
-            <div className="mx-auto border rounded-2xl p-5">
-              <QuestionEditor
-                content={props.item.explanation?.content ?? null}
+        <div className="">
+          <label className="text-lg">Jawaban Benar</label>
+          <p>pilihan {numberToUpperCase(props.item.answer)}</p>
+          {props.item.type == 'Pilihan' ? (
+            <>
+              <label className="text-lg">Penjelasan Jawaban</label>
+              <div className="mx-auto border rounded-2xl p-5">
+                <QuestionEditor
+                  content={props.item.explanation?.content ?? null}
                   exerciseQuestionId={props.item.bank_question_id}
-                  editorClassName='h-full'
-                disableEdit
-              />
-            </div>
-          </>
-        ) : null}
+                  editorClassName="h-full"
+                  disableEdit
+                />
+              </div>
+            </>
+          ) : null}
         </div>
       </CustomTabPanel>
     </AdminShowLayout>

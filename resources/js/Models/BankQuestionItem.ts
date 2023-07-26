@@ -11,13 +11,14 @@ export interface BaseBankQuestionItemModel {
   is_active: boolean;
 }
 
+export type BankQuestionItemModel = BaseBankQuestionItemModel &
+  AnswerTypeModel & {
+    id: number;
+    bank_question_id: string;
+  };
 
-export type BankQuestionItemModel = BaseBankQuestionItemModel & AnswerTypeModel & {
-  id: number;
-  bank_question_id: string;
-};
-
-export type BankQuestionItemFormModel = BaseBankQuestionItemModel & AnswerTypeModel;
+export type BankQuestionItemFormModel = BaseBankQuestionItemModel &
+  AnswerTypeModel;
 
 export interface AnswerTypePilihanModel {
   type: 'Pilihan';
@@ -41,13 +42,19 @@ export interface AnswerTypeKecermatanModel {
   explanation: undefined;
 }
 
-export type BankQuestionItemGenericModel<T> =  BaseBankQuestionItemModel & T;
+export type BankQuestionItemGenericModel<T> = BaseBankQuestionItemModel & T;
 
-export type BankQuestionItemPilihanModel = BankQuestionItemGenericModel<AnswerTypePilihanModel>;
-export type BankQuestionItemKecermatanModel = BankQuestionItemGenericModel<AnswerTypeKecermatanModel>;
+export type BankQuestionItemPilihanModel =
+  BankQuestionItemGenericModel<AnswerTypePilihanModel>;
+export type BankQuestionItemKecermatanModel =
+  BankQuestionItemGenericModel<AnswerTypeKecermatanModel>;
 
-export type AnswerTypeModel = AnswerTypePilihanModel | AnswerTypeKecermatanModel;
+export type AnswerTypeModel =
+  | AnswerTypePilihanModel
+  | AnswerTypeKecermatanModel;
 
 export type BankQuestionItemFormGenericModel<T> = BaseBankQuestionItemModel & T;
-export type BankQuestionItemPilihanFormModel = BankQuestionItemFormGenericModel<AnswerTypePilihanModel>;
-export type BankQuestionItemKecermatanFormModel = BankQuestionItemFormGenericModel<AnswerTypeKecermatanModel>;
+export type BankQuestionItemPilihanFormModel =
+  BankQuestionItemFormGenericModel<AnswerTypePilihanModel>;
+export type BankQuestionItemKecermatanFormModel =
+  BankQuestionItemFormGenericModel<AnswerTypeKecermatanModel>;

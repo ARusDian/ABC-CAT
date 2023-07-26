@@ -7,7 +7,10 @@ import Form from './Form';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
 import { router } from '@inertiajs/react';
-import { BankQuestionItemFormModel, BankQuestionItemModel } from '@/Models/BankQuestionItem';
+import {
+  BankQuestionItemFormModel,
+  BankQuestionItemModel,
+} from '@/Models/BankQuestionItem';
 
 interface Props {
   question: BankQuestionItemModel;

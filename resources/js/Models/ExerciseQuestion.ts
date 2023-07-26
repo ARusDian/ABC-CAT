@@ -22,4 +22,4 @@ export const EXERCISE_QUESTION_TYPE = ['Pilihan', 'Kecermatan'] as const;
 
 export const DEFAULT_EXERCISE_QUESTION_TYPE = EXERCISE_QUESTION_TYPE[0];
 
-export type ExerciseQuestionType = typeof EXERCISE_QUESTION_TYPE[number];
+export type ExerciseQuestionType = (typeof EXERCISE_QUESTION_TYPE)[number];

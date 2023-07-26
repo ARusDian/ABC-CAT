@@ -2,7 +2,7 @@ import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 
