@@ -23,7 +23,7 @@ export default function Edit(props: Props) {
   });
 
   function onSubmit(e: NewUser) {
-    Api.post(route('user.udpate', user.id), { ...e, _method: 'PUT' }, form);
+    Api.post(route('user.update', user.id), { ...e, _method: 'PUT' }, form);
   }
 
   return (

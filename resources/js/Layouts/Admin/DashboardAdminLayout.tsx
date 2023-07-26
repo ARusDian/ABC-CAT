@@ -30,6 +30,7 @@ interface Props {
 }
 
 const drawerWidth = 240;
+const navHeight = 70;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -54,6 +55,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
+  height: navHeight,
   alignItems: 'center',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
@@ -199,25 +201,25 @@ export default function DashboardAdminLayout({
   );
 
   return (
-    <div>
+    <div className="bg-main-grey">
       <Head>
         <title>{title || 'ABC CAT'}</title>
         <meta name="description" content="ABC CAT" />
         <link rel="icon" href={asset('root', 'assets/image/icon.png')} />
       </Head>
-      <Banner />
       <Box sx={{ display: 'flex' }}>
         <AppBar position="fixed" open={isSidebarOpen}>
-          <nav className="flex justify-between w-full sticky bg-blue-400 py-5 px-7 shadow shadow-sky-400/50">
+          <Banner />
+          <nav className="flex justify-between w-full sticky bg-main-blue my-auto px-7 shadow shadow-sky-400/50" style={{ height: navHeight }} >
             <div className="flex gap-3 max-w-6xl mr-30">
               <button
-                className="text-3xl md:ml-20 bg-blue-400 text-white hover:bg-blue-600 px-3 py-2"
+                className="text-3xl md:ml-20 text-white px-3 py-2"
                 onClick={toggleDrawer(!isSidebarOpen)}
               >
-                <MenuIcon fontSize="large" /> Admin
+                <MenuIcon fontSize="large" />
               </button>
             </div>
-            <div className="mr-3 relative">
+            <div className="mr-3 relative my-auto">
               <Dropdown
                 align="right"
                 width="48"
@@ -240,7 +242,7 @@ export default function DashboardAdminLayout({
 
                 {/* <!-- Authentication --> */}
                 <form onSubmit={logout}>
-                  <DropdownLink as="button">Log Out</DropdownLink>
+                  <DropdownLink as="button"> <div className='text-red-700 font-bold'>Log Out</div> </DropdownLink>
                 </form>
               </Dropdown>
             </div>
@@ -256,8 +258,8 @@ export default function DashboardAdminLayout({
           {sideBar()}
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <div className="py-12 mx-auto sm:px-6 lg:px-8 my-10">
-            <div className="overflow-hidden shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 p-5">
+          <div className="py-12 mx-auto sm:px-6 lg:px-8">
+            <div className="overflow-hidden p-5">
               {children}
             </div>
           </div>

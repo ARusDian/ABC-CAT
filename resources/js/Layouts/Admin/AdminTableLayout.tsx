@@ -1,8 +1,9 @@
-import { Link } from '@inertiajs/react';
+import { Link } from '@inertiajs/react'
 import React from 'react';
 import route from 'ziggy-js';
 import DashboardAdminLayout from './DashboardAdminLayout';
 import { Button } from '@mui/material';
+import styled from '@mui/material/styles/styled';
 
 export interface Props {
   title: string;
@@ -11,6 +12,10 @@ export interface Props {
   addRouteTitle?: string;
   customHeader?: React.ReactNode;
 }
+
+const StyledButton = styled(Button)({
+  background: '#00b51d',
+});
 
 export default function AdminTableLayout({
   title,
@@ -21,7 +26,7 @@ export default function AdminTableLayout({
 }: React.PropsWithChildren<Props>) {
   return (
     <DashboardAdminLayout title={title}>
-      <div className="p-6 sm:px-20 bg-white">
+      <div className="p-6 ">
         {customHeader ? (
           customHeader
         ) : (
@@ -30,15 +35,17 @@ export default function AdminTableLayout({
             <div className="">
               {addRoute ? (
                 <Link href={addRoute}>
-                  <Button variant="contained" color="primary" size="large">
+                  <StyledButton variant="contained" size="large">
                     {addRouteTitle ?? `Tambah ${title}`}
-                  </Button>
+                  </StyledButton>
                 </Link>
               ) : null}
             </div>
           </div>
         )}
-        <div className="mt-6 text-gray-500">{children}</div>
+        <div className="mt-6 p-6 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+          {children}
+        </div>
       </div>
     </DashboardAdminLayout>
   );

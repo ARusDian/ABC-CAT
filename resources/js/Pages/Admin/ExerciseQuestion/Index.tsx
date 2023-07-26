@@ -5,6 +5,7 @@ import route from 'ziggy-js';
 import { Link } from '@inertiajs/react';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
+import { Button } from '@mui/material';
 
 interface Props {
   exercise_questions: Array<ExerciseQuestionModel>;
@@ -37,12 +38,18 @@ export default function Index({ exercise_questions }: Props) {
         muiTableBodyRowProps={{ hover: false }}
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
-            <Link
-              href={route('exercise-question.show', row.original.id)}
-              className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
             >
-              Show
-            </Link>
+              <Link
+                href={route('exercise-question.show', row.original.id)}
+              >
+                Show
+              </Link>
+            </Button>
           </div>
         )}
       />

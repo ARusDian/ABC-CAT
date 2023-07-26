@@ -42,7 +42,7 @@ export default function Form(props: Props) {
       <div className="form-control w-full mt-4">
         <TextField
           {...form.register('password', {
-            required: true,
+            required: form.getValues('id') == null,
             minLength: { value: 8, message: 'Password minimal 8 huruf' },
           })}
           label="Password"
