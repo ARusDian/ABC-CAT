@@ -6,84 +6,91 @@ import TextInput from '@/Components/Jetstream/TextInput';
 import { ErrorHelper } from '@/Models/ErrorHelper';
 import { NewUser, Role } from '@/types';
 import { InertiaFormProps } from '@inertiajs/inertia-react';
-import { InputLabel } from '@mui/material';
+import { InputLabel, TextField } from '@mui/material';
+import { Controller, UseFormReturn } from 'react-hook-form';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
-  form: InertiaFormProps<NewUser>;
+  form: UseFormReturn<NewUser>;
   className?: string;
   roles: Array<Role>;
 }
 
 export default function Form(props: Props) {
-  let form = props.form;
-  let errors = new ErrorHelper(form.errors);
-  let roles = props.roles;
+  const { form, roles } = props;
 
   return (
     <div className={`flex-col gap-5 ${props.className}`}>
       <div className="form-control w-full mt-4">
-        <InputLabel htmlFor="name">Name</InputLabel>
-        <TextInput
-          id="name"
-          type="text"
+        <TextField
+          {...form.register('name', { required: true })}
+          label="Nama"
           className="mt-1 block w-full"
-          value={form.data.name}
-          onChange={e => form.setData('name', e.currentTarget.value)}
-          required
-          autoFocus
-          autoComplete="name"
+          defaultValue={form.formState.defaultValues?.name}
+          error={form.formState.errors?.name != null}
+          helperText={form.formState.errors.name?.message}
         />
-        <InputError className="mt-2" message={form.errors.name} />
       </div>
       <div className="form-control w-full mt-4">
-        <InputLabel htmlFor="email">Email</InputLabel>
-        <TextInput
-          id="email"
-          type="email"
+        <TextField
+          {...form.register('email', { required: true })}
+          label="Email"
           className="mt-1 block w-full"
-          value={form.data.email}
-          onChange={e => form.setData('email', e.currentTarget.value)}
-          required
+          defaultValue={form.formState.defaultValues?.email}
+          error={form.formState.errors?.email != null}
+          helperText={form.formState.errors.email?.message}
         />
-        <InputError className="mt-2" message={form.errors.email} />
       </div>
       <div className="form-control w-full mt-4">
-        <InputLabel htmlFor="password">Password</InputLabel>
-        <TextInput
-          id="password"
+        <TextField
+          {...form.register('password', {
+            required: true,
+            minLength: { value: 8, message: 'Password minimal 8 huruf' },
+          })}
+          label="Password"
           type="password"
           className="mt-1 block w-full"
-          value={form.data.password}
-          onChange={e => form.setData('password', e.currentTarget.value)}
-          autoComplete="new-password"
+          defaultValue={form.formState.defaultValues?.password}
+          error={form.formState.errors?.password != null}
+          helperText={form.formState.errors.password?.message}
         />
-        <InputError className="mt-2" message={form.errors.password} />
       </div>
       <div className="form-control w-full mt-4">
-        <InputLabel htmlFor="roles">Role</InputLabel>
-        <Select
-          isMulti
-          options={roles}
-          getOptionValue={it => it.id!.toString()}
-          getOptionLabel={it => it.name}
-          value={form.data.roles}
-          onChange={value => {
-            form.setData('roles', value.concat());
+        <Controller
+          control={form.control}
+          name="roles"
+          render={({ field }) => {
+            return (
+              <>
+                <InputLabel htmlFor="roles">Role</InputLabel>
+                <Select
+                  ref={field.ref}
+                  isMulti
+                  options={roles}
+                  getOptionValue={it => it.id!.toString()}
+                  getOptionLabel={it => it.name}
+                  value={field.value}
+                  onChange={value => {
+                    field.onChange(value.slice());
+                  }}
+                />
+                <InputError
+                  message={form.formState.errors.roles?.message}
+                  className="mt-2"
+                />
+              </>
+            );
           }}
         />
-        <InputError message={errors.get('roles')} className="mt-2" />
       </div>
       <div className="form-control w-full mt-4">
-        <InputLabel htmlFor="email">Phone Number</InputLabel>
-        <TextInput
-          id="phone_number"
-          type="text"
+        <TextField
+          {...form.register('phone_number', { required: true })}
+          label="Phone Number"
           className="mt-1 block w-full"
-          value={form.data.phone_number}
-          onChange={e => form.setData('phone_number', e.currentTarget.value)}
-          required
+          defaultValue={form.formState.defaultValues?.phone_number}
+          error={form.formState.errors?.phone_number != null}
+          helperText={form.formState.errors.phone_number?.message}
         />
-        <InputError className="mt-2" message={form.errors.phone_number} />
       </div>
     </div>
   );
