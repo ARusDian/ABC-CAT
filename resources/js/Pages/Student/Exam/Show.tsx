@@ -73,7 +73,7 @@ export default function Show(props: Props) {
             >
               <Link
                 href={route('exam.attempt', [props.exercise_question.id])}
-                method="POST"
+                method="post"
               >
                 Mulai Ujian
               </Link>

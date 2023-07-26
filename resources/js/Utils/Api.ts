@@ -1,10 +1,10 @@
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import _ from 'lodash';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 
-interface ApiValue<T extends {}> extends T {
-  _method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
-}
+type ApiValue<T> = T & {
+  _method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+};
 
 function onError<T extends FieldValues>(form: UseFormReturn<T>) {
   return (errors: Record<string, string>) => {
@@ -19,7 +19,7 @@ function post<T extends FieldValues>(
   value: ApiValue<T>,
   form: UseFormReturn<T>,
 ) {
-  Inertia.post(route, value as any, {
+  router.post(route, value as any, {
     onError: onError(form),
   });
 }
@@ -29,7 +29,7 @@ function put<T extends FieldValues>(
   value: ApiValue<T>,
   form: UseFormReturn<T>,
 ) {
-  Inertia.put(route, value as any, { onError: onError(form) });
+  router.put(route, value as any, { onError: onError(form) });
 }
 
 export default {
