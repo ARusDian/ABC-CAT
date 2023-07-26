@@ -2,7 +2,7 @@ import React from 'react';
 import route from 'ziggy-js';
 
 import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
-import { InertiaLink, useForm } from '@inertiajs/inertia-react';
+import { Link, useForm } from '@inertiajs/react';
 
 import Form from './Form/Form';
 import {

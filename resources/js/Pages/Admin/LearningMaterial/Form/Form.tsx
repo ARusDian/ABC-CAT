@@ -3,9 +3,9 @@ import InputLabel from '@/Components/Jetstream/InputLabel';
 import TextInput from '@/Components/Jetstream/TextInput';
 import TextEditorInput from '@/Components/TextEditorInput';
 import { BaseLearningMaterialModel } from '@/Models/LearningMaterial';
-import { InertiaFormProps } from '@inertiajs/inertia-react';
 import React, { useEffect, useRef, useState } from 'react';
 import DocumentForm from './DocumentForm';
+import { InertiaFormProps } from '@inertiajs/react/types/useForm';
 
 interface Props {
   form: InertiaFormProps<BaseLearningMaterialModel>;

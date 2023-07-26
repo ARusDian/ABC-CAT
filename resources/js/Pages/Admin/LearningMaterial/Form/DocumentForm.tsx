@@ -4,7 +4,6 @@ import AddNewHeader from '@/Components/AddNewHeader';
 import InputError from '@/Components/Jetstream/InputError';
 import { ErrorHelper } from '@/Models/ErrorHelper';
 import { getUniqueKey } from '@/Models/Helper';
-import { InertiaFormProps } from '@inertiajs/inertia-react';
 import {
   BaseLearningMaterialDocumentModel,
   BaseLearningMaterialModel,
@@ -13,6 +12,7 @@ import {
 import InputLabel from '@/Components/Jetstream/InputLabel';
 import PDFViewer from '@/Components/PDFViewer';
 import { Button } from '@mui/material';
+import { InertiaFormProps } from '@inertiajs/react/types/useForm';
 
 interface Props {
   form: InertiaFormProps<BaseLearningMaterialModel>;

@@ -5,7 +5,6 @@ import InputError from '@/Components/Jetstream/InputError';
 import TextInput from '@/Components/Jetstream/TextInput';
 import { ErrorHelper } from '@/Models/ErrorHelper';
 import { NewUser, Role } from '@/types';
-import { InertiaFormProps } from '@inertiajs/inertia-react';
 import { InputLabel, TextField } from '@mui/material';
 import { Controller, UseFormReturn } from 'react-hook-form';
 

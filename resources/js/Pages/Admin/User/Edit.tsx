@@ -3,7 +3,7 @@ import route from 'ziggy-js';
 
 import AppLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { NewUser, Role } from '@/types';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { Link } from '@inertiajs/react';
 
 import Form from './Form';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
