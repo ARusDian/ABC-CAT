@@ -5,7 +5,7 @@ import { usePage } from '@inertiajs/react';
 
 export default function Banner() {
   const [show, setShow] = useState(true);
-  const props = usePage() as any & {
+  const { props } = usePage() as any & {
     jetstream: {
       flash: {
         banner: string;
@@ -13,6 +13,7 @@ export default function Banner() {
       };
     };
   };
+
   const style = props.jetstream.flash?.bannerStyle || 'success';
   const message = props.jetstream.flash?.banner || '';
 
