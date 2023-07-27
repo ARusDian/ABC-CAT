@@ -76,6 +76,12 @@ export default function Show(props: Props) {
         enableRowActions
         enableRowNumbers
         muiTableBodyRowProps={{ hover: false }}
+        muiTableHeadCellProps={{
+          sx: {
+            fontWeight: 'bold',
+            fontSize: '16px',
+          },
+        }}
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
             <Button variant="contained" color="primary" size="large">

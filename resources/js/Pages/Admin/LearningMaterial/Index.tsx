@@ -33,6 +33,12 @@ export default function Index(props: Props) {
         enableRowActions
         enableRowNumbers
         muiTableBodyRowProps={{ hover: false }}
+        muiTableHeadCellProps={{
+          sx: {
+            fontWeight: 'bold',
+            fontSize: '16px',
+          },
+        }}
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
             <Button
