@@ -17,11 +17,10 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import Dropdown from '@/Components/Jetstream/Dropdown';
 import DropdownLink from '@/Components/Jetstream/DropdownLink';
 import route from 'ziggy-js';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import QuizIcon from '@mui/icons-material/Quiz';
 import { asset } from '@/Models/Helper';
 
 interface Props {
@@ -135,7 +134,7 @@ export default function DashboardAdminLayout({
             href={route('dashboard')}
             active={route().current('dashboard')}
           >
-            <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
+            <span className={'mr-4'}>
               <DashboardIcon fontSize="large" />
             </span>
             Dashboard
@@ -146,56 +145,23 @@ export default function DashboardAdminLayout({
             href={route('user.index')}
             active={route().current('user.index')}
           >
-            <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
+            <span className={'mr-4'}>
               <ManageAccountsIcon fontSize="large" />
             </span>
             Pengguna
           </ResponsiveNavLink>
         </li>
-        {/* <li>
-          <ResponsiveNavLink
-            href={route('bank-question.index')}
-            active={route().current('bank-question.index')}
-          >
-            <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
-              <QuizIcon fontSize="large" />
-            </span>
-            Pertanyaan
-          </ResponsiveNavLink>
-        </li>
         <li>
           <ResponsiveNavLink
-            href={route('exercise-question.index')}
-            active={route().current('exercise-question.index')}
+            href={route('learning-packet.index')}
+            active={route().current('learning-packet.index')}
           >
-            <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
-              <QuizIcon fontSize="large" />
+            <span className={'mr-4'}>
+              <FolderCopyIcon fontSize="large" />
             </span>
-            Pertanyaan
+            Paket Belajar
           </ResponsiveNavLink>
         </li>
-        <li>
-          <ResponsiveNavLink
-            href={route('learning-material.index')}
-            active={route().current('learning-material.index')}
-          >
-            <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
-              <LibraryBooksIcon fontSize="large" />
-            </span>
-            Materi Pembelajaran
-          </ResponsiveNavLink>
-        </li>
-        <li>
-          <ResponsiveNavLink
-            href={route('exam-monitor.index')}
-            active={route().current('exam-monitor.index')}
-          >
-            <span className={isSidebarOpen ? 'mr-0' : 'mr-4'}>
-              <LibraryBooksIcon fontSize="large" />
-            </span>
-            Materi Pembelajaran
-          </ResponsiveNavLink>
-        </li> */}
       </ul>
     </Box>
   );

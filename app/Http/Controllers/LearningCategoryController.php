@@ -55,9 +55,9 @@ class LearningCategoryController extends Controller
         $learningCategory = LearningCategory::with([
             'subLearningPacket',
             'subLearningPacket.learningPacket',
-            'learningMaterials',
-            'bankQuestions',
-            'exerciseQuestions'
+            'learningMaterials.documents.documentFile',
+            'bankQuestions.items',
+            'exerciseQuestions.questions'
         ])->find($id);
         return Inertia::render('Admin/Classification/LearningCategory/Show', [
             'learningCategory' => $learningCategory

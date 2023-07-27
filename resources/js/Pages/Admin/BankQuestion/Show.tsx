@@ -67,7 +67,7 @@ export default function Show(props: Props) {
             learning_category,
             bank_question.id,
           ])}>
-            <Button variant="contained" color="primary" size="large">
+            <Button variant="contained" color="success" size="large">
               Tambah Soal
             </Button>
           </Link>

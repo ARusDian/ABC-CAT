@@ -6,6 +6,7 @@ import { Button } from "@mui/material";
 import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
 import React from "react";
 import route from "ziggy-js";
+import FolderIcon from '@mui/icons-material/Folder';
 
 interface Props {
     learningPacket: LearningPacketModel
@@ -55,7 +56,7 @@ export default function Show({ learningPacket }: Props) {
                 </div>
                 <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-5">
                     <p className="text-xl font-semibold">
-                        Sub Paket Belajar
+                        <span className="mx-2 text-gray-600"><FolderIcon fontSize="large" /></span>Sub Paket Belajar
                     </p>
                     <MaterialReactTable
                         columns={dataColumns}
@@ -80,7 +81,7 @@ export default function Show({ learningPacket }: Props) {
                                 <Button
                                     type="button"
                                     variant="contained"
-                                    color="primary"
+                                    color="success"
                                     size="large"
                                 >
                                     <Link

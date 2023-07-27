@@ -58,7 +58,7 @@ export default function Show(props: Props) {
           </p>
         </div>
         <div className="flex justify-around my-auto gap-5">
-          <Button variant="contained" color="primary" size="large">
+          <Button variant="contained" color="success" size="large">
             <Link
               href={route(
                 'learning-packet.sub-learning-packet.learning-category.exercise-question.question.create',

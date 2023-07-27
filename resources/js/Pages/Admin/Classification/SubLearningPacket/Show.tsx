@@ -6,6 +6,7 @@ import { Button } from "@mui/material";
 import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
 import React from "react";
 import route from "ziggy-js";
+import InventoryIcon from '@mui/icons-material/Inventory';
 
 interface Props {
     subLearningPacket: SubLearningPacketModel
@@ -58,7 +59,7 @@ export default function Show({ subLearningPacket }: Props) {
                 </div>
                 <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-5">
                     <p className="text-xl font-semibold">
-                        Kategori Belajar
+                        <span className="mx-2 text-gray-600"><InventoryIcon fontSize="large" /></span>Kategori Belajar
                     </p>
                     <MaterialReactTable
                         columns={dataColumns}
@@ -83,7 +84,7 @@ export default function Show({ subLearningPacket }: Props) {
                                 <Button
                                     type="button"
                                     variant="contained"
-                                    color="primary"
+                                    color="success"
                                     size="large"
                                 >
                                     <Link

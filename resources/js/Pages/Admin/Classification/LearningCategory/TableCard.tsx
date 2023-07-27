@@ -5,7 +5,7 @@ import React from "react";
 import route from "ziggy-js";
 
 interface Props<T extends Record<string, any>> {
-    title: string;
+    title: string | JSX.Element;
 
     createRoute?: string;
     createRouteTitle?: string;
@@ -15,6 +15,9 @@ interface Props<T extends Record<string, any>> {
 
     showRoute?: string;
     showRouteTitle?: string;
+
+    isExpandable?: boolean;
+    detailPanel?: (row: T) => JSX.Element;
 
     learningPacketId: number;
     subLearningPacketId: number;
@@ -40,12 +43,17 @@ export default function TableCard<T extends Record<string, any>>(props: Props<T>
                     enableTopToolbar
                     enableRowActions
                     enableRowNumbers
+                    enableExpanding={props.isExpandable}
+                    enableExpandAll={props.isExpandable}
                     muiTableBodyRowProps={{ hover: false }}
                     muiTableHeadCellProps={{
                         sx: {
                             fontWeight: 'bold',
                             fontSize: '16px',
                         },
+                    }}
+                    renderDetailPanel={({ row }) => {
+                        return props.detailPanel ? props.detailPanel(row.original) : null;
                     }}
                     renderTopToolbarCustomActions={() => (
                         <div className="flex items-center justify-center gap-2">
@@ -55,7 +63,7 @@ export default function TableCard<T extends Record<string, any>>(props: Props<T>
                                     props.subLearningPacketId,
                                     props.learningCategoryId,
                                 ])}>
-                                    <Button variant="contained" color="primary" size="large">
+                                    <Button variant="contained" color="success" size="large">
                                         {props.createRouteTitle ?? 'Tambah'}
                                     </Button>
                                 </Link>
