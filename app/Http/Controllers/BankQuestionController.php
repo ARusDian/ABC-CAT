@@ -37,7 +37,7 @@ class BankQuestionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($learning_packet, $sub_learning_packet, $id)
     {
         return Inertia::render('Admin/BankQuestion/Create', []);
     }
@@ -45,21 +45,31 @@ class BankQuestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id)
     {
         $data = $this->validateData($request->all());
 
-        $bank = BankQuestion::create($data);
+        $bank = BankQuestion::create([
+            'name' => $data['name'],
+            'type' => $data['type'],
+            'learning_category_id' => $learning_category_id,
+        ]);
+
 
         return redirect()
-            ->route('bank-question.show', [$bank->id])
+            ->route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+                $learning_packet,
+                $sub_learning_packet,
+                $learning_category_id,
+                $bank->id
+            ])
             ->banner('Bank Soal berhasil dibuat');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         return Inertia::render('Admin/BankQuestion/Show', [
             'bank_question' => fn () => BankQuestion::with([
@@ -79,7 +89,7 @@ class BankQuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         return Inertia::render('Admin/BankQuestion/Edit', [
             'bank_question' => fn () => BankQuestion::findOrFail($id),
@@ -89,7 +99,7 @@ class BankQuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         $data = $this->validateData($request->all());
 
@@ -97,14 +107,19 @@ class BankQuestionController extends Controller
         $bank->update($data);
 
         return redirect()
-            ->route('bank-question.show', [$id])
-            ->banner('Soal Lathian berhasil diedit');
+            ->route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+                $learning_packet,
+                $sub_learning_packet,
+                $learning_category_id,
+                $id
+            ])
+            ->banner('Bank Soal berhasil diedit');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         //
     }

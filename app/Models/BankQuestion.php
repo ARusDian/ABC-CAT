@@ -14,6 +14,7 @@ class BankQuestion extends Model
     protected $fillable = [
         'name',
         'type',
+        'learning_category_id',
     ];
 
     protected $casts = [

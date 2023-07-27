@@ -1,3 +1,4 @@
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { BankQuestionModel } from '@/Models/BankQuestion';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
@@ -14,6 +15,12 @@ interface Props {
 export default function Show(props: Props) {
   const { bank_question } = props;
 
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
   const dataColumns = [
     {
       header: 'Nama',
@@ -29,22 +36,41 @@ export default function Show(props: Props) {
     <AdminShowLayout
       title="Bank Soal"
       headerTitle="Data Bank Soal"
-      editRoute={route('bank-question.edit', bank_question.id)}
-      backRoute={route('bank-question.index')}
+      editRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.edit', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        bank_question.id,
+      ])}
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category
+      ])}
     >
-      <div className="flex">
+      <div className="flex my-3">
         <div className=" text-lg">
           <p>{bank_question.name}</p>
           <p>Type: {bank_question.type}</p>
         </div>
         <div className="flex place-content-end grow gap-2">
-          <Link href={route('bank-question.item.create', bank_question.id)}>
+          <Link href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.create', [
+            learning_packet,
+            sub_learning_packet,
+            learning_category,
+            bank_question.id,
+          ])}>
             <Button variant="contained" color="primary" size="large">
               Tambah Soal
             </Button>
           </Link>
 
-          <Link href={route('exercise-question.import', bank_question.id)}>
+          <Link href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.import', [
+            learning_packet,
+            sub_learning_packet,
+            learning_category,
+            bank_question.id,
+          ])}>
             <Button variant="contained" color="primary" size="large">
               Buat Paket Soal
             </Button>
@@ -66,7 +92,10 @@ export default function Show(props: Props) {
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
             <Link
-              href={route('bank-question.item.show', [
+              href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
                 bank_question.id,
                 row.original.id,
               ])}

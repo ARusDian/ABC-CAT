@@ -16,9 +16,10 @@ interface Props {
   className?: string;
   onSubmit: (e: React.FormEvent) => any;
   submitTitle: string;
+  isUpdate?: boolean;
 }
 
-export default function Form({ form, submitTitle, onSubmit }: Props) {
+export default function Form({ form, submitTitle, onSubmit, isUpdate=false }: Props) {
   return (
     <form className="flex-col w-full space-y-5" onSubmit={onSubmit}>
       <TextField
@@ -50,7 +51,12 @@ export default function Form({ form, submitTitle, onSubmit }: Props) {
         </Select>
       </FormControl>
 
-      <Button type="submit" disabled={form.formState.isSubmitting} fullWidth>
+      <Button
+        type="submit"
+        disabled={form.formState.isSubmitting}
+        variant="contained"
+        color={isUpdate ? 'warning' : 'primary'}
+      >
         {submitTitle}
       </Button>
     </form>

@@ -9,23 +9,35 @@ import {
   BankQuestionFormModel,
   BankQuestionModel,
 } from '@/Models/BankQuestion';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
   bank_question: BankQuestionModel;
 }
 
-export default function Create(props: Props) {
+export default function Create({ bank_question }: Props) {
   let form = useForm<BankQuestionFormModel>({
     defaultValues: {
-      name: props.bank_question.name,
-      type: props.bank_question.type,
+      name: bank_question.name,
+      type: bank_question.type,
     },
   });
+
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
 
   const onSubmit = React.useCallback(
     (e: BankQuestionFormModel) => {
       router.put(
-        route('bank-question.update', props.bank_question.id),
+        route('learning-packet.sub-learning-packet.learning-category.bank-question.update', [
+          learning_packet,
+          sub_learning_packet,
+          learning_category,
+          bank_question.id,
+        ]),
         e as any,
         {
           onError: errors => {
@@ -37,18 +49,24 @@ export default function Create(props: Props) {
         },
       );
     },
-    [props.bank_question],
+    [bank_question],
   );
 
   return (
     <AdminFormLayout
       title="Tambah Soal Latihan"
-      backRoute={route('bank-question.show', props.bank_question.id)}
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        bank_question.id,
+      ])}
     >
       <Form
         form={form}
         submitTitle="Edit"
         onSubmit={form.handleSubmit(onSubmit)}
+        isUpdate
       />
     </AdminFormLayout>
   );
