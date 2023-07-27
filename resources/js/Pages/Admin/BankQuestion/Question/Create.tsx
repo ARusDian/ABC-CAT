@@ -8,12 +8,13 @@ import { useForm } from 'react-hook-form';
 import { BankQuestionItemFormModel } from '@/Models/BankQuestionItem';
 import { BankQuestionModel } from '@/Models/BankQuestion';
 import { router } from '@inertiajs/react';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
   bank_question: BankQuestionModel;
 }
 
-export default function Create(props: Props) {
+export default function Create({ bank_question }: Props) {
   let form = useForm<BankQuestionItemFormModel>({
     defaultValues: {
       name: '',
@@ -58,12 +59,23 @@ export default function Create(props: Props) {
     },
   });
 
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
   function onSubmit(e: BankQuestionItemFormModel) {
     console.log(e);
     form.clearErrors();
 
     router.post(
-      route('bank-question.item.store', [props.bank_question.id]),
+      route('learning-packet.sub-learning-packet.learning-category.bank-question.item.store', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        bank_question.id
+      ]),
 
       e as any,
       {
@@ -77,7 +89,12 @@ export default function Create(props: Props) {
   return (
     <AdminFormLayout
       title="Tambah Pertanyaan"
-      backRoute={route('bank-question.show', [props.bank_question.id])}
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        bank_question.id
+      ])}
       backRouteTitle="Kembali"
     >
       <form
@@ -87,7 +104,7 @@ export default function Create(props: Props) {
         <Form
           form={form}
           className="my-5 mx-2"
-          bankQuestionId={props.bank_question.id}
+          bankQuestionId={bank_question.id}
         />
         <div className="flex justify-end">
           <Button

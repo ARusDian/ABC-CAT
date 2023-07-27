@@ -207,7 +207,7 @@ function PilihanForm({
     <>
       {choicesArray.fields.map((it, index) => {
         return (
-          <div key={it.id} className="border-b py-3">
+          <div key={it.id} className="border-b py-3 flex flex-col gap-3">
             <Controller
               name={`answers.choices.${index}.content`}
               control={form.control}

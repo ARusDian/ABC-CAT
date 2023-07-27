@@ -7,6 +7,7 @@ import { numberToUpperCase } from '@/Utils/Convert';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 import { BankQuestionItemShow } from '@/Components/BankQuestionItemShow';
 import { Tabs, Tab } from '@mui/material';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
   item: BankQuestionItemModel;
@@ -43,18 +44,35 @@ function a11yProps(index: number) {
 
 export default function Index(props: Props) {
   const item = props.item;
+
+  console.log(item);
   const [tabValue, setTabValue] = React.useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
+
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
   return (
     <AdminShowLayout
       title={`Pertanyaan ${item.id}`}
       headerTitle={'Data Pertanyaan'}
-      backRoute={route('bank-question.show', [item.bank_question_id])}
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        item.bank_question_id
+      ])}
       backRouteTitle="Kembali"
-      editRoute={route('bank-question.item.edit', [
+      editRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.edit', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
         item.bank_question_id,
         item.id,
       ])}
@@ -62,17 +80,23 @@ export default function Index(props: Props) {
       onDelete={() => {
         item.is_active
           ? router.delete(
-              route('bank-question.item.destroy', [
-                item.bank_question_id,
-                item.id,
-              ]),
-            )
+            route('learning-packet.sub-learning-packet.learning-category.bank-question.item.destroy', [
+              learning_packet,
+              sub_learning_packet,
+              learning_category,
+              item.bank_question_id,
+              item.id,
+            ]),
+          )
           : router.post(
-              route('bank-question.item.restore', [
-                item.bank_question_id,
-                item.id,
-              ]),
-            );
+            route('learning-packet.sub-learning-packet.learning-category.bank-question.item.restore', [
+              learning_packet,
+              sub_learning_packet,
+              learning_category,
+              item.bank_question_id,
+              item.id,
+            ]),
+          );
       }}
       deleteTitle={item.is_active ? 'Hapus' : 'Restore'}
       onDeleteMessage={
@@ -152,9 +176,10 @@ export default function Index(props: Props) {
       <CustomTabPanel value={tabValue} index={2}>
         <div className="">
           <label className="text-lg">Jawaban Benar</label>
-          {props.item.answer.type == 'Single' ? (
-            <p>pilihan {numberToUpperCase(props.item.answer.answer)}</p>
-          ) : null}
+          {/* TODO: MAKE FUNCTION TO DETERMINE TRUEST ANSWER */}
+          {/* {props.item.answer.type == "WeightedChoice" ? (
+            <p>pilihan {numberToUpperCase(() => TruestAnswer())}</p>
+          ) : null} */}
           {props.item.type == 'Pilihan' ? (
             <>
               <label className="text-lg">Penjelasan Jawaban</label>

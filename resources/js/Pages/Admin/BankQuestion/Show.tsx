@@ -25,11 +25,18 @@ export default function Show(props: Props) {
     {
       header: 'Nama',
       accessorKey: 'name',
-    },
-    {
+    }, {
       header: 'type',
       accessorKey: 'type',
-    },
+    }, {
+      header: 'Bobot',
+      accessorKey: 'weight',
+    }, {
+      header: 'Status',
+      accessorFn: (row) => {
+        return row.is_active ? 'Aktif' : 'Tidak Aktif';
+      }
+    }
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
   return (

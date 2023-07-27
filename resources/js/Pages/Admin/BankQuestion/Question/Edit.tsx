@@ -12,6 +12,7 @@ import {
   BankQuestionItemModel,
 } from '@/Models/BankQuestionItem';
 import Api from '@/Utils/Api';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
   question: BankQuestionItemModel;
@@ -23,9 +24,18 @@ export default function Edit(props: Props) {
     defaultValues: question,
   });
 
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
   function onSubmit(data: BankQuestionItemFormModel) {
     Api.post(
-      route('bank-question.item.update', [
+      route('learning-packet.sub-learning-packet.learning-category.bank-question.item.update', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
         question.bank_question_id,
         question.id,
       ]),
@@ -62,7 +72,10 @@ export default function Edit(props: Props) {
   return (
     <AdminFormLayout
       title="Edit Pertanyaan"
-      backRoute={route('bank-question.item.show', [
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
         question.bank_question_id,
         question.id,
       ])}
