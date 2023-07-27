@@ -14,7 +14,7 @@ export default function AdminFormLayout(props: React.PropsWithChildren<Props>) {
   const { backRoute, backRouteTitle, title } = props;
   return (
     <DashboardAdminLayout title={title}>
-      <div className="flex justify-between">
+      <div className="flex justify-between mx-12">
         <div className="text-2xl">{title}</div>
         {backRoute ? (
           <Button variant="contained" color="primary" size="large">
@@ -22,7 +22,9 @@ export default function AdminFormLayout(props: React.PropsWithChildren<Props>) {
           </Button>
         ) : null}
       </div>
-      {props.children}
+      <div className=" m-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        {props.children}
+      </div>
     </DashboardAdminLayout>
   );
 }

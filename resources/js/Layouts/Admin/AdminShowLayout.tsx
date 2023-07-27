@@ -47,8 +47,8 @@ export default function Index(props: React.PropsWithChildren<Props>) {
 
   return (
     <DashboardAdminLayout title={title}>
-      <div className="p-6 sm:px-20 bg-white border-b border-gray-200 flex flex-col gap-3">
-        <div className="flex justify-between">
+      <div className="bg-white flex flex-col gap-3">
+        <div className="flex justify-between mx-8">
           <div className="mt-8 text-2xl">{headerTitle}</div>
           <div className="flex flex-col md:flex-row gap-3">
             {backRoute ? (
@@ -81,7 +81,9 @@ export default function Index(props: React.PropsWithChildren<Props>) {
             ) : null}
           </div>
         </div>
-        {props.children}
+        <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+          {props.children}
+        </div>
       </div>
     </DashboardAdminLayout>
   );

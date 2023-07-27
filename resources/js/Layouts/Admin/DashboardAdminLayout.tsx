@@ -152,7 +152,7 @@ export default function DashboardAdminLayout({
             Pengguna
           </ResponsiveNavLink>
         </li>
-        <li>
+        {/* <li>
           <ResponsiveNavLink
             href={route('bank-question.index')}
             active={route().current('bank-question.index')}
@@ -195,7 +195,7 @@ export default function DashboardAdminLayout({
             </span>
             Materi Pembelajaran
           </ResponsiveNavLink>
-        </li>
+        </li> */}
       </ul>
     </Box>
   );
@@ -208,7 +208,7 @@ export default function DashboardAdminLayout({
         <link rel="icon" href={asset('root', 'assets/image/icon.png')} />
       </Head>
       <Box sx={{ display: 'flex' }}>
-        <AppBar position="fixed" open={isSidebarOpen}>
+        <AppBar open={isSidebarOpen}>
           <Banner />
           <nav className="flex justify-between w-full sticky bg-main-blue my-auto px-7 shadow shadow-sky-400/50" style={{ height: navHeight }} >
             <div className="flex gap-3 max-w-6xl mr-30">
@@ -257,9 +257,9 @@ export default function DashboardAdminLayout({
           <Divider />
           {sideBar()}
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <div className="py-12 mx-auto sm:px-6 lg:px-8">
-            <div className="overflow-hidden p-5">
+        <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: `${navHeight}px`  }}>
+          <div className="mx-auto px-8">
+            <div className="overflow-hidden">
               {children}
             </div>
           </div>

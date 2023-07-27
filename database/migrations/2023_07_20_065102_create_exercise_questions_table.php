@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('exercise_questions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('learning_category_id')->constrained('learning_categories');
             $table->string("name");
             $table->string("type");
             $table->decimal("time_limit");

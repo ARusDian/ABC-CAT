@@ -43,7 +43,7 @@ export default function AdminTableLayout({
             </div>
           </div>
         )}
-        <div className="mt-6 p-6 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
           {children}
         </div>
       </div>
