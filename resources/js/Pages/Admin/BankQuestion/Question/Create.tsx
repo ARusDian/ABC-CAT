@@ -23,7 +23,10 @@ export default function Create(props: Props) {
       },
       weight: 1,
       type: 'Pilihan',
-      answer: 0,
+      answer: {
+        type: 'Single',
+        answer: 0,
+      },
       answers: {
         choices: [
           {

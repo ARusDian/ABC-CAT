@@ -8,10 +8,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import QuestionEditor from '@/Components/QuestionEditor';
 import {
+  AnswerWeightedChoiceVariant,
   BankQuestionItemFormModel,
+  BankQuestionItemModel,
   BankQuestionItemPilihanFormModel,
 } from '@/Models/BankQuestionItem';
-import { Tabs, Tab } from '@mui/material';
+import { Tabs, Tab, Checkbox, Select, MenuItem } from '@mui/material';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -59,6 +61,14 @@ function isQuestionPilihanFormModel(
   return form.getValues('type') == 'Pilihan';
 }
 
+function isWeightedChoiceFormModel(
+  form: UseFormReturn<any>,
+): form is UseFormReturn<
+  BankQuestionItemModel & { answer: AnswerWeightedChoiceVariant }
+> {
+  return form.getValues('answer.type') == 'WeightedChoice';
+}
+
 export default function Form(props: Props) {
   const form = props.form;
 
@@ -97,6 +107,31 @@ export default function Form(props: Props) {
               error={form.formState.errors?.weight != null}
               helperText={form.formState.errors?.weight?.message}
             />
+
+            <Select
+              value={form.getValues('answer.type')}
+              onChange={e => {
+                const value = e.target.value;
+
+                if (value == 'Single') {
+                  form.setValue('answer', { type: 'Single', answer: 0 });
+                } else if (value == 'WeightedChoice') {
+                  form.setValue('answer', {
+                    type: 'WeightedChoice',
+                    answer: form
+                      .getValues('answers')
+                      .choices.map(it => ({ weight: 0 })),
+                  });
+                }
+              }}
+            >
+              {Object.entries({
+                Single: 'Tidak Berbobot',
+                WeightedChoice: 'Berbobot',
+              }).map(([key, value]) => {
+                return <MenuItem value={key}>{value}</MenuItem>;
+              })}
+            </Select>
           </div>
           <Controller
             name="question.content"
@@ -163,20 +198,23 @@ function PilihanForm({
   form: UseFormReturn<BankQuestionItemPilihanFormModel>;
   exerciseQuestionId: string;
 }) {
-  const answerArray = useFieldArray({
+  const choicesArray = useFieldArray({
     name: 'answers.choices',
     control: form.control,
   });
 
   return (
     <>
-      {answerArray.fields.map((it, index) => {
+      {choicesArray.fields.map((it, index) => {
         return (
           <div key={it.id} className="border-b py-3">
             <Controller
               name={`answers.choices.${index}.content`}
               control={form.control}
               render={({ field }) => {
+                const weightIndex =
+                  `answer.answer.${index}.weight` as 'answer.answer.0.weight';
+
                 return (
                   <>
                     <InputLabel htmlFor="name">Jawaban {index + 1}</InputLabel>
@@ -193,6 +231,40 @@ function PilihanForm({
                           ?.message
                       }
                     />
+                    {isWeightedChoiceFormModel(form) ? (
+                      <>
+                        <TextField
+                          label="Bobot"
+                          error={
+                            form.formState.errors.answer?.answer?.[index]
+                              ?.weight != null
+                          }
+                          helperText={
+                            form.formState.errors.answer?.answer?.[index]
+                              ?.weight?.message
+                          }
+                          // defaultValue={form.formState.defaultValues.answer.answer[index].weight}
+                          {...form.register(
+                            `answer.answer.${index}.weight` as 'answer.answer.0.weight',
+                            {
+                              max: {
+                                message: 'Bobot harus diantara 0 dan 1',
+                                value: 1,
+                              },
+                              min: {
+                                message: 'Bobot harus diantara 0 dan 1',
+                                value: 0,
+                              },
+                              valueAsNumber: true,
+                              validate: value => value >= 0 && value <= 1,
+                              // pattern: {
+                              //   value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                              // },
+                            },
+                          )}
+                        />
+                      </>
+                    ) : null}
                   </>
                 );
               }}
@@ -200,35 +272,39 @@ function PilihanForm({
           </div>
         );
       })}
-      <label className="text-lg font-semibold">
-        <InputLabel htmlFor="name">Pilihan Jawaban Benar</InputLabel>
-      </label>
-      <RadioGroup defaultValue={form.formState.defaultValues?.answer}>
-        {answerArray.fields.map((it, index) => {
-          return (
-            <Controller
-              name="answer"
-              control={form.control}
-              key={it.id}
-              render={({ field }) => {
-                return (
-                  <FormControlLabel
-                    value={index}
-                    control={
-                      <Radio
-                        ref={field.ref}
-                        onChange={() => field.onChange(index)}
-                        onBlur={field.onBlur}
+      {form.getValues('answer.type') == 'Single' ? (
+        <>
+          <label className="text-lg font-semibold">
+            <InputLabel htmlFor="name">Pilihan Jawaban Benar</InputLabel>
+          </label>
+          <RadioGroup defaultValue={form.formState.defaultValues?.answer}>
+            {choicesArray.fields.map((it, index) => {
+              return (
+                <Controller
+                  name="answer.answer"
+                  control={form.control}
+                  key={it.id}
+                  render={({ field }) => {
+                    return (
+                      <FormControlLabel
+                        value={index}
+                        control={
+                          <Radio
+                            ref={field.ref}
+                            onChange={() => field.onChange(index)}
+                            onBlur={field.onBlur}
+                          />
+                        }
+                        label={`Jawaban ${index + 1}`}
                       />
-                    }
-                    label={`Jawaban ${index + 1}`}
-                  />
-                );
-              }}
-            />
-          );
-        })}
-      </RadioGroup>
+                    );
+                  }}
+                />
+              );
+            })}
+          </RadioGroup>
+        </>
+      ) : null}
     </>
   );
 }

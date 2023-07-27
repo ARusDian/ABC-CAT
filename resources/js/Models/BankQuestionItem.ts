@@ -27,7 +27,7 @@ export interface AnswerTypePilihanModel {
     choices: EditorValue[];
   };
   explanation: EditorValue;
-  answer: number;
+  answer: AnswerVariant<number>;
 }
 
 export interface AnswerTypeKecermatanModel {
@@ -38,8 +38,22 @@ export interface AnswerTypeKecermatanModel {
   answers: {
     choices: string[];
   };
-  answer: number;
+  answer: AnswerVariant<number>;
   explanation: undefined;
+}
+
+export type AnswerVariant<T> =
+  | {
+      type: 'Single';
+      answer: T;
+    }
+  | AnswerWeightedChoiceVariant;
+
+export type AnswerWeightedChoiceVariant = {
+  type: 'WeightedChoice';
+      answer: {
+        weight: number;
+      }[];
 }
 
 export type BankQuestionItemGenericModel<T> = BaseBankQuestionItemModel & T;

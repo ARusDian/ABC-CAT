@@ -109,7 +109,15 @@ function PilihanAnswerForm({
     <div className="flex flex-col gap-1">
       {choices.map((choice, index) => {
         const editorRef = arrayEditorRef.current[index];
-        const isCorrect = answer.question.answer == index;
+
+        const answerQuestion = answer.question.answer;
+        let isCorrect;
+
+        if (answerQuestion.type == 'Single') {
+          isCorrect = answerQuestion.answer == index;
+        } else if (answerQuestion.type == 'WeightedChoice') {
+          isCorrect = answerQuestion.answer[index].weight > 0;
+        }
         return (
           <div
             className={`flex justify-between rounded-lg px-3 ${
@@ -138,6 +146,9 @@ function PilihanAnswerForm({
                 }}
                 checked={answer.answer == index}
               />
+              {answerQuestion.type == 'WeightedChoice' ? (
+                <div>{answerQuestion.answer[index].weight}</div>
+              ) : null}
               <div className="prose">
                 <BankQuestionItemEditor
                   editorRef={editorRef}

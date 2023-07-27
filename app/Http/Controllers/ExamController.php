@@ -39,8 +39,8 @@ class ExamController extends Controller
 
     public function getInProgressExam($exercise_id)
     {
-        return Exam::with(['answers.question', 'exerciseQuestion' => function($query){
-            $query->select('id','name');
+        return Exam::with(['answers.question', 'exerciseQuestion' => function ($query) {
+            $query->select('id', 'name');
         }])
             ->ofExercise($exercise_id)
             ->ofUser(auth()->id())
@@ -61,11 +61,19 @@ class ExamController extends Controller
         switch ($exam->question->type) {
             case BankQuestionItemTypeEnum::Pilihan:
             case BankQuestionItemTypeEnum::Kecermatan:
-                if ($exam->answer == $exam->question->answer) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+                $answer = $exam->question->answer;
+                switch ($answer['type']) {
+                    case 'Single':
+                        if ($exam->answer == $answer['answer']) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                        break;
+                    case 'WeightedChoice':
+                        return $answer['weight'][$exam->answer]['weight'] ?? 0;
+                        break;
+                };
                 break;
         }
     }
@@ -106,8 +114,7 @@ class ExamController extends Controller
 
     public function showAttempt($exercise_question, Exam $exam)
     {
-        if (!$exam->finished)
-        {
+        if (!$exam->finished) {
             return abort(404);
         }
 

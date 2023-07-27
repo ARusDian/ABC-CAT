@@ -8,7 +8,10 @@ import { router } from '@inertiajs/react';
 import { AutoSizer, Grid, List, ScrollSync } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import { BankQuestionModel } from '@/Models/BankQuestion';
-import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
+import {
+  BankQuestionItemKecermatanModel,
+  BankQuestionItemModel,
+} from '@/Models/BankQuestionItem';
 import { useForm } from 'react-hook-form';
 
 interface Props {
@@ -44,7 +47,10 @@ export default function Create(props: Props) {
       question: {},
       weight: 1,
       type: 'Kecermatan',
-      answer: 0,
+      answer: {
+        type: 'Single',
+        answer: 0,
+      },
       answers: {
         choices: [],
       },
@@ -86,15 +92,18 @@ export default function Create(props: Props) {
       return;
     }
 
-    const data = {
-      name: generateWith.join(),
-      type: 'Kecermatan',
-      weight: 1,
+    type Store = {
+      question: BankQuestionItemKecermatanModel['question'];
+      answers: BankQuestionItemKecermatanModel['answers'];
+      answer: BankQuestionItemKecermatanModel['answer'];
+    };
 
-      stores: permutate.map(it => {
-        return {
-          question: { questions: it.choices },
-          answers: { choices: generateWith },
+    const stores: Store[] = permutate.map(it => {
+      return {
+        question: { questions: it.choices },
+        answers: { choices: generateWith as string[] },
+        answer: {
+          type: 'Single',
           answer: generateWith
             .map((choice, index) => {
               if (it.answer == choice) {
@@ -103,10 +112,18 @@ export default function Create(props: Props) {
                 return null;
               }
             })
-            .find(it => it != null),
-          explanation: {},
-        };
-      }),
+            .find(it => it != null)!,
+        },
+        explanation: {},
+      };
+    });
+
+    const data = {
+      name: generateWith.join(),
+      type: 'Kecermatan',
+      weight: 1,
+
+      stores,
     };
 
     router.post(

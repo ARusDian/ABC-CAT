@@ -126,6 +126,9 @@ export default function Index(props: Props) {
                   <label className="text-lg">
                     Pilihan {numberToUpperCase(index)}
                   </label>
+                  {props.question.answer.type == 'WeightedChoice' ? (
+                    <div>Bobot: {props.question.answer.answer[index].weight}</div>
+                  ) : null}
                   <div className="mx-auto border rounded-lg">
                     <BankQuestionItemEditor
                       content={choice.content}
@@ -144,6 +147,9 @@ export default function Index(props: Props) {
               return (
                 <div key={index}>
                   <label>Pilihan {numberToUpperCase(index)}</label>
+                  {props.question.answer.type == 'WeightedChoice' ? (
+                    <div>Bobot: {props.question.answer.answer[index].weight}</div>
+                  ) : null}
                   <div className="mx-auto border rounded-lg">{choice}</div>
                 </div>
               );
@@ -160,7 +166,9 @@ export default function Index(props: Props) {
       <CustomTabPanel value={tabValue} index={2}>
         <div className="border-2 border-gray-200 p-5">
           <label className="text-lg">Jawaban Benar</label>
-          <p>pilihan {numberToUpperCase(props.question.answer)}</p>
+          {props.question.answer.type == 'Single' ? (
+            <p>pilihan {numberToUpperCase(props.question.answer.answer)}</p>
+          ) : null}
           {props.question.type == 'Pilihan' ? (
             <>
               <label className="text-lg">Penjelasan Jawaban</label>

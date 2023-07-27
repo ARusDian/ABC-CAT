@@ -63,6 +63,7 @@ class BankQuestionItemController extends Controller
             ],
             'weight' => 'required|numeric',
             'answer' => 'required',
+            'answer.type' => Rule::in(['Single', 'WeightedChoice']),
         ]);
 
         $validator->sometimes(
@@ -70,6 +71,13 @@ class BankQuestionItemController extends Controller
             'array',
             fn (Fluent $item) => $item->type == BankQuestionTypeEnum::Pilihan->name,
         );
+
+        $isWeightedChoice = fn (Fluent $item) => $item->type == 'WeightedChoice';
+        $validator->sometimes('answer.answer', 'required|array', $isWeightedChoice);
+        $validator->sometimes('answer.answer.*.weight', 'required|number', $isWeightedChoice);
+
+        $isSingleChoice = fn (Fluent $item) => $item->type == 'Single';
+        $validator->sometimes('answer.answer', 'required|number', $isSingleChoice);
 
         return $validator->validate();
     }

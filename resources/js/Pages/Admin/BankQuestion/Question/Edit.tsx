@@ -11,6 +11,7 @@ import {
   BankQuestionItemFormModel,
   BankQuestionItemModel,
 } from '@/Models/BankQuestionItem';
+import Api from '@/Utils/Api';
 
 interface Props {
   question: BankQuestionItemModel;
@@ -23,10 +24,7 @@ export default function Edit(props: Props) {
   });
 
   function onSubmit(data: BankQuestionItemFormModel) {
-    console.log(data);
-
-    form.clearErrors();
-    router.post(
+    Api.post(
       route('bank-question.item.update', [
         question.bank_question_id,
         question.id,
@@ -34,13 +32,20 @@ export default function Edit(props: Props) {
       {
         _method: 'PUT',
         ...data,
-      } as any,
-      {
-        onError: errors => {
-          console.log(errors);
-        },
       },
-    );
+      form,
+    )
+    // router.post(
+    //   {
+    //     _method: 'PUT',
+    //     ...data,
+    //   } as any,
+    //   {
+    //     onError: errors => {
+    //       console.log(errors);
+    //     },
+    //   },
+    // );
     // php does'nt support PUT so...
     // @ts-ignore
     // form.data._method = 'PUT';
@@ -78,7 +83,7 @@ export default function Edit(props: Props) {
             variant="contained"
             color="warning"
             size="large"
-            disabled={form.formState.isSubmitted}
+            disabled={form.formState.isSubmitting}
           >
             Update
           </Button>
