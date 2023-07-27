@@ -9,24 +9,37 @@ import {
 } from '@/Models/ExerciseQuestion';
 import { useForm } from 'react-hook-form';
 import { router } from '@inertiajs/react';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
+import { Button } from '@mui/material';
 
 interface Props {
   exercise_question: ExerciseQuestionModel;
 }
 
-export default function Create(props: Props) {
+export default function Create({ exercise_question }: Props) {
   let form = useForm<ExerciseQuestionFormModel>({
     defaultValues: {
-      name: props.exercise_question.name,
-      time_limit: props.exercise_question.time_limit,
-      number_of_question: props.exercise_question.number_of_question,
+      name: exercise_question.name,
+      time_limit: exercise_question.time_limit,
+      number_of_question: exercise_question.number_of_question,
     },
   });
+
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
 
   const onSubmit = React.useCallback(
     (e: ExerciseQuestionFormModel) => {
       router.put(
-        route('exercise-question.update', props.exercise_question.id),
+        route('learning-packet.sub-learning-packet.learning-category.exercise-question.update', [
+          learning_packet,
+          sub_learning_packet,
+          learning_category,
+          exercise_question.id
+        ]),
         e as any,
         {
           onError: errors => {
@@ -38,19 +51,36 @@ export default function Create(props: Props) {
         },
       );
     },
-    [props.exercise_question],
+    [exercise_question],
   );
 
   return (
     <AdminFormLayout
-      title="Tambah Soal Latihan"
-      backRoute={route('exercise-question.show', props.exercise_question.id)}
+      title="Edit Latihan Soal"
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        exercise_question.id
+      ])}
     >
-      <Form
-        form={form}
-        submitTitle="Edit"
+      <form
         onSubmit={form.handleSubmit(onSubmit)}
-      />
+        className='flex-col space-y-5 w-full'
+      >
+        <Form
+          form={form}
+        />
+        <Button
+          type="submit"
+          disabled={form.formState.isSubmitting}
+          fullWidth
+          variant="contained"
+          color="warning"
+        >
+          Submit
+        </Button>
+      </form>
     </AdminFormLayout>
   );
 }

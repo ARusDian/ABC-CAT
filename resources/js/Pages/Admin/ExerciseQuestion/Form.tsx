@@ -4,7 +4,6 @@ import {
   EXERCISE_QUESTION_TYPE,
   ExerciseQuestionFormModel,
 } from '@/Models/ExerciseQuestion';
-import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,13 +15,11 @@ import { UseFormReturn } from 'react-hook-form';
 interface Props {
   form: UseFormReturn<ExerciseQuestionFormModel>;
   className?: string;
-  onSubmit?: (e: React.FormEvent) => any;
-  submitTitle?: string;
 }
 
-export default function Form({ form, submitTitle, onSubmit }: Props) {
+export default function Form({ form }: Props) {
   return (
-    <form className="flex-col w-full space-y-5" onSubmit={onSubmit}>
+    <div className="flex-col w-full space-y-5" >
       <TextField
         label="Nama"
         {...form.register('name')}
@@ -76,12 +73,6 @@ export default function Form({ form, submitTitle, onSubmit }: Props) {
         fullWidth
       />
       <InputError message={form.formState.errors.number_of_question?.message} />
-
-      {submitTitle != null ? (
-        <Button type="submit" disabled={form.formState.isSubmitting} fullWidth>
-          {submitTitle}
-        </Button>
-      ) : null}
-    </form>
+    </div>
   );
 }

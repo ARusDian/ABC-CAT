@@ -15,6 +15,7 @@ import {
 } from '@/Models/ExerciseQuestion';
 import { router } from '@inertiajs/react';
 import { useForm } from 'react-hook-form';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
   bank_question: BankQuestionModel;
@@ -35,6 +36,12 @@ export default function Show(props: Props) {
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
   const [rowSelection, setRowSelection] = React.useState({});
+
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
 
   const [type, setType] = React.useState(1);
   const [exerciseId, setExerciseId] = React.useState<string | null>(
@@ -57,7 +64,12 @@ export default function Show(props: Props) {
 
     if (type == 1) {
       router.post(
-        route('exercise-question.store', [exerciseId!]),
+        route('learning-packet.sub-learning-packet.learning-category.exercise-question.store', [
+          learning_packet,
+          sub_learning_packet,
+          learning_category,
+          exerciseId!
+        ]),
         {
           ...e,
           bank_question_items,
@@ -70,7 +82,12 @@ export default function Show(props: Props) {
       );
     } else if (type == 2) {
       router.post(
-        route('exercise-question.import.update', [exerciseId!]),
+        route('learning-packet.sub-learning-packet.learning-category.exercise-question.import.update', [
+          learning_packet,
+          sub_learning_packet,
+          learning_category,
+          exerciseId!
+        ]),
         {
           _method: 'PUT',
           bank_question_items,
@@ -89,7 +106,12 @@ export default function Show(props: Props) {
       title="Latihan Soal"
       // headerTitle="Import Latihan Soal"
       // editRoute={route('bank-question.edit', bank_question.id)}
-      backRoute={route('bank-question.index')}
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        bank_question.id,
+      ])}
     >
       {/* {exercise_questions && exercise_questions?.length > 0 ? ( */}
       <div className="flex flex-col gap-3 my-3">
@@ -145,15 +167,23 @@ export default function Show(props: Props) {
         }}
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
-            <Link
-              href={route('bank-question.item.show', [
-                bank_question.id,
-                row.original.id,
-              ])}
-              className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
+            <Button
+              variant="contained"
+              color="primary"
+              type='button'
             >
-              Show
-            </Link>
+              <Link
+                href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
+                  bank_question.id,
+                  row.original.id,
+                ])}
+              >
+                Show
+              </Link>
+            </Button>
           </div>
         )}
         renderTopToolbarCustomActions={() => (

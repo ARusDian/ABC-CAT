@@ -1,3 +1,4 @@
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
@@ -20,12 +21,27 @@ export default function Show(props: Props) {
     },
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
   return (
     <AdminShowLayout
       title="Latihan Soal"
       headerTitle="Data Latihan Soal"
-      editRoute={route('exercise-question.edit', exercise_question.id)}
-      backRoute={route('exercise-question.index')}
+      editRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.edit', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        exercise_question.id,
+      ])}
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+      ])}
     >
       <div className="flex justify-between">
         <div className=" text-lg">
@@ -45,8 +61,13 @@ export default function Show(props: Props) {
           <Button variant="contained" color="primary" size="large">
             <Link
               href={route(
-                'exercise-question.question.create',
-                exercise_question.id,
+                'learning-packet.sub-learning-packet.learning-category.exercise-question.question.create',
+                [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
+                  exercise_question.id,
+                ]
               )}
             >
               Tambah Soal
@@ -55,8 +76,13 @@ export default function Show(props: Props) {
           <Button variant="contained" color="primary" size="large">
             <Link
               href={route(
-                'exercise-question.leaderboard',
-                exercise_question.id,
+                'learning-packet.sub-learning-packet.learning-category.exercise-question.leaderboard',
+                [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
+                  exercise_question.id,
+                ],
               )}
             >
               Leaderboard
@@ -86,7 +112,10 @@ export default function Show(props: Props) {
           <div className="flex items-center justify-center gap-2">
             <Button variant="contained" color="primary" size="large">
               <Link
-                href={route('exercise-question.question.show', [
+                href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.show', [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
                   exercise_question.id,
                   row.original.id,
                 ])}
@@ -96,7 +125,10 @@ export default function Show(props: Props) {
             </Button>
             <Button variant="contained" color="error" size="large">
               <Link
-                href={route('exercise-question.question.destroy', [
+                href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.destroy', [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
                   exercise_question.id,
                   row.original.id,
                 ])}

@@ -41,7 +41,7 @@ class ExerciseQuestionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($learning_packet, $sub_learning_packet, $learning_category_id)
     {
         return Inertia::render('Admin/ExerciseQuestion/Create', []);
     }
@@ -49,20 +49,31 @@ class ExerciseQuestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id)
     {
         $data = $this->validateData($request->all());
 
-        $exercise = ExerciseQuestion::create($data);
+        $exercise = ExerciseQuestion::create([
+            'name' => $data['name'],
+            'type' => $data['type'],
+            'time_limit' => $data['time_limit'],
+            'number_of_question' => $data['number_of_question'],
+            'learning_category_id' => $learning_category_id,
+        ]);
 
         $exercise->questions()->syncWithoutDetaching($data['bank_question_items']);
 
         return redirect()
-            ->route('exercise-question.show', [$exercise->id])
+            ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+                $learning_packet,
+                $sub_learning_packet,
+                $learning_category_id,
+                $exercise->id
+            ])
             ->banner('Soal Latihan berhasil dibuat');
     }
 
-    public function importFromBank($id)
+    public function importFromBank($learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         $bank_question = BankQuestion::with(['items'])->findOrFail($id);
         $exercise_question = ExerciseQuestion::whereType($bank_question->type->name)->get();
@@ -76,7 +87,7 @@ class ExerciseQuestionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         return Inertia::render('Admin/ExerciseQuestion/Show', [
             'exercise_question' => fn () => ExerciseQuestion::with([
@@ -85,12 +96,12 @@ class ExerciseQuestionController extends Controller
         ]);
     }
 
-    public function leaderboard(string $id)
+    public function leaderboard($learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         return Inertia::render('Admin/ExerciseQuestion/Leaderboard', [
             'exercise_question' => fn () => ExerciseQuestion::with([
                 'exams' => fn ($q) => $q->withScore(),
-                'exams.user' ,
+                'exams.user',
             ])->findOrFail($id)
         ]);
     }
@@ -98,7 +109,7 @@ class ExerciseQuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         return Inertia::render('Admin/ExerciseQuestion/Edit', [
             'exercise_question' => fn () => ExerciseQuestion::findOrFail($id),
@@ -108,7 +119,7 @@ class ExerciseQuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         $data = $this->validateData($request->all());
 
@@ -116,11 +127,16 @@ class ExerciseQuestionController extends Controller
         $exercise->update($data);
 
         return redirect()
-            ->route('exercise-question.show', [$id])
+            ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+                $learning_packet,
+                $sub_learning_packet,
+                $learning_category_id,
+                $id
+            ])
             ->banner('Soal Lathian berhasil diedit');
     }
 
-    public function importUpdate(Request $request, string $id)
+    public function importUpdate(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         $data = $request->validate([
             'bank_question_items' => 'required|array',
@@ -132,14 +148,19 @@ class ExerciseQuestionController extends Controller
         $exercise_question->questions()->sync($data['bank_question_items'] ?? []);
 
         return redirect()
-            ->route('exercise-question.show', [$exercise_question->id])
+            ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+                $learning_packet,
+                $sub_learning_packet,
+                $learning_category_id,
+                $id
+            ])
             ->banner('Soal Latihan berhasil dibuat');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         //
     }

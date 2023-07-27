@@ -11,7 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ExerciseQuestion extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'type', 'time_limit', 'number_of_question'];
+    protected $fillable = [
+        'name',
+        'type',
+        'time_limit',
+        'number_of_question',
+        'learning_category_id'
+    ];
 
     protected $casts = [
         'time_limit' => 'float',

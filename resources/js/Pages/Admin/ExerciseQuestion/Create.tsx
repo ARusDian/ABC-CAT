@@ -10,14 +10,26 @@ import {
 import { useForm } from 'react-hook-form';
 import { router } from '@inertiajs/react';
 import { useDefaultExerciseQuestionFormModel } from '@/Hooks/useDefaultExerciseQuestionForm';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
+import { Button } from '@mui/material';
 
-interface Props {}
+interface Props { }
 
 export default function Create(props: Props) {
   let form = useDefaultExerciseQuestionFormModel();
 
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
   function onSubmit(e: ExerciseQuestionFormModel) {
-    router.post(route('exercise-question.store'), e as any, {
+    router.post(route('learning-packet.sub-learning-packet.learning-category.exercise-question.store', [
+      learning_packet,
+      sub_learning_packet,
+      learning_category,
+    ]), e as any, {
       onError: errors => {
         console.log(errors);
       },
@@ -28,14 +40,30 @@ export default function Create(props: Props) {
   }
   return (
     <AdminFormLayout
-      title="Tambah Soal Latihan"
-      backRoute={route('exercise-question.index')}
+      title="Tambah Latihan Soal"
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category
+      ])}
     >
-      <Form
-        form={form}
-        submitTitle="Create"
+      <form
         onSubmit={form.handleSubmit(onSubmit)}
-      />
+        className='flex-col space-y-5 w-full'
+      >
+        <Form
+          form={form}
+        />
+        <Button
+          type="submit"
+          disabled={form.formState.isSubmitting}
+          fullWidth
+          variant="contained"
+          color="primary"
+        >
+          Submit
+        </Button>
+      </form>
     </AdminFormLayout>
   );
 }
