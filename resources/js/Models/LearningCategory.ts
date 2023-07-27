@@ -13,7 +13,7 @@ export interface LearningCategoryModel extends LearningCategoryFormModel {
     id: number;
     name: string;
     sub_learning_packet_id: number;
-    SubLearningPacket?: SubLearningPacketModel;
+    sub_learning_packet?: SubLearningPacketModel;
     bank_questions?: BankQuestionModel[];
     exercise_questions?: ExerciseQuestionModel[];
     learning_materials?: LearningMaterialModel[];

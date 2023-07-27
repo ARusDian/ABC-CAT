@@ -21,17 +21,17 @@ export default function Show({ learningCategory }: Props) {
             title="Kategori Belajar"
             headerTitle="Kategori Belajar"
             backRoute={route('learning-packet.show', {
-                learning_packet: learningCategory.SubLearningPacket?.learning_packet_id ?? 0,
+                learning_packet: learningCategory.sub_learning_packet?.learning_packet_id ?? 0,
             })}
             editRoute={route('learning-packet.sub-learning-packet.edit', {
-                learning_packet: learningCategory.SubLearningPacket?.learning_packet_id ?? 0,
+                learning_packet: learningCategory.sub_learning_packet?.learning_packet_id ?? 0,
                 sub_learning_packet: learningCategory.sub_learning_packet_id,
                 id: learningCategory.id
             })}
             editRouteTitle="Edit"
             onDelete={() => {
                 router.delete(route('learning-packet.sub-learning-packet.destroy', {
-                    learning_packet: learningCategory.SubLearningPacket?.learning_packet_id ?? 0,
+                    learning_packet: learningCategory.sub_learning_packet?.learning_packet_id ?? 0,
                     sub_learning_packet: learningCategory.sub_learning_packet_id,
                     id: learningCategory.id
                 }))
@@ -58,11 +58,7 @@ export default function Show({ learningCategory }: Props) {
 
                 <TableCard
                     title="Materi Belajar"
-                    createRoute={route('learning-packet.sub-learning-packet.learning-category.learning-material.create', {
-                        learning_packet: learningCategory.SubLearningPacket?.learning_packet_id ?? 0,
-                        sub_learning_packet: learningCategory.sub_learning_packet_id,
-                        learning_category: learningCategory.id
-                    })}
+                    createRoute="learning-packet.sub-learning-packet.learning-category.learning-material.create"
                     createRouteTitle="Tambah Materi"
                     columns={[
                         {
@@ -71,15 +67,16 @@ export default function Show({ learningCategory }: Props) {
                         }
                     ]}
                     data={learningCategory.learning_materials ?? []}
+                    showRoute="learning-packet.sub-learning-packet.learning-category.learning-material.show"
+                    showRouteTitle="Show"
+                    learningPacketId={learningCategory.sub_learning_packet?.learning_packet_id ?? 0}
+                    subLearningPacketId={learningCategory.sub_learning_packet_id}
+                    learningCategoryId={learningCategory.id}
                 />
 
                 <TableCard
                     title="Latihan Soal"
-                    createRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.create', {
-                        learning_packet: learningCategory.SubLearningPacket?.learning_packet_id ?? 0,
-                        sub_learning_packet: learningCategory.sub_learning_packet_id,
-                        learning_category: learningCategory.id
-                    })}
+                    createRoute="learning-packet.sub-learning-packet.learning-category.exercise-question.create"
                     createRouteTitle="Tambah Latihan Soal"
                     columns={[
                         {
@@ -88,15 +85,16 @@ export default function Show({ learningCategory }: Props) {
                         }
                     ]}
                     data={learningCategory.exercise_questions ?? []}
+                    showRoute="learning-packet.sub-learning-packet.learning-category.exercise-question.show"
+                    showRouteTitle="Show"
+                    learningPacketId={learningCategory.sub_learning_packet?.learning_packet_id ?? 0}
+                    subLearningPacketId={learningCategory.sub_learning_packet_id}
+                    learningCategoryId={learningCategory.id}
                 />
 
                 <TableCard
                     title="Bank Soal"
-                    createRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.create', {
-                        learning_packet: learningCategory.SubLearningPacket?.learning_packet_id ?? 0,
-                        sub_learning_packet: learningCategory.sub_learning_packet_id,
-                        learning_category: learningCategory.id
-                    })}
+                    createRoute="learning-packet.sub-learning-packet.learning-category.bank-question.create"
                     createRouteTitle="Tambah Bank Soal"
                     columns={[
                         {
@@ -105,8 +103,13 @@ export default function Show({ learningCategory }: Props) {
                         }
                     ]}
                     data={learningCategory.bank_questions ?? []}
+                    showRoute="learning-packet.sub-learning-packet.learning-category.bank-question.show"
+                    showRouteTitle="Show"
+                    learningPacketId={learningCategory.sub_learning_packet?.learning_packet_id ?? 0}
+                    subLearningPacketId={learningCategory.sub_learning_packet_id}
+                    learningCategoryId={learningCategory.id}
                 />
-                
+
                 {/* <MaterialReactTable
                     columns={dataColumns}
                     data={subLearningPacket.learning_categories ?? []}
