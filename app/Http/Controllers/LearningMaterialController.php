@@ -29,7 +29,7 @@ class LearningMaterialController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($learning_packet, $sub_learning_packet, $learning_category)
     {
         //
         return Inertia::render('Admin/LearningMaterial/Create');
@@ -38,10 +38,15 @@ class LearningMaterialController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $learning_packet, $sub_learning_packet, $learning_category)
     {
         //
-        return DB::transaction(function () use ($request) {
+        return DB::transaction(function () use (
+            $request,
+            $learning_packet,
+            $sub_learning_packet,
+            $learning_category,
+        ) {
             $images = $request->images ?? [];
             $availableImages = [];
             $editorContent = $request->description;
@@ -73,6 +78,7 @@ class LearningMaterialController extends Controller
             $learningMaterial = LearningMaterial::create([
                 'title' => $request->title,
                 'description' => $editorContent,
+                'learning_category_id' => $learning_category,
             ]);
 
             foreach ($submittedImagesId as $imageId) {
@@ -85,9 +91,7 @@ class LearningMaterialController extends Controller
                 $documentName =
                     md5(Carbon::now() . $i) .
                     '.' .
-                    $document['document_file'][
-                        'file'
-                    ]->getClientOriginalExtension();
+                    $document['document_file']['file']->getClientOriginalExtension();
                 $documentFile = DocumentFile::createFile(
                     'public',
                     'learnMaterialDoc/' . $documentName,
@@ -108,7 +112,11 @@ class LearningMaterialController extends Controller
                 ]);
             }
             return redirect()
-                ->route('learning-material.index')
+                ->route('learning-packet.sub-learning-packet.learning-category.show', [
+                    $learning_packet,
+                    $sub_learning_packet,
+                    $learning_category,
+                ])
                 ->with('success', 'Learning Material created successfully');
         });
     }
@@ -116,7 +124,7 @@ class LearningMaterialController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($learning_packet, $sub_learning_packet, $learning_category, $id)
     {
         //
         $learningMaterial = LearningMaterial::with(
@@ -130,7 +138,7 @@ class LearningMaterialController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit($learning_packet, $sub_learning_packet, $learning_category, $id)
     {
         //
         $learningMaterial = LearningMaterial::with(
@@ -144,10 +152,10 @@ class LearningMaterialController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $learning_packet, $sub_learning_packet, $learning_category, $id)
     {
         //
-        return DB::transaction(function () use ($request, $id) {
+        return DB::transaction(function () use ($request, $learning_packet, $sub_learning_packet, $learning_category, $id) {
             // content
             $images = $request->images ?? [];
             $editorContent = $request->description;
@@ -185,6 +193,7 @@ class LearningMaterialController extends Controller
             $learningMaterial->update([
                 'title' => $request->title,
                 'description' => $editorContent,
+                'learning_category_id' => $learning_category,
             ]);
 
             foreach ($learningMaterialDescriptionImages as $image) {
@@ -238,9 +247,7 @@ class LearningMaterialController extends Controller
                     $documentName =
                         md5(Carbon::now() . $i) .
                         '.' .
-                        $document['document_file'][
-                            'file'
-                        ]->getClientOriginalExtension();
+                        $document['document_file']['file']->getClientOriginalExtension();
                     $documentFile = DocumentFile::createFile(
                         'public',
                         'learnMaterialDoc/' . $documentName,
@@ -267,7 +274,12 @@ class LearningMaterialController extends Controller
                 );
             }
             return redirect()
-                ->route('learning-material.show', $id)
+                ->route('learning-packet.sub-learning-packet.learning-category.learning-material.show', [
+                    $learning_packet,
+                    $sub_learning_packet,
+                    $learning_category,
+                    $id,
+                ])
                 ->with('success', 'Learning Material updated successfully');
         });
     }
@@ -275,10 +287,10 @@ class LearningMaterialController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($learning_packet, $sub_learning_packet, $learning_category, $id)
     {
         //
-        return DB::transaction(function () use ($id) {
+        return DB::transaction(function () use ($learning_packet, $sub_learning_packet, $learning_category, $id) {
             $learningMaterial = LearningMaterial::find($id);
             $learningMaterialDocuments = LearningMaterialDocument::with(
                 'documentFile',
@@ -302,7 +314,11 @@ class LearningMaterialController extends Controller
             }
             $learningMaterial->delete();
             return redirect()
-                ->route('learning-material.index')
+                ->route('learning-packet.sub-learning-packet.learning-category.show', [
+                    $learning_packet,
+                    $sub_learning_packet,
+                    $learning_category,
+                ])
                 ->with('success', 'Learning Material deleted successfully');
         });
     }

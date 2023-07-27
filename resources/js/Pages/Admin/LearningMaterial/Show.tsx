@@ -5,6 +5,7 @@ import { router } from '@inertiajs/react';
 import { LearningMaterialModel } from '@/Models/LearningMaterial';
 import PDFViewer from '@/Components/PDFViewer';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
   learningMaterial: LearningMaterialModel;
@@ -13,16 +14,36 @@ interface Props {
 export default function Index(props: Props) {
   const learningMaterial = props.learningMaterial;
 
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
   return (
     <AdminShowLayout
       title={`Materi Belajar ${learningMaterial.title}`}
       headerTitle={'Data Materi Belajar'}
-      backRoute={route('learning-material.index')}
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+      ])}
       backRouteTitle="Kembali"
-      editRoute={route('learning-material.edit', learningMaterial.id)}
+      editRoute={route('learning-packet.sub-learning-packet.learning-category.learning-material.edit', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        learningMaterial.id,
+      ])}
       editRouteTitle="Edit"
       onDelete={() => {
-        router.post(route('learning-material.destroy', learningMaterial.id), {
+        router.post(route('learning-packet.sub-learning-packet.learning-category.learning-material.destroy', [
+          learning_packet,
+          sub_learning_packet,
+          learning_category,
+          learningMaterial.id,
+        ]), {
           _method: 'DELETE',
         });
       }}
