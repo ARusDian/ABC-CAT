@@ -13,6 +13,7 @@ import {
   BankQuestionItemModel,
 } from '@/Models/BankQuestionItem';
 import { useForm } from 'react-hook-form';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
   bank_question: BankQuestionModel;
@@ -41,7 +42,7 @@ function permutation<T>(array: T[]): T[][] {
   return permute(array);
 }
 
-export default function Create(props: Props) {
+export default function Create({bank_question}: Props) {
   let form = useForm<BankQuestionItemModel>({
     defaultValues: {
       question: {},
@@ -57,6 +58,12 @@ export default function Create(props: Props) {
       explanation: undefined,
     },
   });
+
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
 
   const [generateWith, setGenerateWith] = React.useState([
     null,
@@ -127,7 +134,12 @@ export default function Create(props: Props) {
     };
 
     router.post(
-      route('bank-question.item.store-many', props.bank_question.id),
+      route('learning-packet.sub-learning-packet.learning-category.bank-question.item.store-many', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        bank_question.id
+      ]),
       data as any,
       {
         onError: errors => {
@@ -145,7 +157,12 @@ export default function Create(props: Props) {
   return (
     <AdminFormLayout
       title="Tambah Pertanyaan"
-      backRoute={route('bank-question.show', [props.bank_question.id])}
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        bank_question.id
+      ])}
       backRouteTitle="Kembali"
     >
       <form

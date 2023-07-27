@@ -14,6 +14,7 @@ import { router } from '@inertiajs/react';
 import { AutoSizer, Grid, List, ScrollSync } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 import Checkbox from '@mui/material/Checkbox';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
   exercise_question: ExerciseQuestionModel;
@@ -42,7 +43,7 @@ function permutation<T>(array: T[]): T[][] {
   return permute(array);
 }
 
-export default function Create(props: Props) {
+export default function Create({ exercise_question }: Props) {
   let form = useForm<QuestionFormModel>({
     defaultValues: {
       question: {},
@@ -55,6 +56,12 @@ export default function Create(props: Props) {
       explanation: undefined,
     },
   });
+
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
 
   const [generateWith, setGenerateWith] = React.useState([
     null,
@@ -114,8 +121,13 @@ export default function Create(props: Props) {
 
     router.post(
       route(
-        'exercise-question.question.store-many',
-        props.exercise_question.id,
+        'learning-packet.sub-learning-packet.learning-category.exercise-question.question.store-many',
+        [
+          learning_packet,
+          sub_learning_packet,
+          learning_category,
+          exercise_question.id
+        ],
       ),
       data as any,
       {
@@ -131,10 +143,16 @@ export default function Create(props: Props) {
 
   const columnCount = 6;
 
+
   return (
     <AdminFormLayout
       title="Tambah Pertanyaan"
-      backRoute={route('exercise-question.show', [props.exercise_question.id])}
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        exercise_question.id
+      ])}
       backRouteTitle="Kembali"
     >
       <form
