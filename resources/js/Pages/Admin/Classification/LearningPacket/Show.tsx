@@ -76,6 +76,35 @@ export default function Show({ learningPacket }: Props) {
                                 fontSize: '16px',
                             },
                         }}
+                        renderDetailPanel={({ row }) => {
+                            return (
+                                <div className="flex flex-col gap-5 max-w-7xl mx-auto">
+                                    {row.original.learning_categories && row.original.learning_categories?.length > 0 ? (
+                                        row.original.learning_categories?.map((category, i) => (
+                                            <Link
+                                                className="px-3 py-3 rounded-lg bg-[#77c3f9] hover:bg-[#3da5f5] transition duration-300 ease-in-out"
+                                                href={route('learning-packet.sub-learning-packet.learning-category.show',
+                                                    [
+                                                        learningPacket.id,
+                                                        row.original.id,
+                                                        category.id
+                                                    ]
+                                                )}>
+                                                <p className="text-md font-semibold">
+                                                    <span className="mx-3">{i+1}.</span>{category.name}
+                                                </p>
+                                            </Link>
+                                        ))
+                                    ) : (
+                                        <div className="flex flex-col gap-2 p-3">
+                                            <p className="text-md font-semibold">
+                                                Tidak ada kategori
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            )
+                        }}
                         renderTopToolbarCustomActions={() => (
                             <div className="flex items-center justify-center gap-2">
                                 <Button

@@ -52,7 +52,7 @@ class LearningPacketController extends Controller
     public function show($id)
     {
         //
-        $learningPacket = LearningPacket::with('subLearningPackets')->find($id);
+        $learningPacket = LearningPacket::with('subLearningPackets.learningCategories')->find($id);
         return Inertia::render('Admin/Classification/LearningPacket/Show', [
             'learningPacket' => $learningPacket
         ]);
