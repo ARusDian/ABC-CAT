@@ -61,7 +61,9 @@ class ExerciseQuestionController extends Controller
             'learning_category_id' => $learning_category_id,
         ]);
 
-        $exercise->questions()->syncWithoutDetaching($data['bank_question_items']);
+        if (isset($data['bank_question_items'])) {
+            $exercise->questions()->syncWithoutDetaching($data['bank_question_items']);
+        }
 
         return redirect()
             ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
