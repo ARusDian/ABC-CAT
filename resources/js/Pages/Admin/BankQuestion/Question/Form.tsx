@@ -235,6 +235,7 @@ function PilihanForm({
                       <>
                         <TextField
                           label="Bobot"
+                          type="number"
                           error={
                             form.formState.errors.answer?.answer?.[index]
                               ?.weight != null
