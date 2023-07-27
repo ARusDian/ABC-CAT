@@ -75,24 +75,6 @@ export default function Show({ learningCategory }: Props) {
                 />
 
                 <TableCard
-                    title="Latihan Soal"
-                    createRoute="learning-packet.sub-learning-packet.learning-category.exercise-question.create"
-                    createRouteTitle="Tambah Latihan Soal"
-                    columns={[
-                        {
-                            header: 'Nama',
-                            accessorKey: 'name',
-                        }
-                    ]}
-                    data={learningCategory.exercise_questions ?? []}
-                    showRoute="learning-packet.sub-learning-packet.learning-category.exercise-question.show"
-                    showRouteTitle="Show"
-                    learningPacketId={learningCategory.sub_learning_packet?.learning_packet_id ?? 0}
-                    subLearningPacketId={learningCategory.sub_learning_packet_id}
-                    learningCategoryId={learningCategory.id}
-                />
-
-                <TableCard
                     title="Bank Soal"
                     createRoute="learning-packet.sub-learning-packet.learning-category.bank-question.create"
                     createRouteTitle="Tambah Bank Soal"
@@ -104,6 +86,24 @@ export default function Show({ learningCategory }: Props) {
                     ]}
                     data={learningCategory.bank_questions ?? []}
                     showRoute="learning-packet.sub-learning-packet.learning-category.bank-question.show"
+                    showRouteTitle="Show"
+                    learningPacketId={learningCategory.sub_learning_packet?.learning_packet_id ?? 0}
+                    subLearningPacketId={learningCategory.sub_learning_packet_id}
+                    learningCategoryId={learningCategory.id}
+                />
+
+                <TableCard
+                    title="Latihan Soal"
+                    createRoute="learning-packet.sub-learning-packet.learning-category.exercise-question.create"
+                    createRouteTitle="Tambah Latihan Soal"
+                    columns={[
+                        {
+                            header: 'Nama',
+                            accessorKey: 'name',
+                        }
+                    ]}
+                    data={learningCategory.exercise_questions ?? []}
+                    showRoute="learning-packet.sub-learning-packet.learning-category.exercise-question.show"
                     showRouteTitle="Show"
                     learningPacketId={learningCategory.sub_learning_packet?.learning_packet_id ?? 0}
                     subLearningPacketId={learningCategory.sub_learning_packet_id}
