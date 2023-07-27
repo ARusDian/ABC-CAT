@@ -9,13 +9,13 @@ import { QuestionFormModel, QuestionModel } from '@/Models/Question';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
 import { router } from '@inertiajs/react';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
   question: QuestionModel;
 }
 
-export default function Edit(props: Props) {
-  const question = props.question;
+export default function Edit({ question }: Props) {
   let form = useForm<QuestionFormModel>({
     defaultValues: question,
   });
@@ -25,7 +25,10 @@ export default function Edit(props: Props) {
 
     form.clearErrors();
     router.post(
-      route('exercise-question.question.update', [
+      route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.update', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
         question.exercise_question_id,
         question.id,
       ]),
@@ -52,10 +55,19 @@ export default function Edit(props: Props) {
     // });
   }
 
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
   return (
     <AdminFormLayout
       title="Edit Pertanyaan"
-      backRoute={route('exercise-question.question.show', [
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
         question.exercise_question_id,
         question.id,
       ])}
@@ -68,7 +80,7 @@ export default function Edit(props: Props) {
         <Form
           form={form}
           className="my-5 mx-2"
-          exerciseQuestionId={props.question.exercise_question_id}
+          exerciseQuestionId={question.exercise_question_id}
         />
         <div className="flex justify-end">
           <Button

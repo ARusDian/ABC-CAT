@@ -6,6 +6,7 @@ import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { useForm } from 'react-hook-form';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
   exercise_question: ExerciseQuestionModel;
@@ -52,6 +53,12 @@ export default function Create(props: Props) {
     },
   });
 
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
   function onSubmit(e: QuestionFormModel) {
     console.log(e);
     form.clearErrors();
@@ -60,7 +67,12 @@ export default function Create(props: Props) {
   return (
     <AdminFormLayout
       title="Tambah Pertanyaan"
-      backRoute={route('exercise-question.show', [props.exercise_question.id])}
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        props.exercise_question.id
+      ])}
       backRouteTitle="Kembali"
     >
       <form

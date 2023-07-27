@@ -34,7 +34,7 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(ExerciseQuestion $exercise_question)
+    public function create($learning_packet, $sub_learning_packet, $learning_category_id, ExerciseQuestion $exercise_question)
     {
         $view = null;
         switch ($exercise_question->type) {
@@ -79,9 +79,9 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $exercise_question)
+    public function store(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question)
     {
-        return DB::transaction(function () use ($request, $exercise_question) {
+        return DB::transaction(function () use ($request, $learning_packet, $sub_learning_packet, $learning_category_id,  $exercise_question) {
             $data = $this->validateData($request->all());
 
             $submittedImagesId = [];
@@ -105,14 +105,18 @@ class ExerciseQuestionQuestionController extends Controller
                 ]);
             }
             return redirect()
-                ->route('exercise-question.show', [$exercise_question])
-                ->banner('Question created successfully');
+                ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+                    $learning_packet,
+                    $sub_learning_packet,
+                    $learning_category_id,
+                    $exercise_question
+                ])->banner('Question created successfully');
         });
     }
 
-    public function storeMany(Request $request, $exercise_question)
+    public function storeMany(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id,  $exercise_question)
     {
-        return \DB::transaction(function () use ($request, $exercise_question) {
+        return \DB::transaction(function () use ($request, $learning_packet, $sub_learning_packet, $learning_category_id,  $exercise_question) {
             $all = $request->validate([
                 'type' => ['required', Rule::in(QuestionTypeEnum::casesString())],
                 'weight' => 'required|numeric',
@@ -144,15 +148,19 @@ class ExerciseQuestionQuestionController extends Controller
             }
 
             return redirect()
-                ->route('exercise-question.show', [$exercise_question])
-                ->banner('Question created successfully');
+                ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+                    $learning_packet,
+                    $sub_learning_packet,
+                    $learning_category_id,
+                    $exercise_question
+                ])->banner('Question created successfully');
         });
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($exercise_question, $id)
+    public function show($learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id)
     {
         return Inertia::render('Admin/ExerciseQuestion/Question/Show', [
             'question' => fn () => BankQuestionItem::find($id),
@@ -163,7 +171,7 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($exercise_question, $id)
+    public function edit($learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id)
     {
         //
         $question = Question::find($id);
@@ -175,10 +183,13 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $exercise_question, $id)
+    public function update(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id)
     {
         return DB::transaction(function () use (
             $request,
+            $learning_packet,
+            $sub_learning_packet,
+            $learning_category_id,
             $exercise_question,
             $id,
         ) {
@@ -195,18 +206,19 @@ class ExerciseQuestionQuestionController extends Controller
             ]);
 
             return redirect()
-                ->route('exercise-question.question.show', [
-                    $exercise_question,
-                    $id,
-                ])
-                ->banner('Question updated successfully');
+                ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+                    $learning_packet,
+                    $sub_learning_packet,
+                    $learning_category_id,
+                    $exercise_question
+                ])->banner('Question updated successfully');
         });
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($exercise_question, $id)
+    public function destroy($learning_packet, $sub_learning_packet, $learning_category_id,$exercise_question, $id)
     {
         return DB::transaction(function () use ($exercise_question, $id) {
             $question = Question::find($id);
@@ -219,16 +231,20 @@ class ExerciseQuestionQuestionController extends Controller
         });
     }
 
-    public function restore($exercise_question, $id)
+    public function restore($learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id)
     {
-        return DB::transaction(function () use ($exercise_question, $id) {
+        return DB::transaction(function () use ($learning_packet, $sub_learning_packet, $learning_category_id,$exercise_question, $id) {
             $question = Question::find($id);
             $question->update([
                 'is_active' => true,
             ]);
             return redirect()
-                ->route('exercise-question.show', [$exercise_question])
-                ->banner('Question restored successfully');
+                ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+                    $learning_packet,
+                    $sub_learning_packet,
+                    $learning_category_id,
+                    $exercise_question
+                ])->banner('Question restored successfully');
         });
     }
 }

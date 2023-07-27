@@ -14,6 +14,7 @@ import { Link } from '@inertiajs/react';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 import { BankQuestionItemShow } from '@/Components/BankQuestionItemShow';
 import BankQuestionItemEditor from '@/Components/BankQuestionItemEditor';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
   question: BankQuestionItemModel;
@@ -49,33 +50,50 @@ function a11yProps(index: number) {
   };
 }
 
-export default function Index(props: Props) {
-  const { question, exercise_question_id } = props;
+export default function Index({ question, exercise_question_id }: Props) {
   const [tabValue, setTabValue] = React.useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
+
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
   return (
     <AdminShowLayout
       title={`Pertanyaan ${question.id}`}
       headerTitle={'Data Pertanyaan'}
-      backRoute={route('exercise-question.show', [exercise_question_id])}
+      backRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        exercise_question_id
+      ])}
       backRouteTitle="Kembali"
       onDelete={() => {
         question.is_active
           ? router.delete(
-              route('exercise-question.question.destroy', [
-                exercise_question_id,
-                question.id,
-              ]),
-            )
+            route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.destroy', [
+              learning_packet,
+              sub_learning_packet,
+              learning_category,
+              exercise_question_id,
+              question.id,
+            ]),
+          )
           : router.post(
-              route('exercise-question.question.restore', [
-                exercise_question_id,
-                question.id,
-              ]),
-            );
+            route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.restore', [
+              learning_packet,
+              sub_learning_packet,
+              learning_category,
+              exercise_question_id,
+              question.id,
+            ]),
+          );
       }}
       deleteTitle={question.is_active ? 'Hapus' : 'Restore'}
       onDeleteMessage={
@@ -85,10 +103,13 @@ export default function Index(props: Props) {
       }
       isRestore={!question.is_active}
     >
-      <div className="flex justify-end">
+      <div className="flex justify-end my-5">
         <Button variant="contained" color="info" size="large">
           <Link
-            href={route('bank-question.item.show', [
+            href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+              learning_packet,
+              sub_learning_packet,
+              learning_category,
               question.bank_question_id,
               question.id,
             ])}
@@ -112,22 +133,22 @@ export default function Index(props: Props) {
       <CustomTabPanel value={tabValue} index={0}>
         <label className="text-lg">Pertanyaan</label>
         <div className="mx-auto border rounded-lg">
-          <BankQuestionItemShow question={props.question} />
+          <BankQuestionItemShow question={question} />
         </div>
       </CustomTabPanel>
 
       <CustomTabPanel value={tabValue} index={1}>
-        {props.question.type == 'Pilihan' ? (
-          <div className="border-2 border-gray-200 p-5">
+        {question.type == 'Pilihan' ? (
+          <div className="p-5">
             <label>Pilihan Ganda :</label>
-            {props.question.answers.choices.map((choice, index) => {
+            {question.answers.choices.map((choice, index) => {
               return (
                 <div key={index}>
                   <label className="text-lg">
                     Pilihan {numberToUpperCase(index)}
                   </label>
-                  {props.question.answer.type == 'WeightedChoice' ? (
-                    <div>Bobot: {props.question.answer.answer[index].weight}</div>
+                  {question.answer.type == 'WeightedChoice' ? (
+                    <div>Bobot: {question.answer.answer[index].weight}</div>
                   ) : null}
                   <div className="mx-auto border rounded-lg">
                     <BankQuestionItemEditor
@@ -140,15 +161,15 @@ export default function Index(props: Props) {
               );
             })}
           </div>
-        ) : props.question.type == 'Kecermatan' ? (
-          <div className="border-2 border-gray-200 p-5">
+        ) : question.type == 'Kecermatan' ? (
+          <div className="p-5">
             <label className="text-lg">Pilihan: </label>
-            {props.question.answers.choices.map((choice, index) => {
+            {question.answers.choices.map((choice, index) => {
               return (
                 <div key={index}>
                   <label>Pilihan {numberToUpperCase(index)}</label>
-                  {props.question.answer.type == 'WeightedChoice' ? (
-                    <div>Bobot: {props.question.answer.answer[index].weight}</div>
+                  {question.answer.type == 'WeightedChoice' ? (
+                    <div>Bobot: {question.answer.answer[index].weight}</div>
                   ) : null}
                   <div className="mx-auto border rounded-lg">{choice}</div>
                 </div>
@@ -156,7 +177,7 @@ export default function Index(props: Props) {
             })}
           </div>
         ) : (
-          <div className="border-2 border-gray-200 p-5">
+          <div className="p-5">
             <label className="text-lg">Jawaban</label>
             <div className="mx-auto border rounded-lg">Essay</div>
           </div>
@@ -164,17 +185,17 @@ export default function Index(props: Props) {
       </CustomTabPanel>
 
       <CustomTabPanel value={tabValue} index={2}>
-        <div className="border-2 border-gray-200 p-5">
+        <div className="p-5">
           <label className="text-lg">Jawaban Benar</label>
-          {props.question.answer.type == 'Single' ? (
-            <p>pilihan {numberToUpperCase(props.question.answer.answer)}</p>
+          {question.answer.type == 'Single' ? (
+            <p>pilihan {numberToUpperCase(question.answer.answer)}</p>
           ) : null}
-          {props.question.type == 'Pilihan' ? (
+          {question.type == 'Pilihan' ? (
             <>
               <label className="text-lg">Penjelasan Jawaban</label>
               <div className="mx-auto border rounded-lg">
                 <BankQuestionItemEditor
-                  content={props.question.explanation?.content ?? null}
+                  content={question.explanation?.content ?? null}
                   editorClassName="h-full"
                   disableEdit
                 />
