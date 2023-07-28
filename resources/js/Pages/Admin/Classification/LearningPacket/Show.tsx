@@ -7,6 +7,8 @@ import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
 import React from "react";
 import route from "ziggy-js";
 import FolderIcon from '@mui/icons-material/Folder';
+import TableCard from "../LearningCategory/TableCard";
+import MuiInertiaLinkButton from "@/Components/MuiInertiaLinkButton";
 
 interface Props {
     learningPacket: LearningPacketModel
@@ -53,7 +55,7 @@ export default function Show({ learningPacket }: Props) {
                             </tr>
                         </tbody>
                     </table>
-                </div>
+                </div>                
                 <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-5">
                     <p className="text-xl font-semibold">
                         <span className="mx-2 text-gray-600"><FolderIcon fontSize="large" /></span>Sub Paket Belajar
@@ -91,7 +93,7 @@ export default function Show({ learningPacket }: Props) {
                                                     ]
                                                 )}>
                                                 <p className="text-md font-semibold">
-                                                    <span className="mx-3">{i+1}.</span>{category.name}
+                                                    <span className="mx-3">{i + 1}.</span>{category.name}
                                                 </p>
                                             </Link>
                                         ))
@@ -107,42 +109,31 @@ export default function Show({ learningPacket }: Props) {
                         }}
                         renderTopToolbarCustomActions={() => (
                             <div className="flex items-center justify-center gap-2">
-                                <Button
-                                    type="button"
-                                    variant="contained"
+                                <MuiInertiaLinkButton
                                     color="success"
-                                    size="large"
+                                    href={route('learning-packet.sub-learning-packet.create', learningPacket.id)}
                                 >
-                                    <Link
-                                        href={route('learning-packet.sub-learning-packet.create', {
-                                            learning_packet: learningPacket.id
-                                        })}
-                                    >
-                                        Tambah Sub Paket Belajar
-                                    </Link>
-                                </Button>
+
+                                    Tambah Sub Paket Belajar
+                                </MuiInertiaLinkButton>
                             </div>
                         )}
                         renderRowActions={({ row }) => (
                             <div className="flex items-center justify-center gap-2">
-                                <Button
-                                    type="button"
-                                    variant="contained"
+                                <MuiInertiaLinkButton
                                     color="primary"
-                                    size="large"
-                                >
-                                    <Link href={route('learning-packet.sub-learning-packet.show', [
+                                    href={route('learning-packet.sub-learning-packet.show', [
                                         learningPacket.id,
                                         row.original.id
-                                    ])}>
-                                        Show
-                                    </Link>
-                                </Button>
+                                    ])}
+                                >
+                                    Show
+                                </MuiInertiaLinkButton>
                             </div>
                         )}
                     />
                 </div>
             </div>
-        </AdminNestedShowLayout>
+        </AdminNestedShowLayout >
     )
 }

@@ -1,7 +1,6 @@
+import MuiInertiaLinkButton from "@/Components/MuiInertiaLinkButton";
 import AdminTableLayout from "@/Layouts/Admin/AdminTableLayout";
 import { LearningPacketModel } from "@/Models/LearningPacket";
-import { Link } from "@inertiajs/react";
-import { Button } from "@mui/material";
 import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
 import React from "react";
 import route from "ziggy-js";
@@ -47,16 +46,12 @@ export default function Index({ learningPackets }: Props) {
 				}}
 				renderRowActions={({ row }) => (
 					<div className="flex items-center justify-center gap-2">
-						<Button
-							type="submit"
-							variant="contained"
+						<MuiInertiaLinkButton
 							color="primary"
-							size="large"
+							href={route('learning-packet.show', row.original.id)}
 						>
-							<Link href={route('learning-packet.show', row.original.id)}>
-								Show
-							</Link>
-						</Button>
+							Show
+						</MuiInertiaLinkButton>
 					</div>
 				)}
 			/>

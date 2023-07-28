@@ -6,6 +6,7 @@ import { Link } from '@inertiajs/react';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { Button } from '@mui/material';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
+import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 
 interface Props {
   items: Array<BankQuestionItemModel>;
@@ -35,14 +36,12 @@ export default function Index(props: Props) {
         muiTableBodyRowProps={{ hover: false }}
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
-            <Button
-              type="submit"
-              variant="contained"
+            <MuiInertiaLinkButton
               color="primary"
-              size="large"
+              href={route('question.show', row.original.id)}
             >
-              <Link href={route('question.show', row.original.id)}>Show</Link>
-            </Button>
+              Show
+            </MuiInertiaLinkButton>
           </div>
         )}
       />

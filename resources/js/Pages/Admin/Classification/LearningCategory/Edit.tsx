@@ -7,6 +7,7 @@ import route from "ziggy-js";
 import Form from "./Form";
 import { LearningCategoryModel, LearningCategoryFormModel } from "@/Models/LearningCategory";
 import { usePage } from "@inertiajs/react";
+import useDefaultClassificationRouteParams from "@/Hooks/useDefaultClassificationRouteParams";
 
 interface Props {
     learningCategory: LearningCategoryModel;
@@ -14,9 +15,11 @@ interface Props {
 
 export default function Edit({ learningCategory }: Props) {
 
-    const { props } = usePage();
-
-    console.log(props);
+    const {
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+    } = useDefaultClassificationRouteParams();
 
     let form = useForm<LearningCategoryFormModel>({
         defaultValues: learningCategory,
@@ -32,10 +35,11 @@ export default function Edit({ learningCategory }: Props) {
     return (
         <AdminFormLayout
             title="Edit Sub Paket Belajar"
-            // backRoute={route('learning-packet.sub-learning-packet.show', {
-            //     learning_packet: learningCategory.learning_packet_id,
-            //     sub_learning_packet: learningCategory.id
-            // })}
+            backRoute={route('learning-packet.sub-learning-packet.show', {
+                learning_packet: learning_packet,
+                sub_learning_packet: sub_learning_packet,
+                learning_category: learning_category,
+            })}
             backRouteTitle="Kembali"
         >
             <form

@@ -15,6 +15,7 @@ import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 import { BankQuestionItemShow } from '@/Components/BankQuestionItemShow';
 import BankQuestionItemEditor from '@/Components/BankQuestionItemEditor';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
+import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 
 interface Props {
   question: BankQuestionItemModel;
@@ -104,19 +105,18 @@ export default function Index({ question, exercise_question_id }: Props) {
       isRestore={!question.is_active}
     >
       <div className="flex justify-end my-5">
-        <Button variant="contained" color="info" size="large">
-          <Link
-            href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
-              learning_packet,
-              sub_learning_packet,
-              learning_category,
-              question.bank_question_id,
-              question.id,
-            ])}
-          >
-            Bank Soal
-          </Link>
-        </Button>
+        <MuiInertiaLinkButton
+          color="info"
+          href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+            learning_packet,
+            sub_learning_packet,
+            learning_category,
+            question.bank_question_id,
+            question.id,
+          ])}
+        >
+          Bank Soal
+        </MuiInertiaLinkButton>
       </div>
       <div className="border-t pt-2">
         <Tabs

@@ -1,12 +1,12 @@
 import AdminNestedShowLayout from "@/Layouts/Admin/AdminNestedShowLayout";
 import { LearningCategoryModel } from "@/Models/LearningCategory";
 import { SubLearningPacketModel } from "@/Models/SubLearningPacket";
-import { Link, router } from "@inertiajs/react";
-import { Button } from "@mui/material";
+import { router } from "@inertiajs/react";
 import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
 import React from "react";
 import route from "ziggy-js";
 import InventoryIcon from '@mui/icons-material/Inventory';
+import MuiInertiaLinkButton from "@/Components/MuiInertiaLinkButton";
 
 interface Props {
     subLearningPacket: SubLearningPacketModel
@@ -81,39 +81,29 @@ export default function Show({ subLearningPacket }: Props) {
                         }}
                         renderTopToolbarCustomActions={() => (
                             <div className="flex items-center justify-center gap-2">
-                                <Button
-                                    type="button"
-                                    variant="contained"
+                                <MuiInertiaLinkButton
                                     color="success"
-                                    size="large"
+                                    href={route('learning-packet.sub-learning-packet.learning-category.create', {
+                                        learning_packet: subLearningPacket.learning_packet_id,
+                                        sub_learning_packet: subLearningPacket.id
+                                    })}
                                 >
-                                    <Link
-                                        href={route('learning-packet.sub-learning-packet.learning-category.create', {
-                                            learning_packet: subLearningPacket.learning_packet_id,
-                                            sub_learning_packet: subLearningPacket.id
-                                        })}
-                                    >
-                                        Tambah Kategori Belajar
-                                    </Link>
-                                </Button>
+                                    Tambah Kategori Belajar
+                                </MuiInertiaLinkButton>
                             </div>
                         )}
                         renderRowActions={({ row }) => (
                             <div className="flex items-center justify-center gap-2">
-                                <Button
-                                    type="button"
-                                    variant="contained"
+                                <MuiInertiaLinkButton
                                     color="primary"
-                                    size="large"
-                                >
-                                    <Link href={route('learning-packet.sub-learning-packet.learning-category.show', {
+                                    href={route('learning-packet.sub-learning-packet.learning-category.show', {
                                         learning_packet: subLearningPacket.learning_packet_id,
                                         sub_learning_packet: subLearningPacket.id,
                                         learning_category: row.original.id
-                                    })}>
-                                        Show
-                                    </Link>
-                                </Button>
+                                    })}
+                                >
+                                    Show
+                                </MuiInertiaLinkButton>
                             </div>
                         )}
                     />

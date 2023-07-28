@@ -1,7 +1,6 @@
-import { Link } from '@inertiajs/react';
 import React from 'react';
 import DashboardAdminLayout from './DashboardAdminLayout';
-import { Button } from '@mui/material';
+import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 
 export interface Props {
   title: string;
@@ -17,9 +16,9 @@ export default function AdminFormLayout(props: React.PropsWithChildren<Props>) {
       <div className="flex justify-between mx-12">
         <div className="text-2xl">{title}</div>
         {backRoute ? (
-          <Button variant="contained" color="primary" size="large">
-            <Link href={backRoute}>{backRouteTitle ?? 'Kembali'}</Link>
-          </Button>
+          <MuiInertiaLinkButton color="primary" href={backRoute} >
+            {backRouteTitle ?? 'Kembali'}
+          </MuiInertiaLinkButton>
         ) : null}
       </div>
       <div className=" m-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">

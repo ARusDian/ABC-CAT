@@ -16,6 +16,7 @@ import {
 import { router } from '@inertiajs/react';
 import { useForm } from 'react-hook-form';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
+import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 
 interface Props {
   bank_question: BankQuestionModel;
@@ -167,23 +168,18 @@ export default function Show(props: Props) {
         }}
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
-            <Button
-              variant="contained"
+            <MuiInertiaLinkButton
               color="primary"
-              type='button'
+              href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                bank_question.id,
+                row.original.id,
+              ])}
             >
-              <Link
-                href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
-                  bank_question.id,
-                  row.original.id,
-                ])}
-              >
-                Show
-              </Link>
-            </Button>
+              Show
+            </MuiInertiaLinkButton>
           </div>
         )}
         renderTopToolbarCustomActions={() => (

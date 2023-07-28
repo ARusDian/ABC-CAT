@@ -10,6 +10,7 @@ import TableCard from "./TableCard";
 import { BaseLearningMaterialDocumentModel } from "@/Models/LearningMaterial";
 import { getStorageFileUrl } from "@/Models/FileModel";
 import { Button, Tab, Tabs } from "@mui/material";
+import useDefaultClassificationRouteParams from "@/Hooks/useDefaultClassificationRouteParams";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -53,24 +54,31 @@ export default function Show({ learningCategory }: Props) {
         setTabValue(newValue);
     };
 
+    const {
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+    } = useDefaultClassificationRouteParams();
+
     return (
         <AdminNestedShowLayout
             title="Kategori Belajar"
             headerTitle="Kategori Belajar"
-            backRoute={route('learning-packet.show', {
-                learning_packet: learningCategory.sub_learning_packet?.learning_packet_id ?? 0,
+            backRoute={route('learning-packet.sub-learning-packet.show', {
+                learning_packet: learning_packet,
+                sub_learning_packet: sub_learning_packet,
             })}
             editRoute={route('learning-packet.sub-learning-packet.edit', {
-                learning_packet: learningCategory.sub_learning_packet?.learning_packet_id ?? 0,
-                sub_learning_packet: learningCategory.sub_learning_packet_id,
-                id: learningCategory.id
+                learning_packet: learning_packet,
+                sub_learning_packet: sub_learning_packet,
+                id: learning_category
             })}
             editRouteTitle="Edit"
             onDelete={() => {
                 router.delete(route('learning-packet.sub-learning-packet.destroy', {
-                    learning_packet: learningCategory.sub_learning_packet?.learning_packet_id ?? 0,
-                    sub_learning_packet: learningCategory.sub_learning_packet_id,
-                    id: learningCategory.id
+                    learning_packet: learning_packet,
+                    sub_learning_packet: sub_learning_packet,
+                    id: learning_category
                 }))
             }}
             deleteTitle="Hapus"
@@ -144,13 +152,11 @@ export default function Show({ learningCategory }: Props) {
                                                             variant="contained"
                                                             color="primary"
                                                             size="large"
+                                                            href={getStorageFileUrl(document.document_file) ?? ''}
+                                                            target="_blank"
+
                                                         >
-                                                            <a
-                                                                href={getStorageFileUrl(document.document_file) ?? ''}
-                                                                target="_blank"
-                                                            >
-                                                                Lihat Dokumen
-                                                            </a>
+                                                            Lihat Dokumen
                                                         </Button>
                                                     </td>
                                                 </tr>

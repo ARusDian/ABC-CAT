@@ -1,3 +1,4 @@
+import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
@@ -58,36 +59,34 @@ export default function Show(props: Props) {
           </p>
         </div>
         <div className="flex justify-around my-auto gap-5">
-          <Button variant="contained" color="success" size="large">
-            <Link
-              href={route(
-                'learning-packet.sub-learning-packet.learning-category.exercise-question.question.create',
-                [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
-                  exercise_question.id,
-                ]
-              )}
-            >
-              Tambah Soal
-            </Link>
-          </Button>
-          <Button variant="contained" color="primary" size="large">
-            <Link
-              href={route(
-                'learning-packet.sub-learning-packet.learning-category.exercise-question.leaderboard',
-                [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
-                  exercise_question.id,
-                ],
-              )}
-            >
-              Leaderboard
-            </Link>
-          </Button>
+          <MuiInertiaLinkButton
+            color="success"
+            href={route(
+              'learning-packet.sub-learning-packet.learning-category.exercise-question.question.create',
+              [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                exercise_question.id,
+              ]
+            )}
+          >
+            Tambah Soal
+          </MuiInertiaLinkButton>
+          <MuiInertiaLinkButton
+            color="primary"
+            href={route(
+              'learning-packet.sub-learning-packet.learning-category.exercise-question.leaderboard',
+              [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                exercise_question.id,
+              ],
+            )}
+          >
+            Leaderboard
+          </MuiInertiaLinkButton>
         </div>
       </div>
       <MaterialReactTable
@@ -110,32 +109,28 @@ export default function Show(props: Props) {
         }}
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
-            <Button variant="contained" color="primary" size="large">
-              <Link
-                href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.show', [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
-                  exercise_question.id,
-                  row.original.id,
-                ])}
-              >
-                Show
-              </Link>
-            </Button>
-            <Button variant="contained" color="error" size="large">
-              <Link
-                href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.destroy', [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
-                  exercise_question.id,
-                  row.original.id,
-                ])}
-              >
-                Hapus
-              </Link>
-            </Button>
+            <MuiInertiaLinkButton
+              href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.show', [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                exercise_question.id,
+                row.original.id,
+              ])}
+            >
+              Show
+            </MuiInertiaLinkButton>
+            <MuiInertiaLinkButton
+              href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.destroy', [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                exercise_question.id,
+                row.original.id,
+              ])}
+            >
+              Hapus
+            </MuiInertiaLinkButton>
           </div>
         )}
       />

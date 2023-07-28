@@ -1,3 +1,4 @@
+import MuiInertiaLinkButton from "@/Components/MuiInertiaLinkButton";
 import { Link } from "@inertiajs/react";
 import { Button } from "@mui/material";
 import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
@@ -58,15 +59,16 @@ export default function TableCard<T extends Record<string, any>>(props: Props<T>
                     renderTopToolbarCustomActions={() => (
                         <div className="flex items-center justify-center gap-2">
                             {props.createRoute ? (
-                                <Link href={route(props.createRoute, [
-                                    props.learningPacketId,
-                                    props.subLearningPacketId,
-                                    props.learningCategoryId,
-                                ])}>
-                                    <Button variant="contained" color="success" size="large">
-                                        {props.createRouteTitle ?? 'Tambah'}
-                                    </Button>
-                                </Link>
+                                <MuiInertiaLinkButton
+                                    color="success"
+                                    href={route(props.createRoute, [
+                                        props.learningPacketId,
+                                        props.subLearningPacketId,
+                                        props.learningCategoryId,
+                                    ])}
+                                >
+                                    {props.createRouteTitle ?? 'Tambah'}
+                                </MuiInertiaLinkButton>
                             ) : null}
                         </div>
                     )}
@@ -74,21 +76,17 @@ export default function TableCard<T extends Record<string, any>>(props: Props<T>
                         <div className="flex items-center justify-center gap-2">
                             {
                                 props.showRoute ? (
-                                    <Button
-                                        type="button"
-                                        variant="contained"
+                                    <MuiInertiaLinkButton
                                         color="primary"
-                                        size="large"
-                                    >
-                                        <Link href={route(props.showRoute, [
+                                        href={route(props.showRoute, [
                                             props.learningPacketId,
                                             props.subLearningPacketId,
                                             props.learningCategoryId,
                                             row.original.id
-                                        ])}>
-                                            {props.showRouteTitle ?? 'Show'}
-                                        </Link>
-                                    </Button>
+                                        ])}
+                                    >
+                                        {props.showRouteTitle ?? 'Show'}
+                                    </MuiInertiaLinkButton>
                                 ) : null
                             }
                         </div>

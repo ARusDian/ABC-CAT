@@ -1,9 +1,8 @@
+import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { BankQuestionModel } from '@/Models/BankQuestion';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
-import { Link } from '@inertiajs/react';
-import { Button } from '@mui/material';
 import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
@@ -61,27 +60,29 @@ export default function Show(props: Props) {
           <p>Type: {bank_question.type}</p>
         </div>
         <div className="flex place-content-end grow gap-2">
-          <Link href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.create', [
-            learning_packet,
-            sub_learning_packet,
-            learning_category,
-            bank_question.id,
-          ])}>
-            <Button variant="contained" color="success" size="large">
-              Tambah Soal
-            </Button>
-          </Link>
+          <MuiInertiaLinkButton
+            href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.create', [
+              learning_packet,
+              sub_learning_packet,
+              learning_category,
+              bank_question.id,
+            ])}
+            color="success"
+          >
+            Tambah Soal
+          </MuiInertiaLinkButton>
 
-          <Link href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.import', [
-            learning_packet,
-            sub_learning_packet,
-            learning_category,
-            bank_question.id,
-          ])}>
-            <Button variant="contained" color="primary" size="large">
-              Buat Paket Soal
-            </Button>
-          </Link>
+          <MuiInertiaLinkButton
+            href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.import', [
+              learning_packet,
+              sub_learning_packet,
+              learning_category,
+              bank_question.id,
+            ])}
+            color="primary"
+          >
+            Buat Paket Soal
+          </MuiInertiaLinkButton>
         </div>
       </div>
       <MaterialReactTable
@@ -98,7 +99,7 @@ export default function Show(props: Props) {
         muiTableBodyRowProps={{ hover: false }}
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">
-            <Link
+            <MuiInertiaLinkButton
               href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
                 learning_packet,
                 sub_learning_packet,
@@ -106,13 +107,13 @@ export default function Show(props: Props) {
                 bank_question.id,
                 row.original.id,
               ])}
-              className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
+              color="primary"
             >
               Show
-            </Link>
+            </MuiInertiaLinkButton>
           </div>
         )}
       />
-    </AdminShowLayout>
+    </AdminShowLayout >
   );
 }
