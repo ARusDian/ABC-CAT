@@ -140,7 +140,7 @@ class ExamController extends Controller
         $exam = $this->getInProgressExam($exercise_id);
 
         if ($exam) {
-            return redirect()->route("exam.show", [$exercise_id]);
+            return redirect()->route("student.exam.show", [$exercise_id]);
         }
         return \DB::transaction(function () use ($exercise_id) {
 
@@ -172,7 +172,7 @@ class ExamController extends Controller
                 ]);
             }
 
-            return redirect()->route('exam.show', [$exercise->id]);
+            return redirect()->route('student.exam.show', [$exercise->id]);
         });
     }
 

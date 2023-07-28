@@ -322,4 +322,26 @@ class LearningMaterialController extends Controller
                 ->with('success', 'Learning Material deleted successfully');
         });
     }
+    
+    public function studentIndex($learning_packet, $sub_learning_packet, $learning_category)
+    {
+        //
+        $learningMaterials = LearningMaterial::with(
+            'documents.documentFile',
+        )->where('learning_category_id', $learning_category)->get();
+        return Inertia::render('Student/LearningMaterial/Index', [
+            'learningMaterials' => $learningMaterials,
+        ]);
+    }
+
+    public function studentShow($learning_packet, $sub_learning_packet, $learning_category, $id)
+    {
+        //
+        $document = LearningMaterialDocument::with(
+            'documentFile',
+        )->find($id);
+        return Inertia::render('Student/LearningMaterial/Show', [
+            'document' => $document,
+        ]);
+    }
 }

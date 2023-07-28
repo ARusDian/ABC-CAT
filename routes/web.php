@@ -34,7 +34,7 @@ Route::get("/", function () {
 });
 
 route::get("/test", function () {
-    return Inertia::render("Student/PROTOTYPEVIEW/Result");
+    return Inertia::render("Student/PROTOTYPEVIEW/Kategori");
 })->name("test");
 
 // Route::get("/exam", function () {
@@ -49,8 +49,25 @@ Route::middleware([
 ])->group(function () {
     Route::get("/user/profile", [UserProfileController::class, "show"])->name("profile.show");
     Route::get("/dashboard", [DashboardController::class, "index"])->name("dashboard");
-    Route::middleware(["role:student"])->group(function () {
+    Route::middleware(["role:student"])->name('student.')->group(function () {
         Route::prefix("student")->group(function () {
+            // Sub Paket Belajar
+            Route::prefix("learning_packet/{learning_packet}")->name('learning-packet.')->group(function () {
+                Route::get("", [SubLearningPacketController::class, "studentIndex"])->name("show");
+                Route::prefix("/sub-learning-packet/{sub_learning_packet}/learning-category{learning_category}/")->name('learning-category.')->group(function () {
+                    Route::get("", [LearningCategoryController::class, "studentIndex"])->name("show");
+                    Route::prefix("/learning-material")->name('learning-material.')->group(function () {
+                        Route::get("", [LearningMaterialController::class, "studentIndex"])->name("index");
+                        Route::get("{learning_material}", [LearningMaterialController::class, "studentShow"])->name("show");
+                    });
+                    // Route::prefix("/learning-material/{learning_material}/")->name('learning-material.')->group(function () {
+                    //     Route::get("", [LearningMaterialController::class, "studentIndex"])->name("show");
+                    // });
+                });
+            });
+
+            // TODO: Move to above inside learning_packet prefix
+            // Exercise Question
             Route::prefix("exam")->as("exam.")->group(function () {
                 Route::get("{exercise_question}", [ExamController::class, "show"])->name("show");
                 Route::put("{exercise_question}", [ExamController::class, "update"])->name("update");
@@ -58,6 +75,7 @@ Route::middleware([
                 Route::post("{exercise_question}/finish", [ExamController::class, "finish"])->name("finish");
                 Route::get("{exercise_question}/attempt/{exam}", [ExamController::class, "showAttempt"])->name("show.attempt");
             });
+            // End Exercise Question
         });
     });
 
@@ -120,14 +138,12 @@ Route::middleware([
 
                             // Materi Belajar
                             Route::resource("/learning-material", LearningMaterialController::class);
-
                         });
                     });
                 });
             });
 
             Route::resource('/user-learning-packet', UserLearningPacketController::class);
-
         });
     });
 });

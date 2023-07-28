@@ -30,6 +30,8 @@ interface Props {
 }
 
 const drawerWidth = 240;
+const navHeight = 70;
+
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -152,16 +154,19 @@ export default function DashboardLayout({
       <Banner />
       <Box sx={{ display: 'flex' }}>
         <AppBar position="absolute" open={isSidebarOpen}>
-          <nav className="flex justify-between w-full sticky bg-blue-400 py-5 px-7 shadow shadow-sky-400/50">
-            <div className="flex gap-3 max-w-6xl mr-30">
+          <nav className="flex justify-between w-full sticky bg-main-blue my-auto px-7 shadow shadow-sky-400/50" style={{ height: navHeight }} >
+            <div className="flex gap-3 max-w-6xl mr-30 text-3xl">
               <button
-                className="text-3xl md:ml-20 bg-blue-400 text-white hover:bg-blue-600 px-3 py-2"
+                className=" md:ml-20 bg-main-blue text-white hover:bg-blue-600 px-3 py-2"
                 onClick={toggleDrawer(!isSidebarOpen)}
               >
-                <MenuIcon fontSize="large" /> Siswa
+                <MenuIcon fontSize="large" /> 
               </button>
+              <p className='my-auto'>
+                Siswa
+              </p>
             </div>
-            <div className="mr-3 relative">
+            <div className="mr-3 relative my-auto">
               <Dropdown
                 align="right"
                 width="48"
@@ -197,7 +202,7 @@ export default function DashboardLayout({
           <Divider />
           {sideBar()}
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: `${navHeight}px` }}>
           <div className="my-20 p-5">{children}</div>
         </Box>
       </Box>

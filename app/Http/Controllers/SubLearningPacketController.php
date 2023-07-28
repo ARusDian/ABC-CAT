@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\LearningPacket;
 use App\Models\SubLearningPacket;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -102,5 +103,13 @@ class SubLearningPacketController extends Controller
         $subLearningPacket->delete();
 
         return redirect()->route('learning-packet.show', $subLearningPacket->learning_packet_id)->banner('Sub Learning Packet deleted successfully.');
+    }
+
+    public function studentIndex($learning_packet)
+    {
+        $learningPacket = LearningPacket::with(['subLearningPackets.learningCategories'])->find($learning_packet);
+        return Inertia::render('Student/SubLearningPacket', [
+            'learningPacket' => $learningPacket
+        ]);
     }
 }

@@ -30,7 +30,7 @@ export default function ShowAttempt({ exam }: Props) {
           </div>
           <div className="text-lg">
             <Button variant="contained" color="primary" size="large">
-              <Link href={route('exam.show', exam.exercise_question_id)}>
+              <Link href={route('student.exam.show', exam.exercise_question_id)}>
                 Kembali
               </Link>
             </Button>

@@ -58,7 +58,7 @@ export default function Show(props: Props) {
           renderRowActions={({ row }) => (
             <div className="flex items-center justify-center gap-2">
               <Link
-                href={route('exam.show.attempt', [
+                href={route('student.exam.show.attempt', [
                   props.exercise_question.id,
                   row.original.id,
                 ])}
@@ -71,7 +71,7 @@ export default function Show(props: Props) {
           renderTopToolbarCustomActions={() => (
             <Button variant="contained" color="primary">
               <Link
-                href={route('exam.attempt', [props.exercise_question.id])}
+                href={route('student.exam.attempt', [props.exercise_question.id])}
                 method="post"
               >
                 Mulai Ujian
