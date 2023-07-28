@@ -35,36 +35,38 @@ export default function Index({ exams }: Props) {
 
   return (
     <AdminTableLayout title="Monitor Exam">
-      <MaterialReactTable
-        columns={dataColumns}
-        data={exams}
-        enableColumnActions
-        enableColumnFilters
-        enablePagination
-        enableSorting
-        enableBottomToolbar
-        enableTopToolbar
-        enableRowActions
-        enableRowNumbers
-        muiTableBodyRowProps={{ hover: false }}
-        renderRowActions={({ row }) => (
-          <div className="flex items-center justify-center gap-2">
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-
-              <Link
-                href={route('exam-monitor.show', row.original.id)}
+      <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <MaterialReactTable
+          columns={dataColumns}
+          data={exams}
+          enableColumnActions
+          enableColumnFilters
+          enablePagination
+          enableSorting
+          enableBottomToolbar
+          enableTopToolbar
+          enableRowActions
+          enableRowNumbers
+          muiTableBodyRowProps={{ hover: false }}
+          renderRowActions={({ row }) => (
+            <div className="flex items-center justify-center gap-2">
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
               >
-                Show
-              </Link>
-            </Button>
-          </div>
-        )}
-      />
+
+                <Link
+                  href={route('exam-monitor.show', row.original.id)}
+                >
+                  Show
+                </Link>
+              </Button>
+            </div>
+          )}
+        />
+      </div>
     </AdminTableLayout>
   );
 }

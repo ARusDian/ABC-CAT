@@ -44,96 +44,98 @@ export default function Show(props: Props) {
         learning_category,
       ])}
     >
-      <div className="flex justify-between">
-        <div className=" text-lg">
-          <p>{exercise_question.name}</p>
-          <p>Type: {exercise_question.type}</p>
-          <p>
-            Batas waktu:{' '}
-            {
-              <span className="font-semibold">
-                {parseFloat(exercise_question.time_limit.toFixed(2))}
-              </span>
-            }{' '}
-            Menit
-          </p>
-        </div>
-        <div className="flex justify-around my-auto gap-5">
-          <MuiInertiaLinkButton
-            color="success"
-            href={route(
-              'learning-packet.sub-learning-packet.learning-category.exercise-question.question.create',
-              [
-                learning_packet,
-                sub_learning_packet,
-                learning_category,
-                exercise_question.id,
-              ]
-            )}
-          >
-            Tambah Soal
-          </MuiInertiaLinkButton>
-          <MuiInertiaLinkButton
-            color="primary"
-            href={route(
-              'learning-packet.sub-learning-packet.learning-category.exercise-question.leaderboard',
-              [
-                learning_packet,
-                sub_learning_packet,
-                learning_category,
-                exercise_question.id,
-              ],
-            )}
-          >
-            Leaderboard
-          </MuiInertiaLinkButton>
-        </div>
-      </div>
-      <MaterialReactTable
-        columns={dataColumns}
-        data={exercise_question.questions ?? []}
-        enableColumnActions
-        enableColumnFilters
-        enablePagination
-        enableSorting
-        enableBottomToolbar
-        enableTopToolbar
-        enableRowActions
-        enableRowNumbers
-        muiTableBodyRowProps={{ hover: false }}
-        muiTableHeadCellProps={{
-          sx: {
-            fontWeight: 'bold',
-            fontSize: '16px',
-          },
-        }}
-        renderRowActions={({ row }) => (
-          <div className="flex items-center justify-center gap-2">
+      <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <div className="flex justify-between">
+          <div className=" text-lg">
+            <p>{exercise_question.name}</p>
+            <p>Type: {exercise_question.type}</p>
+            <p>
+              Batas waktu:{' '}
+              {
+                <span className="font-semibold">
+                  {parseFloat(exercise_question.time_limit.toFixed(2))}
+                </span>
+              }{' '}
+              Menit
+            </p>
+          </div>
+          <div className="flex justify-around my-auto gap-5">
             <MuiInertiaLinkButton
-              href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.show', [
-                learning_packet,
-                sub_learning_packet,
-                learning_category,
-                exercise_question.id,
-                row.original.id,
-              ])}
+              color="success"
+              href={route(
+                'learning-packet.sub-learning-packet.learning-category.exercise-question.question.create',
+                [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
+                  exercise_question.id,
+                ]
+              )}
             >
-              Show
+              Tambah Soal
             </MuiInertiaLinkButton>
             <MuiInertiaLinkButton
-              href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.destroy', [
-                learning_packet,
-                sub_learning_packet,
-                learning_category,
-                exercise_question.id,
-                row.original.id,
-              ])}
+              color="primary"
+              href={route(
+                'learning-packet.sub-learning-packet.learning-category.exercise-question.leaderboard',
+                [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
+                  exercise_question.id,
+                ],
+              )}
             >
-              Hapus
+              Leaderboard
             </MuiInertiaLinkButton>
           </div>
-        )}
-      />
+        </div>
+        <MaterialReactTable
+          columns={dataColumns}
+          data={exercise_question.questions ?? []}
+          enableColumnActions
+          enableColumnFilters
+          enablePagination
+          enableSorting
+          enableBottomToolbar
+          enableTopToolbar
+          enableRowActions
+          enableRowNumbers
+          muiTableBodyRowProps={{ hover: false }}
+          muiTableHeadCellProps={{
+            sx: {
+              fontWeight: 'bold',
+              fontSize: '16px',
+            },
+          }}
+          renderRowActions={({ row }) => (
+            <div className="flex items-center justify-center gap-2">
+              <MuiInertiaLinkButton
+                href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.show', [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
+                  exercise_question.id,
+                  row.original.id,
+                ])}
+              >
+                Show
+              </MuiInertiaLinkButton>
+              <MuiInertiaLinkButton
+                href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.destroy', [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
+                  exercise_question.id,
+                  row.original.id,
+                ])}
+              >
+                Hapus
+              </MuiInertiaLinkButton>
+            </div>
+          )}
+        />
+      </div>
     </AdminShowLayout>
   );
 }

@@ -1,4 +1,4 @@
-import AdminNestedShowLayout from "@/Layouts/Admin/AdminNestedShowLayout";
+import AdminShowLayout from "@/Layouts/Admin/AdminShowLayout";
 import { LearningPacketModel } from "@/Models/LearningPacket";
 import { SubLearningPacketModel } from "@/Models/SubLearningPacket";
 import { Link, router } from "@inertiajs/react";
@@ -23,7 +23,7 @@ export default function Show({ learningPacket }: Props) {
     ] as MRT_ColumnDef<SubLearningPacketModel>[];
 
     return (
-        <AdminNestedShowLayout
+        <AdminShowLayout
             title="Paket Belajar"
             headerTitle="Paket Belajar"
             backRoute={route('learning-packet.index')}
@@ -134,6 +134,6 @@ export default function Show({ learningPacket }: Props) {
                     />
                 </div>
             </div>
-        </AdminNestedShowLayout >
+        </AdminShowLayout >
     )
 }

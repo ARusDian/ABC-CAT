@@ -49,24 +49,25 @@ export default function Leaderboard(props: Props) {
 
   return (
     <AdminTableLayout title="Leaderboard">
-      <MaterialReactTable
-        columns={dataColumns}
-        data={sortedExam}
-        enableColumnActions
-        enableColumnFilters
-        enablePagination
-        enableSorting
-        enableBottomToolbar
-        enableTopToolbar
-        enableRowActions
-        enableRowNumbers
-        muiTableBodyRowProps={{ hover: false }}
-        muiTableHeadCellProps={{
-          sx: {
-            fontWeight: 'bold',
-            fontSize: '16px',
-          },
-        }}
+      <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <MaterialReactTable
+          columns={dataColumns}
+          data={sortedExam}
+          enableColumnActions
+          enableColumnFilters
+          enablePagination
+          enableSorting
+          enableBottomToolbar
+          enableTopToolbar
+          enableRowActions
+          enableRowNumbers
+          muiTableBodyRowProps={{ hover: false }}
+          muiTableHeadCellProps={{
+            sx: {
+              fontWeight: 'bold',
+              fontSize: '16px',
+            },
+          }}
         // renderRowActions={({ row }) => (
         //   <div className="flex items-center justify-center gap-2">
         //     <Link
@@ -77,7 +78,8 @@ export default function Leaderboard(props: Props) {
         //     </Link>
         //   </div>
         // )}
-      />
+        />
+      </div>
     </AdminTableLayout>
   );
 }

@@ -30,35 +30,37 @@ export default function Index({ bank_questions }: Props) {
       title="Soal Latihan"
       addRoute={route('bank-question.create')}
     >
-      <MaterialReactTable
-        columns={dataColumns}
-        data={bank_questions}
-        enableColumnActions
-        enableColumnFilters
-        enablePagination
-        enableSorting
-        enableBottomToolbar
-        enableTopToolbar
-        enableRowActions
-        enableRowNumbers
-        muiTableBodyRowProps={{ hover: false }}
-        muiTableHeadCellProps={{
-          sx: {
-            fontWeight: 'bold',
-            fontSize: '16px',
-          },
-        }}
-        renderRowActions={({ row }) => (
-          <div className="flex items-center justify-center gap-2">
-            <MuiInertiaLinkButton
-              color="primary"
-              href={route('bank-question.show', row.original.id)}
-            >
-              Show
-            </MuiInertiaLinkButton>
-          </div>
-        )}
-      />
+      <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <MaterialReactTable
+          columns={dataColumns}
+          data={bank_questions}
+          enableColumnActions
+          enableColumnFilters
+          enablePagination
+          enableSorting
+          enableBottomToolbar
+          enableTopToolbar
+          enableRowActions
+          enableRowNumbers
+          muiTableBodyRowProps={{ hover: false }}
+          muiTableHeadCellProps={{
+            sx: {
+              fontWeight: 'bold',
+              fontSize: '16px',
+            },
+          }}
+          renderRowActions={({ row }) => (
+            <div className="flex items-center justify-center gap-2">
+              <MuiInertiaLinkButton
+                color="primary"
+                href={route('bank-question.show', row.original.id)}
+              >
+                Show
+              </MuiInertiaLinkButton>
+            </div>
+          )}
+        />
+      </div>
     </AdminTableLayout>
   );
 }

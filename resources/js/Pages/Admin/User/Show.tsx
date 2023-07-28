@@ -35,7 +35,7 @@ export default function Show(props: Props) {
       }}
       deleteTitle="Hapus"
     >
-      <div className="">
+      <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
         <table className="w-full">
           <thead>
             <tr className="border-b py-3 border-black">

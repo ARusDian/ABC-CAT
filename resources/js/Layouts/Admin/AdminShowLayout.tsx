@@ -77,9 +77,7 @@ export default function Index(props: React.PropsWithChildren<Props>) {
             ) : null}
           </div>
         </div>
-        <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
-          {props.children}
-        </div>
+        {props.children}
       </div>
     </DashboardAdminLayout >
   );

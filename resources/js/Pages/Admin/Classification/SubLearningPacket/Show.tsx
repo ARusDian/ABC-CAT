@@ -1,4 +1,3 @@
-import AdminNestedShowLayout from "@/Layouts/Admin/AdminNestedShowLayout";
 import { LearningCategoryModel } from "@/Models/LearningCategory";
 import { SubLearningPacketModel } from "@/Models/SubLearningPacket";
 import { router } from "@inertiajs/react";
@@ -7,6 +6,7 @@ import React from "react";
 import route from "ziggy-js";
 import InventoryIcon from '@mui/icons-material/Inventory';
 import MuiInertiaLinkButton from "@/Components/MuiInertiaLinkButton";
+import AdminShowLayout from "@/Layouts/Admin/AdminShowLayout";
 
 interface Props {
     subLearningPacket: SubLearningPacketModel
@@ -21,7 +21,7 @@ export default function Show({ subLearningPacket }: Props) {
     ] as MRT_ColumnDef<LearningCategoryModel>[];
 
     return (
-        <AdminNestedShowLayout
+        <AdminShowLayout
             title="Sub Paket Belajar"
             headerTitle="Sub Paket Belajar"
             backRoute={route('learning-packet.show', {
@@ -108,9 +108,7 @@ export default function Show({ subLearningPacket }: Props) {
                         )}
                     />
                 </div>
-
             </div>
-
-        </AdminNestedShowLayout>
+        </AdminShowLayout>
     )
 }

@@ -36,79 +36,81 @@ export default function Show(props: Props) {
       editRoute={route('bank-question.edit', exam.id)}
       backRoute={route('bank-question.index')}
     >
-      <div className="flex">
-        <div className=" text-lg">
-          <p>{exam.user.name}</p>
-          <p>{exam.user.email}</p>
-          <p>Finished: {exam.finished}</p>
+      <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <div className="flex">
+          <div className=" text-lg">
+            <p>{exam.user.name}</p>
+            <p>{exam.user.email}</p>
+            <p>Finished: {exam.finished}</p>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <AutoSizer disableHeight>
-          {({ width }) => (
-            <ScrollSync>
-              {({ scrollLeft }) => (
-                <div className="Table">
-                  <Grid
-                    height={40}
-                    width={width}
-                    rowHeight={40}
-                    columnWidth={width / columnCount}
-                    cellRenderer={({ columnIndex, key, style }) => {
-                      let text;
-                      if (columnIndex == 0) {
-                        text = 'Nomor';
-                      } else if (columnIndex == columnCount - 1) {
-                        text = 'Benar';
-                      } else {
-                        text = `Nama soal`;
-                      }
+        <div>
+          <AutoSizer disableHeight>
+            {({ width }) => (
+              <ScrollSync>
+                {({ scrollLeft }) => (
+                  <div className="Table">
+                    <Grid
+                      height={40}
+                      width={width}
+                      rowHeight={40}
+                      columnWidth={width / columnCount}
+                      cellRenderer={({ columnIndex, key, style }) => {
+                        let text;
+                        if (columnIndex == 0) {
+                          text = 'Nomor';
+                        } else if (columnIndex == columnCount - 1) {
+                          text = 'Benar';
+                        } else {
+                          text = `Nama soal`;
+                        }
 
-                      return (
-                        <div key={key} style={style}>
-                          {text}
-                        </div>
-                      );
-                    }}
-                    rowCount={1}
-                    columnCount={columnCount}
-                    scrollLeft={scrollLeft}
-                  />
+                        return (
+                          <div key={key} style={style}>
+                            {text}
+                          </div>
+                        );
+                      }}
+                      rowCount={1}
+                      columnCount={columnCount}
+                      scrollLeft={scrollLeft}
+                    />
 
-                  <Grid
-                    height={500}
-                    width={width}
-                    rowHeight={40}
-                    columnWidth={width / columnCount}
-                    // overscanColumnCount={overscanColumnCount}
-                    cellRenderer={({ columnIndex, key, rowIndex, style }) => {
-                      const it = exam.answers[rowIndex];
+                    <Grid
+                      height={500}
+                      width={width}
+                      rowHeight={40}
+                      columnWidth={width / columnCount}
+                      // overscanColumnCount={overscanColumnCount}
+                      cellRenderer={({ columnIndex, key, rowIndex, style }) => {
+                        const it = exam.answers[rowIndex];
 
-                      let text;
-                      if (columnIndex == 0) {
-                        text = rowIndex + 1;
-                      } else if (columnIndex == columnCount - 1) {
-                        text = `${it.answer == it.question.answer}`;
-                      } else {
-                        text = it.question.name;
-                      }
+                        let text;
+                        if (columnIndex == 0) {
+                          text = rowIndex + 1;
+                        } else if (columnIndex == columnCount - 1) {
+                          text = `${it.answer == it.question.answer}`;
+                        } else {
+                          text = it.question.name;
+                        }
 
-                      return (
-                        <div key={key} style={style}>
-                          {text}
-                        </div>
-                      );
-                    }}
-                    rowCount={exam.answers.length}
-                    columnCount={columnCount}
-                    scrollLeft={scrollLeft}
-                  />
-                </div>
-              )}
-            </ScrollSync>
-          )}
-        </AutoSizer>
+                        return (
+                          <div key={key} style={style}>
+                            {text}
+                          </div>
+                        );
+                      }}
+                      rowCount={exam.answers.length}
+                      columnCount={columnCount}
+                      scrollLeft={scrollLeft}
+                    />
+                  </div>
+                )}
+              </ScrollSync>
+            )}
+          </AutoSizer>
+        </div>
       </div>
     </AdminShowLayout>
   );

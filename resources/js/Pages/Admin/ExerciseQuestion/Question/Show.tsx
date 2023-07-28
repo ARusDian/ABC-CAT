@@ -104,106 +104,108 @@ export default function Index({ question, exercise_question_id }: Props) {
       }
       isRestore={!question.is_active}
     >
-      <div className="flex justify-end my-5">
-        <MuiInertiaLinkButton
-          color="info"
-          href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
-            learning_packet,
-            sub_learning_packet,
-            learning_category,
-            question.bank_question_id,
-            question.id,
-          ])}
-        >
-          Bank Soal
-        </MuiInertiaLinkButton>
-      </div>
-      <div className="border-t pt-2">
-        <Tabs
-          value={tabValue}
-          onChange={handleTabChange}
-          aria-label="basic tabs example"
-          centered
-        >
-          <Tab label="Soal" {...a11yProps(0)} />
-          <Tab label="Pilihan Jawaban" {...a11yProps(1)} />
-          <Tab label="Penjelasan" {...a11yProps(2)} />
-        </Tabs>
-      </div>
-      <CustomTabPanel value={tabValue} index={0}>
-        <label className="text-lg">Pertanyaan</label>
-        <div className="mx-auto border rounded-lg">
-          <BankQuestionItemShow question={question} />
+      <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <div className="flex justify-end my-5">
+          <MuiInertiaLinkButton
+            color="info"
+            href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+              learning_packet,
+              sub_learning_packet,
+              learning_category,
+              question.bank_question_id,
+              question.id,
+            ])}
+          >
+            Bank Soal
+          </MuiInertiaLinkButton>
         </div>
-      </CustomTabPanel>
+        <div className="border-t pt-2">
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            aria-label="basic tabs example"
+            centered
+          >
+            <Tab label="Soal" {...a11yProps(0)} />
+            <Tab label="Pilihan Jawaban" {...a11yProps(1)} />
+            <Tab label="Penjelasan" {...a11yProps(2)} />
+          </Tabs>
+        </div>
+        <CustomTabPanel value={tabValue} index={0}>
+          <label className="text-lg">Pertanyaan</label>
+          <div className="mx-auto border rounded-lg">
+            <BankQuestionItemShow question={question} />
+          </div>
+        </CustomTabPanel>
 
-      <CustomTabPanel value={tabValue} index={1}>
-        {question.type == 'Pilihan' ? (
-          <div className="p-5">
-            <label>Pilihan Ganda :</label>
-            {question.answers.choices.map((choice, index) => {
-              return (
-                <div key={index}>
-                  <label className="text-lg">
-                    Pilihan {numberToUpperCase(index)}
-                  </label>
-                  {question.answer.type == 'WeightedChoice' ? (
-                    <div>Bobot: {question.answer.answer[index].weight}</div>
-                  ) : null}
-                  <div className="mx-auto border rounded-lg">
-                    <BankQuestionItemEditor
-                      content={choice.content}
-                      editorClassName="h-full"
-                      disableEdit
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : question.type == 'Kecermatan' ? (
-          <div className="p-5">
-            <label className="text-lg">Pilihan: </label>
-            {question.answers.choices.map((choice, index) => {
-              return (
-                <div key={index}>
-                  <label>Pilihan {numberToUpperCase(index)}</label>
-                  {question.answer.type == 'WeightedChoice' ? (
-                    <div>Bobot: {question.answer.answer[index].weight}</div>
-                  ) : null}
-                  <div className="mx-auto border rounded-lg">{choice}</div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="p-5">
-            <label className="text-lg">Jawaban</label>
-            <div className="mx-auto border rounded-lg">Essay</div>
-          </div>
-        )}
-      </CustomTabPanel>
-
-      <CustomTabPanel value={tabValue} index={2}>
-        <div className="p-5">
-          <label className="text-lg">Jawaban Benar</label>
-          {question.answer.type == 'Single' ? (
-            <p>pilihan {numberToUpperCase(question.answer.answer)}</p>
-          ) : null}
+        <CustomTabPanel value={tabValue} index={1}>
           {question.type == 'Pilihan' ? (
-            <>
-              <label className="text-lg">Penjelasan Jawaban</label>
-              <div className="mx-auto border rounded-lg">
-                <BankQuestionItemEditor
-                  content={question.explanation?.content ?? null}
-                  editorClassName="h-full"
-                  disableEdit
-                />
-              </div>
-            </>
-          ) : null}
-        </div>
-      </CustomTabPanel>
+            <div className="p-5">
+              <label>Pilihan Ganda :</label>
+              {question.answers.choices.map((choice, index) => {
+                return (
+                  <div key={index}>
+                    <label className="text-lg">
+                      Pilihan {numberToUpperCase(index)}
+                    </label>
+                    {question.answer.type == 'WeightedChoice' ? (
+                      <div>Bobot: {question.answer.answer[index].weight}</div>
+                    ) : null}
+                    <div className="mx-auto border rounded-lg">
+                      <BankQuestionItemEditor
+                        content={choice.content}
+                        editorClassName="h-full"
+                        disableEdit
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : question.type == 'Kecermatan' ? (
+            <div className="p-5">
+              <label className="text-lg">Pilihan: </label>
+              {question.answers.choices.map((choice, index) => {
+                return (
+                  <div key={index}>
+                    <label>Pilihan {numberToUpperCase(index)}</label>
+                    {question.answer.type == 'WeightedChoice' ? (
+                      <div>Bobot: {question.answer.answer[index].weight}</div>
+                    ) : null}
+                    <div className="mx-auto border rounded-lg">{choice}</div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="p-5">
+              <label className="text-lg">Jawaban</label>
+              <div className="mx-auto border rounded-lg">Essay</div>
+            </div>
+          )}
+        </CustomTabPanel>
+
+        <CustomTabPanel value={tabValue} index={2}>
+          <div className="p-5">
+            <label className="text-lg">Jawaban Benar</label>
+            {question.answer.type == 'Single' ? (
+              <p>pilihan {numberToUpperCase(question.answer.answer)}</p>
+            ) : null}
+            {question.type == 'Pilihan' ? (
+              <>
+                <label className="text-lg">Penjelasan Jawaban</label>
+                <div className="mx-auto border rounded-lg">
+                  <BankQuestionItemEditor
+                    content={question.explanation?.content ?? null}
+                    editorClassName="h-full"
+                    disableEdit
+                  />
+                </div>
+              </>
+            ) : null}
+          </div>
+        </CustomTabPanel>
+      </div>
     </AdminShowLayout>
   );
 }

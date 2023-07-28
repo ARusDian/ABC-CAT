@@ -49,39 +49,41 @@ export default function Index(props: Props) {
       }}
       deleteTitle="Hapus"
     >
-      <div>
-        <div className="text-xl font-bold">{learningMaterial.title}</div>
-      </div>
-      <div>Deskripsi Materi Pembelajaran :</div>
-      <div className="border-2 border-gray-200 p-5">
-        <div className="prose ">{parse(learningMaterial.description)}</div>
-      </div>
-      <div className="mt-8 text-2xl">Dokumen Materi Pembelajaran</div>
-      <div className="flex flex-col gap-2">
-        {learningMaterial.documents.length > 0 &&
-          learningMaterial.documents.map((document, index) => {
-            return (
-              <div key={document.id} className="border-b-2 pb-5">
-                <div className="my-5 flex flex-col gap-2">
-                  <div className="flex-1">
-                    <label className="label" htmlFor={`document_name_${index}`}>
-                      Nama Dokumen
-                    </label>
-                    <input
-                      id={`document_name_${index}`}
-                      key={`document-${document.id}-name`}
-                      type="text"
-                      className="input w-full"
-                      required
-                      value={document.caption}
-                      disabled
-                    />
+      <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <div>
+          <div className="text-xl font-bold">{learningMaterial.title}</div>
+        </div>
+        <div>Deskripsi Materi Pembelajaran :</div>
+        <div className="border-2 border-gray-200 p-5">
+          <div className="prose ">{parse(learningMaterial.description)}</div>
+        </div>
+        <div className="mt-8 text-2xl">Dokumen Materi Pembelajaran</div>
+        <div className="flex flex-col gap-2">
+          {learningMaterial.documents.length > 0 &&
+            learningMaterial.documents.map((document, index) => {
+              return (
+                <div key={document.id} className="border-b-2 pb-5">
+                  <div className="my-5 flex flex-col gap-2">
+                    <div className="flex-1">
+                      <label className="label" htmlFor={`document_name_${index}`}>
+                        Nama Dokumen
+                      </label>
+                      <input
+                        id={`document_name_${index}`}
+                        key={`document-${document.id}-name`}
+                        type="text"
+                        className="input w-full"
+                        required
+                        value={document.caption}
+                        disabled
+                      />
+                    </div>
+                    <PDFViewer document={document} />
                   </div>
-                  <PDFViewer document={document} />
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+        </div>
       </div>
     </AdminShowLayout>
   );

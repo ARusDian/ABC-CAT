@@ -21,39 +21,41 @@ export default function Index(props: Props) {
       addRoute={route('learning-material.create')}
       addRouteTitle="Tambah Materi Belajar"
     >
-      <MaterialReactTable
-        columns={dataColumns}
-        data={learningMaterials}
-        enableColumnActions
-        enableColumnFilters
-        enablePagination
-        enableSorting
-        enableBottomToolbar
-        enableTopToolbar
-        enableRowActions
-        enableRowNumbers
-        muiTableBodyRowProps={{ hover: false }}
-        muiTableHeadCellProps={{
-          sx: {
-            fontWeight: 'bold',
-            fontSize: '16px',
-          },
-        }}
-        renderRowActions={({ row }) => (
-          <div className="flex items-center justify-center gap-2">
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              <Link href={route('learning-material.show', row.original.id)}>
-                Show
-              </Link>
-            </Button>
-          </div>
-        )}
-      />
+      <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <MaterialReactTable
+          columns={dataColumns}
+          data={learningMaterials}
+          enableColumnActions
+          enableColumnFilters
+          enablePagination
+          enableSorting
+          enableBottomToolbar
+          enableTopToolbar
+          enableRowActions
+          enableRowNumbers
+          muiTableBodyRowProps={{ hover: false }}
+          muiTableHeadCellProps={{
+            sx: {
+              fontWeight: 'bold',
+              fontSize: '16px',
+            },
+          }}
+          renderRowActions={({ row }) => (
+            <div className="flex items-center justify-center gap-2">
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
+              >
+                <Link href={route('learning-material.show', row.original.id)}>
+                  Show
+                </Link>
+              </Button>
+            </div>
+          )}
+        />
+      </div>
     </AdminTableLayout>
   );
 }

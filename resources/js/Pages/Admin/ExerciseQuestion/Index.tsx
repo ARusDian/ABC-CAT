@@ -24,41 +24,44 @@ export default function Index({ exercise_questions }: Props) {
       title="Soal Latihan"
       addRoute={route('exercise-question.create')}
     >
-      <MaterialReactTable
-        columns={dataColumns}
-        data={exercise_questions}
-        enableColumnActions
-        enableColumnFilters
-        enablePagination
-        enableSorting
-        enableBottomToolbar
-        enableTopToolbar
-        enableRowActions
-        enableRowNumbers
-        muiTableBodyRowProps={{ hover: false }}
-        muiTableHeadCellProps={{
-          sx: {
-            fontWeight: 'bold',
-            fontSize: '16px',
-          },
-        }}
-        renderRowActions={({ row }) => (
-          <div className="flex items-center justify-center gap-2">
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              <Link
-                href={route('exercise-question.show', row.original.id)}
+      <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+
+        <MaterialReactTable
+          columns={dataColumns}
+          data={exercise_questions}
+          enableColumnActions
+          enableColumnFilters
+          enablePagination
+          enableSorting
+          enableBottomToolbar
+          enableTopToolbar
+          enableRowActions
+          enableRowNumbers
+          muiTableBodyRowProps={{ hover: false }}
+          muiTableHeadCellProps={{
+            sx: {
+              fontWeight: 'bold',
+              fontSize: '16px',
+            },
+          }}
+          renderRowActions={({ row }) => (
+            <div className="flex items-center justify-center gap-2">
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
               >
-                Show
-              </Link>
-            </Button>
-          </div>
-        )}
-      />
+                <Link
+                  href={route('exercise-question.show', row.original.id)}
+                >
+                  Show
+                </Link>
+              </Button>
+            </div>
+          )}
+        />
+      </div>
     </AdminTableLayout>
   );
 }

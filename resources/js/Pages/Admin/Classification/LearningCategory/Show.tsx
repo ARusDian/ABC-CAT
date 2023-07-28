@@ -1,4 +1,4 @@
-import AdminNestedShowLayout from "@/Layouts/Admin/AdminNestedShowLayout";
+import AdminShowLayout from "@/Layouts/Admin/AdminShowLayout";
 import { LearningCategoryModel } from "@/Models/LearningCategory";
 import { Link, router } from "@inertiajs/react";
 import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
@@ -61,7 +61,7 @@ export default function Show({ learningCategory }: Props) {
     } = useDefaultClassificationRouteParams();
 
     return (
-        <AdminNestedShowLayout
+        <AdminShowLayout
             title="Kategori Belajar"
             headerTitle="Kategori Belajar"
             backRoute={route('learning-packet.sub-learning-packet.show', {
@@ -218,6 +218,6 @@ export default function Show({ learningCategory }: Props) {
                     learningCategoryId={learningCategory.id}
                 />
             </CustomTabPanel>
-        </AdminNestedShowLayout >
+        </AdminShowLayout >
     )
 }

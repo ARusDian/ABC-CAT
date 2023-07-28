@@ -54,66 +54,68 @@ export default function Show(props: Props) {
         learning_category
       ])}
     >
-      <div className="flex my-3">
-        <div className=" text-lg">
-          <p>{bank_question.name}</p>
-          <p>Type: {bank_question.type}</p>
-        </div>
-        <div className="flex place-content-end grow gap-2">
-          <MuiInertiaLinkButton
-            href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.create', [
-              learning_packet,
-              sub_learning_packet,
-              learning_category,
-              bank_question.id,
-            ])}
-            color="success"
-          >
-            Tambah Soal
-          </MuiInertiaLinkButton>
-
-          <MuiInertiaLinkButton
-            href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.import', [
-              learning_packet,
-              sub_learning_packet,
-              learning_category,
-              bank_question.id,
-            ])}
-            color="primary"
-          >
-            Buat Paket Soal
-          </MuiInertiaLinkButton>
-        </div>
-      </div>
-      <MaterialReactTable
-        columns={dataColumns}
-        data={bank_question.items ?? []}
-        enableColumnActions
-        enableColumnFilters
-        enablePagination
-        enableSorting
-        enableBottomToolbar
-        enableTopToolbar
-        enableRowActions
-        enableRowNumbers
-        muiTableBodyRowProps={{ hover: false }}
-        renderRowActions={({ row }) => (
-          <div className="flex items-center justify-center gap-2">
+      <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <div className="flex my-3">
+          <div className=" text-lg">
+            <p>{bank_question.name}</p>
+            <p>Type: {bank_question.type}</p>
+          </div>
+          <div className="flex place-content-end grow gap-2">
             <MuiInertiaLinkButton
-              href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+              href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.create', [
                 learning_packet,
                 sub_learning_packet,
                 learning_category,
                 bank_question.id,
-                row.original.id,
+              ])}
+              color="success"
+            >
+              Tambah Soal
+            </MuiInertiaLinkButton>
+
+            <MuiInertiaLinkButton
+              href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.import', [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                bank_question.id,
               ])}
               color="primary"
             >
-              Show
+              Buat Paket Soal
             </MuiInertiaLinkButton>
           </div>
-        )}
-      />
+        </div>
+        <MaterialReactTable
+          columns={dataColumns}
+          data={bank_question.items ?? []}
+          enableColumnActions
+          enableColumnFilters
+          enablePagination
+          enableSorting
+          enableBottomToolbar
+          enableTopToolbar
+          enableRowActions
+          enableRowNumbers
+          muiTableBodyRowProps={{ hover: false }}
+          renderRowActions={({ row }) => (
+            <div className="flex items-center justify-center gap-2">
+              <MuiInertiaLinkButton
+                href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
+                  bank_question.id,
+                  row.original.id,
+                ])}
+                color="primary"
+              >
+                Show
+              </MuiInertiaLinkButton>
+            </div>
+          )}
+        />
+      </div>
     </AdminShowLayout >
   );
 }

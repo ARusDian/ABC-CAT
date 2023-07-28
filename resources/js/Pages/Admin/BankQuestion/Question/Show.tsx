@@ -106,95 +106,97 @@ export default function Index(props: Props) {
       }
       isRestore={!item.is_active}
     >
-      <div className="">
-        <div className="border-t pt-2">
-          <Tabs value={tabValue} onChange={handleTabChange} centered>
-            <Tab label="Soal" {...a11yProps(0)} />
-            <Tab label="Pilihan Jawaban" {...a11yProps(1)} />
-            <Tab label="Penjelasan" {...a11yProps(2)} />
-          </Tabs>
-        </div>
-      </div>
-      <CustomTabPanel value={tabValue} index={0}>
-        <label className="text-lg">Pertanyaan</label>
-        <div className="mx-auto border rounded-2xl p-5">
-          <BankQuestionItemShow
-            question={props.item}
-            editorClassName="h-full"
-          />
-        </div>
-      </CustomTabPanel>
-      <CustomTabPanel value={tabValue} index={1}>
-        {props.item.type == 'Pilihan' ? (
-          <div className="">
-            <label className="text-lg">Pilihan Ganda :</label>
-            {props.item.answers.choices.map((choice, index) => {
-              return (
-                <div key={index} className="mt-4">
-                  <label className="text-lg">
-                    Pilihan {numberToUpperCase(index)}
-                  </label>
-                  {props.item.answer.type == 'WeightedChoice' ? (
-                    <div>Bobot: {props.item.answer.answer[index].weight}</div>
-                  ) : null}
-                  <div className="mx-auto border rounded-2xl p-5  ">
-                    <QuestionEditor
-                      content={choice.content}
-                      exerciseQuestionId={props.item.bank_question_id}
-                      editorClassName="h-10 h-full"
-                      disableEdit
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : props.item.type == 'Kecermatan' ? (
-          <div className="">
-            <label className="text-lg">Pilihan: </label>
-            {props.item.answers.choices.map((choice, index) => {
-              return (
-                <div key={index} className="mt-3">
-                  <label className="text-lg">
-                    Pilihan {numberToUpperCase(index)}
-                  </label>
-                  {props.item.answer.type == 'WeightedChoice' ? (
-                    <div>Bobot: {props.item.answer.answer[index].weight}</div>
-                  ) : null}
-                  <div className="mx-auto border rounded-2xl p-5">{choice}</div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="">
-            <label className="text-lg">Jawaban</label>
-            <div className="mx-auto border rounded-2xl p-5">Essay</div>
-          </div>
-        )}
-      </CustomTabPanel>
-      <CustomTabPanel value={tabValue} index={2}>
+      <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
         <div className="">
-          <label className="text-lg">Jawaban Benar</label>
-          {/* TODO: MAKE FUNCTION TO DETERMINE TRUEST ANSWER */}
-          {/* {props.item.answer.type == "WeightedChoice" ? (
+          <div className="border-t pt-2">
+            <Tabs value={tabValue} onChange={handleTabChange} centered>
+              <Tab label="Soal" {...a11yProps(0)} />
+              <Tab label="Pilihan Jawaban" {...a11yProps(1)} />
+              <Tab label="Penjelasan" {...a11yProps(2)} />
+            </Tabs>
+          </div>
+        </div>
+        <CustomTabPanel value={tabValue} index={0}>
+          <label className="text-lg">Pertanyaan</label>
+          <div className="mx-auto border rounded-2xl p-5">
+            <BankQuestionItemShow
+              question={props.item}
+              editorClassName="h-full"
+            />
+          </div>
+        </CustomTabPanel>
+        <CustomTabPanel value={tabValue} index={1}>
+          {props.item.type == 'Pilihan' ? (
+            <div className="">
+              <label className="text-lg">Pilihan Ganda :</label>
+              {props.item.answers.choices.map((choice, index) => {
+                return (
+                  <div key={index} className="mt-4">
+                    <label className="text-lg">
+                      Pilihan {numberToUpperCase(index)}
+                    </label>
+                    {props.item.answer.type == 'WeightedChoice' ? (
+                      <div>Bobot: {props.item.answer.answer[index].weight}</div>
+                    ) : null}
+                    <div className="mx-auto border rounded-2xl p-5  ">
+                      <QuestionEditor
+                        content={choice.content}
+                        exerciseQuestionId={props.item.bank_question_id}
+                        editorClassName="h-10 h-full"
+                        disableEdit
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : props.item.type == 'Kecermatan' ? (
+            <div className="">
+              <label className="text-lg">Pilihan: </label>
+              {props.item.answers.choices.map((choice, index) => {
+                return (
+                  <div key={index} className="mt-3">
+                    <label className="text-lg">
+                      Pilihan {numberToUpperCase(index)}
+                    </label>
+                    {props.item.answer.type == 'WeightedChoice' ? (
+                      <div>Bobot: {props.item.answer.answer[index].weight}</div>
+                    ) : null}
+                    <div className="mx-auto border rounded-2xl p-5">{choice}</div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="">
+              <label className="text-lg">Jawaban</label>
+              <div className="mx-auto border rounded-2xl p-5">Essay</div>
+            </div>
+          )}
+        </CustomTabPanel>
+        <CustomTabPanel value={tabValue} index={2}>
+          <div className="">
+            <label className="text-lg">Jawaban Benar</label>
+            {/* TODO: MAKE FUNCTION TO DETERMINE TRUEST ANSWER */}
+            {/* {props.item.answer.type == "WeightedChoice" ? (
             <p>pilihan {numberToUpperCase(() => TruestAnswer())}</p>
           ) : null} */}
-          {props.item.type == 'Pilihan' ? (
-            <>
-              <label className="text-lg">Penjelasan Jawaban</label>
-              <div className="mx-auto border rounded-2xl p-5">
-                <QuestionEditor
-                  content={props.item.explanation?.content ?? null}
-                  exerciseQuestionId={props.item.bank_question_id}
-                  editorClassName="h-full"
-                  disableEdit
-                />
-              </div>
-            </>
-          ) : null}
-        </div>
-      </CustomTabPanel>
+            {props.item.type == 'Pilihan' ? (
+              <>
+                <label className="text-lg">Penjelasan Jawaban</label>
+                <div className="mx-auto border rounded-2xl p-5">
+                  <QuestionEditor
+                    content={props.item.explanation?.content ?? null}
+                    exerciseQuestionId={props.item.bank_question_id}
+                    editorClassName="h-full"
+                    disableEdit
+                  />
+                </div>
+              </>
+            ) : null}
+          </div>
+        </CustomTabPanel>
+      </div>
     </AdminShowLayout>
   );
 }
