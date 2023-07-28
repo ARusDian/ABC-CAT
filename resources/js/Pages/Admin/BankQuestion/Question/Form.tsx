@@ -2,7 +2,7 @@ import InputError from '@/Components/Jetstream/InputError';
 import InputLabel from '@/Components/Jetstream/InputLabel';
 import Radio from '@mui/material/Radio';
 import React from 'react';
-import { Controller, UseFormReturn, useFieldArray } from 'react-hook-form';
+import { Controller, UseFormReturn, useFieldArray, useWatch } from 'react-hook-form';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
@@ -78,6 +78,11 @@ export default function Form(props: Props) {
     setTabValue(newValue);
   };
 
+  const answerType = useWatch({
+    control: form.control,
+    name: 'answer.type',
+  });
+
   return (
     <div className={`flex-col gap-5 ${props.className}`}>
       <div>
@@ -109,7 +114,7 @@ export default function Form(props: Props) {
             />
 
             <Select
-              value={form.getValues('answer.type')}
+              value={answerType}
               onChange={e => {
                 const value = e.target.value;
 
