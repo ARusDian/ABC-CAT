@@ -56,15 +56,15 @@ Route::middleware([
                 Route::get("", [SubLearningPacketController::class, "studentIndex"])->name("show");
                 Route::prefix("/sub-learning-packet/{sub_learning_packet}/learning-category{learning_category}/")->name('learning-category.')->group(function () {
                     Route::get("", [LearningCategoryController::class, "studentIndex"])->name("show");
+                    // Materi Belajar
                     Route::prefix("/learning-material")->name('learning-material.')->group(function () {
                         Route::get("", [LearningMaterialController::class, "studentIndex"])->name("index");
                         Route::get("{learning_material}", [LearningMaterialController::class, "studentShow"])->name("show");
                     });
-                    // Route::prefix("/learning-material/{learning_material}/")->name('learning-material.')->group(function () {
-                    //     Route::get("", [LearningMaterialController::class, "studentIndex"])->name("show");
-                    // });
+                    // End Materi Belajar
                 });
             });
+            // End Sub Paket Belajar
 
             // TODO: Move to above inside learning_packet prefix
             // Exercise Question
