@@ -3,6 +3,7 @@ import route from 'ziggy-js';
 import { User } from '@/types';
 import { router } from '@inertiajs/react';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
+import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 
 interface Props {
   user: User;
@@ -36,6 +37,16 @@ export default function Show(props: Props) {
       deleteTitle="Hapus"
     >
       <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <div className='flex justify-end'>
+          <MuiInertiaLinkButton
+            color="success"
+            href={route('user-learning-packet.create', {
+              user: user.id,
+            })}
+          >
+            Tambah Langganan Paket Belajar
+          </MuiInertiaLinkButton>
+        </div>
         <table className="w-full">
           <thead>
             <tr className="border-b py-3 border-black">

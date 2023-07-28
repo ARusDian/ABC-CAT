@@ -21,6 +21,7 @@ import FolderCopyIcon from '@mui/icons-material/FolderCopy';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import FolderSharedIcon from '@mui/icons-material/FolderShared';
 import { asset } from '@/Models/Helper';
 
 interface Props {
@@ -162,6 +163,17 @@ export default function DashboardAdminLayout({
             Paket Belajar
           </ResponsiveNavLink>
         </li>
+        <li>
+          <ResponsiveNavLink
+            href={route('user-learning-packet.index')}
+            active={route().current('user-learning-packet.index')}
+          >
+            <span className={'mr-4'}>
+              <FolderSharedIcon fontSize="large" />
+            </span>
+            Paket Belajar Pengguna
+          </ResponsiveNavLink>
+        </li>
       </ul>
     </Box>
   );
@@ -223,7 +235,7 @@ export default function DashboardAdminLayout({
           <Divider />
           {sideBar()}
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: `${navHeight}px`  }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: `${navHeight}px` }}>
           <div className="mx-auto px-8">
             <div className="overflow-hidden">
               {children}

@@ -32,11 +32,6 @@ export interface User extends BaseUser {
   email_verified_at: Nullable<DateTime>;
   created_at: DateTime;
   updated_at: DateTime;
-  user_profile: {
-    NIM: string;
-    NIDN: string;
-    NIP_NIPH: string;
-  };
 }
 
 export type InertiaSharedProps<T = {}> = T & {

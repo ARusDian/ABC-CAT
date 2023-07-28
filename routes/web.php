@@ -14,6 +14,7 @@ use App\Http\Controllers\LearningMaterialController;
 use App\Http\Controllers\LearningPacketController;
 use App\Http\Controllers\SubLearningPacketController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserLearningPacketController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -96,6 +97,7 @@ Route::middleware([
                                     )->name("upload-image");
                                 });
                             });
+                            // End Soal Latihan
 
                             // Bank Soal
                             Route::prefix("bank-question")->name("bank-question.")->group(function () {
@@ -112,15 +114,20 @@ Route::middleware([
                                     )->name("upload-image");
                                 });
                             });
+                            // End Bank Soal
 
                             Route::resource("exam-monitor", ExamMonitorController::class);
 
                             // Materi Belajar
                             Route::resource("/learning-material", LearningMaterialController::class);
+
                         });
-                        });
+                    });
                 });
             });
+
+            Route::resource('/user-learning-packet', UserLearningPacketController::class);
+
         });
     });
 });

@@ -53,6 +53,14 @@ export default function Index({ learningPackets }: Props) {
 							>
 								Show
 							</MuiInertiaLinkButton>
+							<MuiInertiaLinkButton
+								color="success"
+								href={route('user-learning-packet.create', {
+									learning_packet: row.original.id,
+								})}
+							>
+								Tambah Pengguna
+							</MuiInertiaLinkButton>
 						</div>
 					)}
 				/>

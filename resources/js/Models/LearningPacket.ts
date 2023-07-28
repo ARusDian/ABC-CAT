@@ -1,4 +1,6 @@
+import { User } from "@/types";
 import { SubLearningPacketModel } from "./SubLearningPacket";
+import { UserLearningPacketModel } from "./UserLearningPacket";
 
 export interface LearningPacketFormModel {
     name: string;
@@ -10,4 +12,6 @@ export interface LearningPacketModel {
     name: string;
     description: string;
     sub_learning_packets: SubLearningPacketModel[];
+    users?: User[];
+    user_learning_packets?: UserLearningPacketModel[];
 }
