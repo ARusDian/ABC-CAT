@@ -30,7 +30,7 @@ export default function Edit(props: Props) {
     // php does'nt support PUT so...
     // @ts-ignore
     form.data._method = 'PUT';
-    form.post(route('learning-packet.sub-learning-packet.learning-category.learning-material.update', [
+    form.post(route('packet.sub.category.material.update', [
       learning_packet,
       sub_learning_packet,
       learning_category,
@@ -48,7 +48,7 @@ export default function Edit(props: Props) {
   return (
     <AdminFormLayout
       title="Edit Materi Belajar"
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.show', [
+      backRoute={route('packet.sub.category.show', [
         learning_packet,
         sub_learning_packet,
         learning_category

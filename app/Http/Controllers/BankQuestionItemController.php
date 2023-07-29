@@ -104,7 +104,7 @@ class BankQuestionItemController extends Controller
             ]);
 
             return redirect()
-                ->route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+                ->route('packet.sub.category.bank-question.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
@@ -151,7 +151,7 @@ class BankQuestionItemController extends Controller
             }
 
             return redirect()
-                ->route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+                ->route('packet.sub.category.bank-question.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
@@ -209,7 +209,7 @@ class BankQuestionItemController extends Controller
             ]);
 
             return redirect()
-                ->route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+                ->route('packet.sub.category.bank-question.item.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
@@ -231,7 +231,7 @@ class BankQuestionItemController extends Controller
                 'is_active' => false,
             ]);
             return redirect()
-                ->route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+                ->route('packet.sub.category.bank-question.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
@@ -249,7 +249,7 @@ class BankQuestionItemController extends Controller
                 'is_active' => true,
             ]);
             return redirect()
-                ->route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+                ->route('packet.sub.category.bank-question.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,

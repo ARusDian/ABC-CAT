@@ -26,7 +26,7 @@ export default function Index({ document }: Props) {
                 <div className='flex justify-between'>
                     <p className="text-5xl text-[#3A63F5]">{document.caption}</p>
                     <MuiInertiaLinkButton
-                        href={route('student.learning-packet.learning-category.learning-material.index', [
+                        href={route('student.packet.category.material.index', [
                             learning_packet,
                             sub_learning_packet,
                             learning_category,

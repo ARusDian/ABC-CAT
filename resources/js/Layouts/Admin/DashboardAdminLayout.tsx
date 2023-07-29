@@ -154,8 +154,8 @@ export default function DashboardAdminLayout({
         </li>
         <li>
           <ResponsiveNavLink
-            href={route('learning-packet.index')}
-            active={route().current('learning-packet.index')}
+            href={route('packet.index')}
+            active={route().current('packet.index')}
           >
             <span className={'mr-4'}>
               <FolderCopyIcon fontSize="large" />

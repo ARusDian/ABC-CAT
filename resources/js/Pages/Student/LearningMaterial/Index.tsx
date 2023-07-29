@@ -36,7 +36,7 @@ export default function Index({ learningMaterials }: Props) {
                 <div className='flex justify-between'>
                     <p className="text-5xl text-[#3A63F5]">Daftar Materi</p>
                     <MuiInertiaLinkButton
-                        href={route('student.learning-packet.show', learning_packet)}
+                        href={route('student.packet.show', learning_packet)}
                         color='primary'
                     >
                         Kembali
@@ -80,7 +80,7 @@ export default function Index({ learningMaterials }: Props) {
                                                             </p>
                                                             <div className="flex justify-around">
                                                                 <MuiInertiaLinkButton
-                                                                    href={route('student.learning-packet.learning-category.learning-material.show', [
+                                                                    href={route('student.packet.category.material.show', [
                                                                         learning_packet,
                                                                         sub_learning_packet,
                                                                         learning_category,

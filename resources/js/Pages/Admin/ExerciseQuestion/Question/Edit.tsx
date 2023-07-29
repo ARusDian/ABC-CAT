@@ -25,7 +25,7 @@ export default function Edit({ question }: Props) {
 
     form.clearErrors();
     router.post(
-      route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.update', [
+      route('packet.sub.category.exercise.question.update', [
         learning_packet,
         sub_learning_packet,
         learning_category,
@@ -64,7 +64,7 @@ export default function Edit({ question }: Props) {
   return (
     <AdminFormLayout
       title="Edit Pertanyaan"
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.show', [
+      backRoute={route('packet.sub.category.exercise.question.show', [
         learning_packet,
         sub_learning_packet,
         learning_category,

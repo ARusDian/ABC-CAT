@@ -24,16 +24,16 @@ export default function Show({ subLearningPacket }: Props) {
         <AdminShowLayout
             title="Sub Paket Belajar"
             headerTitle="Sub Paket Belajar"
-            backRoute={route('learning-packet.show', {
+            backRoute={route('packet.show', {
                 learning_packet: subLearningPacket.learning_packet_id
             })}
-            editRoute={route('learning-packet.sub-learning-packet.edit', {
+            editRoute={route('packet.sub.edit', {
                 learning_packet: subLearningPacket.learning_packet_id,
                 sub_learning_packet: subLearningPacket.id
             })}
             editRouteTitle="Edit"
             onDelete={() => {
-                router.delete(route('learning-packet.sub-learning-packet.destroy', {
+                router.delete(route('packet.sub.destroy', {
                     learning_packet: subLearningPacket.learning_packet_id,
                     sub_learning_packet: subLearningPacket.id
                 }))
@@ -83,7 +83,7 @@ export default function Show({ subLearningPacket }: Props) {
                             <div className="flex items-center justify-center gap-2">
                                 <MuiInertiaLinkButton
                                     color="success"
-                                    href={route('learning-packet.sub-learning-packet.learning-category.create', {
+                                    href={route('packet.sub.category.create', {
                                         learning_packet: subLearningPacket.learning_packet_id,
                                         sub_learning_packet: subLearningPacket.id
                                     })}
@@ -96,7 +96,7 @@ export default function Show({ subLearningPacket }: Props) {
                             <div className="flex items-center justify-center gap-2">
                                 <MuiInertiaLinkButton
                                     color="primary"
-                                    href={route('learning-packet.sub-learning-packet.learning-category.show', {
+                                    href={route('packet.sub.category.show', {
                                         learning_packet: subLearningPacket.learning_packet_id,
                                         sub_learning_packet: subLearningPacket.id,
                                         learning_category: row.original.id

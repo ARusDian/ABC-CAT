@@ -203,7 +203,7 @@ export default function DashboardLayout({
           {sideBar()}
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: `${navHeight}px` }}>
-          <div className="my-20 p-5">{children}</div>
+          <div className="p-5">{children}</div>
         </Box>
       </Box>
     </div>

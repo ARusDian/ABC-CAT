@@ -28,7 +28,7 @@ export default function Create(props: Props) {
   } = useDefaultClassificationRouteParams();
 
   function onSubmit(e: BankQuestionFormModel) {
-    router.post(route('learning-packet.sub-learning-packet.learning-category.bank-question.store', [
+    router.post(route('packet.sub.category.bank-question.store', [
       learning_packet,
       sub_learning_packet,
       learning_category,
@@ -44,7 +44,7 @@ export default function Create(props: Props) {
   return (
     <AdminFormLayout
       title="Tambah Soal Latihan"
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.show', [
+      backRoute={route('packet.sub.category.show', [
         learning_packet,
         sub_learning_packet,
         learning_category

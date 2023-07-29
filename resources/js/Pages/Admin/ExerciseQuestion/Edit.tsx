@@ -34,7 +34,7 @@ export default function Create({ exercise_question }: Props) {
   const onSubmit = React.useCallback(
     (e: ExerciseQuestionFormModel) => {
       router.put(
-        route('learning-packet.sub-learning-packet.learning-category.exercise-question.update', [
+        route('packet.sub.category.exercise.update', [
           learning_packet,
           sub_learning_packet,
           learning_category,
@@ -57,7 +57,7 @@ export default function Create({ exercise_question }: Props) {
   return (
     <AdminFormLayout
       title="Edit Latihan Soal"
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+      backRoute={route('packet.sub.category.exercise.show', [
         learning_packet,
         sub_learning_packet,
         learning_category,

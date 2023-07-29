@@ -17,13 +17,13 @@ export default function Create(props: Props) {
 	});
 
 	function onSubmit(e: LearningPacketFormModel) {
-		Api.post(route('learning-packet.store'), e, form);
+		Api.post(route('packet.store'), e, form);
 	}
 
 	return (
 		<AdminFormLayout
 			title="Tambah Paket Belajar"
-			backRoute={route('learning-packet.index')}
+			backRoute={route('packet.index')}
 			backRouteTitle="Kembali"
 		>
 			<form

@@ -15,7 +15,7 @@ class LearningCategoryController extends Controller
     public function index($learning_packet, $sub_learning_packet)
     {
         //
-        return redirect()->route('learning-packet.sub-learning-packet.show', [$learning_packet, $sub_learning_packet]);
+        return redirect()->route('packet.sub.show', [$learning_packet, $sub_learning_packet]);
     }
 
     /**
@@ -38,12 +38,14 @@ class LearningCategoryController extends Controller
         //
         $request->validate([
             'name' => 'required',
-            'sub_learning_packet_id' => 'required',
         ]);
 
-        LearningCategory::create($request->all());
+        LearningCategory::create([
+            'name' => $request->name,
+            'sub_learning_packet_id' => $sub_learning_packet,
+        ]);
 
-        return redirect()->route('learning-packet.sub-learning-packet.show', [$learning_packet, $request->sub_learning_packet_id])->banner('Learning Category created successfully.');
+        return redirect()->route('packet.sub.show', [$learning_packet, $sub_learning_packet])->banner('Learning Category created successfully.');
     }
 
     /**
@@ -70,6 +72,10 @@ class LearningCategoryController extends Controller
     public function edit($learning_packet, $sub_learning_packet, $id)
     {
         //
+        $learningCategory = LearningCategory::find($id);
+        return Inertia::render('Admin/Classification/LearningCategory/Edit', [
+            'learningCategory' => $learningCategory
+        ]);
     }
 
     /**
@@ -78,6 +84,17 @@ class LearningCategoryController extends Controller
     public function update(Request $request, $learning_packet, $sub_learning_packet, $id)
     {
         //
+        $validated = $request->validate([
+            'name' => 'required',
+        ]);
+
+        $learningCategory = LearningCategory::find($id);
+        $learningCategory->update([
+            'name' => $validated['name'],
+            'sub_learning_packet_id' => $sub_learning_packet,
+        ]);
+
+        return redirect()->route('packet.sub.category.show', [$learning_packet, $sub_learning_packet, $id])->banner('Learning Category updated successfully.');
     }
 
     /**
@@ -86,5 +103,9 @@ class LearningCategoryController extends Controller
     public function destroy($learning_packet, $sub_learning_packet, $id)
     {
         //
+        $learningCategory = LearningCategory::find($id);
+        $learningCategory->delete();
+
+        return redirect()->route('packet.sub.show', [$learning_packet, $sub_learning_packet])->banner('Learning Category deleted successfully.');
     }
 }

@@ -67,7 +67,7 @@ export default function Create({exercise_question}: Props) {
   return (
     <AdminFormLayout
       title="Tambah Pertanyaan"
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+      backRoute={route('packet.sub.category.exercise.show', [
         learning_packet,
         sub_learning_packet,
         learning_category,

@@ -32,7 +32,7 @@ export default function Edit(props: Props) {
 
   function onSubmit(data: BankQuestionItemFormModel) {
     Api.post(
-      route('learning-packet.sub-learning-packet.learning-category.bank-question.item.update', [
+      route('packet.sub.category.bank-question.item.update', [
         learning_packet,
         sub_learning_packet,
         learning_category,
@@ -72,7 +72,7 @@ export default function Edit(props: Props) {
   return (
     <AdminFormLayout
       title="Edit Pertanyaan"
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+      backRoute={route('packet.sub.category.bank-question.item.show', [
         learning_packet,
         sub_learning_packet,
         learning_category,

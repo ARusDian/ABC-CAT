@@ -32,13 +32,13 @@ export default function Show(props: Props) {
     <AdminShowLayout
       title="Latihan Soal"
       headerTitle="Data Latihan Soal"
-      editRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.edit', [
+      editRoute={route('packet.sub.category.exercise.edit', [
         learning_packet,
         sub_learning_packet,
         learning_category,
         exercise_question.id,
       ])}
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.show', [
+      backRoute={route('packet.sub.category.show', [
         learning_packet,
         sub_learning_packet,
         learning_category,
@@ -63,7 +63,7 @@ export default function Show(props: Props) {
             <MuiInertiaLinkButton
               color="success"
               href={route(
-                'learning-packet.sub-learning-packet.learning-category.exercise-question.question.create',
+                'packet.sub.category.exercise.question.create',
                 [
                   learning_packet,
                   sub_learning_packet,
@@ -77,7 +77,7 @@ export default function Show(props: Props) {
             <MuiInertiaLinkButton
               color="primary"
               href={route(
-                'learning-packet.sub-learning-packet.learning-category.exercise-question.leaderboard',
+                'packet.sub.category.exercise.leaderboard',
                 [
                   learning_packet,
                   sub_learning_packet,
@@ -111,7 +111,7 @@ export default function Show(props: Props) {
           renderRowActions={({ row }) => (
             <div className="flex items-center justify-center gap-2">
               <MuiInertiaLinkButton
-                href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.show', [
+                href={route('packet.sub.category.exercise.question.show', [
                   learning_packet,
                   sub_learning_packet,
                   learning_category,
@@ -122,7 +122,8 @@ export default function Show(props: Props) {
                 Show
               </MuiInertiaLinkButton>
               <MuiInertiaLinkButton
-                href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.destroy', [
+                color="error"
+                href={route('packet.sub.category.exercise.question.destroy', [
                   learning_packet,
                   sub_learning_packet,
                   learning_category,

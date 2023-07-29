@@ -18,7 +18,7 @@ export default function Edit({ subLearningPacket }: Props) {
     });
 
     function onSubmit(e: SubLearningPacketFormModel) {
-        Api.post(route('learning-packet.sub-learning-packet.update',{
+        Api.post(route('packet.sub.update',{
             learning_packet: subLearningPacket.learning_packet_id,
             sub_learning_packet: subLearningPacket.id
         } ), { ...e, _method: 'PUT' }, form);
@@ -27,7 +27,7 @@ export default function Edit({ subLearningPacket }: Props) {
     return (
         <AdminFormLayout
             title="Edit Sub Paket Belajar"
-            backRoute={route('learning-packet.sub-learning-packet.show',{
+            backRoute={route('packet.sub.show',{
                 learning_packet: subLearningPacket.learning_packet_id,
                 sub_learning_packet: subLearningPacket.id
             } )}

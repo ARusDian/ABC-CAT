@@ -23,7 +23,7 @@ export default function Index({ learningPackets }: Props) {
 	return (
 		<AdminTableLayout
 			title="Paket Belajar"
-			addRoute={route('learning-packet.create')}
+			addRoute={route('packet.create')}
 			addRouteTitle="Tambah Paket Belajar"
 		>
 			<div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
@@ -49,7 +49,7 @@ export default function Index({ learningPackets }: Props) {
 						<div className="flex items-center justify-center gap-2">
 							<MuiInertiaLinkButton
 								color="primary"
-								href={route('learning-packet.show', row.original.id)}
+								href={route('packet.show', row.original.id)}
 							>
 								Show
 							</MuiInertiaLinkButton>

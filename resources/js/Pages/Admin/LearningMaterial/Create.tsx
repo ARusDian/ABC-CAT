@@ -26,7 +26,7 @@ export default function Create(props: Props) {
     console.log(form.data);
     e.preventDefault();
     form.clearErrors();
-    form.post(route('learning-packet.sub-learning-packet.learning-category.learning-material.store', [
+    form.post(route('packet.sub.category.material.store', [
       learning_packet,
       sub_learning_packet,
       learning_category,
@@ -43,7 +43,7 @@ export default function Create(props: Props) {
   return (
     <AdminFormLayout
       title="Tambah Materi Belajar"
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.show', [
+      backRoute={route('packet.sub.category.show', [
         learning_packet,
         sub_learning_packet,
         learning_category

@@ -26,11 +26,11 @@ export default function Show({ learningPacket }: Props) {
         <AdminShowLayout
             title="Paket Belajar"
             headerTitle="Paket Belajar"
-            backRoute={route('learning-packet.index')}
-            editRoute={route('learning-packet.edit', learningPacket.id)}
+            backRoute={route('packet.index')}
+            editRoute={route('packet.edit', learningPacket.id)}
             editRouteTitle="Edit"
             onDelete={() => {
-                router.delete(route('learning-packet.destroy', learningPacket.id))
+                router.delete(route('packet.destroy', learningPacket.id))
             }}
             deleteTitle="Hapus"
         >
@@ -85,7 +85,7 @@ export default function Show({ learningPacket }: Props) {
                                         row.original.learning_categories?.map((category, i) => (
                                             <Link
                                                 className="px-3 py-3 rounded-lg bg-[#77c3f9] hover:bg-[#3da5f5] transition duration-300 ease-in-out"
-                                                href={route('learning-packet.sub-learning-packet.learning-category.show',
+                                                href={route('packet.sub.category.show',
                                                     [
                                                         learningPacket.id,
                                                         row.original.id,
@@ -111,7 +111,7 @@ export default function Show({ learningPacket }: Props) {
                             <div className="flex items-center justify-center gap-2">
                                 <MuiInertiaLinkButton
                                     color="success"
-                                    href={route('learning-packet.sub-learning-packet.create', learningPacket.id)}
+                                    href={route('packet.sub.create', learningPacket.id)}
                                 >
 
                                     Tambah Sub Paket Belajar
@@ -122,7 +122,7 @@ export default function Show({ learningPacket }: Props) {
                             <div className="flex items-center justify-center gap-2">
                                 <MuiInertiaLinkButton
                                     color="primary"
-                                    href={route('learning-packet.sub-learning-packet.show', [
+                                    href={route('packet.sub.show', [
                                         learningPacket.id,
                                         row.original.id
                                     ])}

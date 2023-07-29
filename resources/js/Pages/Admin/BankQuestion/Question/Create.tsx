@@ -70,7 +70,7 @@ export default function Create({ bank_question }: Props) {
     form.clearErrors();
 
     router.post(
-      route('learning-packet.sub-learning-packet.learning-category.bank-question.item.store', [
+      route('packet.sub.category.bank-question.item.store', [
         learning_packet,
         sub_learning_packet,
         learning_category,
@@ -89,7 +89,7 @@ export default function Create({ bank_question }: Props) {
   return (
     <AdminFormLayout
       title="Tambah Pertanyaan"
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+      backRoute={route('packet.sub.category.bank-question.show', [
         learning_packet,
         sub_learning_packet,
         learning_category,

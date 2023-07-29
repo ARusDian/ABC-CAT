@@ -65,7 +65,7 @@ export default function Show(props: Props) {
 
     if (type == 1) {
       router.post(
-        route('learning-packet.sub-learning-packet.learning-category.exercise-question.store', [
+        route('packet.sub.category.exercise.store', [
           learning_packet,
           sub_learning_packet,
           learning_category,
@@ -83,7 +83,7 @@ export default function Show(props: Props) {
       );
     } else if (type == 2) {
       router.post(
-        route('learning-packet.sub-learning-packet.learning-category.exercise-question.import.update', [
+        route('packet.sub.category.exercise.import.update', [
           learning_packet,
           sub_learning_packet,
           learning_category,
@@ -107,7 +107,7 @@ export default function Show(props: Props) {
       title="Latihan Soal"
       // headerTitle="Import Latihan Soal"
       // editRoute={route('bank-question.edit', bank_question.id)}
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+      backRoute={route('packet.sub.category.bank-question.show', [
         learning_packet,
         sub_learning_packet,
         learning_category,
@@ -170,7 +170,7 @@ export default function Show(props: Props) {
           <div className="flex items-center justify-center gap-2">
             <MuiInertiaLinkButton
               color="primary"
-              href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+              href={route('packet.sub.category.bank-question.item.show', [
                 learning_packet,
                 sub_learning_packet,
                 learning_category,

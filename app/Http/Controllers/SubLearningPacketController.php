@@ -21,7 +21,7 @@ class SubLearningPacketController extends Controller
         //     'subPacketLearnings' => $subPacketLearnings
         // ]);
 
-        redirect()->route('learning-packet.show', $learning_packet);
+        redirect()->route('packet.show', $learning_packet);
 
     }
 
@@ -49,7 +49,7 @@ class SubLearningPacketController extends Controller
 
         SubLearningPacket::create($request->all());
 
-        return redirect()->route('learning-packet.show', $request->learning_packet_id)->banner('Sub Learning Packet created successfully.');
+        return redirect()->route('packet.show', $request->learning_packet_id)->banner('Sub Learning Packet created successfully.');
         
     }
 
@@ -90,7 +90,7 @@ class SubLearningPacketController extends Controller
         $subLearningPacket = SubLearningPacket::find($id);
         $subLearningPacket->update($request->all());
 
-        return redirect()->route('learning-packet.show', $subLearningPacket->learning_packet_id)->banner('Sub Learning Packet updated successfully.');
+        return redirect()->route('packet.sub.show', [$learning_packet, $subLearningPacket->learning_packet_id])->banner('Sub Learning Packet updated successfully.');
     }
 
     /**
@@ -98,11 +98,11 @@ class SubLearningPacketController extends Controller
      */
     public function destroy($learning_packet, $id)
     {
-        //
+        //  
         $subLearningPacket = SubLearningPacket::find($id);
         $subLearningPacket->delete();
 
-        return redirect()->route('learning-packet.show', $subLearningPacket->learning_packet_id)->banner('Sub Learning Packet deleted successfully.');
+        return redirect()->route('packet.show', $subLearningPacket->learning_packet_id)->banner('Sub Learning Packet deleted successfully.');
     }
 
     public function studentIndex($learning_packet)

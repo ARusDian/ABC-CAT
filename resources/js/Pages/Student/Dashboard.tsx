@@ -30,7 +30,7 @@ export default function Dashboard({ userLearningPackets, learningPackets }: Prop
                     'bg-white hover:bg-[#3A63F5] text-[#3A63F5] hover:text-white' : 'bg-[#fff2f2] text-gray-500'}`
                 }
                 key={learningPacket.id}
-                href={isSubscribed ? route('student.learning-packet.show', learningPacket.id) : route('dashboard')}
+                href={isSubscribed ? route('student.packet.show', learningPacket.id) : route('dashboard')}
               >
                 <div className="flex flex-col gap-5 mx-auto p-4">
                   <div className="mx-auto">

@@ -24,13 +24,13 @@ export default function Index(props: Props) {
     <AdminShowLayout
       title={`Materi Belajar ${learningMaterial.title}`}
       headerTitle={'Data Materi Belajar'}
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.show', [
+      backRoute={route('packet.sub.category.show', [
         learning_packet,
         sub_learning_packet,
         learning_category,
       ])}
       backRouteTitle="Kembali"
-      editRoute={route('learning-packet.sub-learning-packet.learning-category.learning-material.edit', [
+      editRoute={route('packet.sub.category.material.edit', [
         learning_packet,
         sub_learning_packet,
         learning_category,
@@ -38,7 +38,7 @@ export default function Index(props: Props) {
       ])}
       editRouteTitle="Edit"
       onDelete={() => {
-        router.post(route('learning-packet.sub-learning-packet.learning-category.learning-material.destroy', [
+        router.post(route('packet.sub.category.material.destroy', [
           learning_packet,
           sub_learning_packet,
           learning_category,

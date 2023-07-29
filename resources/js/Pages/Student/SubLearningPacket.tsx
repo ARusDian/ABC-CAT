@@ -74,7 +74,7 @@ export default function Index({ learningPacket }: Props) {
                                                         </p>
                                                         <div className="flex justify-around">
                                                             <MuiInertiaLinkButton
-                                                                href={route('student.learning-packet.learning-category.learning-material.index', [
+                                                                href={route('student.packet.category.material.index', [
                                                                     learning_packet,
                                                                     subLearningPacket.id,
                                                                     learningCategory.id

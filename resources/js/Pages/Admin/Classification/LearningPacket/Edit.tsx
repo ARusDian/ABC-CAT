@@ -18,13 +18,13 @@ export default function Edit({ learningPacket }: Props) {
     });
 
     function onSubmit(e: LearningPacketFormModel) {
-        Api.post(route('learning-packet.update', learningPacket.id), { ...e, _method: 'PUT' }, form);
+        Api.post(route('packet.update', learningPacket.id), { ...e, _method: 'PUT' }, form);
     }
 
     return (
         <AdminFormLayout
             title="Edit Paket Belajar"
-            backRoute={route('learning-packet.show', learningPacket.id)}
+            backRoute={route('packet.show', learningPacket.id)}
             backRouteTitle="Kembali"
         >
             <form

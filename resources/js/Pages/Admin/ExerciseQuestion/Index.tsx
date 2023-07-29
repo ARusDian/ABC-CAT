@@ -22,7 +22,7 @@ export default function Index({ exercise_questions }: Props) {
   return (
     <AdminTableLayout
       title="Soal Latihan"
-      addRoute={route('exercise-question.create')}
+      addRoute={route('exercise.create')}
     >
       <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
 
@@ -53,7 +53,7 @@ export default function Index({ exercise_questions }: Props) {
                 size="large"
               >
                 <Link
-                  href={route('exercise-question.show', row.original.id)}
+                  href={route('exercise.show', row.original.id)}
                 >
                   Show
                 </Link>

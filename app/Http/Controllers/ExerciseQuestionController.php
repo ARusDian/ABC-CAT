@@ -66,7 +66,7 @@ class ExerciseQuestionController extends Controller
         }
 
         return redirect()
-            ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+            ->route('packet.sub.category.exercise.show', [
                 $learning_packet,
                 $sub_learning_packet,
                 $learning_category_id,
@@ -129,7 +129,7 @@ class ExerciseQuestionController extends Controller
         $exercise->update($data);
 
         return redirect()
-            ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+            ->route('packet.sub.category.exercise.show', [
                 $learning_packet,
                 $sub_learning_packet,
                 $learning_category_id,
@@ -150,7 +150,7 @@ class ExerciseQuestionController extends Controller
         $exercise_question->questions()->sync($data['bank_question_items'] ?? []);
 
         return redirect()
-            ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+            ->route('packet.sub.category.exercise.show', [
                 $learning_packet,
                 $sub_learning_packet,
                 $learning_category_id,

@@ -26,16 +26,17 @@ export default function Edit({ learningCategory }: Props) {
     });
 
     function onSubmit(e: LearningCategoryFormModel) {
-        // Api.post(route('learning-packet.sub-learning-packet.update', {
-        //     learning_packet: learningCategory.learning_packet_id,
-        //     sub_learning_packet: learningCategory.id
-        // }), { ...e, _method: 'PUT' }, form);
+        Api.post(route('packet.sub.category.update', {
+            learning_packet: learning_packet,
+            sub_learning_packet: sub_learning_packet,
+            learning_category: learning_category,
+        }), { ...e, _method: 'PUT' }, form);
     }
 
     return (
         <AdminFormLayout
-            title="Edit Sub Paket Belajar"
-            backRoute={route('learning-packet.sub-learning-packet.show', {
+            title="Edit Kategori Belajar"
+            backRoute={route('packet.sub.category.show', {
                 learning_packet: learning_packet,
                 sub_learning_packet: sub_learning_packet,
                 learning_category: learning_category,

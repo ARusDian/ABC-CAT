@@ -105,7 +105,7 @@ class ExerciseQuestionQuestionController extends Controller
                 ]);
             }
             return redirect()
-                ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+                ->route('packet.sub.category.exercise.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
@@ -148,7 +148,7 @@ class ExerciseQuestionQuestionController extends Controller
             }
 
             return redirect()
-                ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+                ->route('packet.sub.category.exercise.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
@@ -206,7 +206,7 @@ class ExerciseQuestionQuestionController extends Controller
             ]);
 
             return redirect()
-                ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+                ->route('packet.sub.category.exercise.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
@@ -226,7 +226,7 @@ class ExerciseQuestionQuestionController extends Controller
                 'is_active' => false,
             ]);
             return redirect()
-                ->route('exercise-question.show', [$exercise_question])
+                ->route('exercise.show', [$exercise_question])
                 ->banner('Question deleted successfully');
         });
     }
@@ -239,7 +239,7 @@ class ExerciseQuestionQuestionController extends Controller
                 'is_active' => true,
             ]);
             return redirect()
-                ->route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+                ->route('packet.sub.category.exercise.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,

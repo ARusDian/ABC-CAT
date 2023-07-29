@@ -42,13 +42,13 @@ export default function Show(props: Props) {
     <AdminShowLayout
       title="Bank Soal"
       headerTitle="Data Bank Soal"
-      editRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.edit', [
+      editRoute={route('packet.sub.category.bank-question.edit', [
         learning_packet,
         sub_learning_packet,
         learning_category,
         bank_question.id,
       ])}
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.show', [
+      backRoute={route('packet.sub.category.show', [
         learning_packet,
         sub_learning_packet,
         learning_category
@@ -62,7 +62,7 @@ export default function Show(props: Props) {
           </div>
           <div className="flex place-content-end grow gap-2">
             <MuiInertiaLinkButton
-              href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.create', [
+              href={route('packet.sub.category.bank-question.item.create', [
                 learning_packet,
                 sub_learning_packet,
                 learning_category,
@@ -74,7 +74,7 @@ export default function Show(props: Props) {
             </MuiInertiaLinkButton>
 
             <MuiInertiaLinkButton
-              href={route('learning-packet.sub-learning-packet.learning-category.exercise-question.import', [
+              href={route('packet.sub.category.exercise.import', [
                 learning_packet,
                 sub_learning_packet,
                 learning_category,
@@ -101,7 +101,7 @@ export default function Show(props: Props) {
           renderRowActions={({ row }) => (
             <div className="flex items-center justify-center gap-2">
               <MuiInertiaLinkButton
-                href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+                href={route('packet.sub.category.bank-question.item.show', [
                   learning_packet,
                   sub_learning_packet,
                   learning_category,

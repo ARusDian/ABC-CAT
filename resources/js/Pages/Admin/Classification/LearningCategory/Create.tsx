@@ -21,7 +21,7 @@ export default function Create({ learning_packet_id, sub_learning_packet_id }: P
 	});
 
 	function onSubmit(e: LearningCategoryFormModel) {
-		Api.post(route('learning-packet.sub-learning-packet.learning-category.store',
+		Api.post(route('packet.sub.category.store',
 			[learning_packet_id, sub_learning_packet_id]
 		), e, form);
 	}
@@ -29,7 +29,7 @@ export default function Create({ learning_packet_id, sub_learning_packet_id }: P
 	return (
 		<AdminFormLayout
 			title="Tambah Kategori Belajar"
-			backRoute={route('learning-packet.sub-learning-packet.show',
+			backRoute={route('packet.sub.show',
 				[learning_packet_id, sub_learning_packet_id])}
 			backRouteTitle="Kembali"
 		>

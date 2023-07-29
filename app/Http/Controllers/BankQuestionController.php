@@ -57,7 +57,7 @@ class BankQuestionController extends Controller
 
 
         return redirect()
-            ->route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+            ->route('packet.sub.category.bank-question.show', [
                 $learning_packet,
                 $sub_learning_packet,
                 $learning_category_id,
@@ -107,7 +107,7 @@ class BankQuestionController extends Controller
         $bank->update($data);
 
         return redirect()
-            ->route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+            ->route('packet.sub.category.bank-question.show', [
                 $learning_packet,
                 $sub_learning_packet,
                 $learning_category_id,

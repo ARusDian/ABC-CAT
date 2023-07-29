@@ -62,14 +62,14 @@ export default function Index(props: Props) {
     <AdminShowLayout
       title={`Pertanyaan ${item.id}`}
       headerTitle={'Data Pertanyaan'}
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.show', [
+      backRoute={route('packet.sub.category.bank-question.show', [
         learning_packet,
         sub_learning_packet,
         learning_category,
         item.bank_question_id
       ])}
       backRouteTitle="Kembali"
-      editRoute={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.edit', [
+      editRoute={route('packet.sub.category.bank-question.item.edit', [
         learning_packet,
         sub_learning_packet,
         learning_category,
@@ -80,7 +80,7 @@ export default function Index(props: Props) {
       onDelete={() => {
         item.is_active
           ? router.delete(
-            route('learning-packet.sub-learning-packet.learning-category.bank-question.item.destroy', [
+            route('packet.sub.category.bank-question.item.destroy', [
               learning_packet,
               sub_learning_packet,
               learning_category,
@@ -89,7 +89,7 @@ export default function Index(props: Props) {
             ]),
           )
           : router.post(
-            route('learning-packet.sub-learning-packet.learning-category.bank-question.item.restore', [
+            route('packet.sub.category.bank-question.item.restore', [
               learning_packet,
               sub_learning_packet,
               learning_category,

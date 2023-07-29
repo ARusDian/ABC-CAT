@@ -20,7 +20,7 @@ export default function Create({ learning_packet_id }: Props) {
 	});
 
 	function onSubmit(e: SubLearningPacketFormModel) {
-		Api.post(route('learning-packet.sub-learning-packet.store',
+		Api.post(route('packet.sub.store',
 			[learning_packet_id]
 		), e, form);
 	}
@@ -28,7 +28,7 @@ export default function Create({ learning_packet_id }: Props) {
 	return (
 		<AdminFormLayout
 			title="Tambah Sub Paket Belajar"
-			backRoute={route('learning-packet.sub-learning-packet.index',
+			backRoute={route('packet.sub.index',
 				[learning_packet_id])}
 			backRouteTitle="Kembali"
 		>

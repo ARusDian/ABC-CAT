@@ -68,7 +68,7 @@ export default function Index({ question, exercise_question_id }: Props) {
     <AdminShowLayout
       title={`Pertanyaan ${question.id}`}
       headerTitle={'Data Pertanyaan'}
-      backRoute={route('learning-packet.sub-learning-packet.learning-category.exercise-question.show', [
+      backRoute={route('packet.sub.category.exercise.show', [
         learning_packet,
         sub_learning_packet,
         learning_category,
@@ -78,7 +78,7 @@ export default function Index({ question, exercise_question_id }: Props) {
       onDelete={() => {
         question.is_active
           ? router.delete(
-            route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.destroy', [
+            route('packet.sub.category.exercise.question.destroy', [
               learning_packet,
               sub_learning_packet,
               learning_category,
@@ -87,7 +87,7 @@ export default function Index({ question, exercise_question_id }: Props) {
             ]),
           )
           : router.post(
-            route('learning-packet.sub-learning-packet.learning-category.exercise-question.question.restore', [
+            route('packet.sub.category.exercise.question.restore', [
               learning_packet,
               sub_learning_packet,
               learning_category,
@@ -108,7 +108,7 @@ export default function Index({ question, exercise_question_id }: Props) {
         <div className="flex justify-end my-5">
           <MuiInertiaLinkButton
             color="info"
-            href={route('learning-packet.sub-learning-packet.learning-category.bank-question.item.show', [
+            href={route('packet.sub.category.bank-question.item.show', [
               learning_packet,
               sub_learning_packet,
               learning_category,
