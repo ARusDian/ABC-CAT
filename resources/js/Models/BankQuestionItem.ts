@@ -1,7 +1,4 @@
-export type EditorValue = {
-  type: 'tiptap';
-  content: object;
-};
+import { EditorValue } from "./EditorValue";
 
 export interface BaseBankQuestionItemModel {
   id?: number;
