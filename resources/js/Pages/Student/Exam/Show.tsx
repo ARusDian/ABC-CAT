@@ -71,7 +71,9 @@ export default function Show(props: Props) {
           renderTopToolbarCustomActions={() => (
             <Button variant="contained" color="primary">
               <Link
-                href={route('student.exam.attempt', [props.exercise_question.id])}
+                href={route('student.exam.attempt', [
+                  props.exercise_question.id,
+                ])}
                 method="post"
               >
                 Mulai Ujian

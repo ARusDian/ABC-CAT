@@ -103,11 +103,14 @@ export default function Run({ exam }: Props) {
 
         try {
           setIsUpdating(true);
-          let response = await axios.post(route('exam.update', exam.id), {
-            _method: 'put',
-            exam_id: exam.id,
-            queue,
-          });
+          let response = await axios.post(
+            route('student.exam.update', exam.id),
+            {
+              _method: 'put',
+              exam_id: exam.id,
+              queue,
+            },
+          );
 
           if (response.data['finished']) {
             // TODO: create exam attempt page
@@ -116,6 +119,7 @@ export default function Run({ exam }: Props) {
           setIsUpdating(false);
           return [];
         } catch (e) {
+          console.error(e);
           return queue;
         }
       })();
@@ -148,10 +152,10 @@ export default function Run({ exam }: Props) {
       description: 'Yakin Sudah Selesai Mengerjakan Ujian',
     })
       .then(() => {
-        router.post(route('exam.finish', exam.exercise_question_id));
+        router.post(route('student.exam.finish', exam.exercise_question_id));
       })
-      .catch(() => {
-        console.log('Confirmation was rejected');
+      .catch(e => {
+        console.log('Confirmation was rejected', e);
       });
   }
 
