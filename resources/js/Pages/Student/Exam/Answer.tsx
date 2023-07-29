@@ -111,12 +111,14 @@ function PilihanAnswerForm({
         const editorRef = arrayEditorRef.current[index];
 
         const answerQuestion = answer.question.answer;
-        let isCorrect;
+        let isCorrect = false;
 
-        if (answerQuestion.type == 'Single') {
-          isCorrect = answerQuestion.answer == index;
-        } else if (answerQuestion.type == 'WeightedChoice') {
-          isCorrect = answerQuestion.answer[index].weight > 0;
+        if (isEvaluation) {
+          if (answerQuestion?.type == 'Single') {
+            isCorrect = answerQuestion.answer == index;
+          } else if (answerQuestion?.type == 'WeightedChoice') {
+            isCorrect = answerQuestion.answer[index].weight > 0;
+         }
         }
         return (
           <div
@@ -146,7 +148,7 @@ function PilihanAnswerForm({
                 }}
                 checked={answer.answer == index}
               />
-              {answerQuestion.type == 'WeightedChoice' ? (
+              {isEvaluation && answerQuestion?.type == 'WeightedChoice' ? (
                 <div>{answerQuestion.answer[index].weight}</div>
               ) : null}
               <div className="prose">
