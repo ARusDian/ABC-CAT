@@ -205,10 +205,10 @@ export default function Run({ exam }: Props) {
                               color={
                                 it.state?.mark
                                   ? 'warning'
-                                  : it.answer != undefined
-                                  ? 'primary'
                                   : currentQuestion === index
                                   ? 'success'
+                                  : it.answer != undefined
+                                  ? 'primary'
                                   : 'inherit'
                               }
                               onClick={() => setCurrentQuestion(index)}
