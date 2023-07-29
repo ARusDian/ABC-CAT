@@ -59,12 +59,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 ])
                 ->save();
         }
-
-        if ($input['NIM'] !== null) {
-            $user->userProfile()->update([
-                'NIM' => $input['NIM'],
-            ]);
-        }
     }
 
     /**

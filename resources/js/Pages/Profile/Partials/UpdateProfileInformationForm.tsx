@@ -24,9 +24,6 @@ export default function UpdateProfileInformationForm({ user }: Props) {
     email: user.email,
     phone_number: user.phone_number,
     photo: null as File | null,
-    NIM: user.user_profile ? user.user_profile.NIM : '',
-    NIDN: user.user_profile ? user.user_profile.NIDN : '',
-    NIP_NIPH: user.user_profile ? user.user_profile.NIP_NIPH : '',
   });
   const route = useRoute();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -198,50 +195,6 @@ export default function UpdateProfileInformationForm({ user }: Props) {
         />
         <InputError message={form.errors.phone_number} className="mt-2" />
       </div>
-
-      {user.roles.find(role => role.name === 'mahasiswa') && (
-        <div className="col-span-6 sm:col-span-4">
-          <InputLabel htmlFor="NIM">NIM</InputLabel>
-          <TextInput
-            id="NIM"
-            type="text"
-            className="mt-1 block w-full"
-            value={form.data.NIM}
-            onChange={e => form.setData('NIM', e.currentTarget.value)}
-            required
-          />
-          <InputError className="mt-2" message={form.errors.NIM} />
-        </div>
-      )}
-
-      {user.roles.find(role => role.name === 'dosen') && (
-        <>
-          <div className="col-span-6 sm:col-span-4">
-            <InputLabel htmlFor="NIDN">NIDN</InputLabel>
-            <TextInput
-              id="NIDN"
-              type="text"
-              className="mt-1 block w-full"
-              value={form.data.NIDN}
-              onChange={e => form.setData('NIDN', e.currentTarget.value)}
-              required
-            />
-            <InputError className="mt-2" message={form.errors.NIDN} />
-          </div>
-          <div className="col-span-6 sm:col-span-4">
-            <InputLabel htmlFor="NIP_NIPH">NIP/NIPH</InputLabel>
-            <TextInput
-              id="NIP_NIPH"
-              type="text"
-              className="mt-1 block w-full"
-              value={form.data.NIP_NIPH}
-              onChange={e => form.setData('NIP_NIPH', e.currentTarget.value)}
-              required
-            />
-            <InputError className="mt-2" message={form.errors.NIP_NIPH} />
-          </div>
-        </>
-      )}
     </FormSection>
   );
 }

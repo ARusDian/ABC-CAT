@@ -35,18 +35,6 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature()
                 ? ['accepted', 'required']
                 : '',
-            'NIM' =>
-                $input['role'] == 'mahasiswa'
-                    ? ['string', 'max:255', 'unique:user_profiles']
-                    : '',
-            'NIDN' =>
-                $input['role'] == 'dosen'
-                    ? ['string', 'max:255', 'unique:user_profiles']
-                    : '',
-            'NIP_NIPH' =>
-                $input['role'] == 'dosen'
-                    ? ['string', 'max:255', 'unique:user_profiles']
-                    : '',
         ])->validate();
 
         $user = User::create([
@@ -55,16 +43,6 @@ class CreateNewUser implements CreatesNewUsers
             'phone_number' => $input['phone_number'],
             'password' => Hash::make($input['password']),
         ])->assignRole($input['role']);
-        if ($input['role'] == 'mahasiswa') {
-            $user->userProfile()->create([
-                'NIM' => $input['NIM'],
-            ]);
-        } elseif ($input['role'] == 'dosen') {
-            $user->userProfile()->create([
-                'NIDN' => $input['NIDN'],
-                'NIP_NIPH' => $input['NIP_NIPH'],
-            ]);
-        }
         return $user;
     }
 }
