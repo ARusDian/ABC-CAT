@@ -5,34 +5,18 @@ import TextEditorInput from '@/Components/TextEditorInput';
 import { BaseLearningMaterialModel } from '@/Models/LearningMaterial';
 import React, { useEffect, useRef, useState } from 'react';
 import DocumentForm from './DocumentForm';
-import { InertiaFormProps } from '@inertiajs/react/types/useForm';
+import { UseFormReturn } from 'react-hook-form';
+import EditorInput from '@/Components/Tiptap/EditorInput';
+import { useEditor } from '@/Components/Tiptap/useEditor';
+import ResourceEditor from '@/Components/ResourceEditor';
 
 interface Props {
-  form: InertiaFormProps<BaseLearningMaterialModel>;
+  form: UseFormReturn<BaseLearningMaterialModel>;
   className?: string;
 }
 
 export default function Form(props: Props) {
   const form = props.form;
-  const [images, setImages] = useState<string[]>([]);
-  const editorRef = useRef();
-
-  useEffect(() => {
-    form.setData('images', images);
-  }, [images]);
-
-  function handleDataChange<K extends keyof BaseLearningMaterialModel, V>(
-    name: K,
-    callback?: (arg: BaseLearningMaterialModel[K], value: V) => void,
-  ) {
-    return (value: V) => {
-      if (callback != null) {
-        callback(form.data[name], value);
-      }
-
-      form.setData(name, form.data[name]);
-    };
-  }
 
   return (
     <div className={`flex-col gap-5 ${props.className}`}>
@@ -42,32 +26,31 @@ export default function Form(props: Props) {
           id="title"
           type="text"
           className="mt-1 block w-full"
-          value={form.data.title}
-          onChange={e => form.setData('title', e.currentTarget.value)}
+          {...form.register('title')}
           required
           autoFocus
           autoComplete="title"
         />
-        <InputError className="mt-2" message={form.errors.title} />
+        <InputError
+          className="mt-2"
+          message={form.formState.errors.title?.message}
+        />
       </div>
       <div className="form-control w-full mt-4">
         <InputLabel htmlFor="description">Deskripsi</InputLabel>
-        <TextEditorInput
-          contentValue={form.data.description}
-          contentValueHandler={(value: unknown) =>
-            form.setData('description', value as string)
-          }
-          imageValue={form.data.images ?? []}
-          imageValueHandler={setImages}
-          editorRef={editorRef}
+        <ResourceEditor
+          content={form.formState.defaultValues?.description?.content ?? null}
+          onBlur={json => {
+            form.setValue('description.content', json);
+          }}
+          documentFileType="learning-material"
         />
-        <InputError className="mt-2" message={form.errors.description} />
+        <InputError
+          className="mt-2"
+          message={form.formState.errors.description?.message}
+        />
       </div>
-      <DocumentForm
-        form={form}
-        documents={form.data.documents}
-        onChange={handleDataChange('documents')}
-      />
+      <DocumentForm form={form} />
     </div>
   );
 }

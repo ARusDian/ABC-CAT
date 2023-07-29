@@ -81,6 +81,9 @@ Route::middleware([
             Route::middleware(["role:super-admin"])->group(function () {
                 Route::resource("/user", UserController::class);
             });
+
+            Route::resource("document-file", DocumentFileController::class);
+
             // Paket Belajar
             Route::prefix("packet")->name("packet.")->group(function () {
                 Route::resource("", LearningPacketController::class)->parameter("", "learning_packet");

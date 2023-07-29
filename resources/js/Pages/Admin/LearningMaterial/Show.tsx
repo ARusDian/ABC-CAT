@@ -6,6 +6,9 @@ import { LearningMaterialModel } from '@/Models/LearningMaterial';
 import PDFViewer from '@/Components/PDFViewer';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
+import EditorInput from '@/Components/Tiptap/EditorInput';
+import { useEditor } from '@/Components/Tiptap/useEditor';
+import ResourceEditor from '@/Components/ResourceEditor';
 
 interface Props {
   learningMaterial: LearningMaterialModel;
@@ -14,38 +17,45 @@ interface Props {
 export default function Index(props: Props) {
   const learningMaterial = props.learningMaterial;
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
+
+  const descriptionEditor = useEditor({
+    content: learningMaterial.description.content,
+    editable: false,
+  });
 
   return (
     <AdminShowLayout
       title={`Materi Belajar ${learningMaterial.title}`}
       headerTitle={'Data Materi Belajar'}
       backRoute={route('packet.sub.category.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
-      ])}
+        learning_packet, sub_learning_packet, learning_category],
+      )}
       backRouteTitle="Kembali"
       editRoute={route('packet.sub.category.material.edit', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
-        learningMaterial.id,
-      ])}
-      editRouteTitle="Edit"
-      onDelete={() => {
-        router.post(route('packet.sub.category.material.destroy', [
           learning_packet,
           sub_learning_packet,
           learning_category,
           learningMaterial.id,
-        ]), {
-          _method: 'DELETE',
-        });
+        ],
+      )}
+      editRouteTitle="Edit"
+      onDelete={() => {
+        router.post(
+          route(
+            'learning-packet.sub-learning-packet.learning-category.learning-material.destroy',
+            [
+              learning_packet,
+              sub_learning_packet,
+              learning_category,
+              learningMaterial.id,
+            ],
+          ),
+          {
+            _method: 'DELETE',
+          },
+        );
       }}
       deleteTitle="Hapus"
     >
@@ -55,7 +65,9 @@ export default function Index(props: Props) {
         </div>
         <div>Deskripsi Materi Pembelajaran :</div>
         <div className="border-2 border-gray-200 p-5">
-          <div className="prose ">{parse(learningMaterial.description)}</div>
+          <div className="prose ">
+            <ResourceEditor content={learningMaterial.description.content} disableEdit/>
+          </div>
         </div>
         <div className="mt-8 text-2xl">Dokumen Materi Pembelajaran</div>
         <div className="flex flex-col gap-2">
@@ -65,7 +77,10 @@ export default function Index(props: Props) {
                 <div key={document.id} className="border-b-2 pb-5">
                   <div className="my-5 flex flex-col gap-2">
                     <div className="flex-1">
-                      <label className="label" htmlFor={`document_name_${index}`}>
+                      <label
+                        className="label"
+                        htmlFor={`document_name_${index}`}
+                      >
                         Nama Dokumen
                       </label>
                       <input

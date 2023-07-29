@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('learning_category_id')->constrained('learning_categories');
             $table->string('title');
-            $table->string('description');
+            $table->json('description');
             $table->timestamps();
         });
     }

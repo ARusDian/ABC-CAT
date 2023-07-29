@@ -1,9 +1,10 @@
+import { EditorValue } from './EditorValue';
 import { BaseDocumentFileModel, DocumentFileModel } from './FileModel';
 
 export interface BaseLearningMaterialModel {
   id?: number;
   title: string;
-  description: string;
+  description: EditorValue;
   images?: string[];
   documents: BaseLearningMaterialDocumentModel[];
 }

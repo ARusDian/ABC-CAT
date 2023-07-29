@@ -13,22 +13,18 @@ import InputLabel from '@/Components/Jetstream/InputLabel';
 import PDFViewer from '@/Components/PDFViewer';
 import { Button } from '@mui/material';
 import { InertiaFormProps } from '@inertiajs/react/types/useForm';
+import { UseFormReturn, useFieldArray } from 'react-hook-form';
 
 interface Props {
-  form: InertiaFormProps<BaseLearningMaterialModel>;
+  form: UseFormReturn<BaseLearningMaterialModel>;
   className?: string;
-  documents: Array<BaseLearningMaterialDocumentModel>;
-  onChange: (value: Array<BaseLearningMaterialDocumentModel>) => void;
 }
 export default function DocumentForm(props: Props) {
-  let errors = new ErrorHelper(props.form.errors);
-
-  function handleChange<T>(callback: (args0: T) => void) {
-    return (e: T) => {
-      callback(e);
-      props.onChange(props.documents);
-    };
-  }
+  const { form } = props;
+  const documentsArray = useFieldArray({
+    control: form.control,
+    name: 'documents',
+  });
 
   return (
     <div className={`flex-col gap-5 my-8 ${props.className}`}>
@@ -37,12 +33,13 @@ export default function DocumentForm(props: Props) {
         <AddNewHeader
           title=""
           id="add-new-document"
-          onClick={handleChange(() =>
-            props.documents.push(createDefaultLearningMaterialDocument()),
-          )}
+          onClick={() => {
+            documentsArray.append(createDefaultLearningMaterialDocument());
+          }}
         />
-        {props.form.data.documents.length > 0 &&
-          props.form.data.documents.map((document, index) => {
+        {documentsArray.fields.length > 0 &&
+          documentsArray.fields.map((document, index) => {
+            const document_file = form.watch(`documents.${index}.document_file`)
             return (
               <div key={getUniqueKey(document)} className="border-b-2 pb-5">
                 <div className="my-5 flex flex-col md:flex-row gap-2">
@@ -56,13 +53,16 @@ export default function DocumentForm(props: Props) {
                       type="text"
                       className="input w-full"
                       required
-                      value={props.form.data.documents[index].caption}
-                      onChange={handleChange(e => {
-                        document.caption = e.target.value;
-                      })}
+                      {...form.register(`documents.${index}.caption`)}
+                      defaultValue={
+                        form.formState.defaultValues?.documents?.at(index)
+                          ?.caption
+                      }
                     />
                     <InputError
-                      message={errors.getChild('documents', 'caption')}
+                      message={
+                        form.formState.errors.documents?.at?.(index)?.message
+                      }
                       className="mt-2"
                     />
                   </div>
@@ -80,9 +80,10 @@ export default function DocumentForm(props: Props) {
                         type="file"
                         className="p-2 md:input"
                         accept="application/pdf"
-                        onChange={handleChange((e: any) => {
-                          document.document_file.file = e.target.files.item(0);
-                        })}
+                        name={`documents.${index}.file`}
+                        onChange={(e: any) => {
+                          form.setValue(`documents.${index}.document_file.file`, e.target.files.item(0))
+                        }}
                       />
                       <InputLabel htmlFor={`document_file_${index}`}>
                         <div className="flex justify-between">
@@ -93,16 +94,14 @@ export default function DocumentForm(props: Props) {
                         </div>
                       </InputLabel>
                       <InputError
-                        message={errors.getChild('documents', 'file')}
+                        message={form.formState.errors?.documents?.at?.(index)?.message}
                         className="mt-2"
                       />
                     </div>
                   </div>
                   <div
                     className="my-3"
-                    onClick={handleChange(_ => {
-                      props.documents.splice(index, 1);
-                    })}
+                    onClick={() => documentsArray.remove(index)}
                   >
                     <Button
                       type="button"
@@ -118,8 +117,8 @@ export default function DocumentForm(props: Props) {
                   className="mt-4 flex items-center justify-center"
                   key={`document-${getUniqueKey(document)}-preview`}
                 >
-                  {document.document_file.file ||
-                  document.document_file.path ? (
+                  {document_file.file ||
+                  document_file.path ? (
                     <PDFViewer document={document} />
                   ) : (
                     <div className="border border-dashed border-gray-300 rounded-md p-2 w-8/12 flex justify-center items-center text-xl">

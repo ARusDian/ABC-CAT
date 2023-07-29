@@ -47,33 +47,8 @@ class LearningMaterialController extends Controller
             $sub_learning_packet,
             $learning_category,
         ) {
-            $images = $request->images ?? [];
-            $availableImages = [];
             $editorContent = $request->description;
-            $submittedImagesId = [];
 
-            foreach ($images as $i => $image) {
-                $newImage = str_replace('"', '', $image);
-                $newImage = preg_replace(
-                    '/^data:image\/(png|jpeg|jpg);base64,/',
-                    '',
-                    $newImage,
-                );
-                $newImage = str_replace(' ', '+', $newImage);
-                $imageName = md5(Carbon::now() . $i) . '.png';
-                $files = DocumentFile::createFile(
-                    'public',
-                    'learnMaterialDescImg/' . $imageName,
-                    base64_decode($newImage),
-                );
-
-                $editorContent = str_replace(
-                    $image,
-                    url('/') . '/storage/' . $files->path,
-                    $editorContent,
-                );
-                array_push($submittedImagesId, $files->id);
-            }
 
             $learningMaterial = LearningMaterial::create([
                 'title' => $request->title,
@@ -81,29 +56,16 @@ class LearningMaterialController extends Controller
                 'learning_category_id' => $learning_category,
             ]);
 
-            foreach ($submittedImagesId as $imageId) {
-                LearningMaterialDescriptionImage::create([
-                    'learning_material_id' => $learningMaterial->id,
-                    'document_file_id' => $imageId,
-                ]);
-            }
             foreach ($request->documents as $i => $document) {
                 $documentName =
                     md5(Carbon::now() . $i) .
                     '.' .
                     $document['document_file']['file']->getClientOriginalExtension();
+
                 $documentFile = DocumentFile::createFile(
                     'public',
-                    'learnMaterialDoc/' . $documentName,
-                    base64_decode(
-                        chunk_split(
-                            base64_encode(
-                                file_get_contents(
-                                    $document['document_file']['file'],
-                                ),
-                            ),
-                        ),
-                    ),
+                    'learning-material/' . $documentName,
+                    $document['document_file']['file'],
                 );
                 LearningMaterialDocument::create([
                     'caption' => $document['caption'],
@@ -156,38 +118,13 @@ class LearningMaterialController extends Controller
     {
         //
         return DB::transaction(function () use ($request, $learning_packet, $sub_learning_packet, $learning_category, $id) {
-            // content
-            $images = $request->images ?? [];
             $editorContent = $request->description;
+
             $learningMaterialDescriptionImages = LearningMaterialDescriptionImage::with(
                 'documentFile',
             )
                 ->where('learning_material_id', $id)
                 ->get();
-            $submittedImagesId = [];
-
-            foreach ($images as $i => $image) {
-                $newImage = str_replace('"', '', $image);
-                $newImage = preg_replace(
-                    '/^data:image\/(png|jpeg|jpg);base64,/',
-                    '',
-                    $newImage,
-                );
-                $newImage = str_replace(' ', '+', $newImage);
-                $imageName = md5(Carbon::now() . $i) . '.png';
-                $files = DocumentFile::createFile(
-                    'public',
-                    'learnMaterialDescImg/' . $imageName,
-                    base64_decode($newImage),
-                );
-
-                $editorContent = str_replace(
-                    $image,
-                    url('/') . '/storage/' . $files->path,
-                    $editorContent,
-                );
-                array_push($submittedImagesId, $files->id);
-            }
 
             $learningMaterial = LearningMaterial::find($id);
             $learningMaterial->update([
@@ -196,21 +133,6 @@ class LearningMaterialController extends Controller
                 'learning_category_id' => $learning_category,
             ]);
 
-            foreach ($learningMaterialDescriptionImages as $image) {
-                if (!in_array($image->documentFile->id, $submittedImagesId)) {
-                    $image->documentFile->deleteFile();
-                    $image->documentFile->delete();
-                    $image->delete();
-                }
-            }
-
-            foreach ($submittedImagesId as $imageId) {
-                LearningMaterialDescriptionImage::create([
-                    'learning_material_id' => $learningMaterial->id,
-                    'document_file_id' => $imageId,
-                ]);
-            }
-            // end content edit
 
             // Edit Document
 
@@ -223,6 +145,7 @@ class LearningMaterialController extends Controller
             )
                 ->where('learning_material_id', $id)
                 ->get();
+
             if (count($deletedDocumentsId) > 0) {
                 foreach ($learningMaterialDocuments as $document) {
                     if (in_array($document->id, $deletedDocumentsId)) {
@@ -232,6 +155,7 @@ class LearningMaterialController extends Controller
                     }
                 }
             }
+
             foreach ($request->documents as $i => $document) {
                 $documentFile = null;
                 if (isset($document['document_file']['id'])) {
@@ -250,7 +174,7 @@ class LearningMaterialController extends Controller
                         $document['document_file']['file']->getClientOriginalExtension();
                     $documentFile = DocumentFile::createFile(
                         'public',
-                        'learnMaterialDoc/' . $documentName,
+                        'learning-material/' . $documentName,
                         base64_decode(
                             chunk_split(
                                 base64_encode(
@@ -322,7 +246,7 @@ class LearningMaterialController extends Controller
                 ->with('success', 'Learning Material deleted successfully');
         });
     }
-    
+
     public function studentIndex($learning_packet, $sub_learning_packet, $learning_category)
     {
         //

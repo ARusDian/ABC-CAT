@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DocumentFile;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Storage;
 
 class DocumentFileController extends Controller
@@ -28,9 +29,27 @@ class DocumentFileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, $bank_question)
     {
-        //
+        $data = $request->validate([
+            'type' => ['required', Rule::in(['learning-material'])]
+        ]);
+        $file = $request->file('file');
+
+        $path = '';
+
+        switch ($data['type']) {
+            case 'learning-material':
+                $path = 'learning-material';
+                break;
+        }
+
+        return DocumentFile::createFile(
+            'public',
+            $path,
+            $file,
+            auth()->id(),
+        );
     }
 
     /**
