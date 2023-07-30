@@ -74,7 +74,7 @@ class LearningMaterialController extends Controller
                 ]);
             }
             return redirect()
-                ->route('packet.packet.category.show', [
+                ->route('packet.sub.category.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category,
@@ -198,7 +198,7 @@ class LearningMaterialController extends Controller
                 );
             }
             return redirect()
-                ->route('packet.packet.category.material.show', [
+                ->route('packet.sub.category.material.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category,
@@ -238,7 +238,7 @@ class LearningMaterialController extends Controller
             }
             $learningMaterial->delete();
             return redirect()
-                ->route('packet.packet.category.show', [
+                ->route('packet.sub.category.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category,
