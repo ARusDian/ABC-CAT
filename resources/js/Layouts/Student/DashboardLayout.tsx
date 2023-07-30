@@ -154,24 +154,27 @@ export default function DashboardLayout({
       <Banner />
       <Box sx={{ display: 'flex' }}>
         <AppBar position="absolute" open={isSidebarOpen}>
-          <nav className="flex justify-between w-full sticky bg-main-blue my-auto px-7 shadow shadow-sky-400/50" style={{ height: navHeight }} >
+          <nav className="flex justify-between w-full sticky bg-main-blue my-auto px-7 shadow  bg-white" style={{ height: navHeight }} >
             <div className="flex gap-3 max-w-6xl mr-30 text-3xl">
               <button
-                className=" md:ml-20 bg-main-blue text-white hover:bg-blue-600 px-3 py-2"
+                className=" md:ml-20 bg-main-blue text-black px-3 py-2"
                 onClick={toggleDrawer(!isSidebarOpen)}
               >
-                <MenuIcon fontSize="large" /> 
+                <MenuIcon fontSize="large" />
               </button>
-              <p className='my-auto'>
-                Siswa
-              </p>
+            </div>
+            <div className='flex justify-center w-full py-1'>
+              <img
+                src={asset('root', 'assets/image/logo.png')}
+                className=""
+              />
             </div>
             <div className="mr-3 relative my-auto">
               <Dropdown
                 align="right"
                 width="48"
                 renderTrigger={() => (
-                  <button className="flex text-sm text-white border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
+                  <button className="flex text-sm text-black border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
                     <SettingsIcon fontSize="large" />
                   </button>
                 )}

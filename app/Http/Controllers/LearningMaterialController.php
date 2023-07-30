@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LearningCategory;
 use App\Models\LearningMaterial;
 use App\Models\LearningMaterialDescriptionImage;
 use App\Models\LearningMaterialDocument;
@@ -253,7 +254,9 @@ class LearningMaterialController extends Controller
         $learningMaterials = LearningMaterial::with(
             'documents.documentFile',
         )->where('learning_category_id', $learning_category)->get();
+        $learningCategory = LearningCategory::find($learning_category);
         return Inertia::render('Student/LearningMaterial/Index', [
+            'learningCategory' => $learningCategory,
             'learningMaterials' => $learningMaterials,
         ]);
     }

@@ -1,4 +1,4 @@
-import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
+import LinkButton from '@/Components/LinkButton';
 import PDFViewer from '@/Components/PDFViewer';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
@@ -12,8 +12,6 @@ interface Props {
 
 export default function Index({ document }: Props) {
 
-    console.log(document);
-
     const {
         learning_packet,
         sub_learning_packet,
@@ -25,16 +23,18 @@ export default function Index({ document }: Props) {
             <div className="flex flex-col gap-5 mx-10">
                 <div className='flex justify-between'>
                     <p className="text-5xl text-[#3A63F5]">{document.caption}</p>
-                    <MuiInertiaLinkButton
+                    <LinkButton
                         href={route('student.packet.category.material.index', [
                             learning_packet,
                             sub_learning_packet,
                             learning_category,
                         ])}
-                        color='primary'
+                        colorCode='#3A63F5'
+                        className='px-5 rounded-md'
                     >
                         Kembali
-                    </MuiInertiaLinkButton>
+                    </LinkButton>
+                    
                 </div>
                 <div className="p-5 rounded-lg border overflow-hidden shadow-2xl sm:rounded-3xl flex flex-col gap-3">
                     <div className=''>
