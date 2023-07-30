@@ -21,7 +21,6 @@ class RoleSeeder extends Seeder
             'admin',
             'instructor',
             'student',
-            'student-exam'
         ];
         foreach ($roles as $role) {
             Role::updateOrCreate(['name' => $role]);
