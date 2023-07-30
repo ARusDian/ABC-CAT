@@ -41,62 +41,70 @@ export default function Index({ learningPackets }: Props) {
 			addRouteTitle="Tambah Paket Belajar Pengguna"
 		>
 			<div className="flex flex-col gap-3">
-				{learningPackets.map(learningPacket => (
-					<div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 w-full flex flex-col gap-3">
-						<div className="flex justify-between">
-							<h1 className="text-2xl font-bold">Paket Belajar {learningPacket.name}</h1>
-							<MuiInertiaLinkButton
-								href={route('user-learning-packet.create', {
-									learning_packet: learningPacket.id,
-								})}
-							>
-								Tambah Pengguna
-							</MuiInertiaLinkButton>
-						</div>
-						<MaterialReactTable
-							data={learningPacket.user_learning_packets ?? []}
-							columns={columns}
-							enableColumnActions
-							enableColumnFilters
-							enablePagination
-							enableSorting
-							enableBottomToolbar
-							enableTopToolbar
-							enableRowActions
-							enableRowNumbers
-							muiTableBodyRowProps={{ hover: false }}
-							muiTableHeadCellProps={{
-								sx: {
-									fontWeight: 'bold',
-									fontSize: '16px',
-								},
-							}}
-							renderRowActions={({ row }) => (
-								<div className="m-auto flex justify-center">
-									<Button
-										variant="contained"
-										color="error"
-										size="large"
-										onClick={() => {
-											confirm({
-												title: 'Hentikan Berlangganan',
-												description: 'Apakah anda yakin ingin menghentikan berlangganan?',
-												cancellationText: 'Batal',
-												confirmationText: 'Hentikan',
-											}).then(() => {
-												router.post(route('user-learning-packet.destroy', row.original.id), {
-													_method: 'DELETE',
+				{learningPackets.length > 0 ? (
+					learningPackets.map(learningPacket => (
+						<div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 w-full flex flex-col gap-3">
+							<div className="flex justify-between">
+								<h1 className="text-2xl font-bold">Paket Belajar {learningPacket.name}</h1>
+								<MuiInertiaLinkButton
+									href={route('user-learning-packet.create', {
+										learning_packet: learningPacket.id,
+									})}
+								>
+									Tambah Pengguna
+								</MuiInertiaLinkButton>
+							</div>
+							<MaterialReactTable
+								data={learningPacket.user_learning_packets ?? []}
+								columns={columns}
+								enableColumnActions
+								enableColumnFilters
+								enablePagination
+								enableSorting
+								enableBottomToolbar
+								enableTopToolbar
+								enableRowActions
+								enableRowNumbers
+								muiTableBodyRowProps={{ hover: false }}
+								muiTableHeadCellProps={{
+									sx: {
+										fontWeight: 'bold',
+										fontSize: '16px',
+									},
+								}}
+								renderRowActions={({ row }) => (
+									<div className="m-auto flex justify-center">
+										<Button
+											variant="contained"
+											color="error"
+											size="large"
+											onClick={() => {
+												confirm({
+													title: 'Hentikan Berlangganan',
+													description: 'Apakah anda yakin ingin menghentikan berlangganan?',
+													cancellationText: 'Batal',
+													confirmationText: 'Hentikan',
+												}).then(() => {
+													router.post(route('user-learning-packet.destroy', row.original.id), {
+														_method: 'DELETE',
+													});
 												});
-											});
-										}}
-									>
-										Hentikan Berlangganan
-									</Button>
-								</div>
-							)}
-						/>
+											}}
+										>
+											Hentikan Berlangganan
+										</Button>
+									</div>
+								)}
+							/>
+						</div>
+					))
+				) : (
+					<div className='flex justify-center'>
+						<p className="text-3xl font-bold my-auto">
+							Belum ada paket belajar yang dibuat
+						</p>
 					</div>
-				))}
+				)}
 			</div>
 
 		</AdminTableLayout>
