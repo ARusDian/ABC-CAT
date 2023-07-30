@@ -1,3 +1,5 @@
+import LinkButton from '@/Components/LinkButton';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
@@ -28,7 +30,7 @@ export default function Show(props: Props) {
       accessorFn: it => new Date(it.finished_at).toLocaleString(),
     },
     {
-      header: 'Score',
+      header: 'Skor',
       accessorFn: it => {
         return (
           <div>
@@ -40,47 +42,101 @@ export default function Show(props: Props) {
     },
   ] as MRT_ColumnDef<Model>[];
 
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
   return (
     <DashboardLayout title={props.exercise_question.name}>
-      <div>
-        <MaterialReactTable
-          columns={dataColumns}
-          data={props.exams}
-          enableColumnActions
-          enableColumnFilters
-          enablePagination
-          enableSorting
-          enableBottomToolbar
-          enableTopToolbar
-          enableRowActions
-          enableRowNumbers
-          muiTableBodyRowProps={{ hover: false }}
-          renderRowActions={({ row }) => (
-            <div className="flex items-center justify-center gap-2">
-              <Link
-                href={route('student.exam.show.attempt', [
-                  props.exercise_question.id,
-                  row.original.id,
-                ])}
-                className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
-              >
-                Show
-              </Link>
+      <div className='flex flex-col gap-8 '>
+        <div className='flex justify-between'>
+          <p className="text-5xl text-[#3A63F5]">Pengerjaan Latihan Soal</p>
+          <button
+            className="text-white font-sans bg-[#3A63F5] text-center my-auto py-3 font-thin hover:brightness-90 uppercase px-5 rounded-md"
+            onClick={() => window.history.back()}
+          >
+            Kembali
+          </button>
+        </div>
+        <div className='shadow-lg w-full h-full p-7 rounded-2xl shadow-[#7c98fd]'>
+          <p className='my-3 text-2xl font-semibold text-center'>
+            Data Latihan Soal
+          </p>
+          <div className='flex flex-col w-full gap-3 '>
+            <div className='flex basis-1/2 border-b'>
+              <div className='flex flex-col basis-1/2 gap-1'>
+                <p className='text-lg font-bold'>Nama Latihan Soal</p>
+                <p className='text-lg'>{props.exercise_question.name}</p>
+              </div>
+              <div className='flex flex-col basis-1/2 gap-1'>
+                <p className='text-lg font-bold'>Tipe Soal</p>
+                <p className='text-lg'>{props.exercise_question.type}</p>
+              </div>
             </div>
-          )}
-          renderTopToolbarCustomActions={() => (
-            <Button variant="contained" color="primary">
-              <Link
-                href={route('student.exam.attempt', [
-                  props.exercise_question.id,
-                ])}
-                method="post"
+            <div className='flex basis-1/2'>
+              <div className='flex flex-col basis-1/2 gap-1'>
+                <p className='text-lg font-bold'>Jumlah Soal</p>
+                <p className='text-lg'>
+                  {props.exercise_question.number_of_question}
+                </p>
+              </div>
+              <div className='flex flex-col basis-1/2 gap-1'>
+                <p className='text-lg font-bold'>Waktu Pengerjaan</p>
+                <p className='text-lg'>
+                  {props.exercise_question.time_limit} menit
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className='shadow-lg w-full h-full p-7 rounded-2xl shadow-[#7c98fd]'>
+          <p className='my-3 text-2xl font-semibold'>
+            Riwayat Pengerjaan Latihan Soal
+          </p>
+          <MaterialReactTable
+            columns={dataColumns}
+            data={props.exams}
+            enableColumnActions
+            enableColumnFilters
+            enablePagination
+            enableSorting
+            enableBottomToolbar
+            enableTopToolbar
+            enableRowActions
+            enableRowNumbers
+            muiTableBodyRowProps={{ hover: false }}
+            renderRowActions={({ row }) => (
+              <div className="flex items-center justify-center gap-2">
+                <LinkButton
+                  href={route('student.exam.show.attempt', [
+                    props.exercise_question.id,
+                    row.original.id,
+                  ])}
+                  colorCode="#3A63F5"
+                  className="px-5 rounded-md"
+                >
+                  Lihat Hasil
+                </LinkButton>
+              </div>
+            )}
+            renderTopToolbarCustomActions={() => (
+              <button
+                className="text-white font-sans bg-[#3A63F5] text-center rounded-md my-auto py-3 font-thin hover:brightness-90 uppercase px-5"
               >
-                Mulai Ujian
-              </Link>
-            </Button>
-          )}
-        />
+                <Link
+                  href={route('student.exam.attempt', [
+                    props.exercise_question.id,
+                  ])}
+                  method="post"
+                >
+                  Mulai Ujian
+                </Link>
+              </button>
+            )}
+          />
+        </div>
       </div>
     </DashboardLayout>
   );
