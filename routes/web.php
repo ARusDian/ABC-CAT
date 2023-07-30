@@ -60,6 +60,7 @@ Route::middleware([
                     Route::get("{learning_material}", [LearningMaterialController::class, "studentShow"])->name("show");
                 });
                 // End Materi Belajar
+                Route::get("/exercise", [ExamController::class, "index"])->name("exercise.index");
             });
         });
         // End Sub Paket Belajar

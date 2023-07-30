@@ -7,6 +7,7 @@ use App\Models\Exam;
 use App\Http\Controllers\Controller;
 use App\Models\ExamAnswer;
 use App\Models\ExerciseQuestion;
+use App\Models\LearningCategory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,9 +17,15 @@ class ExamController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($learning_packet, $sub_learning_packet, $learning_category)
     {
         //
+        $learningCategory = LearningCategory::where('id', $learning_category)->firstOrFail();
+        $exerciseQuestions = ExerciseQuestion::where('learning_category_id', $learning_category)->get();
+        return Inertia::render('Student/Exam/Index', [
+            'learningCategory' => $learningCategory,
+            'exerciseQuestions' => $exerciseQuestions,
+        ]);
     }
 
     /**

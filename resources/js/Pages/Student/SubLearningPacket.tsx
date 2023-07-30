@@ -3,10 +3,12 @@ import {
     AccordionDetails,
     AccordionSummary,
 } from '@/Components/CustomAccordion';
+import LinkButton from '@/Components/LinkButton';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { LearningPacketModel } from '@/Models/LearningPacket';
+import { Link } from '@inertiajs/react';
 import { Assignment, ExpandMore } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import React from 'react';
@@ -33,12 +35,14 @@ export default function Index({ learningPacket }: Props) {
             <div className="flex flex-col gap-5 mx-10">
                 <div className='flex justify-between'>
                     <p className="text-5xl text-[#3A63F5]">KATEGORI</p>
-                    <MuiInertiaLinkButton
+                    <LinkButton
                         href={route('dashboard')}
-                        color='primary'
+                        colorCode='#3A63F5'
+                        className='px-5 rounded-md'
+
                     >
                         Kembali
-                    </MuiInertiaLinkButton>
+                    </LinkButton>
                 </div>
                 <div className="flex flex-col gap-3">
                     {learningPacket.sub_learning_packets.length > 0 ? (
@@ -72,21 +76,30 @@ export default function Index({ learningPacket }: Props) {
                                                             </span>
                                                             {i + 1}. {learningCategory.name}
                                                         </p>
-                                                        <div className="flex justify-around">
-                                                            <MuiInertiaLinkButton
+                                                        <div className="flex justify-evenly gap-5 ">
+                                                            <LinkButton
+                                                                colorCode='#3A63F5'
+                                                                className='w-full'
                                                                 href={route('student.packet.category.material.index', [
                                                                     learning_packet,
                                                                     subLearningPacket.id,
                                                                     learningCategory.id
                                                                 ])}
-                                                                color='primary'
                                                             >
                                                                 Materi
-                                                            </MuiInertiaLinkButton>
+                                                            </LinkButton>
 
-                                                            <Button variant="contained" color="success" size="large">
+                                                            <LinkButton 
+                                                                colorCode='#00b51d'
+                                                                className='w-full'
+                                                                href={route('student.packet.category.exercise.index', [
+                                                                    learning_packet,
+                                                                    subLearningPacket.id,
+                                                                    learningCategory.id
+                                                                ])}
+                                                            >
                                                                 Latihan
-                                                            </Button>
+                                                            </LinkButton>
                                                         </div>
                                                     </div>
                                                 </li>
