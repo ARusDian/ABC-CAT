@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\BankQuestionTypeEnum;
+use App\Enums\ExerciseQuestionTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -21,7 +21,7 @@ class ExerciseQuestion extends Model
 
     protected $casts = [
         'time_limit' => 'float',
-        'type' => BankQuestionTypeEnum::class,
+        'type' => ExerciseQuestionTypeEnum::class,
     ];
 
     public function questions(): BelongsToMany

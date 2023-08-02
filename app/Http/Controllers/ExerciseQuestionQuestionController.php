@@ -218,7 +218,7 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($learning_packet, $sub_learning_packet, $learning_category_id,$exercise_question, $id)
+    public function destroy($learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id)
     {
         return DB::transaction(function () use ($exercise_question, $id) {
             $question = Question::find($id);
@@ -233,7 +233,7 @@ class ExerciseQuestionQuestionController extends Controller
 
     public function restore($learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id)
     {
-        return DB::transaction(function () use ($learning_packet, $sub_learning_packet, $learning_category_id,$exercise_question, $id) {
+        return DB::transaction(function () use ($learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id) {
             $question = Question::find($id);
             $question->update([
                 'is_active' => true,
