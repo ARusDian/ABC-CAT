@@ -1,12 +1,11 @@
+import LazyLoadMRT from "@/Components/LazyLoadMRT";
 import MuiInertiaLinkButton from "@/Components/MuiInertiaLinkButton";
 import AdminTableLayout from "@/Layouts/Admin/AdminTableLayout";
 import { LearningPacketModel } from "@/Models/LearningPacket";
 import { UserLearningPacketModel } from "@/Models/UserLearningPacket";
-import { User } from "@/types";
 import { router } from "@inertiajs/react";
-import { Api } from "@mui/icons-material";
 import { Button } from "@mui/material";
-import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
+import { MRT_ColumnDef } from "material-react-table";
 import { useConfirm } from "material-ui-confirm";
 import React from "react";
 import route from "ziggy-js";
@@ -54,7 +53,7 @@ export default function Index({ learningPackets }: Props) {
 									Tambah Pengguna
 								</MuiInertiaLinkButton>
 							</div>
-							<MaterialReactTable
+							<LazyLoadMRT
 								data={learningPacket.user_learning_packets ?? []}
 								columns={columns}
 								enableColumnActions

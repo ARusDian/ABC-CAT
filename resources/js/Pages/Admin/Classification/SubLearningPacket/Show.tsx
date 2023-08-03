@@ -1,12 +1,13 @@
 import { LearningCategoryModel } from "@/Models/LearningCategory";
 import { SubLearningPacketModel } from "@/Models/SubLearningPacket";
 import { router } from "@inertiajs/react";
-import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
+import { MRT_ColumnDef } from "material-react-table";
 import React from "react";
 import route from "ziggy-js";
 import InventoryIcon from '@mui/icons-material/Inventory';
 import MuiInertiaLinkButton from "@/Components/MuiInertiaLinkButton";
 import AdminShowLayout from "@/Layouts/Admin/AdminShowLayout";
+import LazyLoadMRT from "@/Components/LazyLoadMRT";
 
 interface Props {
     subLearningPacket: SubLearningPacketModel
@@ -61,7 +62,7 @@ export default function Show({ subLearningPacket }: Props) {
                     <p className="text-xl font-semibold">
                         <span className="mx-2 text-gray-600"><InventoryIcon fontSize="large" /></span>Kategori Belajar
                     </p>
-                    <MaterialReactTable
+                    <LazyLoadMRT
                         columns={dataColumns}
                         data={subLearningPacket.learning_categories ?? []}
                         enableColumnActions

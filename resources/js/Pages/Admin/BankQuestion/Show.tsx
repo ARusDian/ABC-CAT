@@ -1,9 +1,10 @@
+import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { BankQuestionModel } from '@/Models/BankQuestion';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
@@ -86,7 +87,7 @@ export default function Show(props: Props) {
             </MuiInertiaLinkButton>
           </div>
         </div>
-        <MaterialReactTable
+        <LazyLoadMRT
           columns={dataColumns}
           data={bank_question.items ?? []}
           enableColumnActions

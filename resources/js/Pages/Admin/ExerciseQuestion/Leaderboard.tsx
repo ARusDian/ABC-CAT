@@ -1,8 +1,9 @@
+import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { groupBy, maxBy } from 'lodash';
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import  { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 
 interface Props {
@@ -50,7 +51,7 @@ export default function Leaderboard(props: Props) {
   return (
     <AdminTableLayout title="Leaderboard">
       <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
-        <MaterialReactTable
+        <LazyLoadMRT
           columns={dataColumns}
           data={sortedExam}
           enableColumnActions

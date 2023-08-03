@@ -1,11 +1,11 @@
+import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import LinkButton from '@/Components/LinkButton';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { Link } from '@inertiajs/react';
-import Button from '@mui/material/Button';
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import  { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
@@ -95,7 +95,7 @@ export default function Show(props: Props) {
           <p className='my-3 text-2xl font-semibold'>
             Riwayat Pengerjaan Latihan Soal
           </p>
-          <MaterialReactTable
+          <LazyLoadMRT
             columns={dataColumns}
             data={props.exams}
             enableColumnActions

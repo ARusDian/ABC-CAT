@@ -4,7 +4,7 @@ import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 import { Link } from '@inertiajs/react';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,6 +17,7 @@ import { router } from '@inertiajs/react';
 import { useForm } from 'react-hook-form';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
+import LazyLoadMRT from '@/Components/LazyLoadMRT';
 
 interface Props {
   bank_question: BankQuestionModel;
@@ -143,7 +144,7 @@ export default function Show(props: Props) {
           </>
         )}
       </div>
-      <MaterialReactTable
+      <LazyLoadMRT
         columns={dataColumns}
         data={bank_question.items ?? []}
         enableColumnActions

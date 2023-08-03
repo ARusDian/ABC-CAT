@@ -1,4 +1,4 @@
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import  { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
@@ -7,6 +7,7 @@ import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { BankQuestionModel } from '@/Models/BankQuestion';
 import { ExamModel } from '@/Models/Exam';
 import { Button } from '@mui/material';
+import LazyLoadMRT from '@/Components/LazyLoadMRT';
 
 interface Props {
   exams: Array<ExamModel>;
@@ -36,7 +37,7 @@ export default function Index({ exams }: Props) {
   return (
     <AdminTableLayout title="Monitor Exam">
       <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
-        <MaterialReactTable
+        <LazyLoadMRT
           columns={dataColumns}
           data={exams}
           enableColumnActions

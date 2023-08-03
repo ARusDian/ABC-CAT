@@ -2,13 +2,12 @@ import AdminShowLayout from "@/Layouts/Admin/AdminShowLayout";
 import { LearningPacketModel } from "@/Models/LearningPacket";
 import { SubLearningPacketModel } from "@/Models/SubLearningPacket";
 import { Link, router } from "@inertiajs/react";
-import { Button } from "@mui/material";
-import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
+import  { MRT_ColumnDef } from "material-react-table";
 import React from "react";
 import route from "ziggy-js";
 import FolderIcon from '@mui/icons-material/Folder';
-import TableCard from "../LearningCategory/TableCard";
 import MuiInertiaLinkButton from "@/Components/MuiInertiaLinkButton";
+import LazyLoadMRT from "@/Components/LazyLoadMRT";
 
 interface Props {
     learningPacket: LearningPacketModel
@@ -60,7 +59,7 @@ export default function Show({ learningPacket }: Props) {
                     <p className="text-xl font-semibold">
                         <span className="mx-2 text-gray-600"><FolderIcon fontSize="large" /></span>Sub Paket Belajar
                     </p>
-                    <MaterialReactTable
+                    <LazyLoadMRT
                         columns={dataColumns}
                         data={learningPacket.sub_learning_packets}
                         enableColumnActions

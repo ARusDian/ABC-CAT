@@ -1,7 +1,6 @@
+import LazyLoadMRT from "@/Components/LazyLoadMRT";
 import MuiInertiaLinkButton from "@/Components/MuiInertiaLinkButton";
-import { Link } from "@inertiajs/react";
-import { Button } from "@mui/material";
-import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
+import  { MRT_ColumnDef } from "material-react-table";
 import React from "react";
 import route from "ziggy-js";
 
@@ -11,7 +10,7 @@ interface Props<T extends Record<string, any>> {
     createRoute?: string;
     createRouteTitle?: string;
 
-    columns: MRT_ColumnDef<T>[];
+    columns: MRT_ColumnDef<any>[];
     data: T[];
 
     showRoute?: string;
@@ -33,7 +32,7 @@ export default function TableCard<T extends Record<string, any>>(props: Props<T>
                 <div className="text-2xl">{props.title}</div>
             </div>
             <div className="">
-                <MaterialReactTable
+                <LazyLoadMRT
                     columns={props.columns}
                     data={props.data}
                     enableColumnActions

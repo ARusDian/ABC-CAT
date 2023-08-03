@@ -1,24 +1,13 @@
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-} from '@/Components/CustomAccordion';
-import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
-import ResourceEditor from '@/Components/ResourceEditor';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
-import TopicIcon from '@mui/icons-material/Topic';
 
-import { Button } from '@mui/material';
 import React from 'react';
 import route from 'ziggy-js';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import { Link } from '@inertiajs/react';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import  { MRT_ColumnDef } from 'material-react-table';
 import LinkButton from '@/Components/LinkButton';
 import { LearningCategoryModel } from '@/Models/LearningCategory';
+import LazyLoadMRT from '@/Components/LazyLoadMRT';
 
 interface Props {
     learningCategory: LearningCategoryModel
@@ -70,7 +59,7 @@ export default function Index({ learningCategory, exerciseQuestions }: Props) {
                 <div className="flex flex-col gap-3">
                     {exerciseQuestions.length > 0 ? (
 
-                        <MaterialReactTable
+                        <LazyLoadMRT
                             columns={columns}
                             data={exerciseQuestions}
                             enableColumnActions

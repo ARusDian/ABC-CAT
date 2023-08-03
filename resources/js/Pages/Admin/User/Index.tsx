@@ -1,11 +1,10 @@
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table';
+import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 import { User } from '@/types';
-import { Link } from '@inertiajs/react';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
-import { Button } from '@mui/material';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
+import LazyLoadMRT from '@/Components/LazyLoadMRT';
 
 interface Props {
   users: Array<User>;
@@ -39,7 +38,7 @@ export default function Index(props: Props) {
       addRouteTitle="Tambah User"
     >
       <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
-        <MaterialReactTable
+        <LazyLoadMRT
           columns={dataColumns}
           data={users}
           enableColumnActions
