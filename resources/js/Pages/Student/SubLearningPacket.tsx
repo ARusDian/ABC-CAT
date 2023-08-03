@@ -90,8 +90,8 @@ export default function Index({ learningPacket }: Props) {
                                                             </LinkButton>
 
                                                             <LinkButton 
-                                                                colorCode='#00b51d'
-                                                                className='w-full'
+                                                                colorCode='#00b506'
+                                                                className='w-full bg-[#00b506]'
                                                                 href={route('student.packet.category.exercise.index', [
                                                                     learning_packet,
                                                                     subLearningPacket.id,
