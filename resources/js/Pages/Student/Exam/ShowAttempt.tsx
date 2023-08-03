@@ -39,7 +39,7 @@ export default function ShowAttempt({ exam }: Props) {
         <div className="border-t border-gray-500 w-auto h-auto p-3 flex gap-6 divide-x">
           <div className="flex flex-col p-3 basis-1/3">
             <p className="font-bold text-lg">Navigasi Soal</p>
-            <div className="p-2 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-10 gap-2">
+            <div className="p-2 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-2">
               {exam.answers.map((it, index) => {
                 return (
                   <Button

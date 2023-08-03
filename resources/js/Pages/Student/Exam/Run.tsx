@@ -200,7 +200,7 @@ export default function Run({ exam }: Props) {
                     </div>
                     <div className="flex flex-col justify-center p-3">
                       <p className="font-bold text-lg">Navigasi Soal</p>
-                      <div className="p-2 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-10 gap-2">
+                      <div className="p-2 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-2">
                         {answerArray.fields.map((it, index) => {
                           return (
                             <Button
