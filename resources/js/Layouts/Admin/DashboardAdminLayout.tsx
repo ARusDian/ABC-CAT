@@ -237,7 +237,7 @@ export default function DashboardAdminLayout({
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: `${navHeight}px` }}>
           <div className="mx-auto px-8">
-            <div className="overflow-hidden">
+            <div className="">
               {children}
             </div>
           </div>

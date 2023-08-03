@@ -41,6 +41,16 @@ export default function Form(props: Props) {
       </div>
       <div className="form-control w-full mt-4">
         <TextField
+          {...form.register('phone_number', { required: true })}
+          label="Phone Number"
+          className="mt-1 block w-full"
+          defaultValue={form.formState.defaultValues?.phone_number}
+          error={form.formState.errors?.phone_number != null}
+          helperText={form.formState.errors.phone_number?.message}
+        />
+      </div>
+      <div className="form-control w-full mt-4">
+        <TextField
           {...form.register('password', {
             required: form.getValues('id') == null,
             minLength: { value: 8, message: 'Password minimal 8 huruf' },
@@ -53,7 +63,7 @@ export default function Form(props: Props) {
           helperText={form.formState.errors.password?.message}
         />
       </div>
-      <div className="form-control w-full mt-4">
+      <div className="form-control w-full mt-4 z-50">
         <Controller
           control={form.control}
           name="roles"
@@ -79,16 +89,6 @@ export default function Form(props: Props) {
               </>
             );
           }}
-        />
-      </div>
-      <div className="form-control w-full mt-4">
-        <TextField
-          {...form.register('phone_number', { required: true })}
-          label="Phone Number"
-          className="mt-1 block w-full"
-          defaultValue={form.formState.defaultValues?.phone_number}
-          error={form.formState.errors?.phone_number != null}
-          helperText={form.formState.errors.phone_number?.message}
         />
       </div>
     </div>

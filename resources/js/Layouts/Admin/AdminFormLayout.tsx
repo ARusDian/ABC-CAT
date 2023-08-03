@@ -21,7 +21,7 @@ export default function AdminFormLayout(props: React.PropsWithChildren<Props>) {
           </MuiInertiaLinkButton>
         ) : null}
       </div>
-      <div className=" m-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+      <div className="m-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
         {props.children}
       </div>
     </DashboardAdminLayout>
