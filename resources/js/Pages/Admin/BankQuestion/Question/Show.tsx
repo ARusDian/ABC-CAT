@@ -176,11 +176,13 @@ export default function Index(props: Props) {
         </CustomTabPanel>
         <CustomTabPanel value={tabValue} index={2}>
           <div className="">
-            <label className="text-lg">Jawaban Benar</label>
             {/* TODO: MAKE FUNCTION TO DETERMINE TRUEST ANSWER */}
             {/* {props.item.answer.type == "WeightedChoice" ? (
-            <p>pilihan {numberToUpperCase(() => TruestAnswer())}</p>
-          ) : null} */}
+              <>
+                <label className="text-lg">Jawaban Benar</label>
+                <p>pilihan {numberToUpperCase(question.answer.answer)}</p>
+              </>
+            ) : null} */}
             {props.item.type == 'Pilihan' ? (
               <>
                 <label className="text-lg">Penjelasan Jawaban</label>

@@ -187,9 +187,11 @@ export default function Index({ question, exercise_question_id }: Props) {
 
         <CustomTabPanel value={tabValue} index={2}>
           <div className="p-5">
-            <label className="text-lg">Jawaban Benar</label>
             {question.answer.type == 'Single' ? (
-              <p>pilihan {numberToUpperCase(question.answer.answer)}</p>
+              <>
+                <label className="text-lg">Jawaban Benar</label>
+                <p>pilihan {numberToUpperCase(question.answer.answer)}</p>
+              </>
             ) : null}
             {question.type == 'Pilihan' ? (
               <>
