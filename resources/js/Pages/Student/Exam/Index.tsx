@@ -40,8 +40,6 @@ export default function Index({ learningCategory, exerciseQuestions }: Props) {
         }
     ] as MRT_ColumnDef<ExerciseQuestionModel>[];
 
-    console.log(learningCategory);
-
 
     return (
         <DashboardLayout title="Daftar Materi">
