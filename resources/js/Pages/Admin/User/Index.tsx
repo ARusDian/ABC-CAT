@@ -27,6 +27,10 @@ export default function Index(props: Props) {
       header: 'Nomor Telepon',
     },
     {
+      accessorKey: 'active_year',
+      header: 'Tahun Aktif',
+    },
+    {
       accessorFn: (row: User) => row.roles.map(role => role.name).join(', '),
       header: 'Status',
     },

@@ -36,7 +36,7 @@ export default function Edit(props: Props) {
         className="flex-col gap-5 py-5"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <Form form={form} roles={props.roles} className="my-5 mx-2" />
+        <Form form={form} roles={props.roles} className="my-5 mx-2" isUpdate />
         <div className="flex justify-end">
           <Button
             type="submit"

@@ -15,6 +15,7 @@ export interface BaseUser {
   name: string;
   email: string;
   phone_number: string;
+  active_year?: string;
   roles?: Array<Role>;
 }
 

@@ -12,10 +12,11 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
   form: UseFormReturn<NewUser>;
   className?: string;
   roles: Array<Role>;
+  isUpdate?: boolean;
 }
 
 export default function Form(props: Props) {
-  const { form, roles } = props;
+  const { form, roles, isUpdate } = props;
 
   return (
     <div className={`flex-col gap-5 ${props.className}`}>
@@ -63,6 +64,21 @@ export default function Form(props: Props) {
           helperText={form.formState.errors.password?.message}
         />
       </div>
+      {
+        isUpdate && (
+          <div className="form-control w-full mt-4">
+            <TextField
+              type="number" placeholder="YYYY" min="1999" max={9999}
+              label="Tahun Aktif"
+              {...form.register('active_year', { required: true })}
+              className="mt-1 block w-full"
+              defaultValue={form.formState.defaultValues?.active_year}
+              error={form.formState.errors?.active_year != null}
+              helperText={form.formState.errors.active_year?.message}
+            />
+          </div>
+        )
+      }
       <div className="form-control w-full mt-4 z-50">
         <Controller
           control={form.control}

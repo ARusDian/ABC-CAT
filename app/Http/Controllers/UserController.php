@@ -61,6 +61,7 @@ class UserController extends Controller
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'phone_number' => $validated['phone_number'],
+                'active_year' => date('Y'),
             ]);
             foreach ($validated['roles'] as $role) {
                 $user->assignRole($role['id']);
@@ -120,6 +121,7 @@ class UserController extends Controller
                 'password' => 'nullable|string|min:8',
                 'roles.*.id' => 'required|exists:roles',
                 'phone_number' => 'required|string',
+                'active_year' => 'required|string',
             ]);
 
             $user = User::findOrFail($id);
@@ -127,6 +129,7 @@ class UserController extends Controller
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'phone_number' => $validated['phone_number'],
+                'active_year' => $validated['active_year'],
             ]);
             if (isset($validated['password'])) {
                 $user->update([
