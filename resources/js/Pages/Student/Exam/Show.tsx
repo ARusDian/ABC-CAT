@@ -53,12 +53,13 @@ export default function Show(props: Props) {
       <div className='flex flex-col gap-8 '>
         <div className='flex justify-between'>
           <p className="text-5xl text-[#3A63F5]">Pengerjaan Latihan Soal</p>
-          <button
-            className="text-white font-sans bg-[#3A63F5] text-center my-auto py-3 font-thin hover:brightness-90 uppercase px-5 rounded-md"
-            onClick={() => window.history.back()}
+          <LinkButton
+            href={route('dashboard')}
+            colorCode="#3A63F5"
+            className="px-5 rounded-md"
           >
             Kembali
-          </button>
+          </LinkButton>
         </div>
         <div className='shadow-lg w-full h-full p-7 rounded-2xl shadow-[#7c98fd]'>
           <p className='my-3 text-2xl font-semibold text-center'>
