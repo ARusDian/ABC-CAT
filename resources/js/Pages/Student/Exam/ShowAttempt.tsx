@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import { Link } from '@inertiajs/react';
 import route from 'ziggy-js';
 import { useSearchParam } from 'react-use';
+import { asset } from '@/Models/Helper';
 
 interface Props {
   exam: ExamModel;
@@ -49,8 +50,8 @@ export default function ShowAttempt({ exam }: Props) {
                       it.score === null
                         ? 'inherit'
                         : it.score == 0
-                        ? 'error'
-                        : 'success'
+                          ? 'error'
+                          : 'success'
                     }
                     onClick={() => setCurrentQuestion(index)}
                     key={index}
@@ -91,7 +92,22 @@ export default function ShowAttempt({ exam }: Props) {
               Soal {currentQuestion + 1} (
               {parseFloat(exam.answers[currentQuestion].score.toString())})
             </p>
-            <Answer answer={exam.answers[currentQuestion]} isEvaluation />
+            <div className='relative flex'>
+              <div className='absolute w-full h-full'>
+                <div className='flex justify-center h-full w-full p-10'>
+                  <div className='flex justify-center'>
+                    <img
+                      src={asset('root', 'assets/image/logo.png')}
+                      alt="logo"
+                      className='w-full opacity-40'
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="w-full h-auto p-3 flex flex-col gap-3 ">
+                <Answer answer={exam.answers[currentQuestion]} isEvaluation />
+              </div>
+            </div>
           </div>
         </div>
       </div>

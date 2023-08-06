@@ -11,6 +11,7 @@ import axios from 'axios';
 import ReactLoading from 'react-loading';
 import Answer from './Answer';
 import { useConfirm } from 'material-ui-confirm';
+import { asset } from '@/Models/Helper';
 
 export interface Props {
   exam: ExamModel;
@@ -210,10 +211,10 @@ export default function Run({ exam }: Props) {
                                 it.state?.mark
                                   ? 'warning'
                                   : currentQuestion === index
-                                  ? 'success'
-                                  : it.answer != undefined
-                                  ? 'primary'
-                                  : 'inherit'
+                                    ? 'success'
+                                    : it.answer != undefined
+                                      ? 'primary'
+                                      : 'inherit'
                               }
                               onClick={() => setCurrentQuestion(index)}
                               key={index}
@@ -268,22 +269,34 @@ export default function Run({ exam }: Props) {
                             ''
                           )}
                         </div>
-                        <p className="text-2xl">{`${currentQuestion + 1}/${
-                          answers.length
-                        }`}</p>
+                        <p className="text-2xl">{`${currentQuestion + 1}/${answers.length
+                          }`}</p>
                       </div>
                     </div>
                   </div>
-                  <div className="w-auto h-auto p-3 flex flex-col gap-3">
-                    <Answer
-                      answer={answerArray.fields[currentQuestion]}
-                      updateAnswer={answer => {
-                        updateAnswer({
-                          ...answers[currentQuestion],
-                          answer: answer.answer,
-                        });
-                      }}
-                    />
+                  <div className='relative flex'>
+                    <div className='absolute w-full h-full'>
+                      <div className='flex justify-center h-full w-full p-10'>
+                        <div className='flex justify-center'>
+                          <img
+                            src={asset('root', 'assets/image/logo.png')}
+                            alt="logo"
+                            className='w-full opacity-40'
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-full h-auto p-3 flex flex-col gap-3 z-50">
+                      <Answer
+                        answer={answerArray.fields[currentQuestion]}
+                        updateAnswer={answer => {
+                          updateAnswer({
+                            ...answers[currentQuestion],
+                            answer: answer.answer,
+                          });
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
