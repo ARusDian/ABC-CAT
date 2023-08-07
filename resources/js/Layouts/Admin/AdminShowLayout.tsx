@@ -42,7 +42,7 @@ export default function Index(props: React.PropsWithChildren<Props>) {
       confirmationButtonProps: { autoFocus: true },
     })
       .then(onDelete)
-      .catch(() => console.log('Deletion cancelled.'));
+      .catch((e) => console.log(e, 'Deletion cancelled.'));
   };
 
   return (

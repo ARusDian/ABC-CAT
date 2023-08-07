@@ -44,7 +44,7 @@ export default function Index(props: Props) {
       onDelete={() => {
         router.post(
           route(
-            'learning-packet.sub-learning-packet.learning-category.learning-material.destroy',
+            'packet.sub.category.material.destroy',
             [
               learning_packet,
               sub_learning_packet,
