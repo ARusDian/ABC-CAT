@@ -28,7 +28,7 @@ export default function Leaderboard({ exercise_question }: Props) {
             .map(it => maxBy(it, it => it.answers_sum_score)!)
             .sort((a, b) => b.answers_sum_score - a.answers_sum_score);
         // return exercise_question.exams.slice().sort((a,b) => a.:A)
-    }, [exercise_question.exams]);
+    }, [JSON.stringify(exercise_question.exams)]);
 
     const dataColumns = [
         {
