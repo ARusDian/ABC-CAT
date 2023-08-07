@@ -57,7 +57,7 @@ class LearningMaterialController extends Controller
                 'learning_category_id' => $learning_category,
             ]);
 
-            foreach ($request->document as $i => $document) {
+            foreach ($request->documents ?? [] as $i => $document) {
 
                 $documentFile = DocumentFile::createFile(
                     'public',
@@ -153,7 +153,7 @@ class LearningMaterialController extends Controller
                 }
             }
 
-            foreach ($request->documents as $i => $document) {
+            foreach ($request->documents ?? [] as $i => $document) {
                 $documentFile = null;
                 if (isset($document['document_file']['id'])) {
                     $documentFile = DocumentFile::find(
