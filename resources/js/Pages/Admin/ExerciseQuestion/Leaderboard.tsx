@@ -48,7 +48,6 @@ export default function Leaderboard({ exercise_question }: Props) {
   }, []);
 
   const sortedExam = React.useMemo(() => {
-    console.log(data);
     return Object.values(
       groupBy(data, it => it.user_id),
     )
@@ -66,7 +65,13 @@ export default function Leaderboard({ exercise_question }: Props) {
     },
     {
       header: 'Waktu Berakhir',
-      accessorFn: it => new Date(it.finished_at).toLocaleString(),
+      accessorFn: it => {
+        console.log(it.finished_at);
+        if (it.finished_at === null) {
+          return 'Belum Selesai';
+        }
+        return new Date(it.finished_at).toLocaleString();
+      },
     },
     {
       header: 'Score',
