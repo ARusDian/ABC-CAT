@@ -59,7 +59,6 @@ class LearningMaterialController extends Controller
 
             foreach ($request->document as $i => $document) {
 
-                dd($document['document_file']['file']);
                 $documentFile = DocumentFile::createFile(
                     'public',
                     'learning-material/',
