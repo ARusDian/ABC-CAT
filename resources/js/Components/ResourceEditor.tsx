@@ -11,7 +11,7 @@ export type Props =
       onBlur: (json: object) => void;
       editorRef?: React.MutableRefObject<Editor | null>;
       editorClassName?: string;
-      documentFileType: 'learning-material';
+      documentFileType: 'learning-material' | 'bank-question';
       disableEdit?: false;
     }
   | {
@@ -22,7 +22,7 @@ export type Props =
 
       onBlur?: undefined;
       bankQuestionId?: undefined;
-      documentFileType?: undefined;
+      documentFileType?: any;
     };
 
 export default function ResourceEditor(props: Props) {
@@ -58,15 +58,23 @@ export default function ResourceEditor(props: Props) {
       let form = new FormData();
       form.append('file', file);
       form.append('type', documentFileType);
+
+      try {
+
       const response = await axios.postForm(
         route('document-file.store', []),
         form,
       );
-
       return {
         id: response.data.id,
         disk: response.data.disk,
       };
+      } catch (e) {
+        console.error(e);
+        return null;
+
+      }
+
     },
     [props.documentFileType],
   );

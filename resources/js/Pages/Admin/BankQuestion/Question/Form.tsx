@@ -14,6 +14,7 @@ import {
   BankQuestionItemPilihanFormModel,
 } from '@/Models/BankQuestionItem';
 import { Tabs, Tab, Checkbox, Select, MenuItem } from '@mui/material';
+import BankQuestionItemEditor from '@/Components/BankQuestionItemEditor';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -145,10 +146,10 @@ export default function Form(props: Props) {
               return (
                 <>
                   <InputLabel htmlFor="name">Soal</InputLabel>
-                  <QuestionEditor
+                  <BankQuestionItemEditor
                     content={field.value}
                     onBlur={field.onChange}
-                    exerciseQuestionId={props.bankQuestionId}
+                    bankQuestionId={props.bankQuestionId}
                     editorClassName="h-full min-h-[96px] p-3"
                   />
                   <InputError
@@ -176,10 +177,10 @@ export default function Form(props: Props) {
               return (
                 <>
                   <InputLabel htmlFor="name">Penjelasan Jawaban</InputLabel>
-                  <QuestionEditor
+                  <BankQuestionItemEditor
                     content={field.value}
                     onBlur={field.onChange}
-                    exerciseQuestionId={props.bankQuestionId}
+                    bankQuestionId={props.bankQuestionId}
                     editorClassName="h-full min-h-[96px] p-3"
                   />
                   <InputError
@@ -223,10 +224,10 @@ function PilihanForm({
                 return (
                   <>
                     <InputLabel htmlFor="name">Jawaban {index + 1}</InputLabel>
-                    <QuestionEditor
+                    <BankQuestionItemEditor
                       content={field.value}
                       onBlur={field.onChange}
-                      exerciseQuestionId={exerciseQuestionId}
+                      bankQuestionId={exerciseQuestionId}
                       editorClassName="h-full min-h-[96px] p-3"
                     />
                     <InputError

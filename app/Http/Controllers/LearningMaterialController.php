@@ -57,15 +57,12 @@ class LearningMaterialController extends Controller
                 'learning_category_id' => $learning_category,
             ]);
 
-            foreach ($request->documents as $i => $document) {
-                $documentName =
-                    md5(Carbon::now() . $i) .
-                    '.' .
-                    $document['document_file']['file']->getClientOriginalExtension();
+            foreach ($request->document as $i => $document) {
 
+                dd($document['document_file']['file']);
                 $documentFile = DocumentFile::createFile(
                     'public',
-                    'learning-material/' . $documentName,
+                    'learning-material/',
                     $document['document_file']['file'],
                 );
                 LearningMaterialDocument::create([
@@ -169,24 +166,13 @@ class LearningMaterialController extends Controller
                         );
                     }
                 } else {
-                    $documentName =
-                        md5(Carbon::now() . $i) .
-                        '.' .
-                        $document['document_file']['file']->getClientOriginalExtension();
                     $documentFile = DocumentFile::createFile(
                         'public',
-                        'learning-material/' . $documentName,
-                        base64_decode(
-                            chunk_split(
-                                base64_encode(
-                                    file_get_contents(
-                                        $document['document_file']['file'],
-                                    ),
-                                ),
-                            ),
-                        ),
+                        'learning-material/',
+                        $document['document_file']['file']
                     );
                 }
+
                 LearningMaterialDocument::updateOrCreate(
                     [
                         'id' => $document['id'] ?? null,

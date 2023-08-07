@@ -29,10 +29,10 @@ class DocumentFileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $bank_question)
+    public function store(Request $request)
     {
         $data = $request->validate([
-            'type' => ['required', Rule::in(['learning-material'])]
+            'type' => ['required', Rule::in(['learning-material', 'bank-question', 'question'])]
         ]);
         $file = $request->file('file');
 
@@ -41,6 +41,12 @@ class DocumentFileController extends Controller
         switch ($data['type']) {
             case 'learning-material':
                 $path = 'learning-material';
+                break;
+            case 'bank-question':
+                $path = 'bank-question';
+                break;
+            case 'question':
+                $path = 'question';
                 break;
         }
 

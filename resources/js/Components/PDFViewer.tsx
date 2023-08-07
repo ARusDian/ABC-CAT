@@ -22,6 +22,7 @@ interface Props {
 }
 
 export default function PDFViewer({document, height}: Props) {
+  console.log(document.document_file);
   const toolbarPluginInstance = toolbarPlugin();
   const { renderDefaultToolbar, Toolbar } = toolbarPluginInstance;
 
