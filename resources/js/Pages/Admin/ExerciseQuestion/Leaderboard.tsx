@@ -1,10 +1,13 @@
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
+import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { groupBy, maxBy } from 'lodash';
-import  { MRT_ColumnDef } from 'material-react-table';
-import React from 'react';
+import { MRT_ColumnDef } from 'material-react-table';
+import React, { useState, useEffect } from 'react';
+import route from 'ziggy-js';
 
 interface Props {
   exercise_question: ExerciseQuestionModel & {
@@ -12,17 +15,48 @@ interface Props {
   };
 }
 
-export default function Leaderboard(props: Props) {
-  console.log(props.exercise_question);
+export default function Leaderboard({ exercise_question }: Props) {
+
+  const [data, setData] = useState<ExamModel[]>(exercise_question.exams);
+
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category,
+  } = useDefaultClassificationRouteParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      fetch(route("api.leaderboard-exam", exercise_question.id), {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setData(data.exams);
+        })
+        .catch((err) => console.warn(err));
+    };
+
+    const fetchDataIntervalId = setInterval(() => {
+      fetchData();
+    }, 3000);
+
+    return () => clearInterval(fetchDataIntervalId);
+  }, []);
 
   const sortedExam = React.useMemo(() => {
+    console.log(data);
     return Object.values(
-      groupBy(props.exercise_question.exams, it => it.user_id),
+      groupBy(data, it => it.user_id),
     )
       .map(it => maxBy(it, it => it.answers_sum_score)!)
-      .sort((a, b) => a.answers_sum_score - b.answers_sum_score);
-    // return props.exercise_question.exams.slice().sort((a,b) => a.:A)
-  }, [props.exercise_question.exams]);
+      .sort((a, b) => b.answers_sum_score - a.answers_sum_score);
+    // return exercise_question.exams.slice().sort((a,b) => a.:A)
+  }, [JSON.stringify(data)]);
+
 
   const dataColumns = [
     { header: 'User', accessorKey: 'user.name' },
@@ -46,10 +80,22 @@ export default function Leaderboard(props: Props) {
       },
     },
   ] as MRT_ColumnDef<ExamModel>[];
-  console.log(sortedExam);
 
   return (
     <AdminTableLayout title="Leaderboard">
+      <div className='flex justify-end'>
+
+        <MuiInertiaLinkButton
+          href={route('packet.sub.category.exercise.show', [
+            learning_packet,
+            sub_learning_packet,
+            learning_category,
+            exercise_question.id,
+          ])}
+        >
+          Kembali
+        </MuiInertiaLinkButton>
+      </div>
       <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
         <LazyLoadMRT
           columns={dataColumns}

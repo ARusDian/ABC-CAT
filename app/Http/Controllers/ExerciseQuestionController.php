@@ -108,6 +108,15 @@ class ExerciseQuestionController extends Controller
         ]);
     }
 
+    public function getLeaderboardData($id){
+        $exercise_question = ExerciseQuestion::with([
+            'exams' => fn ($q) => $q->withScore(),
+            'exams.user',
+        ])->findOrFail($id);
+
+        return response()->json($exercise_question);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
