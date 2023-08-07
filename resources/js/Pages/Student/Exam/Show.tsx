@@ -5,7 +5,7 @@ import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { Link } from '@inertiajs/react';
-import  { MRT_ColumnDef } from 'material-react-table';
+import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
@@ -92,10 +92,19 @@ export default function Show(props: Props) {
             </div>
           </div>
         </div>
-        <div className='shadow-lg w-full h-full p-7 rounded-2xl shadow-[#7c98fd]'>
-          <p className='my-3 text-2xl font-semibold'>
-            Riwayat Pengerjaan Latihan Soal
-          </p>
+        <div className='shadow-lg w-full h-full p-7 rounded-2xl shadow-[#7c98fd] flex flex-col gap-2'>
+          <div className='flex justify-between'>
+            <p className='my-3 text-2xl font-semibold'>
+              Riwayat Pengerjaan Latihan Soal
+            </p>
+            <LinkButton
+              href={route('student.exam.leaderboard', [props.exercise_question.id])}
+              colorCode="#3A63F5"
+              className="px-5 rounded-md"
+            >
+              Ranking
+            </LinkButton>
+          </div>
           <LazyLoadMRT
             columns={dataColumns}
             data={props.exams}

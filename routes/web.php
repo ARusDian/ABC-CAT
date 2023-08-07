@@ -72,6 +72,7 @@ Route::middleware([
             Route::put("{exercise_question}", [ExamController::class, "update"])->name("update");
             Route::post("{exercise_question}", [ExamController::class, "attempt"])->name("attempt");
             Route::post("{exercise_question}/finish", [ExamController::class, "finish"])->name("finish");
+            Route::get("{exercise_question}/leaderboard", [ExamController::class, "leaderboard"])->name("leaderboard");
             Route::get("{exercise_question}/attempt/{exam}", [ExamController::class, "showAttempt"])->name("show.attempt");
         });
         // End Exercise Question

@@ -242,4 +242,14 @@ class ExamController extends Controller
     {
         //
     }
+
+    public function leaderboard( $id)
+    {
+        return Inertia::render('Student/Exam/Leaderboard', [
+            'exercise_question' => fn () => ExerciseQuestion::with([
+                'exams' => fn ($q) => $q->withScore(),
+                'exams.user',
+            ])->findOrFail($id)
+        ]);
+    }
 }
