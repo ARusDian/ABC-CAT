@@ -32,7 +32,7 @@ export default function Create({ bank_question }: Props) {
   const onSubmit = React.useCallback(
     (e: BankQuestionFormModel) => {
       router.put(
-        route('packet.packet.category.bank-question.update', [
+        route('packet.sub.category.bank-question.update', [
           learning_packet,
           sub_learning_packet,
           learning_category,
@@ -55,7 +55,7 @@ export default function Create({ bank_question }: Props) {
   return (
     <AdminFormLayout
       title="Tambah Soal Latihan"
-      backRoute={route('packet.packet.category.bank-question.show', [
+      backRoute={route('packet.sub.category.bank-question.show', [
         learning_packet,
         sub_learning_packet,
         learning_category,

@@ -51,14 +51,17 @@ export default function Form({ form, submitTitle, onSubmit, isUpdate=false }: Pr
         </Select>
       </FormControl>
 
-      <Button
-        type="submit"
-        disabled={form.formState.isSubmitting}
-        variant="contained"
-        color={isUpdate ? 'warning' : 'primary'}
-      >
-        {submitTitle}
-      </Button>
+      <div className='flex justify-end'>
+        <Button
+          type="submit"
+          disabled={form.formState.isSubmitting}
+          variant="contained"
+          size='large'
+          color={isUpdate ? 'warning' : 'primary'}
+        >
+          {submitTitle}
+        </Button>
+      </div>
     </form>
   );
 }
