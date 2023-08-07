@@ -60,20 +60,6 @@ export default function Show(props: Props) {
           </div>
           <div className="flex justify-around my-auto gap-5">
             <MuiInertiaLinkButton
-              color="success"
-              href={route(
-                'packet.sub.category.exercise.question.create',
-                [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
-                  exercise_question.id,
-                ]
-              )}
-            >
-              Tambah Soal
-            </MuiInertiaLinkButton>
-            <MuiInertiaLinkButton
               color="primary"
               href={route(
                 'packet.sub.category.exercise.leaderboard',
