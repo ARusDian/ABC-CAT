@@ -77,7 +77,9 @@ class ExerciseQuestionController extends Controller
 
     public function importFromBank($learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
-        $bank_question = BankQuestion::with(['items'])->findOrFail($id);
+        $bank_question = BankQuestion::with(['items' => function ($q) {
+            return $q->where('is_active', true);
+        } ])->findOrFail($id);
         $exercise_question = ExerciseQuestion::whereType($bank_question->type->name)->get();
 
         return Inertia::render('Admin/ExerciseQuestion/Import', [
