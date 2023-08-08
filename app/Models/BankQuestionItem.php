@@ -34,4 +34,9 @@ class BankQuestionItem extends Model
 
         'is_active',
     ];
+
+    public function bankQuestion()
+    {
+        return $this->belongsTo(BankQuestion::class);
+    }
 }

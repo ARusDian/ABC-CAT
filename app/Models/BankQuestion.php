@@ -24,4 +24,8 @@ class BankQuestion extends Model
     public function items(): HasMany{
         return $this->hasMany(BankQuestionItem::class);
     }
+
+    public function learningCategory(){
+        return $this->belongsTo(LearningCategory::class);
+    }
 }

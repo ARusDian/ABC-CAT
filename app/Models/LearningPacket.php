@@ -23,8 +23,8 @@ class LearningPacket extends Model
     {
         return $this->hasManyThrough(LearningCategory::class, SubLearningPacket::class);
     }
-    
-    public function users ()
+
+    public function users()
     {
         return $this->belongsToMany(User::class, UserLearningPacket::class);
     }
