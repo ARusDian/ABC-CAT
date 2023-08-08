@@ -59,7 +59,7 @@ class LearningCategoryController extends Controller
             'subLearningPacket.learningPacket',
             'learningMaterials.documents.documentFile',
             'bankQuestions.items',
-            'exerciseQuestions.questions'
+            'exerciseQuestions' => function ($q) {return $q->withTrashed();}
         ])->find($id);
         return Inertia::render('Admin/Classification/LearningCategory/Show', [
             'learningCategory' => $learningCategory

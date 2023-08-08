@@ -43,7 +43,7 @@ export default function Show(props: Props) {
         learning_category,
       ])}
     >
-      <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+      <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-3">
         <div className="flex justify-between">
           <div className=" text-lg">
             <p>{exercise_question.name}</p>
@@ -56,6 +56,9 @@ export default function Show(props: Props) {
                 </span>
               }{' '}
               Menit
+            </p>
+            <p className={`${exercise_question.deleted_at ? "text-red-500" : "text-green-500"} font-semibold`}>
+              Status : {exercise_question.deleted_at ? "Nonaktif" : "Aktif"}
             </p>
           </div>
           <div className="flex justify-around my-auto gap-5">

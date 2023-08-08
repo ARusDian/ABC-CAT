@@ -16,6 +16,7 @@ export interface ExerciseQuestionModel {
   questions?: BankQuestionItemModel[];
 
   type: ExerciseQuestionType;
+  deleted_at?: string;
 }
 
 export const EXERCISE_QUESTION_TYPE = ['Pilihan', 'Kecermatan'] as const;

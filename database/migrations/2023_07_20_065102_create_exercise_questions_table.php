@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("type");
             $table->decimal("time_limit");
             $table->unsignedINteger("number_of_question");
+            $table->softDeletes();
             $table->timestamps();
         });
     }

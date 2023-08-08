@@ -11,6 +11,9 @@ import { BaseLearningMaterialDocumentModel } from "@/Models/LearningMaterial";
 import { getStorageFileUrl } from "@/Models/FileModel";
 import { Button, Tab, Tabs } from "@mui/material";
 import useDefaultClassificationRouteParams from "@/Hooks/useDefaultClassificationRouteParams";
+import { useConfirm } from "material-ui-confirm";
+import MuiInertiaLinkButton from "@/Components/MuiInertiaLinkButton";
+import LazyLoadMRT from "@/Components/LazyLoadMRT";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -48,6 +51,22 @@ interface Props {
 
 export default function Show({ learningCategory }: Props) {
 
+    const confirm = useConfirm();
+
+    const handleDelete = (
+        onDeleteMessage: string,
+        onDelete: () => any,
+        title: string,
+    ) => {
+        confirm({
+            description:
+                onDeleteMessage || `Ini akan menghapus ${title} selamanya.`,
+            confirmationButtonProps: { autoFocus: true },
+        })
+            .then(onDelete)
+            .catch((e) => console.log(e, 'Deletion cancelled.'));
+    };
+
     const [tabValue, setTabValue] = React.useState(0);
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -59,6 +78,8 @@ export default function Show({ learningCategory }: Props) {
         sub_learning_packet,
         learning_category,
     } = useDefaultClassificationRouteParams();
+
+    console.log(learningCategory.exercise_questions);
 
     return (
         <AdminShowLayout
@@ -197,26 +218,105 @@ export default function Show({ learningCategory }: Props) {
             </CustomTabPanel>
 
             <CustomTabPanel value={tabValue} index={2}>
-                <TableCard
-                    title={<><span className="mx-2 text-gray-600"><QuizIcon fontSize="large" /></span>Latihan Soal</>}
-                    createRoute="packet.sub.category.exercise.create"
-                    createRouteTitle="Tambah Latihan Soal"
-                    columns={[
-                        {
-                            header: 'Nama',
-                            accessorKey: 'name',
-                        }, {
-                            header: 'Jumlah Soal',
-                            accessorFn: (row) => row.questions?.length ?? 0,
-                        }
-                    ]}
-                    data={learningCategory.exercise_questions ?? []}
-                    showRoute="packet.sub.category.exercise.show"
-                    showRouteTitle="Show"
-                    learningPacketId={learningCategory.sub_learning_packet?.learning_packet_id ?? 0}
-                    subLearningPacketId={learningCategory.sub_learning_packet_id}
-                    learningCategoryId={learningCategory.id}
-                />
+                <div className="flex flex-col gap-3 m-8 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+                    <div className="flex justify-between">
+                        <div className="text-2xl"><span className="mx-2 text-gray-600"><QuizIcon fontSize="large" /></span>Latihan Soal</div>
+                    </div>
+                    <div className="">
+                        <LazyLoadMRT
+                            columns={[
+                                {
+                                    header: 'Nama',
+                                    accessorKey: 'name',
+                                }, {
+                                    header: 'Jumlah Soal',
+                                    accessorFn: (row) => row.questions?.length ?? 0,
+                                }, {
+                                    header: 'Aktif',
+                                    accessorFn: (row) => row.deleted_at ?
+                                        <p className="text-red-500">
+                                            Tidak Aktif
+                                        </p> : <p className="text-green-500">
+                                            Aktif
+                                        </p>,
+                                }
+                            ]}
+                            data={learningCategory.exercise_questions ?? []}
+                            enableColumnActions
+                            enableColumnFilters
+                            enablePagination
+                            enableSorting
+                            enableBottomToolbar
+                            enableTopToolbar
+                            enableRowActions
+                            enableRowNumbers
+                            muiTableBodyRowProps={{ hover: false }}
+                            muiTableHeadCellProps={{
+                                sx: {
+                                    fontWeight: 'bold',
+                                    fontSize: '16px',
+                                },
+                            }}
+                            renderTopToolbarCustomActions={() => (
+                                <div className="flex items-center justify-center gap-2">
+                                    <MuiInertiaLinkButton
+                                        color="success"
+                                        href={route("packet.sub.category.exercise.create", [
+                                            learningCategory.sub_learning_packet?.learning_packet_id ?? 0,
+                                            learningCategory.sub_learning_packet_id,
+                                            learningCategory.id,
+                                        ])}
+                                    >
+                                        Tammbah Latihan Soal
+                                    </MuiInertiaLinkButton>
+                                </div>
+                            )}
+                            renderRowActions={({ row }) => (
+                                <div className="flex items-center justify-center gap-2">
+                                    <MuiInertiaLinkButton
+                                        color="primary"
+                                        href={route("packet.sub.category.exercise.show", [
+                                            learningCategory.sub_learning_packet?.learning_packet_id ?? 0,
+                                            learningCategory.sub_learning_packet_id,
+                                            learningCategory.id,
+                                            row.original.id
+                                        ])}
+                                    >
+                                        {'Show'}
+                                    </MuiInertiaLinkButton>
+                                    <Button
+                                        variant="contained"
+                                        color={row.original.deleted_at ? 'info' : 'error'}
+                                        onClick={() => {
+                                            handleDelete(
+                                                (row.original.deleted_at === null ? 'Nonaktifkan' : 'Aktifkan') + " Latihan Soal " + row.original.name,
+                                                () => {
+                                                    row.original.deleted_at === null ? router.delete(route('packet.sub.category.exercise.destroy', [
+                                                        learningCategory.sub_learning_packet?.learning_packet_id ?? 0,
+                                                        learningCategory.sub_learning_packet_id,
+                                                        learningCategory.id,
+                                                        row.original.id
+                                                    ])) : router.post(route('packet.sub.category.exercise.restore', [
+                                                        learningCategory.sub_learning_packet?.learning_packet_id ?? 0,
+                                                        learningCategory.sub_learning_packet_id,
+                                                        learningCategory.id,
+                                                        row.original.id
+                                                    ]))
+                                                },
+                                                "Latihan Soal " + row.original.name
+                                            )
+                                        }}
+                                        size="large"
+                                    >
+                                        {
+                                            row.original.deleted_at === null ? 'Nonaktifkan' : 'Aktifkan'
+                                        }
+                                    </Button>
+                                </div>
+                            )}
+                        />
+                    </div>
+                </div>
             </CustomTabPanel>
         </AdminShowLayout >
     )

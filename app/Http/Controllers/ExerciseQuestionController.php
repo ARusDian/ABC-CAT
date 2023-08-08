@@ -79,7 +79,7 @@ class ExerciseQuestionController extends Controller
     {
         $bank_question = BankQuestion::with(['items' => function ($q) {
             return $q->where('is_active', true);
-        } ])->findOrFail($id);
+        }])->findOrFail($id);
         $exercise_question = ExerciseQuestion::whereType($bank_question->type->name)->get();
 
         return Inertia::render('Admin/ExerciseQuestion/Import', [
@@ -96,7 +96,9 @@ class ExerciseQuestionController extends Controller
         return Inertia::render('Admin/ExerciseQuestion/Show', [
             'exercise_question' => fn () => ExerciseQuestion::with([
                 'questions',
-            ])->findOrFail($id),
+            ])
+                ->withTrashed()
+                ->findOrFail($id),
         ]);
     }
 
@@ -106,15 +108,20 @@ class ExerciseQuestionController extends Controller
             'exercise_question' => fn () => ExerciseQuestion::with([
                 'exams' => fn ($q) => $q->withScore(),
                 'exams.user',
-            ])->findOrFail($id)
+            ])
+                ->withTrashed()
+                ->findOrFail($id)
         ]);
     }
 
-    public function getLeaderboardData($id){
+    public function getLeaderboardData($id)
+    {
         $exercise_question = ExerciseQuestion::with([
             'exams' => fn ($q) => $q->withScore(),
             'exams.user',
-        ])->findOrFail($id);
+        ])
+            ->withTrashed()
+            ->findOrFail($id);
 
         return response()->json($exercise_question);
     }
@@ -125,7 +132,7 @@ class ExerciseQuestionController extends Controller
     public function edit($learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         return Inertia::render('Admin/ExerciseQuestion/Edit', [
-            'exercise_question' => fn () => ExerciseQuestion::findOrFail($id),
+            'exercise_question' => fn () => ExerciseQuestion::withTrashed()->findOrFail($id),
         ]);
     }
 
@@ -136,7 +143,7 @@ class ExerciseQuestionController extends Controller
     {
         $data = $this->validateData($request->all());
 
-        $exercise = ExerciseQuestion::findOrFail($id);
+        $exercise = ExerciseQuestion::withTrashed()->findOrFail($id);
         $exercise->update($data);
 
         return redirect()
@@ -156,7 +163,7 @@ class ExerciseQuestionController extends Controller
             'bank_question_items.*' => 'numeric',
         ]);
 
-        $exercise_question = ExerciseQuestion::findOrFail($id);
+        $exercise_question = ExerciseQuestion::withTrashed()->findOrFail($id);
 
         $exercise_question->questions()->sync($data['bank_question_items'] ?? []);
 
@@ -176,5 +183,30 @@ class ExerciseQuestionController extends Controller
     public function destroy($learning_packet, $sub_learning_packet, $learning_category_id, $id)
     {
         //
+
+        $exercise = ExerciseQuestion::findOrFail($id);
+        $exercise->delete();
+
+        return redirect()
+            ->route('packet.sub.category.show', [
+                $learning_packet,
+                $sub_learning_packet,
+                $learning_category_id,
+            ])
+            ->banner('Latihan Soal berhasil dihapus');
+    }
+
+    public function restore($learning_packet, $sub_learning_packet, $learning_category_id, $id)
+    {
+        $exercise = ExerciseQuestion::withTrashed()->findOrFail($id);
+        $exercise->restore();
+
+        return redirect()
+            ->route('packet.sub.category.show', [
+                $learning_packet,
+                $sub_learning_packet,
+                $learning_category_id,
+            ])
+            ->banner('Latihan Soal berhasil dikembalikan');
     }
 }
