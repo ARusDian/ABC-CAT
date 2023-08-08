@@ -267,7 +267,7 @@ export default function Show({ learningCategory }: Props) {
                                             learningCategory.id,
                                         ])}
                                     >
-                                        Tammbah Latihan Soal
+                                        Tambah Latihan Soal
                                     </MuiInertiaLinkButton>
                                 </div>
                             )}
