@@ -210,7 +210,8 @@ class BankQuestionItemController extends Controller
         ) {
             $data = $this->validateData($request->all());
 
-            $question = BankQuestionItem::find($id)->update([
+            $question = BankQuestionItem::find($id);
+            $question->update([
                 'weight' => $data['weight'],
 
                 'type' => $data['type'],
