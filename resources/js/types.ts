@@ -1,3 +1,5 @@
+import { BaseDocumentFileModel } from "./Models/FileModel";
+
 type DateTime = string;
 
 export type Nullable<T> = T | null;
@@ -14,12 +16,14 @@ export interface BaseUser {
   id?: number;
   name: string;
   email: string;
+  profile_photo_path?: Nullable<string>;
   phone_number: string;
   active_year?: string;
   roles?: Array<Role>;
 }
 
 export interface NewUser extends BaseUser {
+  photo?: BaseDocumentFileModel;
   password?: string;
 }
 

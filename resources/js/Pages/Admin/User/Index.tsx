@@ -5,6 +5,7 @@ import { User } from '@/types';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
+import { asset } from '@/Models/Helper';
 
 interface Props {
   users: Array<User>;
@@ -15,8 +16,19 @@ export default function Index(props: Props) {
 
   const dataColumns = [
     {
-      accessorKey: 'name',
       header: 'Nama User',
+      accessorFn(originalRow) {
+        return (
+          <div className='flex gap-3'>
+            <img
+              className="rounded-full h-20 w-20 object-cover"
+              src={originalRow.profile_photo_path ? asset('public',originalRow.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
+              alt={originalRow.name}
+            />
+            <p className='my-auto'>{originalRow.name}</p>
+          </div>
+        )
+      },
     },
     {
       accessorKey: 'email',

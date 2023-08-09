@@ -4,6 +4,7 @@ import { User } from '@/types';
 import { router } from '@inertiajs/react';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
+import { asset } from '@/Models/Helper';
 
 interface Props {
   user: User;
@@ -37,7 +38,8 @@ export default function Show(props: Props) {
       deleteTitle="Hapus"
     >
       <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
-        <div className='flex justify-end'>
+        <div className='flex justify-end my-3'>
+
           <MuiInertiaLinkButton
             color="success"
             href={route('user-learning-packet.create', {
@@ -46,6 +48,13 @@ export default function Show(props: Props) {
           >
             Tambah Langganan Paket Belajar
           </MuiInertiaLinkButton>
+        </div>
+        <div className='flex justify-center'>
+          <img
+            className="rounded-full h-40 w-40 object-cover border"
+            src={user.profile_photo_path ? asset('public', user.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
+            alt={user.name}
+          />
         </div>
         <table className="w-full">
           <thead>

@@ -9,7 +9,7 @@ export interface BaseDocumentFileModel {
   url?: string;
   updated_at?: string;
 
-  __isOpened: boolean;
+  __isOpened?: boolean;
 }
 
 export interface DocumentFileModel extends BaseDocumentFileModel {

@@ -12,6 +12,7 @@ import useRoute from '@/Hooks/useRoute';
 import { User } from '@/types';
 import { router } from '@inertiajs/react';
 import { useForm, usePage } from '@inertiajs/react';
+import { asset } from '@/Models/Helper';
 
 interface Props {
   user: User;
@@ -127,7 +128,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
             // <!-- Current Profile Photo -->
             <div className="mt-2">
               <img
-                src={user.profile_photo_url}
+                src={user.profile_photo_path ? asset('public', user.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
                 alt={user.name}
                 className="rounded-full h-20 w-20 object-cover"
               />

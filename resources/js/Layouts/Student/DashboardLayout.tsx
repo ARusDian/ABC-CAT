@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Head, router } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import Banner from '@/Components/Jetstream/Banner';
 import ResponsiveNavLink from '@/Components/Jetstream/ResponsiveNavLink';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -23,6 +23,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import QuizIcon from '@mui/icons-material/Quiz';
 import { asset } from '@/Models/Helper';
+import { User } from '@/types';
 
 interface Props {
   title: string;
@@ -113,7 +114,9 @@ export default function DashboardLayout({
   children,
 }: PropsWithChildren<Props>) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
-
+  const { props } = usePage()
+  const user = props.user as unknown as User;
+  
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -128,7 +131,30 @@ export default function DashboardLayout({
 
   const sideBar = () => (
     <Box sx={{ width: 250 }} role="presentation">
-      <ul className="my-10">
+      <ul className="my-1">
+        <li>
+          <ResponsiveNavLink
+            href={route('profile.show')}
+            active={route().current('profile.show')}
+          >
+
+            <div className='flex gap-3'>
+              <img
+                src={user.profile_photo_path ? asset('public', user.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
+                alt={user.name}
+                className="rounded-full h-10 w-10 object-cover"
+              />
+              <div className='my-auto flex-col text-lg'>
+                <p>
+                  {user.name}
+                </p>
+                <p className='text-sm'>
+                  {user.email}
+                </p>
+              </div>
+            </div>
+          </ResponsiveNavLink>
+        </li>
         <li>
           <ResponsiveNavLink
             href={route('dashboard')}

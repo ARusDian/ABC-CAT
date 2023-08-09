@@ -7,6 +7,8 @@ import { ErrorHelper } from '@/Models/ErrorHelper';
 import { NewUser, Role } from '@/types';
 import { InputLabel, TextField } from '@mui/material';
 import { Controller, UseFormReturn } from 'react-hook-form';
+import { asset } from '@/Models/Helper';
+import { BaseDocumentFileModel, getStorageFileUrl } from '@/Models/FileModel';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   form: UseFormReturn<NewUser>;
@@ -20,6 +22,42 @@ export default function Form(props: Props) {
 
   return (
     <div className={`flex-col gap-5 ${props.className}`}>
+      <div className="form-control w-full mt-4">
+        <InputLabel htmlFor="photo">Foto Profil</InputLabel>
+        <Controller
+          control={form.control}
+          name="photo"
+          render={({ field }) => {
+            return (
+              <>
+                <img
+                  className="rounded-full h-20 w-20 object-cover"
+                  src={
+                    form.getValues('photo')?.file ?
+                      getStorageFileUrl(form.getValues('photo') as BaseDocumentFileModel)! :
+                      (
+                        form.formState.defaultValues?.profile_photo_path ? asset('public', form.formState.defaultValues?.profile_photo_path as string) : asset('root', 'assets/image/default-profile.png')
+                      )
+                  }
+                  alt={form.formState.defaultValues?.name}
+                />
+                <input
+                  type="file"
+                  ref={field.ref}
+                  onChange={e => {
+                    field.onChange({
+                      file: e.target.files![0],
+                      path: "",
+                      disk: 'public',
+                    });
+                  }}
+                />
+              </>
+            );
+          }}
+        />
+        <InputError message={form.formState.errors.photo?.message} className="mt-2" />
+      </div>
       <div className="form-control w-full mt-4">
         <TextField
           {...form.register('name', { required: true })}
