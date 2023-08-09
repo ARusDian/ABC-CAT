@@ -56,6 +56,8 @@ class UserController extends Controller
                 'roles.*.id' => 'required|exists:roles',
                 'phone_number' => 'required|string',
                 'photo.file' => 'nullable|max:2048',
+                'address' => 'required|string',
+                'gender'=> 'required|in:L,P'
             ]);
             $user = User::create([
                 'name' => $validated['name'],
@@ -63,6 +65,8 @@ class UserController extends Controller
                 'password' => Hash::make($validated['password']),
                 'phone_number' => $validated['phone_number'],
                 'active_year' => date('Y'),
+                'address'=> $validated['address'],
+                'gender'=>$validated['gender']
             ]);
 
             if (isset($request['photo']['file'])) {
@@ -136,6 +140,8 @@ class UserController extends Controller
                 'active_year' => 'required|string',
                 'photo' => 'nullable|max:2048',
                 'photo_profile_path' => 'nullable|string',
+                'address' => 'required|string',
+                'gender' => 'required|in:L,P'
             ]);
 
             $user = User::findOrFail($id);
@@ -144,6 +150,8 @@ class UserController extends Controller
                 'email' => $validated['email'],
                 'phone_number' => $validated['phone_number'],
                 'active_year' => $validated['active_year'],
+                'address' => $validated['address'],
+                'gender' => $validated['gender'],
             ]);
 
             if (isset($request['photo']['file'])) {

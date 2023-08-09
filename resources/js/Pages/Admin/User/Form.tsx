@@ -5,7 +5,7 @@ import InputError from '@/Components/Jetstream/InputError';
 import TextInput from '@/Components/Jetstream/TextInput';
 import { ErrorHelper } from '@/Models/ErrorHelper';
 import { NewUser, Role } from '@/types';
-import { InputLabel, TextField } from '@mui/material';
+import { InputLabel, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { asset } from '@/Models/Helper';
 import { BaseDocumentFileModel, getStorageFileUrl } from '@/Models/FileModel';
@@ -29,7 +29,7 @@ export default function Form(props: Props) {
           name="photo"
           render={({ field }) => {
             return (
-              <>
+              <div className='flex flex-col gap-3'>
                 <img
                   className="rounded-full h-20 w-20 object-cover"
                   src={
@@ -52,7 +52,7 @@ export default function Form(props: Props) {
                     });
                   }}
                 />
-              </>
+              </div>
             );
           }}
         />
@@ -81,11 +81,42 @@ export default function Form(props: Props) {
       <div className="form-control w-full mt-4">
         <TextField
           {...form.register('phone_number', { required: true })}
-          label="Phone Number"
+          label="Nomor Telepon"
           className="mt-1 block w-full"
           defaultValue={form.formState.defaultValues?.phone_number}
           error={form.formState.errors?.phone_number != null}
           helperText={form.formState.errors.phone_number?.message}
+        />
+      </div>
+      <div className="form-control w-full mt-4">
+        <Controller
+          control={form.control}
+          name='gender'
+          render={({ field }) => {
+            return (
+              <>
+                <InputLabel htmlFor="type">Gender</InputLabel>
+                <ToggleButtonGroup
+                  id="type"
+                  color='primary'
+                  value={field.value}
+                  exclusive
+                  onChange={(_e: React.MouseEvent<HTMLElement>, v: "L" | "P") =>
+                    field.onChange(v)
+                  }
+                  aria-label="text alignment"
+                >
+                  <ToggleButton value="L" aria-label="left aligned">
+                    Laki - laki
+                  </ToggleButton>
+                  <ToggleButton value="P" aria-label="centered">
+                    Perempuan
+                  </ToggleButton>
+                </ToggleButtonGroup>
+                <InputError className="mt-2" message={form.formState.errors.gender?.message} />
+              </>
+            )
+          }}
         />
       </div>
       <div className="form-control w-full mt-4">
@@ -100,6 +131,20 @@ export default function Form(props: Props) {
           defaultValue={form.formState.defaultValues?.password}
           error={form.formState.errors?.password != null}
           helperText={form.formState.errors.password?.message}
+        />
+      </div>
+      <div className="form-control w-full mt-4">
+        <TextField
+          {...form.register('address', {
+            required: form.getValues('id') == null,
+            minLength: { value: 8, message: 'address minimal 8 huruf' },
+          })}
+          label="Alamat"
+          type="address"
+          className="mt-1 block w-full"
+          defaultValue={form.formState.defaultValues?.address}
+          error={form.formState.errors?.address != null}
+          helperText={form.formState.errors.address?.message}
         />
       </div>
       {

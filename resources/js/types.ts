@@ -18,8 +18,10 @@ export interface BaseUser {
   email: string;
   profile_photo_path?: Nullable<string>;
   phone_number: string;
-  active_year?: string;
+  active_year?: number;
   roles?: Array<Role>;
+  gender: 'L' | 'P';
+  address: string
 }
 
 export interface NewUser extends BaseUser {

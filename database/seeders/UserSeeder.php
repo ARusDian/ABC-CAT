@@ -20,9 +20,11 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt('rahasia45'),
             'phone_number' => '081234567890',
-            'email_verified_at' => now(),      
+            'active_year' => 2023,
+            'gender' => 'L',
+            'address' => 'Earth',
+            'email_verified_at' => now(),
             'remember_token' => '1234567890',
         ])->assignRole('super-admin');
-
     }
 }

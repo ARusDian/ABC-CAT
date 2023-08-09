@@ -25,6 +25,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
     email: user.email,
     phone_number: user.phone_number,
     photo: null as File | null,
+    address: user.address,
   });
   const route = useRoute();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -81,19 +82,19 @@ export default function UpdateProfileInformationForm({ user }: Props) {
   return (
     <FormSection
       onSubmit={updateProfileInformation}
-      title={'Profile Information'}
-      description={`Update your account's profile information and email address.`}
+      title={'Informasi Profil'}
+      description={`Memperbarui Informasi Profile Akun Anda.`}
       renderActions={() => (
         <>
           <ActionMessage on={form.recentlySuccessful} className="mr-3">
-            Saved.
+            Tersimpan.
           </ActionMessage>
 
           <PrimaryButton
             className={classNames({ 'opacity-25': form.processing })}
             disabled={form.processing}
           >
-            Save
+            Simpan
           </PrimaryButton>
         </>
       )}
@@ -109,7 +110,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
             onChange={updatePhotoPreview}
           />
 
-          <InputLabel htmlFor="photo" value="Photo" />
+          <InputLabel htmlFor="photo" value="Foto" />
 
           {photoPreview ? (
             // <!-- New Profile Photo Preview -->
@@ -140,7 +141,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
             type="button"
             onClick={selectNewPhoto}
           >
-            Select A New Photo
+            Pilih Foto Baru
           </SecondaryButton>
 
           {user.profile_photo_path ? (
@@ -149,7 +150,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
               className="mt-2"
               onClick={deletePhoto}
             >
-              Remove Photo
+              Hapus Foto
             </SecondaryButton>
           ) : null}
 
@@ -159,7 +160,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
 
       {/* <!-- Name --> */}
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="name" value="Name" />
+        <InputLabel htmlFor="name" value="Nama" />
         <TextInput
           id="name"
           type="text"
@@ -186,7 +187,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
 
       {/* <!-- Phone Number --> */}
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="phone_number" value="phone_number" />
+        <InputLabel htmlFor="phone_number" value="Nomor Telepon" />
         <TextInput
           id="phone_number"
           type="text"
@@ -195,6 +196,19 @@ export default function UpdateProfileInformationForm({ user }: Props) {
           onChange={e => form.setData('phone_number', e.currentTarget.value)}
         />
         <InputError message={form.errors.phone_number} className="mt-2" />
+      </div>
+
+      {/* <!-- Address --> */}
+      <div className="col-span-6 sm:col-span-4">
+        <InputLabel htmlFor="address" value="Alamat" />
+        <TextInput
+          id="address"
+          type="text"
+          className="mt-1 block w-full"
+          value={form.data.address}
+          onChange={e => form.setData('address', e.currentTarget.value)}
+        />
+        <InputError message={form.errors.address} className="mt-2" />
       </div>
     </FormSection>
   );

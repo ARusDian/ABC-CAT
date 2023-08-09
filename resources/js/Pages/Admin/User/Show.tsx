@@ -81,6 +81,14 @@ export default function Show(props: Props) {
               <td className="py-3 text-center">{user.active_year}</td>
             </tr>
             <tr className="border-b py-3 border-black">
+              <td className="py-3 text-center">Alamat</td>
+              <td className="py-3 text-center">{user.address}</td>
+            </tr>
+            <tr className="border-b py-3 border-black">
+              <td className="py-3 text-center">Gender</td>
+              <td className="py-3 text-center">{user.gender === 'L' ? "Laki laki" : (user.gender === 'P' ? "Perempuan" : "Tidak Diketahui")}</td>
+            </tr>
+            <tr className="border-b py-3 border-black">
               <td className="py-3 text-center">Status</td>
               <td className="py-3 text-center">
                 {user.roles.map(role => role.name).join(', ')}
