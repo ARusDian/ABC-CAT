@@ -22,6 +22,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import FolderSharedIcon from '@mui/icons-material/FolderShared';
+import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import { asset } from '@/Models/Helper';
 
 interface Props {
@@ -29,7 +30,7 @@ interface Props {
   renderHeader?(): JSX.Element;
 }
 
-const drawerWidth = 240;
+const drawerWidth = 270;
 const navHeight = 70;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -150,6 +151,17 @@ export default function DashboardAdminLayout({
               <ManageAccountsIcon fontSize="large" />
             </span>
             Pengguna
+          </ResponsiveNavLink>
+        </li>
+        <li>
+          <ResponsiveNavLink
+            href={route('user-activity')}
+            active={route().current('user-activity')}
+          >
+            <span className={'mr-4'}>
+              <ManageHistoryIcon fontSize="large" />
+            </span>
+            Log Aktivitas
           </ResponsiveNavLink>
         </li>
         <li>

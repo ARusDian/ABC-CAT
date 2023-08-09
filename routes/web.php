@@ -13,6 +13,7 @@ use App\Http\Controllers\LearningCategoryController;
 use App\Http\Controllers\LearningMaterialController;
 use App\Http\Controllers\LearningPacketController;
 use App\Http\Controllers\SubLearningPacketController;
+use App\Http\Controllers\UserActivityController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserLearningPacketController;
 use Illuminate\Support\Facades\Route;
@@ -82,6 +83,7 @@ Route::middleware([
         Route::prefix("admin")->group(function () {
             Route::middleware(["role:super-admin"])->group(function () {
                 Route::resource("/user", UserController::class);
+                Route::get('/user-activity', [UserActivityController::class, "Index"])->name('user-activity');
             });
 
             Route::resource("document-file", DocumentFileController::class);
