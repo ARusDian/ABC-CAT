@@ -157,10 +157,10 @@ class BankQuestionItemController extends Controller
             }
 
             activity()
-                ->performedOn($bank_question)
+                ->performedOn($questions[0])
                 ->causedBy(auth()->user())
                 ->withProperties(['method' => 'CREATE'])
-                ->log('Question Items ' . $bank_question->name . ' created successfully');
+                ->log('Multiple Question Items created successfully');
 
             return redirect()
                 ->route('packet.sub.category.bank-question.show', [
