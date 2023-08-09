@@ -58,7 +58,7 @@ class ExamController extends Controller
     public function checkFinished(Exam $exam)
     {
         if ($exam->isExpired() && !$exam->finished) {
-            $exam->finished_at = $exam->expired_in->minimum();
+            $exam->finished_at = $exam->expire_in->minimum();
             $exam->save();
         }
     }
