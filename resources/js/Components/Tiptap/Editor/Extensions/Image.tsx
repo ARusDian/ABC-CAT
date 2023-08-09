@@ -1,4 +1,6 @@
 import { Node, nodeInputRule, mergeAttributes } from '@tiptap/core';
+import { ReactNodeViewRenderer } from '@tiptap/react';
+import { ImageResizeComponent } from '../components/ImageResizeComponent';
 // import { ReactHTMLElement } from 'react';
 // import {nodeInputRule} from 'tiptap-commands'
 
@@ -10,14 +12,14 @@ export interface ImageOptions {
 
 export type ImageAttribute =
   | {
-      id: string;
-      disk: string;
-    }
+    id: string;
+    disk: string;
+  }
   | {
-      src: string;
-      alt?: string;
-      title?: string;
-    };
+    src: string;
+    alt?: string;
+    title?: string;
+  };
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -86,6 +88,12 @@ export const Image = Node.create<ImageOptions>({
       'data-disk': {
         default: null,
       },
+      width: {
+        default: null,
+      },
+      height: {
+        default: null,
+      },
     };
   },
 
@@ -136,7 +144,7 @@ export const Image = Node.create<ImageOptions>({
 
   renderHTML({ HTMLAttributes }) {
     const { src, 'data-id': id, 'data-disk': disk, ...attr } = HTMLAttributes;
-
+    
     if (id != null && disk != null) {
       return [
         'img',
@@ -158,20 +166,20 @@ export const Image = Node.create<ImageOptions>({
     return {
       setImage:
         options =>
-        ({ commands }) => {
-          return commands.insertContent({
-            type: this.name,
-            attrs: {
-              ...options,
-              ...('id' in options
-                ? {
+          ({ commands }) => {
+            return commands.insertContent({
+              type: this.name,
+              attrs: {
+                ...options,
+                ...('id' in options
+                  ? {
                     'data-disk': options.disk,
                     'data-id': options.id,
                   }
-                : {}),
-            },
-          });
-        },
+                  : {}),
+              },
+            });
+          },
     };
   },
 
@@ -187,5 +195,9 @@ export const Image = Node.create<ImageOptions>({
         },
       }),
     ];
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(ImageResizeComponent)
   },
 });
