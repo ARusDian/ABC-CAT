@@ -219,6 +219,9 @@ class BankQuestionItemController extends Controller
 
                 'answer' => $data['answer'],
                 'answers' => $data['answers'],
+
+                'explanation' => $data['explanation'],
+
             ]);
 
             activity()
@@ -280,7 +283,7 @@ class BankQuestionItemController extends Controller
                 ->causedBy(auth()->user())
                 ->withProperties(['method' => 'RESTORE'])
                 ->log('Question ' . $question->name . ' restored successfully');
-                
+
             return redirect()
                 ->route('packet.sub.category.bank-question.show', [
                     $learning_packet,
