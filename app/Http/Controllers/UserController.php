@@ -69,6 +69,7 @@ class UserController extends Controller
             activity()
                 ->performedOn($user)
                 ->causedBy(Auth::user())
+                ->withProperties(['method' => 'CREATE'])
                 ->log('Created User ' . $user->name . '');
 
             return redirect()
@@ -146,6 +147,7 @@ class UserController extends Controller
             activity()
                 ->performedOn($user)
                 ->causedBy(Auth::user())
+                ->withProperties(['method' => 'UPDATE'])
                 ->log('Updated User ' . $user->name . '');
             return redirect()
                 ->route('user.show', $id)
@@ -167,6 +169,7 @@ class UserController extends Controller
         activity()
             ->performedOn($user)
             ->causedBy(Auth::user())
+            ->withProperties(['method' => 'DELETE'])
             ->log('Deleted User ' . $user->name . '');
         return redirect()
             ->route('user.index')

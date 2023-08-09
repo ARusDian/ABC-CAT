@@ -68,6 +68,7 @@ class ExerciseQuestionController extends Controller
         activity()
             ->performedOn($exercise)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'CREATE'])
             ->log('Exercise Question ' . $exercise->name . ' created successfully.');
 
         return redirect()
@@ -154,6 +155,7 @@ class ExerciseQuestionController extends Controller
         activity()
             ->performedOn($exercise)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'UPDATE'])
             ->log('Exercise Question ' . $exercise->name . ' updated successfully.');
 
         return redirect()
@@ -176,6 +178,12 @@ class ExerciseQuestionController extends Controller
         $exercise_question = ExerciseQuestion::withTrashed()->findOrFail($id);
 
         $exercise_question->questions()->sync($data['bank_question_items'] ?? []);
+
+        activity()
+            ->performedOn($exercise_question)
+            ->causedBy(auth()->user())
+            ->withProperties(['method' => 'UPDATE'])
+            ->log('Exercise Question imported' . $exercise_question->name . ' updated successfully.');
 
         return redirect()
             ->route('packet.sub.category.exercise.show', [
@@ -200,6 +208,7 @@ class ExerciseQuestionController extends Controller
         activity()
             ->performedOn($exercise)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'DELETE'])
             ->log('Exercise Question ' . $exercise->name . ' deleted successfully.');
 
         return redirect()
@@ -219,6 +228,7 @@ class ExerciseQuestionController extends Controller
         activity()
             ->performedOn($exercise)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'RESTORE'])
             ->log('Exercise Question ' . $exercise->name . ' restored successfully.');
 
         return redirect()

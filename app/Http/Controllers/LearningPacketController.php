@@ -45,6 +45,7 @@ class LearningPacketController extends Controller
         activity()
             ->performedOn($learning_packet)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'CREATE'])
             ->log('Learning Packet ' . $learning_packet->name . ' created successfully.');
 
         return redirect()->route('packet.index')->banner('Learning Packet created successfully.');
@@ -91,6 +92,7 @@ class LearningPacketController extends Controller
         activity()
             ->performedOn($learningPacket)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'UPDATE'])
             ->log('Learning Packet ' . $learningPacket->name . ' updated successfully.');
 
         return redirect()->route('packet.show', $id)->banner('Learning Packet updated successfully.');
@@ -108,6 +110,7 @@ class LearningPacketController extends Controller
         activity()
             ->performedOn($learningPacket)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'DELETE'])
             ->log('Learning Packet ' . $learningPacket->name . ' deleted successfully.');
 
         return redirect()->route('packet.index')->banner('Learning Packet deleted successfully.');

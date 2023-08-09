@@ -104,6 +104,13 @@ class ExerciseQuestionQuestionController extends Controller
                     'document_file_id' => $imageId,
                 ]);
             }
+
+            activity()
+                ->performedOn($newQuestion)
+                ->causedBy(auth()->user())
+                ->withProperties(['method' => 'CREATE'])
+                ->log('Question ' . $newQuestion->question . ' created successfully.');
+
             return redirect()
                 ->route('packet.sub.category.exercise.show', [
                     $learning_packet,
@@ -146,6 +153,12 @@ class ExerciseQuestionQuestionController extends Controller
                     'answers' => $data['answers'],
                 ]);
             }
+
+            activity()
+                ->performedOn($questions[0])
+                ->causedBy(auth()->user())
+                ->withProperties(['method' => 'CREATE'])
+                ->log('Question Items created successfully.');
 
             return redirect()
                 ->route('packet.sub.category.exercise.show', [
@@ -205,6 +218,12 @@ class ExerciseQuestionQuestionController extends Controller
                 'answers' => $data['answers'],
             ]);
 
+            activity()
+                ->performedOn($question)
+                ->causedBy(auth()->user())
+                ->withProperties(['method' => 'UPDATE'])
+                ->log('Question ' . $question->question . ' updated successfully.');
+
             return redirect()
                 ->route('packet.sub.category.exercise.show', [
                     $learning_packet,
@@ -225,6 +244,13 @@ class ExerciseQuestionQuestionController extends Controller
             $question->update([
                 'is_active' => false,
             ]);
+
+            activity()
+                ->performedOn($question)
+                ->causedBy(auth()->user())
+                ->withProperties(['method' => 'DELETE'])
+                ->log('Question ' . $question->question . ' deleted successfully.');
+
             return redirect()
                 ->route('exercise.show', [$exercise_question])
                 ->banner('Question deleted successfully');
@@ -238,6 +264,13 @@ class ExerciseQuestionQuestionController extends Controller
             $question->update([
                 'is_active' => true,
             ]);
+
+            activity()
+                ->performedOn($question)
+                ->causedBy(auth()->user())
+                ->withProperties(['method' => 'RESTORE'])
+                ->log('Question ' . $question->question . ' restored successfully.');
+
             return redirect()
                 ->route('packet.sub.category.exercise.show', [
                     $learning_packet,

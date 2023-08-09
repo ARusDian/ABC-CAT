@@ -8,6 +8,9 @@ interface UserActivity {
     id: number;
     description: string;
     causer: User;
+    properties: {
+        method : "CREATE" | "UPDATE" | "DELETE" | "RESTORE" | "FORCE_DELETE";
+    };
     subject_type: string;
     created_at: string;
 }
@@ -16,7 +19,16 @@ interface Props {
     activities: UserActivity[];
 }
 
+const color = {
+    CREATE: 'text-green-500',
+    UPDATE: 'text-yellow-500',
+    DELETE: 'text-red-400',
+    RESTORE: 'text-blue-500',
+    FORCE_DELETE: 'text-red-600',
+}
 export default function UserActivityIndex({ activities }: Props) {
+
+    console.log(activities);
 
     const columns = [
         {
@@ -24,9 +36,18 @@ export default function UserActivityIndex({ activities }: Props) {
             accessorKey: 'causer.name',
         }, {
             header: 'Subjek',
-            accessorFn: (originalRow: UserActivity) => { 
+            accessorFn: (originalRow: UserActivity) => {
                 return originalRow.subject_type.replace('App\\Models\\', '')
             },
+        }, {
+            header: 'Method',
+            accessorFn: (originalRow: UserActivity) => {
+                return (
+                    <p className={color[originalRow.properties.method]}>
+                        {originalRow.properties.method}
+                    </p>
+                )
+            }
         }, {
             header: 'Waktu',
             accessorFn: (originalRow: UserActivity) => {

@@ -52,6 +52,7 @@ class SubLearningPacketController extends Controller
         activity()
             ->performedOn($subLearningPacket)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'CREATE'])
             ->log('Sub Learning Packet ' . $request->name . ' created successfully.');
 
         return redirect()->route('packet.show', $request->learning_packet_id)->banner('Sub Learning Packet created successfully.');
@@ -98,6 +99,7 @@ class SubLearningPacketController extends Controller
         activity()
             ->performedOn($subLearningPacket)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'UPDATE'])
             ->log('Sub Learning Packet ' . $subLearningPacket->name . ' updated successfully.');
 
         return redirect()->route('packet.sub.show', [$learning_packet, $subLearningPacket->learning_packet_id])->banner('Sub Learning Packet updated successfully.');
@@ -115,6 +117,7 @@ class SubLearningPacketController extends Controller
         activity()
             ->performedOn($subLearningPacket)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'DELETE'])
             ->log('Sub Learning Packet ' . $subLearningPacket->name . ' deleted successfully.');
 
         return redirect()->route('packet.show', $subLearningPacket->learning_packet_id)->banner('Sub Learning Packet deleted successfully.');

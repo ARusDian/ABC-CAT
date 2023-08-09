@@ -106,6 +106,7 @@ class BankQuestionItemController extends Controller
             activity()
                 ->performedOn($newQuestion)
                 ->causedBy(auth()->user())
+                ->withProperties(['method' => 'CREATE'])
                 ->log('Question ' . $newQuestion->name . ' created successfully');
 
             return redirect()
@@ -158,6 +159,7 @@ class BankQuestionItemController extends Controller
             activity()
                 ->performedOn($bank_question)
                 ->causedBy(auth()->user())
+                ->withProperties(['method' => 'CREATE'])
                 ->log('Question Items ' . $bank_question->name . ' created successfully');
 
             return redirect()
@@ -221,6 +223,7 @@ class BankQuestionItemController extends Controller
             activity()
                 ->performedOn($question)
                 ->causedBy(auth()->user())
+                ->withProperties(['method' => 'UPDATE'])
                 ->log('Question ' . $question->name . ' updated successfully');
 
             return redirect()
@@ -249,6 +252,7 @@ class BankQuestionItemController extends Controller
             activity()
                 ->performedOn($question)
                 ->causedBy(auth()->user())
+                ->withProperties(['method' => 'DELETE'])
                 ->log('Question ' . $question->name . ' deleted successfully');
 
             return redirect()
@@ -273,6 +277,7 @@ class BankQuestionItemController extends Controller
             activity()
                 ->performedOn($question)
                 ->causedBy(auth()->user())
+                ->withProperties(['method' => 'RESTORE'])
                 ->log('Question ' . $question->name . ' restored successfully');
                 
             return redirect()

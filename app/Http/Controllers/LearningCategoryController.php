@@ -48,6 +48,7 @@ class LearningCategoryController extends Controller
         activity()
             ->performedOn($learningCategory)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'CREATE'])
             ->log('Learning Category ' . $request->name . ' created successfully.');
 
         return redirect()->route('packet.sub.show', [$learning_packet, $sub_learning_packet])->banner('Learning Category created successfully.');
@@ -102,6 +103,7 @@ class LearningCategoryController extends Controller
         activity()
             ->performedOn($learningCategory)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'UPDATE'])
             ->log('Learning Category ' . $request->name . ' updated successfully.');
 
         return redirect()->route('packet.sub.category.show', [$learning_packet, $sub_learning_packet, $id])->banner('Learning Category updated successfully.');
@@ -119,6 +121,7 @@ class LearningCategoryController extends Controller
         activity()
             ->performedOn($learningCategory)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'DELETE'])
             ->log('Learning Category ' . $learningCategory->name . ' deleted successfully.');
 
         return redirect()->route('packet.sub.show', [$learning_packet, $sub_learning_packet])->banner('Learning Category deleted successfully.');

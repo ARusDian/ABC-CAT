@@ -74,6 +74,7 @@ class LearningMaterialController extends Controller
             activity()
                 ->performedOn($learningMaterial)
                 ->causedBy(auth()->user())
+                ->withProperties(['method' => 'CREATE'])
                 ->log('Learning Material ' . $learningMaterial->title . ' created successfully');
 
             return redirect()
@@ -193,6 +194,7 @@ class LearningMaterialController extends Controller
             activity()
                 ->performedOn($learningMaterial)
                 ->causedBy(auth()->user())
+                ->withProperties(['method' => 'UPDATE'])
                 ->log('Learning Material ' . $learningMaterial->title . ' updated successfully');
 
             return redirect()
@@ -239,6 +241,7 @@ class LearningMaterialController extends Controller
             activity()
                 ->performedOn($learningMaterial)
                 ->causedBy(auth()->user())
+                ->withProperties(['method' => 'DELETE'])
                 ->log('Learning Material ' . $learningMaterial->title . ' deleted successfully');
 
             return redirect()

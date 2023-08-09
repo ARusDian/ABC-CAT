@@ -58,6 +58,7 @@ class BankQuestionController extends Controller
         activity()
             ->performedOn($bank)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'CREATE'])
             ->log('Question Bank ' . $data['name'] . ' created successfully.');
 
         return redirect()
@@ -113,6 +114,7 @@ class BankQuestionController extends Controller
         activity()
             ->performedOn($bank)
             ->causedBy(auth()->user())
+            ->withProperties(['method' => 'UPDATE'])
             ->log('Question Bank ' . $bank->name . ' updated successfully.');
 
         return redirect()
