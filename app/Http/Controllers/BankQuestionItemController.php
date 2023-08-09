@@ -103,6 +103,11 @@ class BankQuestionItemController extends Controller
                 'answers' => $data['answers'],
             ]);
 
+            activity()
+                ->performedOn($newQuestion)
+                ->causedBy(auth()->user())
+                ->log('Question ' . $newQuestion->name . ' created successfully');
+
             return redirect()
                 ->route('packet.sub.category.bank-question.show', [
                     $learning_packet,
@@ -149,6 +154,11 @@ class BankQuestionItemController extends Controller
                     'answers' => $data['answers'],
                 ]);
             }
+
+            activity()
+                ->performedOn($bank_question)
+                ->causedBy(auth()->user())
+                ->log('Question Items ' . $bank_question->name . ' created successfully');
 
             return redirect()
                 ->route('packet.sub.category.bank-question.show', [
@@ -208,6 +218,11 @@ class BankQuestionItemController extends Controller
                 'answers' => $data['answers'],
             ]);
 
+            activity()
+                ->performedOn($question)
+                ->causedBy(auth()->user())
+                ->log('Question ' . $question->name . ' updated successfully');
+
             return redirect()
                 ->route('packet.sub.category.bank-question.item.show', [
                     $learning_packet,
@@ -230,6 +245,12 @@ class BankQuestionItemController extends Controller
             $question->update([
                 'is_active' => false,
             ]);
+
+            activity()
+                ->performedOn($question)
+                ->causedBy(auth()->user())
+                ->log('Question ' . $question->name . ' deleted successfully');
+
             return redirect()
                 ->route('packet.sub.category.bank-question.show', [
                     $learning_packet,
@@ -248,6 +269,12 @@ class BankQuestionItemController extends Controller
             $question->update([
                 'is_active' => true,
             ]);
+
+            activity()
+                ->performedOn($question)
+                ->causedBy(auth()->user())
+                ->log('Question ' . $question->name . ' restored successfully');
+                
             return redirect()
                 ->route('packet.sub.category.bank-question.show', [
                     $learning_packet,

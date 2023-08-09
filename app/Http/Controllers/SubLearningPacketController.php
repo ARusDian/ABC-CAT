@@ -47,7 +47,12 @@ class SubLearningPacketController extends Controller
             'learning_packet_id' => 'required',
         ]);
 
-        SubLearningPacket::create($request->all());
+        $subLearningPacket = SubLearningPacket::create($request->all());
+
+        activity()
+            ->performedOn($subLearningPacket)
+            ->causedBy(auth()->user())
+            ->log('Sub Learning Packet ' . $request->name . ' created successfully.');
 
         return redirect()->route('packet.show', $request->learning_packet_id)->banner('Sub Learning Packet created successfully.');
         
@@ -90,6 +95,11 @@ class SubLearningPacketController extends Controller
         $subLearningPacket = SubLearningPacket::find($id);
         $subLearningPacket->update($request->all());
 
+        activity()
+            ->performedOn($subLearningPacket)
+            ->causedBy(auth()->user())
+            ->log('Sub Learning Packet ' . $subLearningPacket->name . ' updated successfully.');
+
         return redirect()->route('packet.sub.show', [$learning_packet, $subLearningPacket->learning_packet_id])->banner('Sub Learning Packet updated successfully.');
     }
 
@@ -101,6 +111,11 @@ class SubLearningPacketController extends Controller
         //  
         $subLearningPacket = SubLearningPacket::find($id);
         $subLearningPacket->delete();
+
+        activity()
+            ->performedOn($subLearningPacket)
+            ->causedBy(auth()->user())
+            ->log('Sub Learning Packet ' . $subLearningPacket->name . ' deleted successfully.');
 
         return redirect()->route('packet.show', $subLearningPacket->learning_packet_id)->banner('Sub Learning Packet deleted successfully.');
     }

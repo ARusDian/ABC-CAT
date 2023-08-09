@@ -40,10 +40,15 @@ class LearningCategoryController extends Controller
             'name' => 'required',
         ]);
 
-        LearningCategory::create([
+        $learningCategory = LearningCategory::create([
             'name' => $request->name,
             'sub_learning_packet_id' => $sub_learning_packet,
         ]);
+
+        activity()
+            ->performedOn($learningCategory)
+            ->causedBy(auth()->user())
+            ->log('Learning Category ' . $request->name . ' created successfully.');
 
         return redirect()->route('packet.sub.show', [$learning_packet, $sub_learning_packet])->banner('Learning Category created successfully.');
     }
@@ -94,6 +99,11 @@ class LearningCategoryController extends Controller
             'sub_learning_packet_id' => $sub_learning_packet,
         ]);
 
+        activity()
+            ->performedOn($learningCategory)
+            ->causedBy(auth()->user())
+            ->log('Learning Category ' . $request->name . ' updated successfully.');
+
         return redirect()->route('packet.sub.category.show', [$learning_packet, $sub_learning_packet, $id])->banner('Learning Category updated successfully.');
     }
 
@@ -105,6 +115,11 @@ class LearningCategoryController extends Controller
         //
         $learningCategory = LearningCategory::find($id);
         $learningCategory->delete();
+
+        activity()
+            ->performedOn($learningCategory)
+            ->causedBy(auth()->user())
+            ->log('Learning Category ' . $learningCategory->name . ' deleted successfully.');
 
         return redirect()->route('packet.sub.show', [$learning_packet, $sub_learning_packet])->banner('Learning Category deleted successfully.');
     }

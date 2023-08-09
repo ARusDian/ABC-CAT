@@ -70,6 +70,12 @@ class LearningMaterialController extends Controller
                     'document_file_id' => $documentFile->id,
                 ]);
             }
+
+            activity()
+                ->performedOn($learningMaterial)
+                ->causedBy(auth()->user())
+                ->log('Learning Material ' . $learningMaterial->title . ' created successfully');
+
             return redirect()
                 ->route('packet.sub.category.show', [
                     $learning_packet,
@@ -183,6 +189,12 @@ class LearningMaterialController extends Controller
                     ],
                 );
             }
+
+            activity()
+                ->performedOn($learningMaterial)
+                ->causedBy(auth()->user())
+                ->log('Learning Material ' . $learningMaterial->title . ' updated successfully');
+
             return redirect()
                 ->route('packet.sub.category.material.show', [
                     $learning_packet,
@@ -223,6 +235,12 @@ class LearningMaterialController extends Controller
                 $image->delete();
             }
             $learningMaterial->delete();
+
+            activity()
+                ->performedOn($learningMaterial)
+                ->causedBy(auth()->user())
+                ->log('Learning Material ' . $learningMaterial->title . ' deleted successfully');
+
             return redirect()
                 ->route('packet.sub.category.show', [
                     $learning_packet,

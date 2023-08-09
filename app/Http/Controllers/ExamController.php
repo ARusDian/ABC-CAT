@@ -179,6 +179,11 @@ class ExamController extends Controller
                 ]);
             }
 
+            activity()
+                ->performedOn($exam)
+                ->causedBy(auth()->user())
+                ->log('Exam ' . $exam->id . ' started');
+
             return redirect()->route('student.exam.show', [$exercise->id]);
         });
     }
@@ -228,6 +233,11 @@ class ExamController extends Controller
             }
 
             $this->checkFinished($exam);
+
+            activity()
+                ->performedOn($exam)
+                ->causedBy(auth()->user())
+                ->log('Exam ' . $exam->id . ' updated');
 
             return [
                 'finished' => $exam->finished,

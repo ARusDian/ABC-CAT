@@ -66,6 +66,11 @@ class UserController extends Controller
             foreach ($validated['roles'] as $role) {
                 $user->assignRole($role['id']);
             }
+            activity()
+                ->performedOn($user)
+                ->causedBy(Auth::user())
+                ->log('Created User ' . $user->name . '');
+
             return redirect()
                 ->route('user.index')
                 ->banner('New User Created Successfully');
@@ -138,6 +143,10 @@ class UserController extends Controller
             }
             $user->syncRoles($validated['roles'] ?? []);
             $user->save();
+            activity()
+                ->performedOn($user)
+                ->causedBy(Auth::user())
+                ->log('Updated User ' . $user->name . '');
             return redirect()
                 ->route('user.show', $id)
                 ->banner('User Updated Successfully');
@@ -155,6 +164,10 @@ class UserController extends Controller
         //
         $user = User::findOrFail($id);
         $user->delete();
+        activity()
+            ->performedOn($user)
+            ->causedBy(Auth::user())
+            ->log('Deleted User ' . $user->name . '');
         return redirect()
             ->route('user.index')
             ->banner('User Deleted Successfully');

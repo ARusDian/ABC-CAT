@@ -55,6 +55,10 @@ class BankQuestionController extends Controller
             'learning_category_id' => $learning_category_id,
         ]);
 
+        activity()
+            ->performedOn($bank)
+            ->causedBy(auth()->user())
+            ->log('Question Bank ' . $data['name'] . ' created successfully.');
 
         return redirect()
             ->route('packet.sub.category.bank-question.show', [
@@ -105,6 +109,11 @@ class BankQuestionController extends Controller
 
         $bank = BankQuestion::findOrFail($id);
         $bank->update($data);
+
+        activity()
+            ->performedOn($bank)
+            ->causedBy(auth()->user())
+            ->log('Question Bank ' . $bank->name . ' updated successfully.');
 
         return redirect()
             ->route('packet.sub.category.bank-question.show', [

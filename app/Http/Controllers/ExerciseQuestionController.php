@@ -65,6 +65,11 @@ class ExerciseQuestionController extends Controller
             $exercise->questions()->syncWithoutDetaching($data['bank_question_items']);
         }
 
+        activity()
+            ->performedOn($exercise)
+            ->causedBy(auth()->user())
+            ->log('Exercise Question ' . $exercise->name . ' created successfully.');
+
         return redirect()
             ->route('packet.sub.category.exercise.show', [
                 $learning_packet,
@@ -146,6 +151,11 @@ class ExerciseQuestionController extends Controller
         $exercise = ExerciseQuestion::withTrashed()->findOrFail($id);
         $exercise->update($data);
 
+        activity()
+            ->performedOn($exercise)
+            ->causedBy(auth()->user())
+            ->log('Exercise Question ' . $exercise->name . ' updated successfully.');
+
         return redirect()
             ->route('packet.sub.category.exercise.show', [
                 $learning_packet,
@@ -187,6 +197,11 @@ class ExerciseQuestionController extends Controller
         $exercise = ExerciseQuestion::findOrFail($id);
         $exercise->delete();
 
+        activity()
+            ->performedOn($exercise)
+            ->causedBy(auth()->user())
+            ->log('Exercise Question ' . $exercise->name . ' deleted successfully.');
+
         return redirect()
             ->route('packet.sub.category.show', [
                 $learning_packet,
@@ -200,6 +215,11 @@ class ExerciseQuestionController extends Controller
     {
         $exercise = ExerciseQuestion::withTrashed()->findOrFail($id);
         $exercise->restore();
+
+        activity()
+            ->performedOn($exercise)
+            ->causedBy(auth()->user())
+            ->log('Exercise Question ' . $exercise->name . ' restored successfully.');
 
         return redirect()
             ->route('packet.sub.category.show', [

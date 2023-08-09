@@ -41,7 +41,11 @@ class LearningPacketController extends Controller
             'description' => 'required',
         ]);
         
-        LearningPacket::create($request->all());
+        $learning_packet = LearningPacket::create($request->all());
+        activity()
+            ->performedOn($learning_packet)
+            ->causedBy(auth()->user())
+            ->log('Learning Packet ' . $learning_packet->name . ' created successfully.');
 
         return redirect()->route('packet.index')->banner('Learning Packet created successfully.');
     }
@@ -84,6 +88,11 @@ class LearningPacketController extends Controller
         $learningPacket = LearningPacket::find($id);
         $learningPacket->update($request->all());
 
+        activity()
+            ->performedOn($learningPacket)
+            ->causedBy(auth()->user())
+            ->log('Learning Packet ' . $learningPacket->name . ' updated successfully.');
+
         return redirect()->route('packet.show', $id)->banner('Learning Packet updated successfully.');
     }
 
@@ -95,6 +104,11 @@ class LearningPacketController extends Controller
         //
         $learningPacket = LearningPacket::find($id);
         $learningPacket->delete();
+
+        activity()
+            ->performedOn($learningPacket)
+            ->causedBy(auth()->user())
+            ->log('Learning Packet ' . $learningPacket->name . ' deleted successfully.');
 
         return redirect()->route('packet.index')->banner('Learning Packet deleted successfully.');
     }

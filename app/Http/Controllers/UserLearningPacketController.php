@@ -19,7 +19,7 @@ class UserLearningPacketController extends Controller
         //
         $learningPackets = LearningPacket::with([
             'userLearningPackets.user' => function ($query) {
-                $query->select('id','name', 'email');
+                $query->select('id', 'name', 'email');
             },
         ])->get();
         return Inertia::render('Admin/UserLearningPacket/Index', [
@@ -51,6 +51,10 @@ class UserLearningPacketController extends Controller
             'user_id' => $request->user['id'],
             'learning_packet_id' => $request->learning_packet['id'],
         ]);
+        activity()
+            ->performedOn($userLearningPacket)
+            ->causedBy(auth()->user())
+            ->log('User ' . $userLearningPacket->user->name . ' assigned to learning packet ' . $userLearningPacket->learningPacket->name);
 
         return redirect()->route('user-learning-packet.index');
     }
@@ -87,6 +91,10 @@ class UserLearningPacketController extends Controller
         //
         $userLearningPacket = UserLearningPacket::find($id);
         $userLearningPacket->delete();
+        activity()
+            ->performedOn($userLearningPacket)
+            ->causedBy(auth()->user())
+            ->log('User ' . $userLearningPacket->user->name . ' removed from learning packet ' . $userLearningPacket->learningPacket->name);
         return redirect()->route('user-learning-packet.index')->with('success', 'User Learning Packet deleted successfully');
     }
 }
