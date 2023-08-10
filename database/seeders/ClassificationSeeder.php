@@ -35,7 +35,7 @@ class ClassificationSeeder extends Seeder
                     "name" => "Psikologi Kedinasan",
                     "learning_categories" => [
                         [
-                            "name" => "Kecerdasani",
+                            "name" => "Kecerdasan",
                         ], [
                             "name" => "Kecermatan",
                         ], [
