@@ -25,7 +25,7 @@ export default function Index(props: Props) {
               src={originalRow.profile_photo_path ? asset('public', originalRow.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
               alt={originalRow.name}
             />
-            <p className='my-auto'>{originalRow.name}</p>
+            <p className='my-auto font-semibold'>{originalRow.name}</p>
           </div>
         )
       },
