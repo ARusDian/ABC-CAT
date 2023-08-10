@@ -39,6 +39,7 @@ export interface User extends BaseUser {
   email_verified_at: Nullable<DateTime>;
   created_at: DateTime;
   updated_at: DateTime;
+  deleted_at?: Nullable<DateTime>;
   user_profile?: {}
 }
 

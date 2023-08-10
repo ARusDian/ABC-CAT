@@ -22,7 +22,7 @@ export default function Index(props: Props) {
           <div className='flex gap-3'>
             <img
               className="rounded-full h-20 w-20 object-cover"
-              src={originalRow.profile_photo_path ? asset('public',originalRow.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
+              src={originalRow.profile_photo_path ? asset('public', originalRow.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
               alt={originalRow.name}
             />
             <p className='my-auto'>{originalRow.name}</p>
@@ -33,19 +33,24 @@ export default function Index(props: Props) {
     {
       accessorKey: 'email',
       header: 'Email',
-    },
-    {
+    }, {
       accessorKey: 'phone_number',
       header: 'Nomor Telepon',
-    },
-    {
+    }, {
       accessorKey: 'active_year',
       header: 'Tahun Aktif',
-    },
-    {
+    }, {
+      header: 'Aktif',
+      accessorFn: (row) => row.deleted_at ?
+        <p className="text-red-500">
+          Tidak Aktif
+        </p> : <p className="text-green-500">
+          Aktif
+        </p>,
+    }, {
       accessorFn: (row: User) => row.roles.map(role => role.name).join(', '),
       header: 'Status',
-    },
+    }
   ] as MRT_ColumnDef<(typeof users)[0]>[];
   return (
     <AdminTableLayout

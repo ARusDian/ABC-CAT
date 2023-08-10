@@ -83,6 +83,7 @@ Route::middleware([
         Route::prefix("admin")->group(function () {
             Route::middleware(["role:super-admin"])->group(function () {
                 Route::resource("/user", UserController::class);
+                Route::post('/user/{user}/restore', [UserController::class, "restore"])->name('user.restore');
                 Route::get('/user-activity', [UserActivityController::class, "Index"])->name('user-activity');
             });
 

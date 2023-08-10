@@ -12,6 +12,7 @@ interface Props {
 
 export default function Show(props: Props) {
   let user = props.user;
+  console.log(user);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -21,6 +22,14 @@ export default function Show(props: Props) {
   const handleClose = () => {
     setOpen(false);
   };
+  let editProps = {}
+
+  if (!user.deleted_at) {
+    editProps = {
+      editRoute: route('user.edit', user.id),
+      editRouteTitle: "Edit"
+    }
+  }
 
   return (
     <AdminShowLayout
@@ -28,14 +37,27 @@ export default function Show(props: Props) {
       headerTitle={'Data User'}
       backRoute={route('user.index')}
       backRouteTitle="Kembali"
-      editRoute={route('user.edit', user.id)}
-      editRouteTitle="Edit"
+      {...editProps}
+      isRestore={user.deleted_at ? true : false}
       onDelete={() => {
-        router.post(route('user.destroy', user.id), {
-          _method: 'DELETE',
-        });
+        user.deleted_at
+          ? router.post(
+            route('user.restore', [
+              user.id,
+            ]),
+          )
+          : router.delete(
+            route('user.destroy', [
+              user.id,
+            ]),
+          );
       }}
-      deleteTitle="Hapus"
+      deleteTitle={user.deleted_at ? 'Restore' : 'Hapus'}
+      onDeleteMessage={
+        user.deleted_at
+          ? `Ini akan mengembalikan Akun ${user.name}`
+          : `Ini akan menghapus Akun ${user.name}`
+      }
     >
       <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
         <div className='flex justify-end my-3'>

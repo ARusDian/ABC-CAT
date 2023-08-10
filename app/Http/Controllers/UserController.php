@@ -19,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::with('roles')->get();
+        $user = User::withTrashed()->with('roles')->get();
         return Inertia::render('Admin/User/Index', [
             'users' => $user,
         ]);
@@ -97,7 +97,7 @@ class UserController extends Controller
     public function show($id)
     {
         //
-        $user = User::with(['roles'])->find($id);
+        $user = User::withTrashed()->with(['roles'])->find($id);
         return Inertia::render('Admin/User/Show', [
             'user' => $user,
         ]);
@@ -112,7 +112,7 @@ class UserController extends Controller
     public function edit($id)
     {
         //
-        $user = User::with(['roles'])->find($id);
+        $user = User::withTrashed()->with(['roles'])->find($id);
         $roles = Role::all();
         return Inertia::render('Admin/User/Edit', [
             'user' => $user,
@@ -195,5 +195,19 @@ class UserController extends Controller
         return redirect()
             ->route('user.index')
             ->banner('User Deleted Successfully');
+    }
+
+    public function restore($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        $user->restore();
+        activity()
+            ->performedOn($user)
+            ->causedBy(Auth::user())
+            ->withProperties(['method' => 'RESTORE'])
+            ->log('Restored User ' . $user->name . '');
+        return redirect()
+            ->route('user.index')
+            ->banner('User Restored Successfully');
     }
 }
