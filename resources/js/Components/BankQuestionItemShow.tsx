@@ -21,11 +21,12 @@ export function BankQuestionItemShow(props: {
       );
     case 'Kecermatan':
       return (
-        <div className="flex flex-row">
+        <div className="flex flex-row text-2xl gap-5 mb-3 font-semibold">
           {
-            // TODO: kasih view
             props.question.question.questions.map((it, index) => (
-              <div key={index}>{it}</div>
+              <div key={index}>
+                {it}
+              </div>
             ))
           }
         </div>
