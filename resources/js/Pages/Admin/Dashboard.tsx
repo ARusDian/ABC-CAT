@@ -53,28 +53,11 @@ export default function Dashboard(props: Props) {
     return result;
   };
 
-  const baseBackgroundColor = [
+  const rgbColor = [
     'rgb(58, 99, 245)',
     'rgb(15, 191, 0)',
     ...generateRandomColor(learningPacketQuestionItems.length - 1),
   ];
-
-  const baseBorderColor = [
-    'rgb(58, 99, 245)',
-    'rgb(15, 191, 0)',
-    ...generateRandomColor(learningPacketQuestionItems.length - 1),
-  ];
-
-  function rgbToHex(rgbString: string) {
-    const regex = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/;
-
-    const match = rgbString.match(regex);
-
-    if (match) {
-      const [, r, g, b] = match.map(Number);
-      return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-    }
-  }
 
   return (
     <AppLayout title="Dashboard">
@@ -130,8 +113,8 @@ export default function Dashboard(props: Props) {
                     datasets: [{
                       label: 'Jumlah Soal',
                       data: learningPacketQuestionItems.map((learningPacket) => learningPacket.data),
-                      backgroundColor: baseBackgroundColor,
-                      borderColor: baseBorderColor
+                      backgroundColor: rgbColor,
+                      borderColor: rgbColor
                     }]
                   }}
                 />
@@ -157,8 +140,8 @@ export default function Dashboard(props: Props) {
                     datasets: [{
                       label: 'Jumlah Peserta',
                       data: learningPacketUsers.map((learningPacket) => learningPacket.data),
-                      backgroundColor: baseBackgroundColor,
-                      borderColor: baseBorderColor
+                      backgroundColor: rgbColor,
+                      borderColor: rgbColor
                     }]
                   }}
                 />
@@ -167,9 +150,10 @@ export default function Dashboard(props: Props) {
             <div className='flex flex-col gap-5 w-full h-full'>
               {
                 props.learning_packets.map((learning_packet, index) => {
-                  const backgroundColor = rgbToHex(baseBackgroundColor[index]);
                   return (
-                    <div className={`flex justify-between my-auto gap-3 p-7 text-white shadow-2xl sm:rounded-3xl bg-[${backgroundColor?.toUpperCase()}] shadow-sky-400/50 h-full`} key={index}>
+                    <div className={`flex justify-between my-auto gap-3 p-7 text-white shadow-2xl sm:rounded-3xl shadow-sky-400/50 h-full`} key={index} style={{
+                      backgroundColor: rgbColor[index],
+                    }}>
                       <p className='text-3xl my-auto'>
                         {learning_packet.name}
                       </p>
