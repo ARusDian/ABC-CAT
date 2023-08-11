@@ -43,7 +43,7 @@ export default function Show({
             </div>
           ) : null}
 
-          {page.props.jetstream.canManageTwoFactorAuthentication ? (
+          {/* {page.props.jetstream.canManageTwoFactorAuthentication ? (
             <div className="mt-10 sm:mt-0">
               <TwoFactorAuthenticationForm
                 requiresConfirmation={confirmsTwoFactorAuthentication}
@@ -51,13 +51,13 @@ export default function Show({
 
               <SectionBorder />
             </div>
-          ) : null}
+          ) : null} */}
 
           <div className="mt-10 sm:mt-0">
             <LogoutOtherBrowserSessions sessions={sessions} />
           </div>
 
-          {page.props.jetstream.hasAccountDeletionFeatures ? (
+          {/* {page.props.jetstream.hasAccountDeletionFeatures ? (
             <>
               <SectionBorder />
 
@@ -65,7 +65,7 @@ export default function Show({
                 <DeleteUserForm />
               </div>
             </>
-          ) : null}
+          ) : null} */}
         </div>
       </div>
     </LayoutProfile>

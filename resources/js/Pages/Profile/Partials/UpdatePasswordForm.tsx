@@ -41,27 +41,27 @@ export default function UpdatePasswordForm() {
   return (
     <FormSection
       onSubmit={updatePassword}
-      title={'Update Password'}
+      title={'Memperbarui Password'}
       description={
-        'Ensure your account is using a long, random password to stay secure.'
+        'Pastikan akunmu memiliki password yang panjang agar lebih aman.'
       }
       renderActions={() => (
         <>
           <ActionMessage on={form.recentlySuccessful} className="mr-3">
-            Saved.
+            Tersimpan.
           </ActionMessage>
 
           <PrimaryButton
             className={classNames({ 'opacity-25': form.processing })}
             disabled={form.processing}
           >
-            Save
+            Simpan
           </PrimaryButton>
         </>
       )}
     >
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="current_password">Current Password</InputLabel>
+        <InputLabel htmlFor="current_password">Password Saat Ini</InputLabel>
         <TextInput
           id="current_password"
           type="password"
@@ -77,7 +77,7 @@ export default function UpdatePasswordForm() {
       </div>
 
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="password">New Password</InputLabel>
+        <InputLabel htmlFor="password">Password Baru</InputLabel>
         <TextInput
           id="password"
           type="password"
@@ -92,7 +92,7 @@ export default function UpdatePasswordForm() {
 
       <div className="col-span-6 sm:col-span-4">
         <InputLabel htmlFor="password_confirmation">
-          Confirm Password
+          Password Konfirmasi (Ulangi)
         </InputLabel>
         <TextInput
           id="password_confirmation"
