@@ -109,6 +109,7 @@ export default function Form(props: Props) {
         <TextField
           {...form.register('email', { required: true })}
           label="Email"
+          type='email'
           className="mt-1 block w-full"
           defaultValue={form.formState.defaultValues?.email}
           error={form.formState.errors?.email != null}
@@ -119,6 +120,7 @@ export default function Form(props: Props) {
         <TextField
           {...form.register('phone_number', { required: true })}
           label="Nomor Telepon"
+          type='number'
           className="mt-1 block w-full"
           defaultValue={form.formState.defaultValues?.phone_number}
           error={form.formState.errors?.phone_number != null}

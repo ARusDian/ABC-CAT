@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsersExport;
+use App\Exports\UsersTemplateExport;
+use App\Imports\UsersImport;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -57,7 +61,7 @@ class UserController extends Controller
                 'phone_number' => 'required|string',
                 'photo.file' => 'nullable|max:2048',
                 'address' => 'required|string',
-                'gender'=> 'required|in:L,P'
+                'gender' => 'required|in:L,P'
             ]);
             $user = User::create([
                 'name' => $validated['name'],
@@ -65,8 +69,8 @@ class UserController extends Controller
                 'password' => Hash::make($validated['password']),
                 'phone_number' => $validated['phone_number'],
                 'active_year' => date('Y'),
-                'address'=> $validated['address'],
-                'gender'=>$validated['gender']
+                'address' => $validated['address'],
+                'gender' => $validated['gender']
             ]);
 
             if (isset($request['photo']['file'])) {
@@ -137,7 +141,7 @@ class UserController extends Controller
                 'password' => 'nullable|string|min:8',
                 'roles.*.id' => 'required|exists:roles',
                 'phone_number' => 'required|string',
-                'active_year' => 'required|string',
+                'active_year' => 'required|numeric',
                 'photo' => 'nullable|max:2048',
                 'photo_profile_path' => 'nullable|string',
                 'address' => 'required|string',
@@ -209,5 +213,27 @@ class UserController extends Controller
         return redirect()
             ->route('user.index')
             ->banner('User Restored Successfully');
+    }
+
+    public function ImportExportView()
+    {
+        return Inertia::render('Admin/User/ImportExport', []);
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new UsersImport, $request->file('import_file.file')->store('temp'));
+        return redirect()
+            ->route('user.index')
+            ->banner('User Imported Successfully');
+    }
+
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
+    }
+
+    public function template(){
+        return Excel::download(new UsersTemplateExport, 'users_template.xlsx');
     }
 }

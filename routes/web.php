@@ -83,6 +83,10 @@ Route::middleware([
         Route::prefix("admin")->group(function () {
             Route::middleware(["role:super-admin"])->group(function () {
                 Route::resource("/user", UserController::class);
+                Route::get('/user-ImEx', [UserController::class, "ImportExportView"])->name('ImEx');
+                Route::post('/user-import', [UserController::class, "Import"])->name('user.import');
+                Route::get('/user-export', [UserController::class, "Export"])->name('user.export');
+                Route::get('/user-template', [UserController::class, "Template"])->name('user.import-template');
                 Route::post('/user/{user}/restore', [UserController::class, "restore"])->name('user.restore');
                 Route::get('/user-activity', [UserActivityController::class, "Index"])->name('user-activity');
             });

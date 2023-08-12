@@ -5,17 +5,23 @@ import React from "react";
 interface Props {
     href: string;
     children: React.ReactNode;
-    color?: "primary" | "inherit" | "secondary" | "success" | "error" | "info" | "warning" ;
+    color?: "primary" | "inherit" | "secondary" | "success" | "error" | "info" | "warning";
+    isNextPage?: boolean;
 }
 
-export default function MuiInertiaLinkButton({ href, children, color }: Props) {
+const AnchorComponent = React.forwardRef<HTMLAnchorElement, any>((props, ref) => (
+    <a {...props} ref={ref} />
+));
+
+export default function MuiInertiaLinkButton({ href, children, color, isNextPage }: Props) {
     return (
         <Button
             type="button"
             variant="contained"
             size="large"
             color={color ?? "primary"}
-            LinkComponent={Link}
+            target={isNextPage ? "_blank" : "same-page"}
+            LinkComponent={isNextPage ? AnchorComponent : Link }
             href={href}
             sx={{ marginY: 'auto' }}
         >
@@ -23,3 +29,5 @@ export default function MuiInertiaLinkButton({ href, children, color }: Props) {
         </Button>
     )
 }
+
+
