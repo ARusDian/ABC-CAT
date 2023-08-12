@@ -159,6 +159,10 @@ class ExamController extends Controller
             );
             $expire_in = Carbon::now()->addMinutes($exercise->time_limit);
 
+            if ($exercise->questions->count() == 0) {
+                return redirect()->back()->dangerBanner("soal latihan ini tidak bisa dikerjakan sekarang, coba lagi nanti");
+            }
+
             $exam = Exam::create([
                 'user_id' => auth()->id(),
                 'exercise_question_id' => $exercise->id,
@@ -228,7 +232,7 @@ class ExamController extends Controller
             }
 
             $this->checkFinished($exam);
-            
+
             return [
                 'finished' => $exam->finished,
             ];
