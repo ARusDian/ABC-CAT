@@ -34,8 +34,8 @@ export default function Show(props: Props) {
       accessorFn: it => {
         return (
           <div>
-            {parseFloat(it.answers_sum_score.toString())}/{it.answers_count} (
-            {(it.answers_sum_score * 100) / it.answers_count}%)
+            {parseFloat(it.answers_sum_score?.toString() ?? "0")}/{it.answers_count} (
+            {((it.answers_sum_score ?? 0) * 100) / it.answers_count}%)
           </div>
         );
       },
