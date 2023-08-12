@@ -22,6 +22,7 @@ export default function Create({ exercise_question }: Props) {
       name: exercise_question.name,
       time_limit: exercise_question.time_limit,
       number_of_question: exercise_question.number_of_question,
+      type: exercise_question.type,
     },
   });
 
