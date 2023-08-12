@@ -28,7 +28,7 @@ export default function Create({ learning_packet_id }: Props) {
 	return (
 		<AdminFormLayout
 			title="Tambah Sub Paket Belajar"
-			backRoute={route('packet.sub.index',
+			backRoute={route('packet.show',
 				[learning_packet_id])}
 			backRouteTitle="Kembali"
 		>
