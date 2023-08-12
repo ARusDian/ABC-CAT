@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { ChangeEvent, useCallback, useRef, useState } from 'react';
 import Select from 'react-select';
 
 import InputError from '@/Components/Jetstream/InputError';
-import TextInput from '@/Components/Jetstream/TextInput';
-import { ErrorHelper } from '@/Models/ErrorHelper';
 import { NewUser, Role } from '@/types';
-import { InputLabel, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Button, InputLabel, Modal, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { asset } from '@/Models/Helper';
 import { BaseDocumentFileModel, getStorageFileUrl } from '@/Models/FileModel';
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   form: UseFormReturn<NewUser>;
@@ -17,8 +17,46 @@ interface Props extends React.HTMLAttributes<HTMLElement> {
   isUpdate?: boolean;
 }
 
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  p: 4,
+};
+
 export default function Form(props: Props) {
   const { form, roles, isUpdate } = props;
+  const [cropperModalOpen, setCropperModalOpen] = useState(false);
+  const [image, setImage] = useState<string | null>(null);
+  const [cropper, setCropper] = useState<any>();
+
+  const getNewImageUrl = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setImage(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
+  const getCropData = async () => {
+    if (cropper) {
+      const file = await fetch(cropper.getCroppedCanvas().toDataURL())
+        .then((res) => res.blob())
+        .then((blob) => {
+          return new File([blob], "newAvatar.png", { type: "image/png" });
+        });
+      if (file) {
+        form.setValue('photo', {
+          file: file,
+          disk: 'public',
+        });
+
+        setCropperModalOpen(false);
+      }
+    } 
+  };
 
   return (
     <div className={`flex-col gap-5 ${props.className}`}>
@@ -30,6 +68,7 @@ export default function Form(props: Props) {
           render={({ field }) => {
             return (
               <div className='flex flex-col gap-3'>
+
                 <img
                   className="rounded-full h-20 w-20 object-cover"
                   src={
@@ -43,13 +82,11 @@ export default function Form(props: Props) {
                 />
                 <input
                   type="file"
+                  accept="image/png, image/jpeg, image/jpg"
                   ref={field.ref}
                   onChange={e => {
-                    field.onChange({
-                      file: e.target.files![0],
-                      path: "",
-                      disk: 'public',
-                    });
+                    getNewImageUrl(e);
+                    setCropperModalOpen(true);
                   }}
                 />
               </div>
@@ -190,6 +227,37 @@ export default function Form(props: Props) {
           }}
         />
       </div>
-    </div>
+      <Modal
+        open={cropperModalOpen}
+        onClose={() => setCropperModalOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <div style={{ ...style }}>
+          <div className='p-4 bg-white flex-col gap-5'>
+            <Cropper
+              src={image!}
+              aspectRatio={1 / 1}
+              minCropBoxHeight={100}
+              minCropBoxWidth={100}
+              guides={false}
+              checkOrientation={false}
+              onInitialized={(instance) => {
+                setCropper(instance);
+              }}
+            />
+            <div className='flex justify-end mt-5'>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={getCropData}
+              >
+                Simpan
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+    </div >
   );
 }

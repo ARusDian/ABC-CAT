@@ -94,6 +94,9 @@ dependencies:
   classnames:
     specifier: ^2.3.2
     version: 2.3.2
+  cropperjs:
+    specifier: ^1.5.13
+    version: 1.5.13
   html-react-parser:
     specifier: ^4.0.0
     version: 4.0.0(react@18.2.0)
@@ -124,6 +127,9 @@ dependencies:
   react-countdown:
     specifier: ^2.3.5
     version: 2.3.5(react-dom@18.2.0)(react@18.2.0)
+  react-cropper:
+    specifier: ^2.3.3
+    version: 2.3.3(react@18.2.0)
   react-detect-click-outside:
     specifier: ^1.1.7
     version: 1.1.7(react-dom@18.2.0)(react@18.2.0)
@@ -4319,6 +4325,10 @@ packages:
     resolution: {integrity: sha512-VQ2MBenTq1fWZUH9DJNGti7kKv6EeAuYr3cLwxUWhIu1baTaXh4Ib5W2CqHVqib4/MqbYGJqiL3Zb8GJZr3l4g==}
     dev: false
 
+  /cropperjs@1.5.13:
+    resolution: {integrity: sha512-by7jKAo73y5/Do0K6sxdTKHgndY0NMjG2bEdgeJxycbcmHuCiMXqw8sxy5C5Y5WTOTcDGmbT7Sr5CgKOXR06OA==}
+    dev: false
+
   /cross-spawn@7.0.3:
     resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
     engines: {node: '>= 8'}
@@ -7434,6 +7444,15 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /react-cropper@2.3.3(react@18.2.0):
+    resolution: {integrity: sha512-zghiEYkUb41kqtu+2jpX2Ntigf+Jj1dF9ew4lAobPzI2adaPE31z0p+5TcWngK6TvmWQUwK3lj4G+NDh1PDQ1w==}
+    peerDependencies:
+      react: '>=17.0.2'
+    dependencies:
+      cropperjs: 1.5.13
+      react: 18.2.0
     dev: false
 
   /react-detect-click-outside@1.1.7(react-dom@18.2.0)(react@18.2.0):
