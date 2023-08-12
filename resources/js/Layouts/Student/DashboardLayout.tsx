@@ -177,9 +177,9 @@ export default function DashboardLayout({
         <meta name="description" content="ABC CAT" />
         <link rel="icon" href={asset('root', 'assets/image/icon.png')} />
       </Head>
-      <Banner />
       <Box sx={{ display: 'flex' }}>
         <AppBar position="absolute" open={isSidebarOpen}>
+          <Banner />
           <nav className="flex justify-between w-full sticky bg-main-blue my-auto px-7 shadow  bg-white" style={{ height: navHeight }} >
             <div className="flex gap-3 max-w-6xl mr-30 text-3xl">
               <button
