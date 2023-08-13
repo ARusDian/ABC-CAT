@@ -13,6 +13,7 @@ import Answer from './Answer';
 import { useConfirm } from 'material-ui-confirm';
 import { asset } from '@/Models/Helper';
 import { useSearchParam } from '@/Hooks/useSearchParam';
+import { Navigation } from './Navigation';
 
 export interface Props {
   exam: ExamModel;
@@ -192,58 +193,20 @@ export default function Run({ exam }: Props) {
                         ujian
                       </p>
                     </div>
-                    <div className="flex flex-col justify-center p-3">
-                      <p className="font-bold text-lg">Navigasi Soal</p>
-                      <div className="p-2 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-2">
-                        {answerArray.fields.map((it, index) => {
-                          return (
-                            <Button
-                              className="text-center border-2  rounded-md p-2"
-                              variant="contained"
-                              color={
-                                it.state?.mark
-                                  ? 'warning'
-                                  : currentQuestion === index
-                                    ? 'success'
-                                    : it.answer != undefined
-                                      ? 'primary'
-                                      : 'inherit'
-                              }
-                              onClick={() => setCurrentQuestion(index)}
-                              key={index}
-                            >
-                              {index + 1}
-                            </Button>
-                          );
-                        })}
-                      </div>
-                      <div className="flex justify-between gap-3">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          className="w-1/2"
-                          onClick={() => {
-                            setCurrentQuestion(currentQuestion - 1);
-                          }}
-                          disabled={currentQuestion === 0}
-                        >
-                          Sebelumnya
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color={isLastQuestion() ? 'error' : 'primary'}
-                          className="w-1/2"
-                          onClick={() => {
-                            isLastQuestion()
-                              ? onSelesaiUjian()
-                              : setCurrentQuestion(currentQuestion + 1);
-                          }}
-                          disabled={isLastQuestion() && isUpdating}
-                        >
-                          {isLastQuestion() ? 'Selesai' : 'Selanjutnya'}
-                        </Button>
-                      </div>
-                    </div>
+                    <Navigation
+                      answers={answerArray.fields}
+                      setCurrentQuestion={setCurrentQuestion}
+                      currentQuestion={currentQuestion}
+                      getState={(it, index) => {
+                        if (exam.exercise_question.type == 'Kecermatan') {
+                          if (currentCluster != it.cluster) {
+                            return {
+                              hide: true,
+                            };
+                          }
+                        }
+                      }}
+                    />
                   </div>
                 </div>
                 <div className="w-full md:w-2/3 ">

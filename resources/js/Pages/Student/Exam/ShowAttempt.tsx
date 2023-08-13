@@ -7,6 +7,7 @@ import { Link } from '@inertiajs/react';
 import route from 'ziggy-js';
 import { asset } from '@/Models/Helper';
 import { useSearchParam } from '@/Hooks/useSearchParam';
+import { Navigation } from './Navigation';
 
 interface Props {
   exam: ExamModel;
@@ -38,54 +39,16 @@ export default function ShowAttempt({ exam }: Props) {
           </div>
         </div>
         <div className="border-t border-gray-500 w-auto h-auto p-3 flex gap-6 divide-x">
-          <div className="flex flex-col p-3 basis-1/3">
-            <p className="font-bold text-lg">Navigasi Soal</p>
-            <div className="p-2 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-2">
-              {exam.answers.map((it, index) => {
-                return (
-                  <Button
-                    className="text-center border-2  rounded-md p-2"
-                    variant="contained"
-                    color={
-                      it.score === null
-                        ? 'inherit'
-                        : it.score == 0
-                          ? 'error'
-                          : 'success'
-                    }
-                    onClick={() => setCurrentQuestion(index)}
-                    key={index}
-                  >
-                    {index + 1}
-                  </Button>
-                );
-              })}
-            </div>
-            <div className="flex justify-between gap-3">
-              <Button
-                variant="contained"
-                color="primary"
-                className="w-1/2"
-                onClick={() => {
-                  setCurrentQuestion(currentQuestion - 1);
-                }}
-                disabled={currentQuestion === 0}
-              >
-                Sebelumnya
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                className="w-1/2"
-                onClick={() => {
-                  setCurrentQuestion(currentQuestion + 1);
-                }}
-                disabled={currentQuestion === exam.answers.length - 1}
-              >
-                Selanjutnya
-              </Button>
-            </div>
-          </div>
+          <Navigation
+            currentQuestion={currentQuestion}
+            setCurrentQuestion={setCurrentQuestion}
+            answers={exam.answers}
+            getState={(it) => {
+              return {
+                isRight: it.score != 0,
+              };
+            }}
+          />
           <div className='className="flex flex-col p-3 basis-2/3'>
             <p className="text-lg font-semibold">
               {' '}
