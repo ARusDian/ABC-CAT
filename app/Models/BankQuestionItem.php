@@ -28,6 +28,7 @@ class BankQuestionItem extends Model
         'type',
         'question',
         'explanation',
+        'cluster',
 
         'answer',
         'answers',

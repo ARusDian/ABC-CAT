@@ -132,6 +132,8 @@ class BankQuestionItemController extends Controller
 
             $questions = [];
 
+            $clusterMax = (BankQuestionItem::lockForUpdate()->max("cluster") ?? 0) + 1;
+
             foreach ($all['stores'] as $store) {
                 $data = [
                     'name' => $all['name'],
@@ -150,6 +152,7 @@ class BankQuestionItemController extends Controller
                     'type' => $data['type'],
                     'question' => $data['question'],
                     'explanation' => $data['explanation'] ?? [],
+                    'cluster' => $clusterMax,
 
                     'answer' => $data['answer'],
                     'answers' => $data['answers'],

@@ -1,11 +1,11 @@
 import ExamLayout from '@/Layouts/Student/ExamLayout';
 import Button from '@mui/material/Button';
 import React from 'react';
-import Countdown from 'react-countdown';
+import Countdown, { CountdownRenderProps } from 'react-countdown';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { router } from '@inertiajs/react';
 import route from 'ziggy-js';
-import { useDebounce} from 'react-use';
+import { useCounter, useDebounce, useUpdate } from 'react-use';
 import { ExamAnswerModel, ExamModel, ExamPilihanModel } from '@/Models/Exam';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
@@ -14,6 +14,7 @@ import { useConfirm } from 'material-ui-confirm';
 import { asset } from '@/Models/Helper';
 import { useSearchParam } from '@/Hooks/useSearchParam';
 import { Navigation } from './Navigation';
+import _ from 'lodash';
 
 export interface Props {
   exam: ExamModel;
@@ -30,7 +31,7 @@ export interface Task {
 }
 
 export default function Run({ exam }: Props) {
-  const time = new Date(Date.parse(exam.expire_in));
+  const expireInTime = new Date(Date.parse(exam.expire_in));
   const { answers } = exam;
 
   const confirm = useConfirm();
@@ -38,6 +39,41 @@ export default function Run({ exam }: Props) {
   const form = useForm({
     defaultValues: exam,
   });
+
+  const createdAt = React.useMemo(
+    () => new Date(exam.created_at),
+    [exam.created_at],
+  );
+
+  const [updateCount, { inc: update }] = useCounter(1);
+
+  const currentClusterDateEnd = React.useMemo(() => {
+    console.log('currentClusterDateEnd');
+    if (exam.exercise_question.type == 'Kecermatan') {
+      let minutes = exam.exercise_question.time_limit;
+      let count = 1;
+
+      const current = () =>
+        new Date(createdAt.getTime() + minutes * count * 60000);
+
+      while (current() < new Date()) {
+        count += 1;
+      }
+
+      return { current: current(), count: count - 1 };
+    } else {
+      return { current: expireInTime, count: 0 };
+    }
+  }, [updateCount]);
+
+  const [shouldUpdate, setShouldUpdate] = React.useState(true);
+
+  const currentCluster = React.useMemo(() => {
+    const cluster = _.uniq(_.map(exam.answers, 'cluster'));
+    const count = currentClusterDateEnd.count;
+
+    return cluster[count];
+  }, [currentClusterDateEnd.count]);
 
   const answerArray = useFieldArray({
     control: form.control,
@@ -47,8 +83,8 @@ export default function Run({ exam }: Props) {
   });
 
   const countdownRenderer = ({
-    formatted: { hours, minutes, seconds},
-    completed
+    formatted: { hours, minutes, seconds },
+    completed,
   }: CountdownRenderProps) => {
     if (completed) {
       // Render a completed state
@@ -77,9 +113,30 @@ export default function Run({ exam }: Props) {
   const [previousQueuePromise, setPreviousQueuePromise] =
     React.useState<Promise<Task[]> | null>(null);
 
+  React.useEffect(() => {
+    setShouldUpdate(true);
+
+    if (answers?.at(currentQuestion)?.cluster != currentCluster) {
+      const index = answers.findIndex(it => it.cluster == currentCluster);
+      if (index == -1) {
+        setCurrentQuestion(answers.length);
+
+        if (stateQueue.length == 0) {
+          location.reload();
+        }
+      } else {
+        setCurrentQuestion(index);
+      }
+    }
+
+    setTimeout(() => {
+      update();
+    }, currentClusterDateEnd.current.getTime() - Date.now());
+  }, [currentCluster, currentQuestion]);
+
   const [isUpdating, setIsUpdating] = React.useState(false);
 
-  const isLastQuestion = () => currentQuestion === answers.length - 1;
+  const isLastQuestion = currentQuestion === answers.length - 1;
   useDebounce(
     () => {
       if (stateQueue.length == 0) {
@@ -139,6 +196,10 @@ export default function Run({ exam }: Props) {
       state: answer.state,
       answer: answer.answer,
     });
+
+    if (exam.exercise_question.type == 'Kecermatan' && !isLastQuestion) {
+      setCurrentQuestion(currentQuestion + 1);
+    }
   };
 
   function onSelesaiUjian() {
@@ -160,7 +221,11 @@ export default function Run({ exam }: Props) {
         <div className="flex justify-between ">
           <div />
           <div className="shadow-2xl shadow-blue-400/50 rounded-3xl px-3 py-2 text-red-500 text-xl bg-white">
-            <Countdown date={time} renderer={countdownRenderer} />
+            <Countdown
+              date={currentClusterDateEnd.current}
+              renderer={countdownRenderer}
+              key={updateCount}
+            />
           </div>
           <div>
             <Button
@@ -243,15 +308,17 @@ export default function Run({ exam }: Props) {
                       </div>
                     </div>
                     <div className="w-full h-auto p-3 flex flex-col gap-3 z-50">
-                      <Answer
-                        answer={answerArray.fields[currentQuestion]}
-                        updateAnswer={answer => {
-                          updateAnswer({
-                            ...answers[currentQuestion],
-                            answer: answer.answer,
-                          });
-                        }}
-                      />
+                      {answerArray.fields[currentQuestion] != null ? (
+                        <Answer
+                          answer={answerArray.fields[currentQuestion]}
+                          updateAnswer={answer => {
+                            updateAnswer({
+                              ...answers[currentQuestion],
+                              answer: answer.answer,
+                            });
+                          }}
+                        />
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -279,7 +346,7 @@ export default function Run({ exam }: Props) {
                     });
                   }}
                 >
-                  {answerArray.fields[currentQuestion].state?.mark
+                  {answerArray.fields[currentQuestion]?.state?.mark
                     ? 'Batal Tandai'
                     : 'Tandai'}
                 </button>

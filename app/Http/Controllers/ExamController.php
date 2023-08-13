@@ -47,7 +47,7 @@ class ExamController extends Controller
     public function getInProgressExam($exercise_id)
     {
         return Exam::with(['answers.question', 'exerciseQuestion' => function ($query) {
-            $query->select('id', 'name');
+            $query->select('id', 'name', 'type', 'time_limit');
         }])
             ->ofExercise($exercise_id)
             ->ofUser(auth()->id())
@@ -157,11 +157,15 @@ class ExamController extends Controller
             $exercise = ExerciseQuestion::with(['questions'])->findOrFail(
                 $exercise_id,
             );
-            $expire_in = Carbon::now()->addMinutes($exercise->time_limit);
 
             if ($exercise->questions->count() == 0) {
                 return redirect()->back()->dangerBanner("soal latihan ini tidak bisa dikerjakan sekarang, coba lagi nanti");
             }
+
+
+            $groupedQuestions = $exercise->questions->groupBy("cluster")->values();
+
+            $expire_in = Carbon::now()->addMinutes($exercise->time_limit * $groupedQuestions->keys()->count());
 
             $exam = Exam::create([
                 'user_id' => auth()->id(),
@@ -169,18 +173,17 @@ class ExamController extends Controller
                 'expire_in' => $expire_in,
             ]);
 
-            foreach ($exercise->questions
-                ->filter(fn ($q) => $q['is_active'])
-                ->shuffle()
-                ->take($exercise->number_of_question)
-                as $question) {
-                ExamAnswer::create([
-                    'exam_id' => $exam->id,
-                    'bank_question_item_id' => $question->id,
-                    'state' => null,
-                    'answer' => null,
-                    'score' => 0,
-                ]);
+            foreach ($groupedQuestions as $cluster => $questions) {
+                foreach ($questions->filter(fn ($q) => $q['is_active'])->shuffle()->take($exercise->number_of_question) as $question) {
+                    ExamAnswer::create([
+                        'exam_id' => $exam->id,
+                        'bank_question_item_id' => $question->id,
+                        'state' => null,
+                        'answer' => null,
+                        'score' => 0,
+                        'cluster' => $cluster,
+                    ]);
+                }
             }
 
             return redirect()->route('student.exam.show', [$exercise->id]);
@@ -247,7 +250,7 @@ class ExamController extends Controller
         //
     }
 
-    public function leaderboard( $id)
+    public function leaderboard($id)
     {
         return Inertia::render('Student/Exam/Leaderboard', [
             'exercise_question' => fn () => ExerciseQuestion::with([
