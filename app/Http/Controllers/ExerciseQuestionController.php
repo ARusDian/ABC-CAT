@@ -177,7 +177,7 @@ class ExerciseQuestionController extends Controller
 
         $exercise_question = ExerciseQuestion::withTrashed()->findOrFail($id);
 
-        $exercise_question->questions()->sync($data['bank_question_items'] ?? []);
+        $exercise_question->questions()->syncWithoutDetaching($data['bank_question_items'] ?? []);
 
         activity()
             ->performedOn($exercise_question)
