@@ -25,9 +25,7 @@ class Exam extends Model
         'finished_at' => 'datetime',
     ];
 
-    protected $appends = [
-        'finished'
-    ];
+    protected $appends = ['finished'];
 
     public function answers(): HasMany
     {
@@ -79,6 +77,6 @@ class Exam extends Model
 
     public function finished(): Attribute
     {
-        return Attribute::get(fn () => $this->finished_at != null);
+        return Attribute::get(fn() => $this->finished_at != null);
     }
 }

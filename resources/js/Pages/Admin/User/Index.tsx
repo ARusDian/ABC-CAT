@@ -16,9 +16,8 @@ interface Props {
 }
 
 interface ImportFileModel {
-  import_file: BaseDocumentFileModel
+  import_file: BaseDocumentFileModel;
 }
-
 
 export default function Index(props: Props) {
   const users = props.users;
@@ -34,38 +33,46 @@ export default function Index(props: Props) {
       header: 'Nama User',
       accessorFn(originalRow) {
         return (
-          <div className='flex gap-3'>
+          <div className="flex gap-3">
             <img
               className="rounded-full h-20 w-20 object-cover"
-              src={originalRow.profile_photo_path ? asset('public', originalRow.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
+              src={
+                originalRow.profile_photo_path
+                  ? asset('public', originalRow.profile_photo_path)
+                  : asset('root', 'assets/image/default-profile.png')
+              }
               alt={originalRow.name}
             />
-            <p className='my-auto font-semibold'>{originalRow.name}</p>
+            <p className="my-auto font-semibold">{originalRow.name}</p>
           </div>
-        )
+        );
       },
     },
     {
       accessorKey: 'email',
       header: 'Email',
-    }, {
+    },
+    {
       accessorKey: 'phone_number',
       header: 'Nomor Telepon',
-    }, {
+    },
+    {
       accessorKey: 'active_year',
       header: 'Tahun Aktif',
-    }, {
+    },
+    {
       header: 'Aktif',
-      accessorFn: (row) => row.deleted_at ?
-        <p className="text-red-500">
-          Tidak Aktif
-        </p> : <p className="text-green-500">
-          Aktif
-        </p>,
-    }, {
+      accessorFn: row =>
+        row.deleted_at ? (
+          <p className="text-red-500">Tidak Aktif</p>
+        ) : (
+          <p className="text-green-500">Aktif</p>
+        ),
+    },
+    {
       accessorFn: (row: User) => row.roles.map(role => role.name).join(', '),
       header: 'Status',
-    }
+    },
   ] as MRT_ColumnDef<(typeof users)[0]>[];
   return (
     <AdminTableLayout
@@ -74,7 +81,7 @@ export default function Index(props: Props) {
       addRouteTitle="Tambah User"
     >
       <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-3">
-        <div className='flex justify-between'>
+        <div className="flex justify-between">
           <div className="flex justify-center">
             <form
               className="flex-col gap-5 py-5"
@@ -92,7 +99,7 @@ export default function Index(props: Props) {
                       onChange={e => {
                         field.onChange({
                           file: e.target.files![0],
-                          path: "",
+                          path: '',
                           disk: 'public',
                         });
                       }}

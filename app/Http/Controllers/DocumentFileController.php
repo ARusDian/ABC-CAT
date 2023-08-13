@@ -32,7 +32,10 @@ class DocumentFileController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'type' => ['required', Rule::in(['learning-material', 'bank-question', 'question'])]
+            'type' => [
+                'required',
+                Rule::in(['learning-material', 'bank-question', 'question']),
+            ],
         ]);
         $file = $request->file('file');
 
@@ -50,12 +53,7 @@ class DocumentFileController extends Controller
                 break;
         }
 
-        return DocumentFile::createFile(
-            'public',
-            $path,
-            $file,
-            auth()->id(),
-        );
+        return DocumentFile::createFile('public', $path, $file, auth()->id());
     }
 
     /**

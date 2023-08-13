@@ -4,17 +4,17 @@ import { LearningMaterialModel } from './LearningMaterial';
 import { SubLearningPacketModel } from './SubLearningPacket';
 
 export interface LearningCategoryFormModel {
-    id?: number;
-    name: string;
-    sub_learning_packet_id: number;
+  id?: number;
+  name: string;
+  sub_learning_packet_id: number;
 }
 
 export interface LearningCategoryModel extends LearningCategoryFormModel {
-    id: number;
-    name: string;
-    sub_learning_packet_id: number;
-    sub_learning_packet?: SubLearningPacketModel;
-    bank_questions?: BankQuestionModel[];
-    exercise_questions?: ExerciseQuestionModel[];
-    learning_materials?: LearningMaterialModel[];
+  id: number;
+  name: string;
+  sub_learning_packet_id: number;
+  sub_learning_packet?: SubLearningPacketModel;
+  bank_questions?: BankQuestionModel[];
+  exercise_questions?: ExerciseQuestionModel[];
+  learning_materials?: LearningMaterialModel[];
 }

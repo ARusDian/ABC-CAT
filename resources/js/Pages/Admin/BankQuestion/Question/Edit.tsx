@@ -24,11 +24,8 @@ export default function Edit(props: Props) {
     defaultValues: question,
   });
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   function onSubmit(data: BankQuestionItemFormModel) {
     Api.post(
@@ -44,7 +41,7 @@ export default function Edit(props: Props) {
         ...data,
       },
       form,
-    )
+    );
     // router.post(
     //   {
     //     _method: 'PUT',

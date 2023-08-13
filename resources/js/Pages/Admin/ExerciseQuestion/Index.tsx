@@ -21,12 +21,8 @@ export default function Index({ exercise_questions }: Props) {
   ] as MRT_ColumnDef<ExerciseQuestionModel>[];
 
   return (
-    <AdminTableLayout
-      title="Soal Latihan"
-      addRoute={route('exercise.create')}
-    >
+    <AdminTableLayout title="Soal Latihan" addRoute={route('exercise.create')}>
       <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
-
         <LazyLoadMRT
           columns={dataColumns}
           data={exercise_questions}
@@ -53,11 +49,7 @@ export default function Index({ exercise_questions }: Props) {
                 color="primary"
                 size="large"
               >
-                <Link
-                  href={route('exercise.show', row.original.id)}
-                >
-                  Show
-                </Link>
+                <Link href={route('exercise.show', row.original.id)}>Show</Link>
               </Button>
             </div>
           )}

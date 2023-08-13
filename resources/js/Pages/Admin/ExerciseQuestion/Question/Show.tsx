@@ -58,11 +58,8 @@ export default function Index({ question, exercise_question_id }: Props) {
     setTabValue(newValue);
   };
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   return (
     <AdminShowLayout
@@ -72,29 +69,29 @@ export default function Index({ question, exercise_question_id }: Props) {
         learning_packet,
         sub_learning_packet,
         learning_category,
-        exercise_question_id
+        exercise_question_id,
       ])}
       backRouteTitle="Kembali"
       onDelete={() => {
         question.is_active
           ? router.delete(
-            route('packet.sub.category.exercise.question.destroy', [
-              learning_packet,
-              sub_learning_packet,
-              learning_category,
-              exercise_question_id,
-              question.id,
-            ]),
-          )
+              route('packet.sub.category.exercise.question.destroy', [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                exercise_question_id,
+                question.id,
+              ]),
+            )
           : router.post(
-            route('packet.sub.category.exercise.question.restore', [
-              learning_packet,
-              sub_learning_packet,
-              learning_category,
-              exercise_question_id,
-              question.id,
-            ]),
-          );
+              route('packet.sub.category.exercise.question.restore', [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                exercise_question_id,
+                question.id,
+              ]),
+            );
       }}
       deleteTitle={question.is_active ? 'Hapus' : 'Restore'}
       onDeleteMessage={

@@ -4,7 +4,7 @@ import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificatio
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
-import  { MRT_ColumnDef } from 'material-react-table';
+import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
@@ -21,11 +21,8 @@ export default function Show(props: Props) {
     },
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   return (
     <AdminShowLayout
@@ -57,22 +54,23 @@ export default function Show(props: Props) {
               }{' '}
               Menit
             </p>
-            <p className={`${exercise_question.deleted_at ? "text-red-500" : "text-green-500"} font-semibold`}>
-              Status : {exercise_question.deleted_at ? "Nonaktif" : "Aktif"}
+            <p
+              className={`${
+                exercise_question.deleted_at ? 'text-red-500' : 'text-green-500'
+              } font-semibold`}
+            >
+              Status : {exercise_question.deleted_at ? 'Nonaktif' : 'Aktif'}
             </p>
           </div>
           <div className="flex justify-around my-auto gap-5">
             <MuiInertiaLinkButton
               color="primary"
-              href={route(
-                'packet.sub.category.exercise.leaderboard',
-                [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
-                  exercise_question.id,
-                ],
-              )}
+              href={route('packet.sub.category.exercise.leaderboard', [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                exercise_question.id,
+              ])}
             >
               Leaderboard
             </MuiInertiaLinkButton>

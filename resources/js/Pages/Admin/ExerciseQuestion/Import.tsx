@@ -40,11 +40,8 @@ export default function Show(props: Props) {
 
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   const [type, setType] = React.useState(1);
   const [exerciseId, setExerciseId] = React.useState<string | null>(
@@ -52,7 +49,7 @@ export default function Show(props: Props) {
   );
 
   const form = useDefaultExerciseQuestionFormModel({
-    type: bank_question.type
+    type: bank_question.type,
   });
 
   function onSubmit(e: ExerciseQuestionFormModel) {
@@ -66,7 +63,7 @@ export default function Show(props: Props) {
           learning_packet,
           sub_learning_packet,
           learning_category,
-          exerciseId!
+          exerciseId!,
         ]),
         {
           ...e,
@@ -84,7 +81,7 @@ export default function Show(props: Props) {
           learning_packet,
           sub_learning_packet,
           learning_category,
-          exerciseId!
+          exerciseId!,
         ]),
         {
           _method: 'PUT',

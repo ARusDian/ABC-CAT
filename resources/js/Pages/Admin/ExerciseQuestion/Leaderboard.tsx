@@ -16,28 +16,24 @@ interface Props {
 }
 
 export default function Leaderboard({ exercise_question }: Props) {
-
   const [data, setData] = useState<ExamModel[]>(exercise_question.exams);
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   useEffect(() => {
     const fetchData = async () => {
-      fetch(route("api.leaderboard-exam", exercise_question.id), {
-        method: "GET",
+      fetch(route('api.leaderboard-exam', exercise_question.id), {
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       })
-        .then((res) => res.json())
-        .then((data) => {
+        .then(res => res.json())
+        .then(data => {
           setData(data.exams);
         })
-        .catch((err) => console.warn(err));
+        .catch(err => console.warn(err));
     };
 
     const fetchDataIntervalId = setInterval(() => {
@@ -48,14 +44,11 @@ export default function Leaderboard({ exercise_question }: Props) {
   }, []);
 
   const sortedExam = React.useMemo(() => {
-    return Object.values(
-      groupBy(data, it => it.user_id),
-    )
+    return Object.values(groupBy(data, it => it.user_id))
       .map(it => maxBy(it, it => it.answers_sum_score)!)
       .sort((a, b) => b.answers_sum_score - a.answers_sum_score);
     // return exercise_question.exams.slice().sort((a,b) => a.:A)
   }, [JSON.stringify(data)]);
-
 
   const dataColumns = [
     { header: 'User', accessorKey: 'user.name' },
@@ -88,8 +81,7 @@ export default function Leaderboard({ exercise_question }: Props) {
 
   return (
     <AdminTableLayout title="Leaderboard">
-      <div className='flex justify-end'>
-
+      <div className="flex justify-end">
         <MuiInertiaLinkButton
           href={route('packet.sub.category.exercise.show', [
             learning_packet,
@@ -120,16 +112,16 @@ export default function Leaderboard({ exercise_question }: Props) {
               fontSize: '16px',
             },
           }}
-        // renderRowActions={({ row }) => (
-        //   <div className="flex items-center justify-center gap-2">
-        //     <Link
-        //       href={route('exam.show.attempt', [props.exercise_question.id, row.original.id])}
-        //       className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
-        //     >
-        //       Show
-        //     </Link>
-        //   </div>
-        // )}
+          // renderRowActions={({ row }) => (
+          //   <div className="flex items-center justify-center gap-2">
+          //     <Link
+          //       href={route('exam.show.attempt', [props.exercise_question.id, row.original.id])}
+          //       className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
+          //     >
+          //       Show
+          //     </Link>
+          //   </div>
+          // )}
         />
       </div>
     </AdminTableLayout>

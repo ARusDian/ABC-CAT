@@ -21,25 +21,26 @@ export default function Create(props: Props) {
     },
   });
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   function onSubmit(e: BankQuestionFormModel) {
-    router.post(route('packet.sub.category.bank-question.store', [
-      learning_packet,
-      sub_learning_packet,
-      learning_category,
-    ]), e as any, {
-      onError: errors => {
-        console.log(errors);
+    router.post(
+      route('packet.sub.category.bank-question.store', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+      ]),
+      e as any,
+      {
+        onError: errors => {
+          console.log(errors);
+        },
+        onSuccess: () => {
+          console.log('success');
+        },
       },
-      onSuccess: () => {
-        console.log('success');
-      },
-    });
+    );
   }
   return (
     <AdminFormLayout
@@ -47,7 +48,7 @@ export default function Create(props: Props) {
       backRoute={route('packet.sub.category.show', [
         learning_packet,
         sub_learning_packet,
-        learning_category
+        learning_category,
       ])}
     >
       <Form

@@ -50,7 +50,6 @@ export function useEditor(
       Image.configure({
         inline: true,
         allowBase64: true,
-        
       }),
       TableHeader,
       TableRow,

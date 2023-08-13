@@ -9,10 +9,7 @@ class LearningPacket extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'description',
-    ];
+    protected $fillable = ['name', 'description'];
 
     public function subLearningPackets()
     {
@@ -21,7 +18,10 @@ class LearningPacket extends Model
 
     public function learningCategories()
     {
-        return $this->hasManyThrough(LearningCategory::class, SubLearningPacket::class);
+        return $this->hasManyThrough(
+            LearningCategory::class,
+            SubLearningPacket::class,
+        );
     }
 
     public function users()

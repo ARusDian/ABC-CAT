@@ -1,11 +1,11 @@
-import { LearningPacketFormModel } from "@/Models/LearningPacket";
-import { TextField } from "@mui/material";
-import React from "react";
-import { UseFormReturn } from "react-hook-form";
+import { LearningPacketFormModel } from '@/Models/LearningPacket';
+import { TextField } from '@mui/material';
+import React from 'react';
+import { UseFormReturn } from 'react-hook-form';
 
 interface Props {
-  form: UseFormReturn<LearningPacketFormModel>
-  className?: string
+  form: UseFormReturn<LearningPacketFormModel>;
+  className?: string;
 }
 
 export default function Form({ form, className }: Props) {
@@ -32,5 +32,5 @@ export default function Form({ form, className }: Props) {
         />
       </div>
     </div>
-  )
+  );
 }

@@ -17,7 +17,7 @@ class LearningPacketController extends Controller
         //
         $learningPackets = LearningPacket::all();
         return Inertia::render('Admin/Classification/LearningPacket/Index', [
-            'learningPackets' => $learningPackets
+            'learningPackets' => $learningPackets,
         ]);
     }
 
@@ -40,15 +40,21 @@ class LearningPacketController extends Controller
             'name' => 'required',
             'description' => 'required',
         ]);
-        
+
         $learning_packet = LearningPacket::create($request->all());
         activity()
             ->performedOn($learning_packet)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'CREATE'])
-            ->log('Learning Packet ' . $learning_packet->name . ' created successfully.');
+            ->log(
+                'Learning Packet ' .
+                    $learning_packet->name .
+                    ' created successfully.',
+            );
 
-        return redirect()->route('packet.index')->banner('Learning Packet created successfully.');
+        return redirect()
+            ->route('packet.index')
+            ->banner('Learning Packet created successfully.');
     }
 
     /**
@@ -57,9 +63,11 @@ class LearningPacketController extends Controller
     public function show($id)
     {
         //
-        $learningPacket = LearningPacket::with('subLearningPackets.learningCategories')->find($id);
+        $learningPacket = LearningPacket::with(
+            'subLearningPackets.learningCategories',
+        )->find($id);
         return Inertia::render('Admin/Classification/LearningPacket/Show', [
-            'learningPacket' => $learningPacket
+            'learningPacket' => $learningPacket,
         ]);
     }
 
@@ -71,7 +79,7 @@ class LearningPacketController extends Controller
         //
         $learningPacket = LearningPacket::find($id);
         return Inertia::render('Admin/Classification/LearningPacket/Edit', [
-            'learningPacket' => $learningPacket
+            'learningPacket' => $learningPacket,
         ]);
     }
 
@@ -93,9 +101,15 @@ class LearningPacketController extends Controller
             ->performedOn($learningPacket)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'UPDATE'])
-            ->log('Learning Packet ' . $learningPacket->name . ' updated successfully.');
+            ->log(
+                'Learning Packet ' .
+                    $learningPacket->name .
+                    ' updated successfully.',
+            );
 
-        return redirect()->route('packet.show', $id)->banner('Learning Packet updated successfully.');
+        return redirect()
+            ->route('packet.show', $id)
+            ->banner('Learning Packet updated successfully.');
     }
 
     /**
@@ -111,8 +125,14 @@ class LearningPacketController extends Controller
             ->performedOn($learningPacket)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'DELETE'])
-            ->log('Learning Packet ' . $learningPacket->name . ' deleted successfully.');
+            ->log(
+                'Learning Packet ' .
+                    $learningPacket->name .
+                    ' deleted successfully.',
+            );
 
-        return redirect()->route('packet.index')->banner('Learning Packet deleted successfully.');
+        return redirect()
+            ->route('packet.index')
+            ->banner('Learning Packet deleted successfully.');
     }
 }

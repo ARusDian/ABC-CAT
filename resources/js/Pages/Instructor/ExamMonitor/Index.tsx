@@ -1,4 +1,4 @@
-import  { MRT_ColumnDef } from 'material-react-table';
+import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
@@ -57,10 +57,7 @@ export default function Index({ exams }: Props) {
                 color="primary"
                 size="large"
               >
-
-                <Link
-                  href={route('exam-monitor.show', row.original.id)}
-                >
+                <Link href={route('exam-monitor.show', row.original.id)}>
                   Show
                 </Link>
               </Button>

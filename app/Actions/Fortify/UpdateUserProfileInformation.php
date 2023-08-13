@@ -33,11 +33,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 Rule::unique('users')->ignore($user->id),
             ],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'address' => [
-                'required',
-                'string',
-                'max:255'
-                ]
+            'address' => ['required', 'string', 'max:255'],
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
@@ -65,7 +61,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 ->save();
         }
 
-        if ($input['address']){
+        if ($input['address']) {
             $user
                 ->forceFill([
                     'address' => $input['address'],

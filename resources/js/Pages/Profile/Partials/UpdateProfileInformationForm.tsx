@@ -129,7 +129,11 @@ export default function UpdateProfileInformationForm({ user }: Props) {
             // <!-- Current Profile Photo -->
             <div className="mt-2">
               <img
-                src={user.profile_photo_path ? asset('public', user.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
+                src={
+                  user.profile_photo_path
+                    ? asset('public', user.profile_photo_path)
+                    : asset('root', 'assets/image/default-profile.png')
+                }
                 alt={user.name}
                 className="rounded-full h-20 w-20 object-cover"
               />

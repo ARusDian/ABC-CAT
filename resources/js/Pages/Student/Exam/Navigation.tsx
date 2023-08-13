@@ -33,8 +33,14 @@ export function Navigation(props: Props) {
   } = props;
   const isLastQuestion = currentQuestion === answers.length - 1;
 
-  const prevState = answers[currentQuestion - 1] != null ? getState?.(answers[currentQuestion - 1], currentQuestion - 1) : null;
-  const nextState = answers[currentQuestion + 1] != null ? getState?.(answers[currentQuestion + 1], currentQuestion + 1) : null;
+  const prevState =
+    answers[currentQuestion - 1] != null
+      ? getState?.(answers[currentQuestion - 1], currentQuestion - 1)
+      : null;
+  const nextState =
+    answers[currentQuestion + 1] != null
+      ? getState?.(answers[currentQuestion + 1], currentQuestion + 1)
+      : null;
   return (
     <div className="flex flex-col p-3 basis-1/3">
       <p className="font-bold text-lg">{title ?? 'Navigasi Soal'}</p>

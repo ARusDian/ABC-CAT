@@ -19,7 +19,12 @@ interface Props {
   isUpdate?: boolean;
 }
 
-export default function Form({ form, submitTitle, onSubmit, isUpdate=false }: Props) {
+export default function Form({
+  form,
+  submitTitle,
+  onSubmit,
+  isUpdate = false,
+}: Props) {
   return (
     <form className="flex-col w-full space-y-5" onSubmit={onSubmit}>
       <TextField
@@ -51,12 +56,12 @@ export default function Form({ form, submitTitle, onSubmit, isUpdate=false }: Pr
         </Select>
       </FormControl>
 
-      <div className='flex justify-end'>
+      <div className="flex justify-end">
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}
           variant="contained"
-          size='large'
+          size="large"
           color={isUpdate ? 'warning' : 'primary'}
         >
           {submitTitle}

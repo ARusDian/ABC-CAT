@@ -18,10 +18,9 @@ class BankQuestionController extends Controller
     public function index()
     {
         return Inertia::render('Admin/BankQuestion/Index', [
-            'bank_questions' => fn () => BankQuestion::all(),
+            'bank_questions' => fn() => BankQuestion::all(),
         ]);
     }
-
 
     public function validateData($data)
     {
@@ -29,7 +28,7 @@ class BankQuestionController extends Controller
             'name' => 'required|string',
             'type' => [
                 'required',
-                Rule::in(BankQuestionTypeEnum::casesString())
+                Rule::in(BankQuestionTypeEnum::casesString()),
             ],
         ])->validate();
     }
@@ -45,8 +44,12 @@ class BankQuestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id)
-    {
+    public function store(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+    ) {
         $data = $this->validateData($request->all());
 
         $bank = BankQuestion::create([
@@ -66,7 +69,7 @@ class BankQuestionController extends Controller
                 $learning_packet,
                 $sub_learning_packet,
                 $learning_category_id,
-                $bank->id
+                $bank->id,
             ])
             ->banner('Bank Soal berhasil dibuat');
     }
@@ -74,10 +77,14 @@ class BankQuestionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($learning_packet, $sub_learning_packet, $learning_category_id, $id)
-    {
+    public function show(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $id,
+    ) {
         return Inertia::render('Admin/BankQuestion/Show', [
-            'bank_question' => fn () => BankQuestion::with([
+            'bank_question' => fn() => BankQuestion::with([
                 'items',
             ])->findOrFail($id),
         ]);
@@ -86,26 +93,36 @@ class BankQuestionController extends Controller
     public function importExerciseQuestion($bank_question)
     {
         return Inertia::render('Admin/BankQuestion/Import', [
-            'bank_question' => BankQuestion::with(['items'])->findOrFail($bank_question)
+            'bank_question' => BankQuestion::with(['items'])->findOrFail(
+                $bank_question,
+            ),
         ]);
     }
-
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($learning_packet, $sub_learning_packet, $learning_category_id, $id)
-    {
+    public function edit(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $id,
+    ) {
         return Inertia::render('Admin/BankQuestion/Edit', [
-            'bank_question' => fn () => BankQuestion::findOrFail($id),
+            'bank_question' => fn() => BankQuestion::findOrFail($id),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id, $id)
-    {
+    public function update(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $id,
+    ) {
         $data = $this->validateData($request->all());
 
         $bank = BankQuestion::findOrFail($id);
@@ -122,7 +139,7 @@ class BankQuestionController extends Controller
                 $learning_packet,
                 $sub_learning_packet,
                 $learning_category_id,
-                $id
+                $id,
             ])
             ->banner('Bank Soal berhasil diedit');
     }
@@ -130,8 +147,12 @@ class BankQuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($learning_packet, $sub_learning_packet, $learning_category_id, $id)
-    {
+    public function destroy(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $id,
+    ) {
         //
     }
 

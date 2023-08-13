@@ -34,8 +34,12 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($learning_packet, $sub_learning_packet, $learning_category_id, ExerciseQuestion $exercise_question)
-    {
+    public function create(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        ExerciseQuestion $exercise_question,
+    ) {
         $view = null;
         switch ($exercise_question->type) {
             case ExerciseQuestionTypeEnum::Pilihan:
@@ -57,12 +61,7 @@ class ExerciseQuestionQuestionController extends Controller
             'question' => 'required',
             'explanation' => 'nullable',
             'answers' => 'required|array',
-            'type' => [
-                'required',
-                Rule::in(
-                    QuestionTypeEnum::casesString()
-                ),
-            ],
+            'type' => ['required', Rule::in(QuestionTypeEnum::casesString())],
             'weight' => 'required|numeric',
             'answer' => 'required',
         ]);
@@ -70,7 +69,7 @@ class ExerciseQuestionQuestionController extends Controller
         $validator->sometimes(
             'answers.choices',
             'array',
-            fn (Fluent $item) => $item->type == QuestionTypeEnum::Pilihan->name,
+            fn(Fluent $item) => $item->type == QuestionTypeEnum::Pilihan->name,
         );
 
         return $validator->validate();
@@ -79,9 +78,20 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question)
-    {
-        return DB::transaction(function () use ($request, $learning_packet, $sub_learning_packet, $learning_category_id,  $exercise_question) {
+    public function store(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $exercise_question,
+    ) {
+        return DB::transaction(function () use (
+            $request,
+            $learning_packet,
+            $sub_learning_packet,
+            $learning_category_id,
+            $exercise_question,
+        ) {
             $data = $this->validateData($request->all());
 
             $submittedImagesId = [];
@@ -109,23 +119,42 @@ class ExerciseQuestionQuestionController extends Controller
                 ->performedOn($newQuestion)
                 ->causedBy(auth()->user())
                 ->withProperties(['method' => 'CREATE'])
-                ->log('Question ' . $newQuestion->question . ' created successfully.');
+                ->log(
+                    'Question ' .
+                        $newQuestion->question .
+                        ' created successfully.',
+                );
 
             return redirect()
                 ->route('packet.sub.category.exercise.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
-                    $exercise_question
-                ])->banner('Question created successfully');
+                    $exercise_question,
+                ])
+                ->banner('Question created successfully');
         });
     }
 
-    public function storeMany(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id,  $exercise_question)
-    {
-        return \DB::transaction(function () use ($request, $learning_packet, $sub_learning_packet, $learning_category_id,  $exercise_question) {
+    public function storeMany(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $exercise_question,
+    ) {
+        return \DB::transaction(function () use (
+            $request,
+            $learning_packet,
+            $sub_learning_packet,
+            $learning_category_id,
+            $exercise_question,
+        ) {
             $all = $request->validate([
-                'type' => ['required', Rule::in(QuestionTypeEnum::casesString())],
+                'type' => [
+                    'required',
+                    Rule::in(QuestionTypeEnum::casesString()),
+                ],
                 'weight' => 'required|numeric',
                 'stores' => 'required|array',
             ]);
@@ -136,7 +165,7 @@ class ExerciseQuestionQuestionController extends Controller
                 $data = [
                     'type' => $all['type'],
                     'weight' => $all['weight'],
-                    ...$store
+                    ...$store,
                 ];
 
                 $data = $this->validateData($data);
@@ -165,18 +194,24 @@ class ExerciseQuestionQuestionController extends Controller
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
-                    $exercise_question
-                ])->banner('Question created successfully');
+                    $exercise_question,
+                ])
+                ->banner('Question created successfully');
         });
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id)
-    {
+    public function show(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $exercise_question,
+        $id,
+    ) {
         return Inertia::render('Admin/ExerciseQuestion/Question/Show', [
-            'question' => fn () => BankQuestionItem::find($id),
+            'question' => fn() => BankQuestionItem::find($id),
             'exercise_question_id' => $exercise_question,
         ]);
     }
@@ -184,8 +219,13 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id)
-    {
+    public function edit(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $exercise_question,
+        $id,
+    ) {
         //
         $question = Question::find($id);
         return Inertia::render('Admin/ExerciseQuestion/Question/Edit', [
@@ -196,8 +236,14 @@ class ExerciseQuestionQuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id)
-    {
+    public function update(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $exercise_question,
+        $id,
+    ) {
         return DB::transaction(function () use (
             $request,
             $learning_packet,
@@ -222,23 +268,33 @@ class ExerciseQuestionQuestionController extends Controller
                 ->performedOn($question)
                 ->causedBy(auth()->user())
                 ->withProperties(['method' => 'UPDATE'])
-                ->log('Question ' . $question->question . ' updated successfully.');
+                ->log(
+                    'Question ' .
+                        $question->question .
+                        ' updated successfully.',
+                );
 
             return redirect()
                 ->route('packet.sub.category.exercise.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
-                    $exercise_question
-                ])->banner('Question updated successfully');
+                    $exercise_question,
+                ])
+                ->banner('Question updated successfully');
         });
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id)
-    {
+    public function destroy(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $exercise_question,
+        $id,
+    ) {
         return DB::transaction(function () use ($exercise_question, $id) {
             $question = Question::find($id);
             $question->update([
@@ -249,7 +305,11 @@ class ExerciseQuestionQuestionController extends Controller
                 ->performedOn($question)
                 ->causedBy(auth()->user())
                 ->withProperties(['method' => 'DELETE'])
-                ->log('Question ' . $question->question . ' deleted successfully.');
+                ->log(
+                    'Question ' .
+                        $question->question .
+                        ' deleted successfully.',
+                );
 
             return redirect()
                 ->route('exercise.show', [$exercise_question])
@@ -257,9 +317,20 @@ class ExerciseQuestionQuestionController extends Controller
         });
     }
 
-    public function restore($learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id)
-    {
-        return DB::transaction(function () use ($learning_packet, $sub_learning_packet, $learning_category_id, $exercise_question, $id) {
+    public function restore(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $exercise_question,
+        $id,
+    ) {
+        return DB::transaction(function () use (
+            $learning_packet,
+            $sub_learning_packet,
+            $learning_category_id,
+            $exercise_question,
+            $id,
+        ) {
             $question = Question::find($id);
             $question->update([
                 'is_active' => true,
@@ -269,15 +340,20 @@ class ExerciseQuestionQuestionController extends Controller
                 ->performedOn($question)
                 ->causedBy(auth()->user())
                 ->withProperties(['method' => 'RESTORE'])
-                ->log('Question ' . $question->question . ' restored successfully.');
+                ->log(
+                    'Question ' .
+                        $question->question .
+                        ' restored successfully.',
+                );
 
             return redirect()
                 ->route('packet.sub.category.exercise.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
-                    $exercise_question
-                ])->banner('Question restored successfully');
+                    $exercise_question,
+                ])
+                ->banner('Question restored successfully');
         });
     }
 }

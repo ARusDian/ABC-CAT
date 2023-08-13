@@ -32,7 +32,9 @@ export default function ShowAttempt({ exam }: Props) {
           </div>
           <div className="text-lg">
             <Button variant="contained" color="primary" size="large">
-              <Link href={route('student.exam.show', exam.exercise_question_id)}>
+              <Link
+                href={route('student.exam.show', exam.exercise_question_id)}
+              >
                 Kembali
               </Link>
             </Button>
@@ -43,7 +45,7 @@ export default function ShowAttempt({ exam }: Props) {
             currentQuestion={currentQuestion}
             setCurrentQuestion={setCurrentQuestion}
             answers={exam.answers}
-            getState={(it) => {
+            getState={it => {
               return {
                 isRight: it.score != 0,
               };
@@ -55,14 +57,14 @@ export default function ShowAttempt({ exam }: Props) {
               Soal {currentQuestion + 1} (
               {parseFloat(exam.answers[currentQuestion].score.toString())})
             </p>
-            <div className='relative flex'>
-              <div className='absolute w-full h-full'>
-                <div className='flex justify-center h-full w-full p-10'>
-                  <div className='flex justify-center'>
+            <div className="relative flex">
+              <div className="absolute w-full h-full">
+                <div className="flex justify-center h-full w-full p-10">
+                  <div className="flex justify-center">
                     <img
                       src={asset('root', 'assets/image/logo.png')}
                       alt="logo"
-                      className='w-full opacity-40'
+                      className="w-full opacity-40"
                     />
                   </div>
                 </div>

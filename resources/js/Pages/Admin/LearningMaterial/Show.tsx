@@ -30,28 +30,26 @@ export default function Index(props: Props) {
       title={`Materi Belajar ${learningMaterial.title}`}
       headerTitle={'Data Materi Belajar'}
       backRoute={route('packet.sub.category.show', [
-        learning_packet, sub_learning_packet, learning_category],
-      )}
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+      ])}
       backRouteTitle="Kembali"
       editRoute={route('packet.sub.category.material.edit', [
-          learning_packet,
-          sub_learning_packet,
-          learning_category,
-          learningMaterial.id,
-        ],
-      )}
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        learningMaterial.id,
+      ])}
       editRouteTitle="Edit"
       onDelete={() => {
         router.post(
-          route(
-            'packet.sub.category.material.destroy',
-            [
-              learning_packet,
-              sub_learning_packet,
-              learning_category,
-              learningMaterial.id,
-            ],
-          ),
+          route('packet.sub.category.material.destroy', [
+            learning_packet,
+            sub_learning_packet,
+            learning_category,
+            learningMaterial.id,
+          ]),
           {
             _method: 'DELETE',
           },
@@ -66,7 +64,10 @@ export default function Index(props: Props) {
         <div>Deskripsi Materi Pembelajaran :</div>
         <div className="border-2 border-gray-200 p-5">
           <div className="prose ">
-            <ResourceEditor content={learningMaterial.description.content} disableEdit/>
+            <ResourceEditor
+              content={learningMaterial.description.content}
+              disableEdit
+            />
           </div>
         </div>
         <div className="mt-8 text-2xl">Dokumen Materi Pembelajaran</div>

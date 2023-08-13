@@ -15,7 +15,10 @@ class LearningCategoryController extends Controller
     public function index($learning_packet, $sub_learning_packet)
     {
         //
-        return redirect()->route('packet.sub.show', [$learning_packet, $sub_learning_packet]);
+        return redirect()->route('packet.sub.show', [
+            $learning_packet,
+            $sub_learning_packet,
+        ]);
     }
 
     /**
@@ -26,15 +29,18 @@ class LearningCategoryController extends Controller
         //
         return Inertia::render('Admin/Classification/LearningCategory/Create', [
             'learning_packet_id' => $learning_packet,
-            'sub_learning_packet_id' => $sub_learning_packet
+            'sub_learning_packet_id' => $sub_learning_packet,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $learning_packet, $sub_learning_packet)
-    {
+    public function store(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+    ) {
         //
         $request->validate([
             'name' => 'required',
@@ -49,9 +55,15 @@ class LearningCategoryController extends Controller
             ->performedOn($learningCategory)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'CREATE'])
-            ->log('Learning Category ' . $request->name . ' created successfully.');
+            ->log(
+                'Learning Category ' .
+                    $request->name .
+                    ' created successfully.',
+            );
 
-        return redirect()->route('packet.sub.show', [$learning_packet, $sub_learning_packet])->banner('Learning Category created successfully.');
+        return redirect()
+            ->route('packet.sub.show', [$learning_packet, $sub_learning_packet])
+            ->banner('Learning Category created successfully.');
     }
 
     /**
@@ -65,10 +77,12 @@ class LearningCategoryController extends Controller
             'subLearningPacket.learningPacket',
             'learningMaterials.documents.documentFile',
             'bankQuestions.items',
-            'exerciseQuestions' => function ($q) {return $q->withTrashed();}
+            'exerciseQuestions' => function ($q) {
+                return $q->withTrashed();
+            },
         ])->find($id);
         return Inertia::render('Admin/Classification/LearningCategory/Show', [
-            'learningCategory' => $learningCategory
+            'learningCategory' => $learningCategory,
         ]);
     }
 
@@ -80,15 +94,19 @@ class LearningCategoryController extends Controller
         //
         $learningCategory = LearningCategory::find($id);
         return Inertia::render('Admin/Classification/LearningCategory/Edit', [
-            'learningCategory' => $learningCategory
+            'learningCategory' => $learningCategory,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $learning_packet, $sub_learning_packet, $id)
-    {
+    public function update(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $id,
+    ) {
         //
         $validated = $request->validate([
             'name' => 'required',
@@ -104,9 +122,19 @@ class LearningCategoryController extends Controller
             ->performedOn($learningCategory)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'UPDATE'])
-            ->log('Learning Category ' . $request->name . ' updated successfully.');
+            ->log(
+                'Learning Category ' .
+                    $request->name .
+                    ' updated successfully.',
+            );
 
-        return redirect()->route('packet.sub.category.show', [$learning_packet, $sub_learning_packet, $id])->banner('Learning Category updated successfully.');
+        return redirect()
+            ->route('packet.sub.category.show', [
+                $learning_packet,
+                $sub_learning_packet,
+                $id,
+            ])
+            ->banner('Learning Category updated successfully.');
     }
 
     /**
@@ -122,8 +150,14 @@ class LearningCategoryController extends Controller
             ->performedOn($learningCategory)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'DELETE'])
-            ->log('Learning Category ' . $learningCategory->name . ' deleted successfully.');
+            ->log(
+                'Learning Category ' .
+                    $learningCategory->name .
+                    ' deleted successfully.',
+            );
 
-        return redirect()->route('packet.sub.show', [$learning_packet, $sub_learning_packet])->banner('Learning Category deleted successfully.');
+        return redirect()
+            ->route('packet.sub.show', [$learning_packet, $sub_learning_packet])
+            ->banner('Learning Category deleted successfully.');
     }
 }

@@ -19,7 +19,7 @@ class ExamMonitorController extends Controller
             'exams' => Exam::with(['exerciseQuestion', 'user'])
                 ->when(
                     $exercise_question_id != null,
-                    fn ($q) => $q->where(
+                    fn($q) => $q->where(
                         'exercise_question_id',
                         $exercise_question_id,
                     ),
@@ -50,7 +50,7 @@ class ExamMonitorController extends Controller
     public function show(string $id)
     {
         return Inertia::render('Instructor/ExamMonitor/Show', [
-            'exam' => fn () => Exam::with([
+            'exam' => fn() => Exam::with([
                 'exerciseQuestion',
                 'user',
                 'answers.question',

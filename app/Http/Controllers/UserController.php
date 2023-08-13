@@ -23,7 +23,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::withTrashed()->with('roles')->get();
+        $user = User::withTrashed()
+            ->with('roles')
+            ->get();
         return Inertia::render('Admin/User/Index', [
             'users' => $user,
         ]);
@@ -61,7 +63,7 @@ class UserController extends Controller
                 'phone_number' => 'required|string',
                 'photo.file' => 'nullable|max:2048',
                 'address' => 'required|string',
-                'gender' => 'required|in:L,P'
+                'gender' => 'required|in:L,P',
             ]);
             $user = User::create([
                 'name' => $validated['name'],
@@ -70,7 +72,7 @@ class UserController extends Controller
                 'phone_number' => $validated['phone_number'],
                 'active_year' => date('Y'),
                 'address' => $validated['address'],
-                'gender' => $validated['gender']
+                'gender' => $validated['gender'],
             ]);
 
             if (isset($request['photo']['file'])) {
@@ -101,7 +103,9 @@ class UserController extends Controller
     public function show($id)
     {
         //
-        $user = User::withTrashed()->with(['roles'])->find($id);
+        $user = User::withTrashed()
+            ->with(['roles'])
+            ->find($id);
         return Inertia::render('Admin/User/Show', [
             'user' => $user,
         ]);
@@ -116,7 +120,9 @@ class UserController extends Controller
     public function edit($id)
     {
         //
-        $user = User::withTrashed()->with(['roles'])->find($id);
+        $user = User::withTrashed()
+            ->with(['roles'])
+            ->find($id);
         $roles = Role::all();
         return Inertia::render('Admin/User/Edit', [
             'user' => $user,
@@ -145,7 +151,7 @@ class UserController extends Controller
                 'photo' => 'nullable|max:2048',
                 'photo_profile_path' => 'nullable|string',
                 'address' => 'required|string',
-                'gender' => 'required|in:L,P'
+                'gender' => 'required|in:L,P',
             ]);
 
             $user = User::findOrFail($id);
@@ -222,7 +228,10 @@ class UserController extends Controller
 
     public function import(Request $request)
     {
-        Excel::import(new UsersImport, $request->file('import_file.file')->store('temp'));
+        Excel::import(
+            new UsersImport(),
+            $request->file('import_file.file')->store('temp'),
+        );
         return redirect()
             ->route('user.index')
             ->banner('User Imported Successfully');
@@ -230,10 +239,14 @@ class UserController extends Controller
 
     public function export()
     {
-        return Excel::download(new UsersExport, 'users.xlsx');
+        return Excel::download(new UsersExport(), 'users.xlsx');
     }
 
-    public function template(){
-        return Excel::download(new UsersTemplateExport, 'users_template.xlsx');
+    public function template()
+    {
+        return Excel::download(
+            new UsersTemplateExport(),
+            'users_template.xlsx',
+        );
     }
 }

@@ -32,10 +32,11 @@ export default function Create(props: Props) {
 
   function onSubmit(e: BaseLearningMaterialModel) {
     Api.post(
-      route(
-    'packet.sub.category.material.store',
-        [learning_packet, sub_learning_packet, learning_category],
-      ),
+      route('packet.sub.category.material.store', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+      ]),
       e,
       form,
     );
@@ -44,12 +45,17 @@ export default function Create(props: Props) {
   return (
     <AdminFormLayout
       title="Tambah Materi Belajar"
-      backRoute={route('packet.sub.category.show',
-        [learning_packet, sub_learning_packet, learning_category],
-      )}
+      backRoute={route('packet.sub.category.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+      ])}
       backRouteTitle="Kembali"
     >
-      <form className="flex-col gap-5 py-5" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="flex-col gap-5 py-5"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <Form form={form} className="my-5 mx-2" />
         <div className="flex justify-end">
           <Button

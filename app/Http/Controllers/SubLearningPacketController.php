@@ -22,7 +22,6 @@ class SubLearningPacketController extends Controller
         // ]);
 
         redirect()->route('packet.show', $learning_packet);
-
     }
 
     /**
@@ -31,9 +30,12 @@ class SubLearningPacketController extends Controller
     public function create($learning_packet)
     {
         //
-        return Inertia::render('Admin/Classification/SubLearningPacket/Create', [
-            'learning_packet_id' => $learning_packet
-        ]);
+        return Inertia::render(
+            'Admin/Classification/SubLearningPacket/Create',
+            [
+                'learning_packet_id' => $learning_packet,
+            ],
+        );
     }
 
     /**
@@ -53,10 +55,15 @@ class SubLearningPacketController extends Controller
             ->performedOn($subLearningPacket)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'CREATE'])
-            ->log('Sub Learning Packet ' . $request->name . ' created successfully.');
+            ->log(
+                'Sub Learning Packet ' .
+                    $request->name .
+                    ' created successfully.',
+            );
 
-        return redirect()->route('packet.show', $request->learning_packet_id)->banner('Sub Learning Packet created successfully.');
-        
+        return redirect()
+            ->route('packet.show', $request->learning_packet_id)
+            ->banner('Sub Learning Packet created successfully.');
     }
 
     /**
@@ -65,9 +72,11 @@ class SubLearningPacketController extends Controller
     public function show($learning_packet, $id)
     {
         //
-        $subLearningPacket = SubLearningPacket::with('learningCategories')->find($id);
+        $subLearningPacket = SubLearningPacket::with(
+            'learningCategories',
+        )->find($id);
         return Inertia::render('Admin/Classification/SubLearningPacket/Show', [
-            'subLearningPacket' => $subLearningPacket
+            'subLearningPacket' => $subLearningPacket,
         ]);
     }
 
@@ -79,14 +88,14 @@ class SubLearningPacketController extends Controller
         //
         $subLearningPacket = SubLearningPacket::find($id);
         return Inertia::render('Admin/Classification/SubLearningPacket/Edit', [
-            'subLearningPacket' => $subLearningPacket
+            'subLearningPacket' => $subLearningPacket,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $learning_packet,  $id)
+    public function update(Request $request, $learning_packet, $id)
     {
         //
         $request->validate([
@@ -100,9 +109,18 @@ class SubLearningPacketController extends Controller
             ->performedOn($subLearningPacket)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'UPDATE'])
-            ->log('Sub Learning Packet ' . $subLearningPacket->name . ' updated successfully.');
+            ->log(
+                'Sub Learning Packet ' .
+                    $subLearningPacket->name .
+                    ' updated successfully.',
+            );
 
-        return redirect()->route('packet.sub.show', [$learning_packet, $subLearningPacket->learning_packet_id])->banner('Sub Learning Packet updated successfully.');
+        return redirect()
+            ->route('packet.sub.show', [
+                $learning_packet,
+                $subLearningPacket->learning_packet_id,
+            ])
+            ->banner('Sub Learning Packet updated successfully.');
     }
 
     /**
@@ -110,7 +128,7 @@ class SubLearningPacketController extends Controller
      */
     public function destroy($learning_packet, $id)
     {
-        //  
+        //
         $subLearningPacket = SubLearningPacket::find($id);
         $subLearningPacket->delete();
 
@@ -118,16 +136,24 @@ class SubLearningPacketController extends Controller
             ->performedOn($subLearningPacket)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'DELETE'])
-            ->log('Sub Learning Packet ' . $subLearningPacket->name . ' deleted successfully.');
+            ->log(
+                'Sub Learning Packet ' .
+                    $subLearningPacket->name .
+                    ' deleted successfully.',
+            );
 
-        return redirect()->route('packet.show', $subLearningPacket->learning_packet_id)->banner('Sub Learning Packet deleted successfully.');
+        return redirect()
+            ->route('packet.show', $subLearningPacket->learning_packet_id)
+            ->banner('Sub Learning Packet deleted successfully.');
     }
 
     public function studentIndex($learning_packet)
     {
-        $learningPacket = LearningPacket::with(['subLearningPackets.learningCategories'])->find($learning_packet);
+        $learningPacket = LearningPacket::with([
+            'subLearningPackets.learningCategories',
+        ])->find($learning_packet);
         return Inertia::render('Student/SubLearningPacket', [
-            'learningPacket' => $learningPacket
+            'learningPacket' => $learningPacket,
         ]);
     }
 }

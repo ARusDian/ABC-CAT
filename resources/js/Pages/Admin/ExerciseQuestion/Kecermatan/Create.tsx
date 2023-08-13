@@ -57,11 +57,8 @@ export default function Create({ exercise_question }: Props) {
     },
   });
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   const [generateWith, setGenerateWith] = React.useState([
     null,
@@ -120,15 +117,12 @@ export default function Create({ exercise_question }: Props) {
     };
 
     router.post(
-      route(
-        'packet.sub.category.exercise.question.store-many',
-        [
-          learning_packet,
-          sub_learning_packet,
-          learning_category,
-          exercise_question.id
-        ],
-      ),
+      route('packet.sub.category.exercise.question.store-many', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        exercise_question.id,
+      ]),
       data as any,
       {
         onError: errors => {
@@ -143,7 +137,6 @@ export default function Create({ exercise_question }: Props) {
 
   const columnCount = 6;
 
-
   return (
     <AdminFormLayout
       title="Tambah Pertanyaan"
@@ -151,7 +144,7 @@ export default function Create({ exercise_question }: Props) {
         learning_packet,
         sub_learning_packet,
         learning_category,
-        exercise_question.id
+        exercise_question.id,
       ])}
       backRouteTitle="Kembali"
     >

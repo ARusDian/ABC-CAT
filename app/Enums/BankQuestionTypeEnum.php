@@ -13,6 +13,6 @@ enum BankQuestionTypeEnum
 
     public static function casesString()
     {
-        return array_map(fn ($q) => $q->name, Self::cases());
+        return array_map(fn($q) => $q->name, self::cases());
     }
 }

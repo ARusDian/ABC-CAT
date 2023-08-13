@@ -73,7 +73,10 @@ class User extends Authenticatable
 
     public function learningPackets()
     {
-        return $this->belongsToMany(LearningPacket::class, UserLearningPacket::class);
+        return $this->belongsToMany(
+            LearningPacket::class,
+            UserLearningPacket::class,
+        );
     }
 
     public function userLearningPackets()

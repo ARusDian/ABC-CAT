@@ -52,11 +52,8 @@ export default function Index(props: Props) {
     setTabValue(newValue);
   };
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   return (
     <AdminShowLayout
@@ -66,7 +63,7 @@ export default function Index(props: Props) {
         learning_packet,
         sub_learning_packet,
         learning_category,
-        item.bank_question_id
+        item.bank_question_id,
       ])}
       backRouteTitle="Kembali"
       editRoute={route('packet.sub.category.bank-question.item.edit', [
@@ -80,23 +77,23 @@ export default function Index(props: Props) {
       onDelete={() => {
         item.is_active
           ? router.delete(
-            route('packet.sub.category.bank-question.item.destroy', [
-              learning_packet,
-              sub_learning_packet,
-              learning_category,
-              item.bank_question_id,
-              item.id,
-            ]),
-          )
+              route('packet.sub.category.bank-question.item.destroy', [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                item.bank_question_id,
+                item.id,
+              ]),
+            )
           : router.post(
-            route('packet.sub.category.bank-question.item.restore', [
-              learning_packet,
-              sub_learning_packet,
-              learning_category,
-              item.bank_question_id,
-              item.id,
-            ]),
-          );
+              route('packet.sub.category.bank-question.item.restore', [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                item.bank_question_id,
+                item.id,
+              ]),
+            );
       }}
       deleteTitle={item.is_active ? 'Hapus' : 'Restore'}
       onDeleteMessage={
@@ -162,7 +159,9 @@ export default function Index(props: Props) {
                     {props.item.answer.type == 'WeightedChoice' ? (
                       <div>Bobot: {props.item.answer.answer[index].weight}</div>
                     ) : null}
-                    <div className="mx-auto border rounded-2xl p-5">{choice}</div>
+                    <div className="mx-auto border rounded-2xl p-5">
+                      {choice}
+                    </div>
                   </div>
                 );
               })}

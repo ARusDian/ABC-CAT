@@ -22,13 +22,13 @@ export default function Show(props: Props) {
   const handleClose = () => {
     setOpen(false);
   };
-  let editProps = {}
+  let editProps = {};
 
   if (!user.deleted_at) {
     editProps = {
       editRoute: route('user.edit', user.id),
-      editRouteTitle: "Edit"
-    }
+      editRouteTitle: 'Edit',
+    };
   }
 
   return (
@@ -41,16 +41,8 @@ export default function Show(props: Props) {
       isRestore={user.deleted_at ? true : false}
       onDelete={() => {
         user.deleted_at
-          ? router.post(
-            route('user.restore', [
-              user.id,
-            ]),
-          )
-          : router.delete(
-            route('user.destroy', [
-              user.id,
-            ]),
-          );
+          ? router.post(route('user.restore', [user.id]))
+          : router.delete(route('user.destroy', [user.id]));
       }}
       deleteTitle={user.deleted_at ? 'Restore' : 'Hapus'}
       onDeleteMessage={
@@ -60,8 +52,7 @@ export default function Show(props: Props) {
       }
     >
       <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
-        <div className='flex justify-end my-3'>
-
+        <div className="flex justify-end my-3">
           <MuiInertiaLinkButton
             color="success"
             href={route('user-learning-packet.create', {
@@ -71,10 +62,14 @@ export default function Show(props: Props) {
             Tambah Langganan Paket Belajar
           </MuiInertiaLinkButton>
         </div>
-        <div className='flex justify-center'>
+        <div className="flex justify-center">
           <img
             className="rounded-full h-40 w-40 object-cover border"
-            src={user.profile_photo_path ? asset('public', user.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
+            src={
+              user.profile_photo_path
+                ? asset('public', user.profile_photo_path)
+                : asset('root', 'assets/image/default-profile.png')
+            }
             alt={user.name}
           />
         </div>
@@ -108,7 +103,13 @@ export default function Show(props: Props) {
             </tr>
             <tr className="border-b py-3 border-black">
               <td className="py-3 text-center">Gender</td>
-              <td className="py-3 text-center">{user.gender === 'L' ? "Laki laki" : (user.gender === 'P' ? "Perempuan" : "Tidak Diketahui")}</td>
+              <td className="py-3 text-center">
+                {user.gender === 'L'
+                  ? 'Laki laki'
+                  : user.gender === 'P'
+                  ? 'Perempuan'
+                  : 'Tidak Diketahui'}
+              </td>
             </tr>
             <tr className="border-b py-3 border-black">
               <td className="py-3 text-center">Status</td>

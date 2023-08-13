@@ -9,10 +9,7 @@ class LearningCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'sub_learning_packet_id',
-    ];
+    protected $fillable = ['name', 'sub_learning_packet_id'];
 
     public function SubLearningPacket()
     {
@@ -21,7 +18,10 @@ class LearningCategory extends Model
 
     public function learningPacket()
     {
-        return $this->belongsToThrough(LearningPacket::class, SubLearningPacket::class);
+        return $this->belongsToThrough(
+            LearningPacket::class,
+            SubLearningPacket::class,
+        );
     }
 
     public function learningMaterials()

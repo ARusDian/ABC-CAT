@@ -55,7 +55,12 @@ class UserLearningPacketController extends Controller
             ->performedOn($userLearningPacket)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'CREATE'])
-            ->log('User ' . $userLearningPacket->user->name . ' assigned to learning packet ' . $userLearningPacket->learningPacket->name);
+            ->log(
+                'User ' .
+                    $userLearningPacket->user->name .
+                    ' assigned to learning packet ' .
+                    $userLearningPacket->learningPacket->name,
+            );
 
         return redirect()->route('user-learning-packet.index');
     }
@@ -96,7 +101,14 @@ class UserLearningPacketController extends Controller
             ->performedOn($userLearningPacket)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'DELETE'])
-            ->log('User ' . $userLearningPacket->user->name . ' removed from learning packet ' . $userLearningPacket->learningPacket->name);
-        return redirect()->route('user-learning-packet.index')->with('success', 'User Learning Packet deleted successfully');
+            ->log(
+                'User ' .
+                    $userLearningPacket->user->name .
+                    ' removed from learning packet ' .
+                    $userLearningPacket->learningPacket->name,
+            );
+        return redirect()
+            ->route('user-learning-packet.index')
+            ->with('success', 'User Learning Packet deleted successfully');
     }
 }

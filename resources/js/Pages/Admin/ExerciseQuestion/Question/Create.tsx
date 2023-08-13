@@ -12,7 +12,7 @@ interface Props {
   exercise_question: ExerciseQuestionModel;
 }
 
-export default function Create({exercise_question}: Props) {
+export default function Create({ exercise_question }: Props) {
   let form = useForm<QuestionFormModel>({
     defaultValues: {
       question: {
@@ -53,11 +53,8 @@ export default function Create({exercise_question}: Props) {
     },
   });
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   function onSubmit(e: QuestionFormModel) {
     console.log(e);
@@ -71,7 +68,7 @@ export default function Create({exercise_question}: Props) {
         learning_packet,
         sub_learning_packet,
         learning_category,
-        exercise_question.id
+        exercise_question.id,
       ])}
       backRouteTitle="Kembali"
     >

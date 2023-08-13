@@ -117,7 +117,7 @@ export default function DashboardAdminLayout({
 }: PropsWithChildren<Props>) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
-  const { props } = usePage()
+  const { props } = usePage();
   const user = props.user as unknown as User;
 
   const toggleDrawer =
@@ -140,22 +140,21 @@ export default function DashboardAdminLayout({
             href={route('profile.show')}
             active={route().current('profile.show')}
           >
-
-            <div className='flex gap-3'>
+            <div className="flex gap-3">
               <img
-                src={user.profile_photo_path ? asset('public', user.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
+                src={
+                  user.profile_photo_path
+                    ? asset('public', user.profile_photo_path)
+                    : asset('root', 'assets/image/default-profile.png')
+                }
                 alt={user.name}
                 className="rounded-full h-10 w-10 object-cover"
               />
-              <div className='my-auto flex-col text-lg'>
-                <p>
-                  {user.name}
-                </p>
-                <p className='text-sm'>
-                  {user.email}
-                </p>
+              <div className="my-auto flex-col text-lg">
+                <p>{user.name}</p>
+                <p className="text-sm">{user.email}</p>
               </div>
-           </div>
+            </div>
           </ResponsiveNavLink>
         </li>
         <li>
@@ -227,7 +226,10 @@ export default function DashboardAdminLayout({
       <Box sx={{ display: 'flex' }}>
         <AppBar open={isSidebarOpen}>
           <Banner />
-          <nav className="flex justify-between w-full sticky bg-main-blue my-auto px-7 shadow shadow-sky-400/50" style={{ height: navHeight }} >
+          <nav
+            className="flex justify-between w-full sticky bg-main-blue my-auto px-7 shadow shadow-sky-400/50"
+            style={{ height: navHeight }}
+          >
             <div className="flex gap-3 max-w-6xl mr-30">
               <button
                 className="text-3xl md:ml-20 text-white px-3 py-2"
@@ -259,7 +261,10 @@ export default function DashboardAdminLayout({
 
                 {/* <!-- Authentication --> */}
                 <form onSubmit={logout}>
-                  <DropdownLink as="button"> <div className='text-red-700 font-bold'>Log Out</div> </DropdownLink>
+                  <DropdownLink as="button">
+                    {' '}
+                    <div className="text-red-700 font-bold">Log Out</div>{' '}
+                  </DropdownLink>
                 </form>
               </Dropdown>
             </div>
@@ -274,11 +279,12 @@ export default function DashboardAdminLayout({
           <Divider />
           {sideBar()}
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: `${navHeight}px` }}>
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, p: 3, marginTop: `${navHeight}px` }}
+        >
           <div className="mx-auto px-8">
-            <div className="">
-              {children}
-            </div>
+            <div className="">{children}</div>
           </div>
         </Box>
       </Box>

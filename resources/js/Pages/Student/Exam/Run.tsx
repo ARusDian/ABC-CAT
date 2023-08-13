@@ -290,19 +290,20 @@ export default function Run({ exam }: Props) {
                             ''
                           )}
                         </div>
-                        <p className="text-2xl">{`${currentQuestion + 1}/${answers.length
-                          }`}</p>
+                        <p className="text-2xl">{`${currentQuestion + 1}/${
+                          answers.length
+                        }`}</p>
                       </div>
                     </div>
                   </div>
-                  <div className='relative flex'>
-                    <div className='absolute w-full h-full'>
-                      <div className='flex justify-center h-full w-full p-10'>
-                        <div className='flex justify-center'>
+                  <div className="relative flex">
+                    <div className="absolute w-full h-full">
+                      <div className="flex justify-center h-full w-full p-10">
+                        <div className="flex justify-center">
                           <img
                             src={asset('root', 'assets/image/logo.png')}
                             alt="logo"
-                            className='w-full opacity-40'
+                            className="w-full opacity-40"
                           />
                         </div>
                       </div>

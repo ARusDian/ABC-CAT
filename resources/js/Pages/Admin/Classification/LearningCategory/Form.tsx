@@ -1,11 +1,11 @@
-import { LearningCategoryFormModel } from "@/Models/LearningCategory";
-import { TextField } from "@mui/material";
-import React from "react";
-import { UseFormReturn } from "react-hook-form";
+import { LearningCategoryFormModel } from '@/Models/LearningCategory';
+import { TextField } from '@mui/material';
+import React from 'react';
+import { UseFormReturn } from 'react-hook-form';
 
 interface Props {
-  form: UseFormReturn<LearningCategoryFormModel>
-  className?: string
+  form: UseFormReturn<LearningCategoryFormModel>;
+  className?: string;
 }
 
 export default function Form({ form, className }: Props) {
@@ -22,5 +22,5 @@ export default function Form({ form, className }: Props) {
         />
       </div>
     </div>
-  )
+  );
 }

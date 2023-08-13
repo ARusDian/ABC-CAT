@@ -15,36 +15,34 @@ class DashboardController extends Controller
     {
         if (
             auth()
-            ->user()
-            ->hasRole('student')
+                ->user()
+                ->hasRole('student')
         ) {
-            return Inertia::render(
-                'Student/Dashboard',
-                [
-                    'userLearningPackets' => auth()->user()->userLearningPackets,
-                    'learningPackets' => LearningPacket::all(),
-                ]
-            );
+            return Inertia::render('Student/Dashboard', [
+                'userLearningPackets' => auth()->user()->userLearningPackets,
+                'learningPackets' => LearningPacket::all(),
+            ]);
         } elseif (
             auth()
-            ->user()
-            ->hasRole('admin') ||
+                ->user()
+                ->hasRole('admin') ||
             auth()
-            ->user()
-            ->hasRole('super-admin')
+                ->user()
+                ->hasRole('super-admin')
         ) {
             $users_count = User::all()->count();
             $students_count = User::role('student')->count();
 
             $learning_packets = LearningPacket::with([
                 'learningCategories.bankQuestions.items',
-            ])->withCount([
-                'users',
-            ])->get();
+            ])
+                ->withCount(['users'])
+                ->get();
 
             foreach ($learning_packets as $learning_packet) {
-                $learning_packet["bank_question_items_count"] = $learning_packet
-                    ->learningCategories
+                $learning_packet[
+                    'bank_question_items_count'
+                ] = $learning_packet->learningCategories
                     ->map(function ($learning_category) {
                         return $learning_category
                             ->bankQuestions()

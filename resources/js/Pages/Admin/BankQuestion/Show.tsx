@@ -15,28 +15,28 @@ interface Props {
 export default function Show(props: Props) {
   const { bank_question } = props;
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   const dataColumns = [
     {
       header: 'Nama',
       accessorKey: 'name',
-    }, {
+    },
+    {
       header: 'type',
       accessorKey: 'type',
-    }, {
+    },
+    {
       header: 'Bobot',
       accessorKey: 'weight',
-    }, {
+    },
+    {
       header: 'Status',
-      accessorFn: (row) => {
+      accessorFn: row => {
         return row.is_active ? 'Aktif' : 'Tidak Aktif';
-      }
-    }
+      },
+    },
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
   return (
@@ -52,7 +52,7 @@ export default function Show(props: Props) {
       backRoute={route('packet.sub.category.show', [
         learning_packet,
         sub_learning_packet,
-        learning_category
+        learning_category,
       ])}
     >
       <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
@@ -117,6 +117,6 @@ export default function Show(props: Props) {
           )}
         />
       </div>
-    </AdminShowLayout >
+    </AdminShowLayout>
   );
 }

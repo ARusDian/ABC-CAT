@@ -16,7 +16,7 @@ export default function AdminFormLayout(props: React.PropsWithChildren<Props>) {
       <div className="flex justify-between mx-12">
         <div className="text-2xl">{title}</div>
         {backRoute ? (
-          <MuiInertiaLinkButton color="primary" href={backRoute} >
+          <MuiInertiaLinkButton color="primary" href={backRoute}>
             {backRouteTitle ?? 'Kembali'}
           </MuiInertiaLinkButton>
         ) : null}

@@ -15,7 +15,7 @@ class UserActivityController extends Controller
         $activities = Activity::with(['causer'])->get();
 
         return Inertia::render('Admin/UserActivity/Index', [
-            'activities' => $activities
+            'activities' => $activities,
         ]);
     }
 }

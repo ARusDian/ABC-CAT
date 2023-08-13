@@ -9,10 +9,7 @@ class SubLearningPacket extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'learning_packet_id',
-    ];
+    protected $fillable = ['name', 'learning_packet_id'];
 
     public function learningPacket()
     {

@@ -33,7 +33,6 @@ interface Props {
 const drawerWidth = 240;
 const navHeight = 70;
 
-
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
@@ -114,9 +113,9 @@ export default function DashboardLayout({
   children,
 }: PropsWithChildren<Props>) {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
-  const { props } = usePage()
+  const { props } = usePage();
   const user = props.user as unknown as User;
-  
+
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -137,20 +136,19 @@ export default function DashboardLayout({
             href={route('profile.show')}
             active={route().current('profile.show')}
           >
-
-            <div className='flex gap-3'>
+            <div className="flex gap-3">
               <img
-                src={user.profile_photo_path ? asset('public', user.profile_photo_path) : asset('root', 'assets/image/default-profile.png')}
+                src={
+                  user.profile_photo_path
+                    ? asset('public', user.profile_photo_path)
+                    : asset('root', 'assets/image/default-profile.png')
+                }
                 alt={user.name}
                 className="rounded-full h-10 w-10 object-cover"
               />
-              <div className='my-auto flex-col text-lg'>
-                <p>
-                  {user.name}
-                </p>
-                <p className='text-sm'>
-                  {user.email}
-                </p>
+              <div className="my-auto flex-col text-lg">
+                <p>{user.name}</p>
+                <p className="text-sm">{user.email}</p>
               </div>
             </div>
           </ResponsiveNavLink>
@@ -180,7 +178,10 @@ export default function DashboardLayout({
       <Box sx={{ display: 'flex' }}>
         <AppBar position="absolute" open={isSidebarOpen}>
           <Banner />
-          <nav className="flex justify-between w-full sticky bg-main-blue my-auto px-7 shadow  bg-white" style={{ height: navHeight }} >
+          <nav
+            className="flex justify-between w-full sticky bg-main-blue my-auto px-7 shadow  bg-white"
+            style={{ height: navHeight }}
+          >
             <div className="flex gap-3 max-w-6xl mr-30 text-3xl">
               <button
                 className=" md:ml-20 bg-main-blue text-black px-3 py-2"
@@ -189,11 +190,8 @@ export default function DashboardLayout({
                 <MenuIcon fontSize="large" />
               </button>
             </div>
-            <div className='flex justify-center w-full py-1'>
-              <img
-                src={asset('root', 'assets/image/logo.png')}
-                className=""
-              />
+            <div className="flex justify-center w-full py-1">
+              <img src={asset('root', 'assets/image/logo.png')} className="" />
             </div>
             <div className="mr-3 relative my-auto">
               <Dropdown
@@ -231,7 +229,10 @@ export default function DashboardLayout({
           <Divider />
           {sideBar()}
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: `${navHeight}px` }}>
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, p: 3, marginTop: `${navHeight}px` }}
+        >
           <div className="p-5">{children}</div>
         </Box>
       </Box>

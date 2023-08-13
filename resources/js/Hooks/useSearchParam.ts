@@ -1,9 +1,10 @@
-
-import { useSearchParam as useSearchParamOriginal, useLocation } from 'react-use';
+import {
+  useSearchParam as useSearchParamOriginal,
+  useLocation,
+} from 'react-use';
 
 export function useSearchParam(param: string) {
-
-  const {}  = useLocation();
+  const {} = useLocation();
 
   return useSearchParamOriginal(param);
 }

@@ -42,7 +42,7 @@ function permutation<T>(array: T[]): T[][] {
   return permute(array);
 }
 
-export default function Create({bank_question}: Props) {
+export default function Create({ bank_question }: Props) {
   let form = useForm<BankQuestionItemModel>({
     defaultValues: {
       question: {},
@@ -59,11 +59,8 @@ export default function Create({bank_question}: Props) {
     },
   });
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   const [generateWith, setGenerateWith] = React.useState([
     null,
@@ -138,7 +135,7 @@ export default function Create({bank_question}: Props) {
         learning_packet,
         sub_learning_packet,
         learning_category,
-        bank_question.id
+        bank_question.id,
       ]),
       data as any,
       {
@@ -161,7 +158,7 @@ export default function Create({bank_question}: Props) {
         learning_packet,
         sub_learning_packet,
         learning_category,
-        bank_question.id
+        bank_question.id,
       ])}
       backRouteTitle="Kembali"
     >

@@ -1,4 +1,4 @@
-import { EditorValue } from "./EditorValue";
+import { EditorValue } from './EditorValue';
 
 export interface BaseQuestionModel {
   id?: number;

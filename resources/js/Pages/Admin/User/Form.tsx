@@ -3,12 +3,19 @@ import Select from 'react-select';
 
 import InputError from '@/Components/Jetstream/InputError';
 import { NewUser, Role } from '@/types';
-import { Button, InputLabel, Modal, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+  Button,
+  InputLabel,
+  Modal,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@mui/material';
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { asset } from '@/Models/Helper';
 import { BaseDocumentFileModel, getStorageFileUrl } from '@/Models/FileModel';
-import Cropper from "react-cropper";
-import "cropperjs/dist/cropper.css";
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   form: UseFormReturn<NewUser>;
@@ -43,9 +50,9 @@ export default function Form(props: Props) {
   const getCropData = async () => {
     if (cropper) {
       const file = await fetch(cropper.getCroppedCanvas().toDataURL())
-        .then((res) => res.blob())
-        .then((blob) => {
-          return new File([blob], "newAvatar.png", { type: "image/png" });
+        .then(res => res.blob())
+        .then(blob => {
+          return new File([blob], 'newAvatar.png', { type: 'image/png' });
         });
       if (file) {
         form.setValue('photo', {
@@ -55,7 +62,7 @@ export default function Form(props: Props) {
 
         setCropperModalOpen(false);
       }
-    } 
+    }
   };
 
   return (
@@ -67,16 +74,21 @@ export default function Form(props: Props) {
           name="photo"
           render={({ field }) => {
             return (
-              <div className='flex flex-col gap-3'>
-
+              <div className="flex flex-col gap-3">
                 <img
                   className="rounded-full h-20 w-20 object-cover"
                   src={
-                    form.getValues('photo')?.file ?
-                      getStorageFileUrl(form.getValues('photo') as BaseDocumentFileModel)! :
-                      (
-                        form.formState.defaultValues?.profile_photo_path ? asset('public', form.formState.defaultValues?.profile_photo_path as string) : asset('root', 'assets/image/default-profile.png')
-                      )
+                    form.getValues('photo')?.file
+                      ? getStorageFileUrl(
+                          form.getValues('photo') as BaseDocumentFileModel,
+                        )!
+                      : form.formState.defaultValues?.profile_photo_path
+                      ? asset(
+                          'public',
+                          form.formState.defaultValues
+                            ?.profile_photo_path as string,
+                        )
+                      : asset('root', 'assets/image/default-profile.png')
                   }
                   alt={form.formState.defaultValues?.name}
                 />
@@ -93,7 +105,10 @@ export default function Form(props: Props) {
             );
           }}
         />
-        <InputError message={form.formState.errors.photo?.message} className="mt-2" />
+        <InputError
+          message={form.formState.errors.photo?.message}
+          className="mt-2"
+        />
       </div>
       <div className="form-control w-full mt-4">
         <TextField
@@ -109,7 +124,7 @@ export default function Form(props: Props) {
         <TextField
           {...form.register('email', { required: true })}
           label="Email"
-          type='email'
+          type="email"
           className="mt-1 block w-full"
           defaultValue={form.formState.defaultValues?.email}
           error={form.formState.errors?.email != null}
@@ -120,7 +135,7 @@ export default function Form(props: Props) {
         <TextField
           {...form.register('phone_number', { required: true })}
           label="Nomor Telepon"
-          type='number'
+          type="number"
           className="mt-1 block w-full"
           defaultValue={form.formState.defaultValues?.phone_number}
           error={form.formState.errors?.phone_number != null}
@@ -130,17 +145,17 @@ export default function Form(props: Props) {
       <div className="form-control w-full mt-4">
         <Controller
           control={form.control}
-          name='gender'
+          name="gender"
           render={({ field }) => {
             return (
               <>
                 <InputLabel htmlFor="type">Gender</InputLabel>
                 <ToggleButtonGroup
                   id="type"
-                  color='primary'
+                  color="primary"
                   value={field.value}
                   exclusive
-                  onChange={(_e: React.MouseEvent<HTMLElement>, v: "L" | "P") =>
+                  onChange={(_e: React.MouseEvent<HTMLElement>, v: 'L' | 'P') =>
                     field.onChange(v)
                   }
                   aria-label="text alignment"
@@ -152,9 +167,12 @@ export default function Form(props: Props) {
                     Perempuan
                   </ToggleButton>
                 </ToggleButtonGroup>
-                <InputError className="mt-2" message={form.formState.errors.gender?.message} />
+                <InputError
+                  className="mt-2"
+                  message={form.formState.errors.gender?.message}
+                />
               </>
-            )
+            );
           }}
         />
       </div>
@@ -186,21 +204,22 @@ export default function Form(props: Props) {
           helperText={form.formState.errors.address?.message}
         />
       </div>
-      {
-        isUpdate && (
-          <div className="form-control w-full mt-4">
-            <TextField
-              type="number" placeholder="YYYY" min="1999" max={9999}
-              label="Tahun Aktif"
-              {...form.register('active_year', { required: true })}
-              className="mt-1 block w-full"
-              defaultValue={form.formState.defaultValues?.active_year}
-              error={form.formState.errors?.active_year != null}
-              helperText={form.formState.errors.active_year?.message}
-            />
-          </div>
-        )
-      }
+      {isUpdate && (
+        <div className="form-control w-full mt-4">
+          <TextField
+            type="number"
+            placeholder="YYYY"
+            min="1999"
+            max={9999}
+            label="Tahun Aktif"
+            {...form.register('active_year', { required: true })}
+            className="mt-1 block w-full"
+            defaultValue={form.formState.defaultValues?.active_year}
+            error={form.formState.errors?.active_year != null}
+            helperText={form.formState.errors.active_year?.message}
+          />
+        </div>
+      )}
       <div className="form-control w-full mt-4 z-50">
         <Controller
           control={form.control}
@@ -236,7 +255,7 @@ export default function Form(props: Props) {
         aria-describedby="modal-modal-description"
       >
         <div style={{ ...style }}>
-          <div className='p-4 bg-white flex-col gap-5'>
+          <div className="p-4 bg-white flex-col gap-5">
             <Cropper
               src={image!}
               aspectRatio={1 / 1}
@@ -244,22 +263,18 @@ export default function Form(props: Props) {
               minCropBoxWidth={100}
               guides={false}
               checkOrientation={false}
-              onInitialized={(instance) => {
+              onInitialized={instance => {
                 setCropper(instance);
               }}
             />
-            <div className='flex justify-end mt-5'>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={getCropData}
-              >
+            <div className="flex justify-end mt-5">
+              <Button variant="contained" color="primary" onClick={getCropData}>
                 Simpan
               </Button>
             </div>
           </div>
         </div>
       </Modal>
-    </div >
+    </div>
   );
 }

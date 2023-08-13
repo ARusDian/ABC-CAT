@@ -23,11 +23,8 @@ export default function Create({ bank_question }: Props) {
     },
   });
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   const onSubmit = React.useCallback(
     (e: BankQuestionFormModel) => {

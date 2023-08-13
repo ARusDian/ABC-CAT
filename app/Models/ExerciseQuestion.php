@@ -13,13 +13,13 @@ class ExerciseQuestion extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
+
     protected $fillable = [
         'name',
         'type',
         'time_limit',
         'number_of_question',
-        'learning_category_id'
+        'learning_category_id',
     ];
 
     protected $casts = [

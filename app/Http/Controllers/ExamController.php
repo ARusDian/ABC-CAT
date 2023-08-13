@@ -17,11 +17,20 @@ class ExamController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($learning_packet, $sub_learning_packet, $learning_category)
-    {
+    public function index(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category,
+    ) {
         //
-        $learningCategory = LearningCategory::where('id', $learning_category)->firstOrFail();
-        $exerciseQuestions = ExerciseQuestion::where('learning_category_id', $learning_category)->get();
+        $learningCategory = LearningCategory::where(
+            'id',
+            $learning_category,
+        )->firstOrFail();
+        $exerciseQuestions = ExerciseQuestion::where(
+            'learning_category_id',
+            $learning_category,
+        )->get();
         return Inertia::render('Student/Exam/Index', [
             'learningCategory' => $learningCategory,
             'exerciseQuestions' => $exerciseQuestions,
@@ -46,9 +55,12 @@ class ExamController extends Controller
 
     public function getInProgressExam($exercise_id)
     {
-        return Exam::with(['answers.question', 'exerciseQuestion' => function ($query) {
-            $query->select('id', 'name', 'type', 'time_limit');
-        }])
+        return Exam::with([
+            'answers.question',
+            'exerciseQuestion' => function ($query) {
+                $query->select('id', 'name', 'type', 'time_limit');
+            },
+        ])
             ->ofExercise($exercise_id)
             ->ofUser(auth()->id())
             ->ofFinished(false)
@@ -80,7 +92,7 @@ class ExamController extends Controller
                     case 'WeightedChoice':
                         return $answer['weight'][$exam->answer]['weight'] ?? 0;
                         break;
-                };
+                }
                 break;
         }
     }
@@ -96,13 +108,10 @@ class ExamController extends Controller
             $this->checkFinished($exam);
 
             if (!$exam->finished) {
-
-                $exam->answers->each(
-                    function ($answer) {
-                        $answer->setHidden(['score']);
-                        $answer->question->setHidden(['answer']);
-                    }
-                );
+                $exam->answers->each(function ($answer) {
+                    $answer->setHidden(['score']);
+                    $answer->question->setHidden(['answer']);
+                });
 
                 return Inertia::render('Student/Exam/Run', [
                     'exam' => $exam,
@@ -110,12 +119,14 @@ class ExamController extends Controller
             }
         }
 
-
         $exercise = ExerciseQuestion::findOrFail($exercise_id);
 
         return Inertia::render('Student/Exam/Show', [
             'exercise_question' => $exercise,
-            'exams' => Exam::withScore()->ofExercise($exercise_id)->ofUser(auth()->id())->get()
+            'exams' => Exam::withScore()
+                ->ofExercise($exercise_id)
+                ->ofUser(auth()->id())
+                ->get(),
         ]);
     }
 
@@ -147,10 +158,9 @@ class ExamController extends Controller
         $exam = $this->getInProgressExam($exercise_id);
 
         if ($exam) {
-            return redirect()->route("student.exam.show", [$exercise_id]);
+            return redirect()->route('student.exam.show', [$exercise_id]);
         }
         return \DB::transaction(function () use ($exercise_id) {
-
             /**
              * @var \App\Models\ExerciseQuestion $exercise
              */
@@ -159,13 +169,20 @@ class ExamController extends Controller
             );
 
             if ($exercise->questions->count() == 0) {
-                return redirect()->back()->dangerBanner("soal latihan ini tidak bisa dikerjakan sekarang, coba lagi nanti");
+                return redirect()
+                    ->back()
+                    ->dangerBanner(
+                        'soal latihan ini tidak bisa dikerjakan sekarang, coba lagi nanti',
+                    );
             }
 
+            $groupedQuestions = $exercise->questions
+                ->groupBy('cluster')
+                ->values();
 
-            $groupedQuestions = $exercise->questions->groupBy("cluster")->values();
-
-            $expire_in = Carbon::now()->addMinutes($exercise->time_limit * $groupedQuestions->keys()->count());
+            $expire_in = Carbon::now()->addMinutes(
+                $exercise->time_limit * $groupedQuestions->keys()->count(),
+            );
 
             $exam = Exam::create([
                 'user_id' => auth()->id(),
@@ -174,7 +191,13 @@ class ExamController extends Controller
             ]);
 
             foreach ($groupedQuestions as $cluster => $questions) {
-                foreach ($questions->filter(fn ($q) => $q['is_active'])->shuffle()->take($exercise->number_of_question) as $question) {
+                foreach (
+                    $questions
+                        ->filter(fn($q) => $q['is_active'])
+                        ->shuffle()
+                        ->take($exercise->number_of_question)
+                    as $question
+                ) {
                     ExamAnswer::create([
                         'exam_id' => $exam->id,
                         'bank_question_item_id' => $question->id,
@@ -253,10 +276,10 @@ class ExamController extends Controller
     public function leaderboard($id)
     {
         return Inertia::render('Student/Exam/Leaderboard', [
-            'exercise_question' => fn () => ExerciseQuestion::with([
-                'exams' => fn ($q) => $q->withScore(),
+            'exercise_question' => fn() => ExerciseQuestion::with([
+                'exams' => fn($q) => $q->withScore(),
                 'exams.user',
-            ])->findOrFail($id)
+            ])->findOrFail($id),
         ]);
     }
 }

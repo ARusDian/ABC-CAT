@@ -11,21 +11,19 @@ class BankQuestion extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'type',
-        'learning_category_id',
-    ];
+    protected $fillable = ['name', 'type', 'learning_category_id'];
 
     protected $casts = [
-        'type' => BankQuestionTypeEnum::class
+        'type' => BankQuestionTypeEnum::class,
     ];
 
-    public function items(): HasMany{
+    public function items(): HasMany
+    {
         return $this->hasMany(BankQuestionItem::class);
     }
 
-    public function learningCategory(){
+    public function learningCategory()
+    {
         return $this->belongsTo(LearningCategory::class);
     }
 }

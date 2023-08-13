@@ -39,7 +39,9 @@ export default function DocumentForm(props: Props) {
         />
         {documentsArray.fields.length > 0 &&
           documentsArray.fields.map((document, index) => {
-            const document_file = form.watch(`documents.${index}.document_file`)
+            const document_file = form.watch(
+              `documents.${index}.document_file`,
+            );
             return (
               <div key={getUniqueKey(document)} className="border-b-2 pb-5">
                 <div className="my-5 flex flex-col md:flex-row gap-2">
@@ -82,7 +84,10 @@ export default function DocumentForm(props: Props) {
                         accept="application/pdf"
                         name={`documents.${index}.file`}
                         onChange={(e: any) => {
-                          form.setValue(`documents.${index}.document_file.file`, e.target.files.item(0))
+                          form.setValue(
+                            `documents.${index}.document_file.file`,
+                            e.target.files.item(0),
+                          );
                         }}
                       />
                       <InputLabel htmlFor={`document_file_${index}`}>
@@ -94,7 +99,9 @@ export default function DocumentForm(props: Props) {
                         </div>
                       </InputLabel>
                       <InputError
-                        message={form.formState.errors?.documents?.at?.(index)?.message}
+                        message={
+                          form.formState.errors?.documents?.at?.(index)?.message
+                        }
                         className="mt-2"
                       />
                     </div>
@@ -117,8 +124,7 @@ export default function DocumentForm(props: Props) {
                   className="mt-4 flex items-center justify-center"
                   key={`document-${getUniqueKey(document)}-preview`}
                 >
-                  {document_file.file ||
-                  document_file.path ? (
+                  {document_file.file || document_file.path ? (
                     <PDFViewer document={document} />
                   ) : (
                     <div className="border border-dashed border-gray-300 rounded-md p-2 w-8/12 flex justify-center items-center text-xl">

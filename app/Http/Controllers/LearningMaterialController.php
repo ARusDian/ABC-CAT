@@ -30,8 +30,11 @@ class LearningMaterialController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($learning_packet, $sub_learning_packet, $learning_category)
-    {
+    public function create(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category,
+    ) {
         //
         return Inertia::render('Admin/LearningMaterial/Create');
     }
@@ -39,8 +42,12 @@ class LearningMaterialController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $learning_packet, $sub_learning_packet, $learning_category)
-    {
+    public function store(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category,
+    ) {
         //
         return DB::transaction(function () use (
             $request,
@@ -50,7 +57,6 @@ class LearningMaterialController extends Controller
         ) {
             $editorContent = $request->description;
 
-
             $learningMaterial = LearningMaterial::create([
                 'title' => $request->title,
                 'description' => $editorContent,
@@ -58,7 +64,6 @@ class LearningMaterialController extends Controller
             ]);
 
             foreach ($request->documents ?? [] as $i => $document) {
-
                 $documentFile = DocumentFile::createFile(
                     'public',
                     'learning-material/',
@@ -75,7 +80,11 @@ class LearningMaterialController extends Controller
                 ->performedOn($learningMaterial)
                 ->causedBy(auth()->user())
                 ->withProperties(['method' => 'CREATE'])
-                ->log('Learning Material ' . $learningMaterial->title . ' created successfully');
+                ->log(
+                    'Learning Material ' .
+                        $learningMaterial->title .
+                        ' created successfully',
+                );
 
             return redirect()
                 ->route('packet.sub.category.show', [
@@ -90,8 +99,12 @@ class LearningMaterialController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($learning_packet, $sub_learning_packet, $learning_category, $id)
-    {
+    public function show(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category,
+        $id,
+    ) {
         //
         $learningMaterial = LearningMaterial::with(
             'documents.documentFile',
@@ -104,8 +117,12 @@ class LearningMaterialController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($learning_packet, $sub_learning_packet, $learning_category, $id)
-    {
+    public function edit(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category,
+        $id,
+    ) {
         //
         $learningMaterial = LearningMaterial::with(
             'documents.documentFile',
@@ -118,10 +135,21 @@ class LearningMaterialController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $learning_packet, $sub_learning_packet, $learning_category, $id)
-    {
+    public function update(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category,
+        $id,
+    ) {
         //
-        return DB::transaction(function () use ($request, $learning_packet, $sub_learning_packet, $learning_category, $id) {
+        return DB::transaction(function () use (
+            $request,
+            $learning_packet,
+            $sub_learning_packet,
+            $learning_category,
+            $id,
+        ) {
             $editorContent = $request->description;
 
             $learningMaterialDescriptionImages = LearningMaterialDescriptionImage::with(
@@ -136,7 +164,6 @@ class LearningMaterialController extends Controller
                 'description' => $editorContent,
                 'learning_category_id' => $learning_category,
             ]);
-
 
             // Edit Document
 
@@ -175,7 +202,7 @@ class LearningMaterialController extends Controller
                     $documentFile = DocumentFile::createFile(
                         'public',
                         'learning-material/',
-                        $document['document_file']['file']
+                        $document['document_file']['file'],
                     );
                 }
 
@@ -195,7 +222,11 @@ class LearningMaterialController extends Controller
                 ->performedOn($learningMaterial)
                 ->causedBy(auth()->user())
                 ->withProperties(['method' => 'UPDATE'])
-                ->log('Learning Material ' . $learningMaterial->title . ' updated successfully');
+                ->log(
+                    'Learning Material ' .
+                        $learningMaterial->title .
+                        ' updated successfully',
+                );
 
             return redirect()
                 ->route('packet.sub.category.material.show', [
@@ -211,10 +242,19 @@ class LearningMaterialController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($learning_packet, $sub_learning_packet, $learning_category, $id)
-    {
+    public function destroy(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category,
+        $id,
+    ) {
         //
-        return DB::transaction(function () use ($learning_packet, $sub_learning_packet, $learning_category, $id) {
+        return DB::transaction(function () use (
+            $learning_packet,
+            $sub_learning_packet,
+            $learning_category,
+            $id,
+        ) {
             $learningMaterial = LearningMaterial::find($id);
             $learningMaterialDocuments = LearningMaterialDocument::with(
                 'documentFile',
@@ -242,7 +282,11 @@ class LearningMaterialController extends Controller
                 ->performedOn($learningMaterial)
                 ->causedBy(auth()->user())
                 ->withProperties(['method' => 'DELETE'])
-                ->log('Learning Material ' . $learningMaterial->title . ' deleted successfully');
+                ->log(
+                    'Learning Material ' .
+                        $learningMaterial->title .
+                        ' deleted successfully',
+                );
 
             return redirect()
                 ->route('packet.sub.category.show', [
@@ -254,12 +298,15 @@ class LearningMaterialController extends Controller
         });
     }
 
-    public function studentIndex($learning_packet, $sub_learning_packet, $learning_category)
-    {
+    public function studentIndex(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category,
+    ) {
         //
-        $learningMaterials = LearningMaterial::with(
-            'documents.documentFile',
-        )->where('learning_category_id', $learning_category)->get();
+        $learningMaterials = LearningMaterial::with('documents.documentFile')
+            ->where('learning_category_id', $learning_category)
+            ->get();
         $learningCategory = LearningCategory::find($learning_category);
         return Inertia::render('Student/LearningMaterial/Index', [
             'learningCategory' => $learningCategory,
@@ -267,12 +314,14 @@ class LearningMaterialController extends Controller
         ]);
     }
 
-    public function studentShow($learning_packet, $sub_learning_packet, $learning_category, $id)
-    {
+    public function studentShow(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category,
+        $id,
+    ) {
         //
-        $document = LearningMaterialDocument::with(
-            'documentFile',
-        )->find($id);
+        $document = LearningMaterialDocument::with('documentFile')->find($id);
         return Inertia::render('Student/LearningMaterial/Show', [
             'document' => $document,
         ]);

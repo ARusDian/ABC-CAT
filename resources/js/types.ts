@@ -1,4 +1,4 @@
-import { BaseDocumentFileModel } from "./Models/FileModel";
+import { BaseDocumentFileModel } from './Models/FileModel';
 
 type DateTime = string;
 
@@ -21,7 +21,7 @@ export interface BaseUser {
   active_year?: number;
   roles?: Array<Role>;
   gender: 'L' | 'P';
-  address: string
+  address: string;
 }
 
 export interface NewUser extends BaseUser {
@@ -40,7 +40,7 @@ export interface User extends BaseUser {
   created_at: DateTime;
   updated_at: DateTime;
   deleted_at?: Nullable<DateTime>;
-  user_profile?: {}
+  user_profile?: {};
 }
 
 export type InertiaSharedProps<T = {}> = T & {

@@ -42,7 +42,7 @@ export default function Index(props: React.PropsWithChildren<Props>) {
       confirmationButtonProps: { autoFocus: true },
     })
       .then(onDelete)
-      .catch((e) => console.log(e, 'Deletion cancelled.'));
+      .catch(e => console.log(e, 'Deletion cancelled.'));
   };
 
   return (
@@ -79,6 +79,6 @@ export default function Index(props: React.PropsWithChildren<Props>) {
         </div>
         {props.children}
       </div>
-    </DashboardAdminLayout >
+    </DashboardAdminLayout>
   );
 }

@@ -55,11 +55,8 @@ export default function Edit({ question }: Props) {
     // });
   }
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   return (
     <AdminFormLayout

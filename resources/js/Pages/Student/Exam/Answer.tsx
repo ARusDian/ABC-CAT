@@ -118,7 +118,7 @@ function PilihanAnswerForm({
             isCorrect = answerQuestion.answer == index;
           } else if (answerQuestion?.type == 'WeightedChoice') {
             isCorrect = answerQuestion.answer[index].weight > 0;
-         }
+          }
         }
         return (
           <div
@@ -188,7 +188,6 @@ function KecermatanAnswerForm({
   return (
     <div>
       {choices.map((choice, index) => {
-        console.log(answer.answer, updateAnswer == null);
         return (
           <div className="flex justify-between" key={index}>
             <div className="flex gap-3">

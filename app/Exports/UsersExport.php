@@ -10,8 +10,8 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class UsersExport implements WithHeadings, FromView
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     // public function collection()
     // {
     //     return User::all([
@@ -27,7 +27,7 @@ class UsersExport implements WithHeadings, FromView
     public function view(): View
     {
         return view('exports.user', [
-            'users' => User::all()
+            'users' => User::all(),
         ]);
     }
 
@@ -51,7 +51,7 @@ class UsersExport implements WithHeadings, FromView
             'Nomor Telepon',
             'Tahun Aktif',
             'Jenis Kelamin',
-            'Alamat'
+            'Alamat',
         ];
     }
 }

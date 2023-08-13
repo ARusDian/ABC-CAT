@@ -1,4 +1,4 @@
-import { EditorValue } from "./EditorValue";
+import { EditorValue } from './EditorValue';
 
 export interface BaseBankQuestionItemModel {
   id?: number;
@@ -48,10 +48,10 @@ export type AnswerVariant<T> =
 
 export type AnswerWeightedChoiceVariant = {
   type: 'WeightedChoice';
-      answer: {
-        weight: number;
-      }[];
-}
+  answer: {
+    weight: number;
+  }[];
+};
 
 export type BankQuestionItemGenericModel<T> = BaseBankQuestionItemModel & T;
 

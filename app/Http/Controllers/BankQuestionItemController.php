@@ -14,7 +14,6 @@ use Validator;
 
 class BankQuestionItemController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      */
@@ -27,12 +26,15 @@ class BankQuestionItemController extends Controller
         ]);
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
-    public function create($learning_packet, $sub_learning_packet, $learning_category_id, BankQuestion $bank_question)
-    {
+    public function create(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        BankQuestion $bank_question,
+    ) {
         $view = null;
         switch ($bank_question->type) {
             case BankQuestionTypeEnum::Pilihan:
@@ -57,9 +59,7 @@ class BankQuestionItemController extends Controller
             'answers' => 'required|array',
             'type' => [
                 'required',
-                Rule::in(
-                    BankQuestionItemTypeEnum::casesString()
-                ),
+                Rule::in(BankQuestionItemTypeEnum::casesString()),
             ],
             'weight' => 'required|numeric',
             'answer' => 'required',
@@ -69,15 +69,28 @@ class BankQuestionItemController extends Controller
         $validator->sometimes(
             'answers.choices',
             'array',
-            fn (Fluent $item) => $item->type == BankQuestionTypeEnum::Pilihan->name,
+            fn(Fluent $item) => $item->type ==
+                BankQuestionTypeEnum::Pilihan->name,
         );
 
-        $isWeightedChoice = fn (Fluent $item) => $item->type == 'WeightedChoice';
-        $validator->sometimes('answer.answer', 'required|array', $isWeightedChoice);
-        $validator->sometimes('answer.answer.*.weight', 'required|number', $isWeightedChoice);
+        $isWeightedChoice = fn(Fluent $item) => $item->type == 'WeightedChoice';
+        $validator->sometimes(
+            'answer.answer',
+            'required|array',
+            $isWeightedChoice,
+        );
+        $validator->sometimes(
+            'answer.answer.*.weight',
+            'required|number',
+            $isWeightedChoice,
+        );
 
-        $isSingleChoice = fn (Fluent $item) => $item->type == 'Single';
-        $validator->sometimes('answer.answer', 'required|number', $isSingleChoice);
+        $isSingleChoice = fn(Fluent $item) => $item->type == 'Single';
+        $validator->sometimes(
+            'answer.answer',
+            'required|number',
+            $isSingleChoice,
+        );
 
         return $validator->validate();
     }
@@ -85,9 +98,20 @@ class BankQuestionItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id,  $bank_question)
-    {
-        return \DB::transaction(function () use ($request, $learning_packet, $sub_learning_packet, $learning_category_id, $bank_question) {
+    public function store(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $bank_question,
+    ) {
+        return \DB::transaction(function () use (
+            $request,
+            $learning_packet,
+            $sub_learning_packet,
+            $learning_category_id,
+            $bank_question,
+        ) {
             $data = $this->validateData($request->all());
 
             $newQuestion = BankQuestionItem::create([
@@ -107,24 +131,40 @@ class BankQuestionItemController extends Controller
                 ->performedOn($newQuestion)
                 ->causedBy(auth()->user())
                 ->withProperties(['method' => 'CREATE'])
-                ->log('Question ' . $newQuestion->name . ' created successfully');
+                ->log(
+                    'Question ' . $newQuestion->name . ' created successfully',
+                );
 
             return redirect()
                 ->route('packet.sub.category.bank-question.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
-                    $bank_question
+                    $bank_question,
                 ])
                 ->banner('Question created successfully');
         });
     }
 
-    public function storeMany(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id,  $bank_question)
-    {
-        return \DB::transaction(function () use ($request, $learning_packet, $sub_learning_packet, $learning_category_id,  $bank_question) {
+    public function storeMany(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $bank_question,
+    ) {
+        return \DB::transaction(function () use (
+            $request,
+            $learning_packet,
+            $sub_learning_packet,
+            $learning_category_id,
+            $bank_question,
+        ) {
             $all = $request->validate([
-                'type' => ['required', Rule::in(BankQuestionItemTypeEnum::casesString())],
+                'type' => [
+                    'required',
+                    Rule::in(BankQuestionItemTypeEnum::casesString()),
+                ],
                 'name' => 'required|string',
                 'weight' => 'required|numeric',
                 'stores' => 'required|array',
@@ -132,14 +172,15 @@ class BankQuestionItemController extends Controller
 
             $questions = [];
 
-            $clusterMax = (BankQuestionItem::lockForUpdate()->max("cluster") ?? 0) + 1;
+            $clusterMax =
+                (BankQuestionItem::lockForUpdate()->max('cluster') ?? 0) + 1;
 
             foreach ($all['stores'] as $store) {
                 $data = [
                     'name' => $all['name'],
                     'type' => $all['type'],
                     'weight' => $all['weight'],
-                    ...$store
+                    ...$store,
                 ];
 
                 $data = $this->validateData($data);
@@ -170,18 +211,24 @@ class BankQuestionItemController extends Controller
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
-                    $bank_question
-                ])->banner('Question created successfully');
+                    $bank_question,
+                ])
+                ->banner('Question created successfully');
         });
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($learning_packet, $sub_learning_packet, $learning_category_id,  $bank_question, $id)
-    {
+    public function show(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $bank_question,
+        $id,
+    ) {
         return Inertia::render('Admin/BankQuestion/Question/Show', [
-            'item' => fn () => BankQuestionItem::find($id),
+            'item' => fn() => BankQuestionItem::find($id),
             'bank_question_id' => $bank_question,
         ]);
     }
@@ -189,8 +236,13 @@ class BankQuestionItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($learning_packet, $sub_learning_packet, $learning_category_id,  $bank_question, $id)
-    {
+    public function edit(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $bank_question,
+        $id,
+    ) {
         //
         $question = BankQuestionItem::find($id);
         return Inertia::render('Admin/BankQuestion/Question/Edit', [
@@ -201,8 +253,14 @@ class BankQuestionItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $learning_packet, $sub_learning_packet, $learning_category_id,  $bank_question, $id)
-    {
+    public function update(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $bank_question,
+        $id,
+    ) {
         return \DB::transaction(function () use (
             $request,
             $learning_packet,
@@ -224,7 +282,6 @@ class BankQuestionItemController extends Controller
                 'answers' => $data['answers'],
 
                 'explanation' => $data['explanation'],
-
             ]);
 
             activity()
@@ -248,9 +305,20 @@ class BankQuestionItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($learning_packet, $sub_learning_packet, $learning_category_id,  $bank_question, $id)
-    {
-        return \DB::transaction(function () use ($learning_packet, $sub_learning_packet, $learning_category_id,  $bank_question, $id) {
+    public function destroy(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $bank_question,
+        $id,
+    ) {
+        return \DB::transaction(function () use (
+            $learning_packet,
+            $sub_learning_packet,
+            $learning_category_id,
+            $bank_question,
+            $id,
+        ) {
             $question = BankQuestionItem::find($id);
             $question->update([
                 'is_active' => false,
@@ -267,15 +335,26 @@ class BankQuestionItemController extends Controller
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
-                    $bank_question
+                    $bank_question,
                 ])
                 ->banner('Question deleted successfully');
         });
     }
 
-    public function restore($learning_packet, $sub_learning_packet, $learning_category_id,  $bank_question, $id)
-    {
-        return \DB::transaction(function () use ($learning_packet, $sub_learning_packet, $learning_category_id,  $bank_question, $id) {
+    public function restore(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $bank_question,
+        $id,
+    ) {
+        return \DB::transaction(function () use (
+            $learning_packet,
+            $sub_learning_packet,
+            $learning_category_id,
+            $bank_question,
+            $id,
+        ) {
             $question = BankQuestionItem::find($id);
             $question->update([
                 'is_active' => true,
@@ -292,7 +371,7 @@ class BankQuestionItemController extends Controller
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
-                    $bank_question
+                    $bank_question,
                 ])
                 ->banner('Question restored successfully');
         });

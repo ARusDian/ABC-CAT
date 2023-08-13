@@ -26,11 +26,8 @@ export default function Create({ exercise_question }: Props) {
     },
   });
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   const onSubmit = React.useCallback(
     (e: ExerciseQuestionFormModel) => {
@@ -39,7 +36,7 @@ export default function Create({ exercise_question }: Props) {
           learning_packet,
           sub_learning_packet,
           learning_category,
-          exercise_question.id
+          exercise_question.id,
         ]),
         e as any,
         {
@@ -62,16 +59,14 @@ export default function Create({ exercise_question }: Props) {
         learning_packet,
         sub_learning_packet,
         learning_category,
-        exercise_question.id
+        exercise_question.id,
       ])}
     >
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='flex-col space-y-5 w-full'
+        className="flex-col space-y-5 w-full"
       >
-        <Form
-          form={form}
-        />
+        <Form form={form} />
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}

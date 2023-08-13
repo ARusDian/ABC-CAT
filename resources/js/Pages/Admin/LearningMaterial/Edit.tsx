@@ -31,32 +31,34 @@ export default function Edit(props: Props) {
 
   function onSubmit(e: BaseLearningMaterialModel) {
     Api.post(
-
-      route('packet.sub.category.material.update',
-        [
-          learning_packet,
-          sub_learning_packet,
-          learning_category,
-          learningMaterial.id,
-        ],
-      ),
+      route('packet.sub.category.material.update', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        learningMaterial.id,
+      ]),
       {
         ...e,
-        _method: 'PUT'
+        _method: 'PUT',
       },
-      form
-    )
+      form,
+    );
   }
 
   return (
     <AdminFormLayout
       title="Edit Materi Belajar"
-      backRoute={route('packet.sub.category.show',
-        [learning_packet, sub_learning_packet, learning_category],
-      )}
+      backRoute={route('packet.sub.category.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+      ])}
       backRouteTitle="Kembali"
     >
-      <form className="flex-col gap-5 py-5" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="flex-col gap-5 py-5"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <Form form={form} className="my-5 mx-2" />
         <div className="flex justify-end">
           <Button

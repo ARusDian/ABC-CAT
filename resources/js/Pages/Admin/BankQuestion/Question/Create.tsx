@@ -59,11 +59,8 @@ export default function Create({ bank_question }: Props) {
     },
   });
 
-  const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
 
   function onSubmit(e: BankQuestionItemFormModel) {
     console.log(e);
@@ -74,7 +71,7 @@ export default function Create({ bank_question }: Props) {
         learning_packet,
         sub_learning_packet,
         learning_category,
-        bank_question.id
+        bank_question.id,
       ]),
 
       e as any,
@@ -93,7 +90,7 @@ export default function Create({ bank_question }: Props) {
         learning_packet,
         sub_learning_packet,
         learning_category,
-        bank_question.id
+        bank_question.id,
       ])}
       backRouteTitle="Kembali"
     >

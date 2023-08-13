@@ -60,21 +60,18 @@ export default function ResourceEditor(props: Props) {
       form.append('type', documentFileType);
 
       try {
-
-      const response = await axios.postForm(
-        route('document-file.store', []),
-        form,
-      );
-      return {
-        id: response.data.id,
-        disk: response.data.disk,
-      };
+        const response = await axios.postForm(
+          route('document-file.store', []),
+          form,
+        );
+        return {
+          id: response.data.id,
+          disk: response.data.disk,
+        };
       } catch (e) {
         console.error(e);
         return null;
-
       }
-
     },
     [props.documentFileType],
   );

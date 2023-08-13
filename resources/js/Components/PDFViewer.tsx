@@ -18,10 +18,10 @@ import { getStorageFileUrl } from '@/Models/FileModel';
 
 interface Props {
   document: BaseLearningMaterialDocumentModel;
-  height ?: string;
+  height?: string;
 }
 
-export default function PDFViewer({document, height}: Props) {
+export default function PDFViewer({ document, height }: Props) {
   console.log(document.document_file);
   const toolbarPluginInstance = toolbarPlugin();
   const { renderDefaultToolbar, Toolbar } = toolbarPluginInstance;

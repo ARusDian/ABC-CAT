@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-
 class UsersImport implements WithStartRow, OnEachRow, WithHeadingRow
 {
     /**
@@ -26,7 +25,7 @@ class UsersImport implements WithStartRow, OnEachRow, WithHeadingRow
     public function onRow(Row $row)
     {
         $rowIndex = $row->getIndex();
-        $row      = $row->toArray();
+        $row = $row->toArray();
 
         $users = User::updateOrCreate(
             [
@@ -40,7 +39,7 @@ class UsersImport implements WithStartRow, OnEachRow, WithHeadingRow
                 'active_year' => $row['tahun_aktif'],
                 'gender' => $row['gender'],
                 'address' => $row['alamat'],
-            ]
+            ],
         );
         $users->assignRole('student');
     }

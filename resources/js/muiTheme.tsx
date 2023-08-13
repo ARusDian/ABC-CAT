@@ -15,7 +15,6 @@ export const theme = createTheme({
     },
     warning: {
       main: yellow[700],
-
     },
     success: {
       main: '#00b51d',

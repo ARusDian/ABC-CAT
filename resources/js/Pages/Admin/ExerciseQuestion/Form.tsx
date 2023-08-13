@@ -19,7 +19,7 @@ interface Props {
 
 export default function Form({ form }: Props) {
   return (
-    <div className="flex-col w-full space-y-5" >
+    <div className="flex-col w-full space-y-5">
       <TextField
         label="Nama"
         {...form.register('name')}

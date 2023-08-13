@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react'
+import { Link } from '@inertiajs/react';
 import React from 'react';
 import route from 'ziggy-js';
 import DashboardAdminLayout from './DashboardAdminLayout';
