@@ -5,8 +5,8 @@ import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { Button } from '@mui/material';
 import { Link } from '@inertiajs/react';
 import route from 'ziggy-js';
-import { useSearchParam } from 'react-use';
 import { asset } from '@/Models/Helper';
+import { useSearchParam } from '@/Hooks/useSearchParam';
 
 interface Props {
   exam: ExamModel;

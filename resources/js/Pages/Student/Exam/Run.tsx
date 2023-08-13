@@ -5,13 +5,14 @@ import Countdown from 'react-countdown';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { router } from '@inertiajs/react';
 import route from 'ziggy-js';
+import { useDebounce} from 'react-use';
 import { ExamAnswerModel, ExamModel, ExamPilihanModel } from '@/Models/Exam';
-import { useDebounce, useSearchParam } from 'react-use';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
 import Answer from './Answer';
 import { useConfirm } from 'material-ui-confirm';
 import { asset } from '@/Models/Helper';
+import { useSearchParam } from '@/Hooks/useSearchParam';
 
 export interface Props {
   exam: ExamModel;
@@ -70,7 +71,6 @@ export default function Run({ exam }: Props) {
 
   const [stateQueue, setStateQueue] = React.useState<Task[]>([]);
 
-  // const [currentQuestion, setCurrentQuestion] = React.useState(0);
   const currentQuestion =
     (parseInt(useSearchParam('question') ?? '1') || 1) - 1;
 
