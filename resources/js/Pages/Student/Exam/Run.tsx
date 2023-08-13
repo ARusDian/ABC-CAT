@@ -46,16 +46,9 @@ export default function Run({ exam }: Props) {
   });
 
   const countdownRenderer = ({
-    hours,
-    minutes,
-    seconds,
-    completed,
-  }: {
-    hours: number;
-    minutes: number;
-    seconds: number;
-    completed: boolean;
-  }) => {
+    formatted: { hours, minutes, seconds},
+    completed
+  }: CountdownRenderProps) => {
     if (completed) {
       // Render a completed state
       return <span>Waktu Selesai</span>;
