@@ -1,5 +1,6 @@
 import BankQuestionItemEditor from '@/Components/BankQuestionItemEditor';
 import { BankQuestionItemShow } from '@/Components/BankQuestionItemShow';
+import ResourceEditor from '@/Components/ResourceEditor';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 import {
   ExamAnswerKecermatanModel,
@@ -65,7 +66,7 @@ export default function Answer({
         <div className="bg-yellow-100 rounded-md p-3">
           <div className="text-lg font-bold">Pembahasan :</div>
           <div className="text-lg">
-            <BankQuestionItemEditor
+            <ResourceEditor
               content={answer.question.explanation?.content ?? null}
               editorRef={explanationEditorRef}
               editorClassName=""
@@ -152,7 +153,7 @@ function PilihanAnswerForm({
                 <div>{answerQuestion.answer[index].weight}</div>
               ) : null}
               <div className="prose">
-                <BankQuestionItemEditor
+                <ResourceEditor
                   editorRef={editorRef}
                   content={choice.content}
                   editorClassName=""

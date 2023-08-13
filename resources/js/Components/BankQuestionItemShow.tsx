@@ -3,6 +3,7 @@ import React, { Ref } from 'react';
 import BankQuestionItemEditor from './BankQuestionItemEditor';
 import { Editor } from '@tiptap/react';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
+import ResourceEditor from './ResourceEditor';
 
 export function BankQuestionItemShow(props: {
   question: BankQuestionItemModel;
@@ -12,7 +13,7 @@ export function BankQuestionItemShow(props: {
   switch (props.question.type) {
     case 'Pilihan':
       return (
-        <BankQuestionItemEditor
+        <ResourceEditor
           editorClassName={props.editorClassName}
           content={props.question.question.content}
           editorRef={props.editorRef}

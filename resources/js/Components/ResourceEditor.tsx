@@ -5,16 +5,18 @@ import EditorInput from './Tiptap/EditorInput';
 import axios from 'axios';
 import route from 'ziggy-js';
 
-export type Props =
-  | {
+export type MutableProps = {
+
       content: Content | null;
       onBlur: (json: object) => void;
       editorRef?: React.MutableRefObject<Editor | null>;
       editorClassName?: string;
       documentFileType: 'learning-material' | 'bank-question';
       disableEdit?: false;
-    }
-  | {
+}
+
+export type ImmutableProps =
+   {
       content: Content | null;
       disableEdit: true;
       editorRef?: React.MutableRefObject<Editor | null>;
@@ -24,6 +26,9 @@ export type Props =
       bankQuestionId?: undefined;
       documentFileType?: any;
     };
+
+export type Props =
+  | MutableProps | ImmutableProps
 
 export default function ResourceEditor(props: Props) {
   const editable = props.disableEdit !== true;

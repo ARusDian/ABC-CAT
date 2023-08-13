@@ -16,6 +16,7 @@ import { BankQuestionItemShow } from '@/Components/BankQuestionItemShow';
 import BankQuestionItemEditor from '@/Components/BankQuestionItemEditor';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
+import ResourceEditor from '@/Components/ResourceEditor';
 
 interface Props {
   question: BankQuestionItemModel;
@@ -149,7 +150,7 @@ export default function Index({ question, exercise_question_id }: Props) {
                       <div>Bobot: {question.answer.answer[index].weight}</div>
                     ) : null}
                     <div className="mx-auto border rounded-lg">
-                      <BankQuestionItemEditor
+                      <ResourceEditor
                         content={choice.content}
                         editorClassName="h-full"
                         disableEdit
@@ -194,7 +195,7 @@ export default function Index({ question, exercise_question_id }: Props) {
               <>
                 <label className="text-lg">Penjelasan Jawaban</label>
                 <div className="mx-auto border rounded-lg">
-                  <BankQuestionItemEditor
+                  <ResourceEditor
                     content={question.explanation?.content ?? null}
                     editorClassName="h-full"
                     disableEdit

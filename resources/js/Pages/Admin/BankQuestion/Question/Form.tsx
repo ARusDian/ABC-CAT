@@ -153,8 +153,7 @@ export default function Form(props: Props) {
                   <InputLabel htmlFor="name">Soal</InputLabel>
                   <BankQuestionItemEditor
                     content={field.value}
-                    onBlur={field.onChange}
-                    bankQuestionId={props.bankQuestionId}
+                    onBlur={(event: object) => field.onChange(event)}
                     editorClassName="h-full min-h-[96px] p-3"
                   />
                   <InputError
@@ -184,8 +183,7 @@ export default function Form(props: Props) {
                   <InputLabel htmlFor="name">Penjelasan Jawaban</InputLabel>
                   <BankQuestionItemEditor
                     content={field.value}
-                    onBlur={field.onChange}
-                    bankQuestionId={props.bankQuestionId}
+                    onBlur={(event: object) => field.onChange(event)}
                     editorClassName="h-full min-h-[96px] p-3"
                   />
                   <InputError
@@ -232,7 +230,6 @@ function PilihanForm({
                     <BankQuestionItemEditor
                       content={field.value}
                       onBlur={field.onChange}
-                      bankQuestionId={exerciseQuestionId}
                       editorClassName="h-full min-h-[96px] p-3"
                     />
                     <InputError

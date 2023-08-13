@@ -1,13 +1,12 @@
 import { styled } from '@mui/material';
 import { Node } from '@tiptap/core';
-import { ImageOptions } from '@tiptap/extension-image';
 import { NodeViewContent, NodeViewProps, NodeViewWrapper } from '@tiptap/react';
 import { useState } from 'react';
 import { ResizableBox } from 'react-resizable';
 import 'react-resizable/css/styles.css';
 import { DetectOutsideClick } from './DetectOutsideClick';
 import React from 'react';
-import { useEditor } from '../../useEditor';
+import { ImageOptions } from '../Extensions/Image';
 
 interface Props extends NodeViewProps {
   node: NodeViewProps['node'] & {
