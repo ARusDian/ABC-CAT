@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
+import { useDefaultExerciseQuestionFormModel } from '@/Hooks/useDefaultExerciseQuestionForm';
 
 interface Props {
   bank_question: BankQuestionModel;
@@ -50,13 +51,8 @@ export default function Show(props: Props) {
     exercise_questions?.at(0)?.id ?? null,
   );
 
-  const form = useForm<ExerciseQuestionFormModel>({
-    defaultValues: {
-      name: '',
-      type: bank_question.type,
-      time_limit: 120,
-      number_of_question: 50,
-    },
+  const form = useDefaultExerciseQuestionFormModel({
+    type: bank_question.type
   });
 
   function onSubmit(e: ExerciseQuestionFormModel) {

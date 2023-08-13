@@ -4,13 +4,17 @@ import {
 } from '@/Models/ExerciseQuestion';
 import { useForm } from 'react-hook-form';
 
-export function useDefaultExerciseQuestionFormModel() {
+export function useDefaultExerciseQuestionFormModel(
+  defaultValues?: Partial<ExerciseQuestionFormModel>,
+) {
+  const type = defaultValues?.type ?? DEFAULT_EXERCISE_QUESTION_TYPE;
+  const time_limit = type == 'Pilihan' ? 120 : type == 'Kecermatan' ? 1 : 120;
   return useForm<ExerciseQuestionFormModel>({
     defaultValues: {
-      name: '',
-      type: DEFAULT_EXERCISE_QUESTION_TYPE,
-      time_limit: 120,
-      number_of_question: 50,
+      name: defaultValues?.name ?? '',
+      type,
+      time_limit,
+      number_of_question: defaultValues?.number_of_question ?? 50,
     },
   });
 }
