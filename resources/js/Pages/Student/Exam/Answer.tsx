@@ -62,7 +62,7 @@ export default function Answer({
           />
         ) : null}
       </div>
-      {isEvaluation ? (
+      {isEvaluation && answer.question.type == 'Pilihan' ? (
         <div className="bg-yellow-100 rounded-md p-3">
           <div className="text-lg font-bold">Pembahasan :</div>
           <div className="text-lg">
