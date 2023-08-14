@@ -1,8 +1,14 @@
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
+import { router } from '@inertiajs/react';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { User } from '@/types';
-import { MRT_ColumnDef } from 'material-react-table';
+import {
+  MRT_ColumnDef,
+  MRT_ColumnFiltersState,
+  MRT_PaginationState,
+} from 'material-react-table';
 import React from 'react';
+import route from 'ziggy-js';
 
 interface UserActivity {
   id: number;
@@ -16,7 +22,12 @@ interface UserActivity {
 }
 
 interface Props {
-  activities: UserActivity[];
+  activities: {
+    data: UserActivity[];
+    per_page: number;
+    total: number;
+    current_page: number;
+  };
 }
 
 const color = {
@@ -26,6 +37,7 @@ const color = {
   RESTORE: 'text-blue-500',
   FORCE_DELETE: 'text-red-600',
 };
+
 export default function UserActivityIndex({ activities }: Props) {
   console.log(activities);
 
@@ -49,23 +61,65 @@ export default function UserActivityIndex({ activities }: Props) {
           </p>
         );
       },
+      enableColumnFilter: false,
     },
     {
       header: 'Waktu',
       accessorFn: (originalRow: UserActivity) => {
         return (
-          new Date(originalRow.created_at).toLocaleDateString('id') +
-          '-' +
-          new Date(originalRow.created_at).toLocaleTimeString('id')
+          new Date(originalRow.created_at).toLocaleString('id')
         );
       },
+      enableColumnFilter: false,
     },
   ] as MRT_ColumnDef<UserActivity>[];
+
+  const [dataState, setDataState] = React.useState(activities.data);
+  const [columnFilters, setColumnFilters] =
+    React.useState<MRT_ColumnFiltersState>([]);
+
+  const [pagination, setPagination] = React.useState<MRT_PaginationState>({
+    pageIndex: activities.current_page - 1,
+    pageSize: activities.per_page,
+  });
+
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    const url = new URL(route(route().current()!).toString());
+
+    url.searchParams.set('columnFilters', JSON.stringify(columnFilters ?? []));
+    url.searchParams.set('page', (pagination.pageIndex + 1).toString());
+    url.searchParams.set('perPage', pagination.pageSize.toString());
+    // url.searchParams.set('globalFilter', globalFilter ?? '');
+
+    if (window.location.href == url.toString()) {
+      return;
+    }
+
+    setIsLoading(true);
+    router.reload({
+      // preserveState: true,
+      // preserveScroll: true,
+      data: {
+        page: pagination.pageIndex + 1,
+        perPage: pagination.pageSize,
+        columnFilters: JSON.stringify(columnFilters),
+        // globalFilter: globalFilter,
+      },
+      only: ['activities'],
+      onFinish: () => {
+        setIsLoading(false);
+      },
+    });
+  }, [pagination.pageIndex, pagination.pageSize, columnFilters]);
+
   return (
     <AdminTableLayout title="User Activity">
       <div className="mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 w-full flex flex-col gap-3">
         <LazyLoadMRT
-          data={activities}
+          data={activities.data}
+          rowCount={activities.total}
           columns={columns}
           enableColumnActions
           enableColumnFilters
@@ -73,7 +127,6 @@ export default function UserActivityIndex({ activities }: Props) {
           enableSorting
           enableBottomToolbar
           enableTopToolbar
-          enableRowNumbers
           enableExpanding
           enableExpandAll
           muiTableBodyRowProps={{ hover: false }}
@@ -83,6 +136,15 @@ export default function UserActivityIndex({ activities }: Props) {
               fontSize: '16px',
             },
           }}
+          state={{
+            pagination,
+            isLoading,
+            columnFilters,
+          }}
+          getRowId={(it) => it.id?.toString()}
+          manualPagination
+          onPaginationChange={setPagination}
+          onColumnFiltersChange={setColumnFilters}
           renderDetailPanel={row => {
             return (
               <p className="flex justify-center">

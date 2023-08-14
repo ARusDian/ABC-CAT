@@ -3,19 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Spatie\Activitylog\Models\Activity;
 
 class UserActivityController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        $activities = Activity::with(['causer'])->get();
-
         return Inertia::render('Admin/UserActivity/Index', [
-            'activities' => $activities,
+            'activities' => fn () => Activity::with(['causer'])->whereColumns($request->get("columnFilters"))->paginate(10),
         ]);
     }
 }
