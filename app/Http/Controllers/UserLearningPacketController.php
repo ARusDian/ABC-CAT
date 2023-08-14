@@ -6,8 +6,10 @@ use App\Models\LearningPacket;
 use App\Models\User;
 use App\Models\UserLearningPacket;
 use App\Http\Controllers\Controller;
+use App\Imports\UserLearningPacketImport;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserLearningPacketController extends Controller
 {
@@ -47,9 +49,16 @@ class UserLearningPacketController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'user' => 'required | unique:user_learning_packets,user_id',
+            'learning_packet' => 'required',
+            'subscription_date' => 'required',
+        ]);
+        
         $userLearningPacket = UserLearningPacket::create([
             'user_id' => $request->user['id'],
             'learning_packet_id' => $request->learning_packet['id'],
+            'subscription_date' => $request->subscription_date,
         ]);
         activity()
             ->performedOn($userLearningPacket)

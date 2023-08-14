@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('learning_packet_id')->constrained('learning_packets')->cascadeOnDelete();
+            $table->date('subscription_date');
             $table->timestamps();
         });
     }
