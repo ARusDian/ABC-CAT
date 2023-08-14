@@ -302,6 +302,7 @@ function PilihanForm({
                             ref={field.ref}
                             onChange={() => field.onChange(index)}
                             onBlur={field.onBlur}
+                            checked={field.value == index}
                           />
                         }
                         label={`Jawaban ${index + 1}`}

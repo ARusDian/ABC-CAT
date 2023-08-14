@@ -55,6 +55,21 @@ export default function Index(props: Props) {
   const { learning_packet, sub_learning_packet, learning_category } =
     useDefaultClassificationRouteParams();
 
+  const getMostRightAnswer = () => {
+    if (item.answer.type == 'WeightedChoice') {
+      let max = 0;
+      let maxIndex = 0;
+      item.answer.answer.forEach((answer, index) => {
+        if (answer.weight > max) {
+          max = answer.weight;
+          maxIndex = index;
+        }
+      });
+      return maxIndex;
+    } else {
+      return item.answer.answer;
+    }
+  };
   return (
     <AdminShowLayout
       title={`Pertanyaan ${item.id}`}
@@ -77,23 +92,23 @@ export default function Index(props: Props) {
       onDelete={() => {
         item.is_active
           ? router.delete(
-              route('packet.sub.category.bank-question.item.destroy', [
-                learning_packet,
-                sub_learning_packet,
-                learning_category,
-                item.bank_question_id,
-                item.id,
-              ]),
-            )
+            route('packet.sub.category.bank-question.item.destroy', [
+              learning_packet,
+              sub_learning_packet,
+              learning_category,
+              item.bank_question_id,
+              item.id,
+            ]),
+          )
           : router.post(
-              route('packet.sub.category.bank-question.item.restore', [
-                learning_packet,
-                sub_learning_packet,
-                learning_category,
-                item.bank_question_id,
-                item.id,
-              ]),
-            );
+            route('packet.sub.category.bank-question.item.restore', [
+              learning_packet,
+              sub_learning_packet,
+              learning_category,
+              item.bank_question_id,
+              item.id,
+            ]),
+          );
       }}
       deleteTitle={item.is_active ? 'Hapus' : 'Restore'}
       onDeleteMessage={
@@ -175,15 +190,12 @@ export default function Index(props: Props) {
         </CustomTabPanel>
         <CustomTabPanel value={tabValue} index={2}>
           <div className="">
-            {/* TODO: MAKE FUNCTION TO DETERMINE TRUEST ANSWER */}
-            {/* {props.item.answer.type == "WeightedChoice" ? (
-              <>
-                <label className="text-lg">Jawaban Benar</label>
-                <p>pilihan {numberToUpperCase(question.answer.answer)}</p>
-              </>
-            ) : null} */}
             {props.item.type == 'Pilihan' ? (
               <>
+                <>
+                  <label className="text-lg">Jawaban Benar</label>
+                  <p className='font-bold'>Pilihan {numberToUpperCase(getMostRightAnswer())}</p>
+                </>
                 <label className="text-lg">Penjelasan Jawaban</label>
                 <div className="mx-auto border rounded-2xl p-5">
                   <QuestionEditor
