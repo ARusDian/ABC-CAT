@@ -1,17 +1,25 @@
+import InputError from '@/Components/Jetstream/InputError';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
+import { BaseDocumentFileModel } from '@/Models/FileModel';
 import { LearningPacketModel } from '@/Models/LearningPacket';
 import { UserLearningPacketModel } from '@/Models/UserLearningPacket';
+import Api from '@/Utils/Api';
 import { router } from '@inertiajs/react';
 import { Button } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useConfirm } from 'material-ui-confirm';
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import route from 'ziggy-js';
 
 interface Props {
 	learningPackets: Array<LearningPacketModel>;
+}
+
+interface ImportFileModel {
+	import_file: BaseDocumentFileModel;
 }
 
 export default function Index({ learningPackets }: Props) {
@@ -30,7 +38,7 @@ export default function Index({ learningPackets }: Props) {
 			header: 'Tanggal Berlangganan',
 			accessorFn: ({ subscription_date }: UserLearningPacketModel) => new Date(subscription_date).toLocaleDateString(),
 		}
-	] as MRT_ColumnDef<UserLearningPacketModel>[]; f
+	] as MRT_ColumnDef<UserLearningPacketModel>[];
 
 	return (
 		<AdminTableLayout
@@ -40,71 +48,134 @@ export default function Index({ learningPackets }: Props) {
 		>
 			<div className="flex flex-col gap-3">
 				{learningPackets.length > 0 ? (
-					learningPackets.map(learningPacket => (
-						<div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 w-full flex flex-col gap-3">
-							<div className="flex justify-between">
-								<h1 className="text-2xl font-bold">
-									Paket Belajar {learningPacket.name}
-								</h1>
-								<MuiInertiaLinkButton
-									href={route('user-learning-packet.create', {
-										learning_packet: learningPacket.id,
-									})}
-								>
-									Tambah Pengguna
-								</MuiInertiaLinkButton>
-							</div>
-							<LazyLoadMRT
-								data={learningPacket.user_learning_packets ?? []}
-								columns={columns}
-								enableColumnActions
-								enableColumnFilters
-								enablePagination
-								enableSorting
-								enableBottomToolbar
-								enableTopToolbar
-								enableRowActions
-								enableRowNumbers
-								muiTableBodyRowProps={{ hover: false }}
-								muiTableHeadCellProps={{
-									sx: {
-										fontWeight: 'bold',
-										fontSize: '16px',
-									},
-								}}
-								renderRowActions={({ row }) => (
-									<div className="m-auto flex justify-center">
-										<Button
-											variant="contained"
-											color="error"
-											size="large"
-											onClick={() => {
-												confirm({
-													title: 'Hentikan Berlangganan',
-													description:
-														'Apakah anda yakin ingin menghentikan berlangganan?',
-													cancellationText: 'Batal',
-													confirmationText: 'Hentikan',
-												}).then(() => {
-													router.post(
-														route(
-															'user-learning-packet.destroy',
-															row.original.id,
-														),
-														{
-															_method: 'DELETE',
-														},
-													);
-												});
-											}}
+					learningPackets.map((learningPacket, Index) => {
+						const form = useForm<ImportFileModel>();
+						return (
+							<div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 w-full flex flex-col gap-3" key={Index}>
+								<div className="flex justify-between">
+									<h1 className="text-2xl font-bold">
+										Paket Belajar {learningPacket.name}
+									</h1>
+									<MuiInertiaLinkButton
+										href={route('user-learning-packet.create', {
+											learning_packet: learningPacket.id,
+										})}
+									>
+										Tambah Pengguna
+									</MuiInertiaLinkButton>
+								</div>
+								<div className="flex justify-between">
+									<div className="flex justify-center">
+										<form
+											className="flex-col gap-5 py-5"
+											onSubmit={form.handleSubmit((e) => Api.post(route('user-packet.import', learningPacket.id), e, form))}
 										>
-											Hentikan Berlangganan
-										</Button>
+											<div className="flex justify-end gap-3">
+												<div className='flex flex-col'>
+													<Controller
+														name="import_file"
+														control={form.control}
+														render={({ field }) => (
+															<input
+																type="file"
+																ref={field.ref}
+																className=""
+																onChange={e => {
+																	field.onChange({
+																		file: e.target.files![0],
+																		path: '',
+																		disk: 'public',
+																	});
+																}}
+															/>
+														)}
+													/>
+													<InputError
+														message={form.formState.errors.import_file?.message}
+														className="mt-2"
+													/>
+												</div>
+												<div className='my-auto'>
+													<Button
+														type="submit"
+														variant="contained"
+														size="large"
+														color="success"
+													>
+														Import Student
+													</Button>
+												</div>
+												<MuiInertiaLinkButton
+													href={route('user-packet.import-template', learningPacket.id)}
+													color="secondary"
+													isNextPage
+												>
+													Template
+												</MuiInertiaLinkButton>
+											</div>
+										</form>
 									</div>
-								)}
-							/>
-						</div>
-					))
+									<MuiInertiaLinkButton
+										href={route('user-packet.export', learningPacket.id)}
+										color="primary"
+										isNextPage
+									>
+										Export Student
+									</MuiInertiaLinkButton>
+								</div>
+								<LazyLoadMRT
+									data={learningPacket.user_learning_packets ?? []}
+									columns={columns}
+									enableColumnActions
+									enableColumnFilters
+									enablePagination
+									enableSorting
+									enableBottomToolbar
+									enableTopToolbar
+									enableRowActions
+									enableRowNumbers
+									muiTableBodyRowProps={{ hover: false }}
+									muiTableHeadCellProps={{
+										sx: {
+											fontWeight: 'bold',
+											fontSize: '16px',
+										},
+									}}
+									renderRowActions={({ row }) => (
+										<div className="m-auto flex justify-center">
+											<Button
+												variant="contained"
+												color="error"
+												size="large"
+												onClick={() => {
+													confirm({
+														title: 'Hentikan Berlangganan',
+														description:
+															'Apakah anda yakin ingin menghentikan berlangganan?',
+														cancellationText: 'Batal',
+														confirmationText: 'Hentikan',
+													}).then(() => {
+														router.post(
+															route(
+																'user-learning-packet.destroy',
+																row.original.id,
+															),
+															{
+																_method: 'DELETE',
+															},
+														);
+													});
+												}}
+											>
+												Hentikan Berlangganan
+											</Button>
+										</div>
+									)}
+								/>
+							</div>
+						);
+					}
+					)
 				) : (
 					<div className="flex justify-center">
 						<p className="text-3xl font-bold my-auto">

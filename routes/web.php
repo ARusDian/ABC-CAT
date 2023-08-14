@@ -154,6 +154,9 @@ Route::middleware([
             });
 
             Route::resource('/user-learning-packet', UserLearningPacketController::class);
+            Route::post('/user-learning-packet-import/{learning_packet}', [UserLearningPacketController::class, "Import"])->name('user-packet.import');
+            Route::get('/user-learning-packet-export/{learning_packet}', [UserLearningPacketController::class, "Export"])->name('user-packet.export');
+            Route::get('/user-learning-packet-template/{learning_packet}', [UserLearningPacketController::class, "Template"])->name('user-packet.import-template');
         });
     });
 });

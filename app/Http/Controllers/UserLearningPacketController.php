@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UserPacketsExport;
+use App\Exports\UserPacketsTemplateExport;
 use App\Models\LearningPacket;
 use App\Models\User;
 use App\Models\UserLearningPacket;
@@ -54,7 +56,7 @@ class UserLearningPacketController extends Controller
             'learning_packet' => 'required',
             'subscription_date' => 'required',
         ]);
-        
+
         $userLearningPacket = UserLearningPacket::create([
             'user_id' => $request->user['id'],
             'learning_packet_id' => $request->learning_packet['id'],
@@ -118,6 +120,42 @@ class UserLearningPacketController extends Controller
             );
         return redirect()
             ->route('user-learning-packet.index')
-            ->with('success', 'User Learning Packet deleted successfully');
+            ->banner('User Learning Packet deleted successfully');
+    }
+
+    public function import(Request $request, $id)
+    {
+        $request->validate([
+            'import_file' => 'required',
+        ]);
+        $learningPacket = LearningPacket::find($id);
+        Excel::import(new UserLearningPacketImport($id), $request->file('import_file.file')->store('temp'));
+        activity()
+            ->performedOn($learningPacket)
+            ->causedBy(auth()->user())
+            ->withProperties(['method' => 'IMPORT'])
+            ->log('User Learning Packet imported');
+        return redirect()->route('user-learning-packet.index')->banner('User Learning Packet imported successfully');
+    }
+
+    public function export($id)
+    {
+        $learningPacket = LearningPacket::with([
+            'userLearningPackets' => function ($q) {
+                return $q->with('user:id,name,email');
+            }
+        ])->find($id);
+        activity()
+            ->performedOn($learningPacket)
+            ->causedBy(auth()->user())
+            ->withProperties(['method' => 'EXPORT'])
+            ->log('User Learning Packet exported');
+        return Excel::download(new UserPacketsExport($learningPacket), 'user-' . $learningPacket->name . '.xlsx');
+    }
+
+    public function template($id)
+    {
+        $learningPacket = LearningPacket::find($id);
+        return Excel::download(new UserPacketsTemplateExport($learningPacket), 'user-' . $learningPacket->name . '-template.xlsx');
     }
 }

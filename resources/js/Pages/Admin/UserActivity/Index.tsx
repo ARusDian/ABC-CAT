@@ -15,7 +15,7 @@ interface UserActivity {
   description: string;
   causer: User;
   properties: {
-    method: 'CREATE' | 'UPDATE' | 'DELETE' | 'RESTORE' | 'FORCE_DELETE';
+    method: 'CREATE' | 'UPDATE' | 'DELETE' | 'RESTORE' | 'FORCE_DELETE' | 'IMPORT' | 'EXPORT';
   };
   subject_type: string;
   created_at: string;
@@ -32,6 +32,8 @@ interface Props {
 
 const color = {
   CREATE: 'text-green-500',
+  IMPORT: 'text-purple-500',
+  EXPORT: 'text-blue-500',
   UPDATE: 'text-yellow-500',
   DELETE: 'text-red-400',
   RESTORE: 'text-blue-500',
