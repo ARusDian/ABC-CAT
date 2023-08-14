@@ -13,7 +13,9 @@ class UserActivityController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Admin/UserActivity/Index', [
-            'activities' => fn () => Activity::with(['causer'])->whereColumns($request->get("columnFilters"))->paginate(10),
+            'activities' => fn() => Activity::with(['causer'])
+                ->whereColumns($request->get('columnFilters'))
+                ->paginate(10),
         ]);
     }
 }

@@ -9,27 +9,20 @@ use Spatie\Activitylog\Models\Activity as BaseActivity;
 
 class Activity extends BaseActivity
 {
-
     public function scopeWhereColumns($query, $filters)
     {
-        $allowed = [
-            'subject_type',
-            'causer.name'
-        ];
+        $allowed = ['subject_type', 'causer.name'];
 
         if (isset($filters)) {
             foreach (json_decode($filters) as $value) {
-
-
-                $key = explode(".", $value->id);
-
+                $key = explode('.', $value->id);
 
                 switch ($value->id) {
-                    case "Subjek":
-                        $value->id = "subject_type";
+                    case 'Subjek':
+                        $value->id = 'subject_type';
 
                         break;
-                };
+                }
 
                 if (!in_array($value->id, $allowed)) {
                     continue;
@@ -38,11 +31,22 @@ class Activity extends BaseActivity
                 // dd($value);
                 if (count($key) > 1) {
                     // dd($key);
-                    $query->whereHas($key[0], function ($query) use ($value, $key) {
-                        return $query->where($key[1], 'like', '%' . $value->value . '%');
+                    $query->whereHas($key[0], function ($query) use (
+                        $value,
+                        $key,
+                    ) {
+                        return $query->where(
+                            $key[1],
+                            'like',
+                            '%' . $value->value . '%',
+                        );
                     });
                 } else {
-                    $query->where($value->id, 'like', '%' . $value->value . '%');
+                    $query->where(
+                        $value->id,
+                        'like',
+                        '%' . $value->value . '%',
+                    );
                 }
             }
         }
