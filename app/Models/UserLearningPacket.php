@@ -9,7 +9,11 @@ class UserLearningPacket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'learning_packet_id'];
+    protected $fillable = [
+        'user_id',
+        'learning_packet_id',
+        'subscription_date',
+    ];
 
     public function user()
     {
