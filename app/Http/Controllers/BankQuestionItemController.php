@@ -172,8 +172,7 @@ class BankQuestionItemController extends Controller
 
             $questions = [];
 
-            $clusterMax =
-                (BankQuestionItem::lockForUpdate()->max('cluster') ?? 0) + 1;
+            $clusterMax = (BankQuestionItem::select("cluster")->orderByDesc("cluster", "desc")->lockForUpdate()->pluck("cluster")->first() ?? 0) + 1;
 
             foreach ($all['stores'] as $store) {
                 $data = [
@@ -228,7 +227,7 @@ class BankQuestionItemController extends Controller
         $id,
     ) {
         return Inertia::render('Admin/BankQuestion/Question/Show', [
-            'item' => fn() => BankQuestionItem::find($id),
+            'item' => fn () => BankQuestionItem::find($id),
             'bank_question_id' => $bank_question,
         ]);
     }
