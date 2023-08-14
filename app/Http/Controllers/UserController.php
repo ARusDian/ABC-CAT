@@ -232,6 +232,11 @@ class UserController extends Controller
             new UsersImport(),
             $request->file('import_file.file')->store('temp'),
         );
+        activity()
+            ->performedOn(User::find(Auth::user()->id))
+            ->causedBy(Auth::user())
+            ->withProperties(['method' => 'IMPORT'])
+            ->log('Imported Users');
         return redirect()
             ->route('user.index')
             ->banner('User Imported Successfully');
@@ -239,6 +244,11 @@ class UserController extends Controller
 
     public function export()
     {
+        activity()
+            ->performedOn(User::find(Auth::user()->id))
+            ->causedBy(Auth::user())
+            ->withProperties(['method' => 'EXPORT'])
+            ->log('Exported Users');
         return Excel::download(new UsersExport(), 'users.xlsx');
     }
 
