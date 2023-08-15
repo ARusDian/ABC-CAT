@@ -27,3 +27,8 @@ export function getStorageFileUrl(
     return `${asset(documentFile.disk, documentFile.path)}`;
   }
 }
+
+
+export interface ImportFileModel {
+  import_file: BaseDocumentFileModel;
+}

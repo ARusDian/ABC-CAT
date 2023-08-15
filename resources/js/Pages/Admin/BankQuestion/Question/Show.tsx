@@ -45,7 +45,6 @@ function a11yProps(index: number) {
 export default function Index(props: Props) {
   const item = props.item;
 
-  console.log(item);
   const [tabValue, setTabValue] = React.useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -166,6 +165,7 @@ export default function Index(props: Props) {
             <div className="">
               <label className="text-lg">Pilihan: </label>
               {props.item.answers.choices.map((choice, index) => {
+                console.log(item.answer.answer);
                 return (
                   <div key={index} className="mt-3">
                     <label className="text-lg">

@@ -1,15 +1,24 @@
+import InputError from '@/Components/Jetstream/InputError';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { BankQuestionModel } from '@/Models/BankQuestion';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
+import { ImportFileModel } from '@/Models/FileModel';
+import Api from '@/Utils/Api';
+import { Button, Modal } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import route from 'ziggy-js';
 
 interface Props {
   bank_question: BankQuestionModel;
+}
+
+interface QuestionImportForm extends ImportFileModel {
+  type: string;
 }
 
 export default function Show(props: Props) {
@@ -17,6 +26,26 @@ export default function Show(props: Props) {
 
   const { learning_packet, sub_learning_packet, learning_category } =
     useDefaultClassificationRouteParams();
+
+  const form = useForm<QuestionImportForm>({
+    defaultValues: {
+      type: 'Single',
+    },
+  });
+
+  const [openImportModal, setOpenImportModal] = React.useState(false);
+
+  function onSubmit(e: any) {
+    Api.post(route('packet.sub.category.bank-question.import', [
+      learning_packet,
+      sub_learning_packet,
+      learning_category,
+      bank_question.id,
+    ]), e, form);
+    setOpenImportModal(false);
+  }
+
+  const [typeSelected, setTypeSelected] = React.useState('Single');
 
   const dataColumns = [
     {
@@ -56,11 +85,21 @@ export default function Show(props: Props) {
       ])}
     >
       <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+        <div className=" text-lg">
+          <p>{bank_question.name}</p>
+          <p>Type: {bank_question.type}</p>
+        </div>
         <div className="flex my-3">
-          <div className=" text-lg">
-            <p>{bank_question.name}</p>
-            <p>Type: {bank_question.type}</p>
-          </div>
+          {bank_question.type === "Pilihan" ? (
+            <Button
+              variant="contained"
+              size="large"
+              color="success"
+              onClick={() => setOpenImportModal(true)}
+            >
+              Import Soal
+            </Button>
+          ) : (<div></div>)}
           <div className="flex place-content-end grow gap-2">
             <MuiInertiaLinkButton
               href={route('packet.sub.category.bank-question.item.create', [
@@ -117,6 +156,90 @@ export default function Show(props: Props) {
           )}
         />
       </div>
+      <Modal
+        open={openImportModal}
+        onClose={() => setOpenImportModal(false)}
+      >
+        <div
+          className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 bg-white shadow-2xl p-7 rounded-3xl h-1/4'
+        >
+          <form
+            className="flex flex-col gap-5 py-5 justify-between h-full"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
+            <div className=''>
+              <Controller
+                name="import_file"
+                control={form.control}
+                render={({ field }) => (
+                  <input
+                    type="file"
+                    ref={field.ref}
+                    className=""
+                    onChange={e => {
+                      field.onChange({
+                        file: e.target.files![0],
+                        path: '',
+                        disk: 'public',
+                      });
+                    }}
+                  />
+                )}
+              />
+              <InputError
+                message={form.formState.errors.import_file?.message}
+                className="mt-2"
+              />
+            </div>
+            <div className=''>
+              <label htmlFor="type">Tipe Soal Pilihan</label>
+              <Controller
+                name="type"
+                control={form.control}
+                render={({ field }) => (
+                  <select
+                    {...field}
+                    className="w-full"
+                    onChange={e => {
+                      field.onChange(e.target.value);
+                      setTypeSelected(e.target.value);
+                    }}
+                  >
+                    <option value="Single">Pembobotan Tunggal</option>
+                    <option value="WeightedChoice">Pembobotan Ganda</option>
+                  </select>
+                )}
+              />
+              <InputError
+                message={form.formState.errors.type?.message}
+                className="mt-2"
+              />
+            </div>
+            <div className='flex justify-between my-auto gap-3'>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                color="success"
+              >
+                Import Soal
+              </Button>
+              <MuiInertiaLinkButton
+                href={route(`packet.sub.category.bank-question.template-${typeSelected === "Single" ? "single" : "multiple"}`, [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
+                  bank_question.id,
+                ])}
+                color="secondary"
+                isNextPage
+              >
+                Template
+              </MuiInertiaLinkButton>
+            </div>
+          </form>
+        </div>
+      </Modal>
     </AdminShowLayout>
   );
 }

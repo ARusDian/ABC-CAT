@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\BankQuestionItemTypeEnum;
 use App\Enums\BankQuestionTypeEnum;
+use App\Exports\QuestionMultipleTrueChoicesTemplateExport;
+use App\Exports\QuestionSingleTrueChoicesTemplateExport;
+use App\Imports\QuestionMultiTrueChoicesImport;
+use App\Imports\QuestionSingleTrueChoicesImport;
 use App\Models\BankQuestion;
 use App\Models\BankQuestionItem;
 use Illuminate\Http\Request;
@@ -11,6 +15,7 @@ use Illuminate\Support\Fluent;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BankQuestionItemController extends Controller
 {
@@ -69,11 +74,11 @@ class BankQuestionItemController extends Controller
         $validator->sometimes(
             'answers.choices',
             'array',
-            fn(Fluent $item) => $item->type ==
+            fn (Fluent $item) => $item->type ==
                 BankQuestionTypeEnum::Pilihan->name,
         );
 
-        $isWeightedChoice = fn(Fluent $item) => $item->type == 'WeightedChoice';
+        $isWeightedChoice = fn (Fluent $item) => $item->type == 'WeightedChoice';
         $validator->sometimes(
             'answer.answer',
             'required|array',
@@ -85,7 +90,7 @@ class BankQuestionItemController extends Controller
             $isWeightedChoice,
         );
 
-        $isSingleChoice = fn(Fluent $item) => $item->type == 'Single';
+        $isSingleChoice = fn (Fluent $item) => $item->type == 'Single';
         $validator->sometimes(
             'answer.answer',
             'required|number',
@@ -113,6 +118,8 @@ class BankQuestionItemController extends Controller
             $bank_question,
         ) {
             $data = $this->validateData($request->all());
+
+            dd($data);
 
             $newQuestion = BankQuestionItem::create([
                 'bank_question_id' => $bank_question,
@@ -234,7 +241,7 @@ class BankQuestionItemController extends Controller
         $id,
     ) {
         return Inertia::render('Admin/BankQuestion/Question/Show', [
-            'item' => fn() => BankQuestionItem::find($id),
+            'item' => fn () => BankQuestionItem::find($id),
             'bank_question_id' => $bank_question,
         ]);
     }
@@ -381,5 +388,62 @@ class BankQuestionItemController extends Controller
                 ])
                 ->banner('Question restored successfully');
         });
+    }
+
+    public function import(
+        Request $request,
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $id,
+    ) {
+        $request->validate([
+            'type' => [
+                'required',
+                'in:WeightedChoice,Single',
+            ],
+            'import_file' => 'required',
+        ]);
+        $bank_question = BankQuestion::find($id);
+        if ($request['type'] == 'Single') {
+            Excel::import(new QuestionSingleTrueChoicesImport($bank_question), $request->file('import_file.file')->store('temp'));
+        } else {
+            Excel::import(new QuestionMultiTrueChoicesImport($bank_question), $request->file('import_file.file')->store('temp'));
+        }
+
+        activity()
+            ->performedOn($bank_question)
+            ->causedBy(auth()->user())
+            ->withProperties(['method' => 'IMPORT'])
+            ->log('Question imported successfully with type ' . $request['type']);
+
+        return redirect()
+            ->route('packet.sub.category.bank-question.show', [
+                $learning_packet,
+                $sub_learning_packet,
+                $learning_category_id,
+                $bank_question,
+            ])
+            ->banner('Question imported successfully');
+    }
+
+    public function templateSingle(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $id,
+    ) {
+        $bank_question = BankQuestion::find($id);
+        return Excel::download(new QuestionSingleTrueChoicesTemplateExport($bank_question), 'Template Soal Pilihan Jawaban Tunggal.xlsx');
+    }
+
+    public function templateMultiple(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $id,
+    ) {
+        $bank_question = BankQuestion::find($id);
+        return Excel::download(new QuestionMultipleTrueChoicesTemplateExport($bank_question), 'Template Soal Pilihan Jawaban Ganda.xlsx');
     }
 }

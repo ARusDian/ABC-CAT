@@ -8,15 +8,11 @@ import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import { asset } from '@/Models/Helper';
 import { Controller, useForm } from 'react-hook-form';
 import Api from '@/Utils/Api';
-import { BaseDocumentFileModel } from '@/Models/FileModel';
+import { ImportFileModel } from '@/Models/FileModel';
 import { Button } from '@mui/material';
 
 interface Props {
   users: Array<User>;
-}
-
-interface ImportFileModel {
-  import_file: BaseDocumentFileModel;
 }
 
 export default function Index(props: Props) {

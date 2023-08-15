@@ -2,7 +2,7 @@ import InputError from '@/Components/Jetstream/InputError';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
-import { BaseDocumentFileModel } from '@/Models/FileModel';
+import { ImportFileModel } from '@/Models/FileModel';
 import { LearningPacketModel } from '@/Models/LearningPacket';
 import { UserLearningPacketModel } from '@/Models/UserLearningPacket';
 import Api from '@/Utils/Api';
@@ -16,10 +16,6 @@ import route from 'ziggy-js';
 
 interface Props {
 	learningPackets: Array<LearningPacketModel>;
-}
-
-interface ImportFileModel {
-	import_file: BaseDocumentFileModel;
 }
 
 export default function Index({ learningPackets }: Props) {

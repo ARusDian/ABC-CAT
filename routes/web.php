@@ -133,6 +133,9 @@ Route::middleware([
                                 Route::prefix("{bank_question}/")->group(function () {
                                     Route::resource("item", BankQuestionItemController::class);
                                     Route::get("create-question", [BankQuestionController::class, "createPacketQuestion"]);
+                                    Route::post("import", [BankQuestionItemController::class, "import"])->name("import");
+                                    Route::get("template-single", [BankQuestionItemController::class, "templateSingle"])->name("template-single");
+                                    Route::get("template-multiple", [BankQuestionItemController::class, "templateMultiple"])->name("template-multiple");
                                     Route::post("item/{question}/restore", [BankQuestionItemCOntroller::class, "restore"])->name("item.restore");
                                     Route::post("create-many", [BankQuestionItemCOntroller::class, "storeMany"])->name("item.store-many");
 

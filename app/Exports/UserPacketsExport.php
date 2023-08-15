@@ -3,8 +3,6 @@
 namespace App\Exports;
 
 use App\Models\LearningPacket;
-use App\Models\UserLearningPacket;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
