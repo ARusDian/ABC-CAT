@@ -228,6 +228,9 @@ class UserController extends Controller
 
     public function import(Request $request)
     {
+        $request->validate([
+            'import_file' => 'required',
+        ]);
         Excel::import(
             new UsersImport(),
             $request->file('import_file.file')->store('temp'),
