@@ -44,7 +44,7 @@ export default function Show(props: Props) {
         <div className="flex justify-between">
           <div className=" text-lg">
             <p>{exercise_question.name}</p>
-            <p>Type: {exercise_question.type}</p>
+            <p>Tipe: {exercise_question.type}</p>
             <p>
               Batas waktu:{' '}
               {
@@ -54,6 +54,7 @@ export default function Show(props: Props) {
               }{' '}
               Menit
             </p>
+            <p>Jumlah Soal Per Latihan: { exercise_question.number_of_question}</p>
             <p
               className={`${
                 exercise_question.deleted_at ? 'text-red-500' : 'text-green-500'
@@ -63,6 +64,17 @@ export default function Show(props: Props) {
             </p>
           </div>
           <div className="flex justify-around my-auto gap-5">
+            <MuiInertiaLinkButton
+              color="secondary"
+              href={route('packet.sub.category.exercise.exam-monitor.index', [
+                learning_packet,
+                sub_learning_packet,
+                learning_category,
+                exercise_question.id,
+              ])}
+            >
+              Monitoring Ujian
+            </MuiInertiaLinkButton>
             <MuiInertiaLinkButton
               color="primary"
               href={route('packet.sub.category.exercise.leaderboard', [

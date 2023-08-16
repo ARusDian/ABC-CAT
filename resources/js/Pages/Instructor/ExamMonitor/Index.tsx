@@ -3,40 +3,60 @@ import React from 'react';
 import route from 'ziggy-js';
 
 import { Link } from '@inertiajs/react';
-import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
-import { BankQuestionModel } from '@/Models/BankQuestion';
 import { ExamModel } from '@/Models/Exam';
 import { Button } from '@mui/material';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
+import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
+import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 
 interface Props {
-  exams: Array<ExamModel>;
+  exercise_question: ExerciseQuestionModel;
 }
 
-export default function Index({ exams }: Props) {
-  console.log(exams);
+export default function Index({ exercise_question }: Props) {
+  const exams = exercise_question.exams as ExamModel[];
+  console.log(exercise_question);
   const dataColumns = [
     {
       header: 'Nama User',
       accessorKey: 'user.name',
     },
     {
-      header: 'Nama Soal Latihan',
-      accessorKey: 'exercise_question.name',
-    },
-    {
-      header: 'Type',
-      accessorKey: 'exercise_question.type',
-    },
-    {
-      header: 'Finished',
-      accessorFn: row => `${row.finished == true}`,
+      header: 'Waktu Selesai',
+      accessorFn: row => `${row.finished ? new Date(row.finished_at).toLocaleString() : 'Belum Selesai'}`,
     },
   ] as MRT_ColumnDef<ExamModel>[];
 
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
+
   return (
-    <AdminTableLayout title="Monitor Exam">
-      <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+    <AdminShowLayout
+      title="Monitor Exam"
+      headerTitle='Monitor Ujian'
+      backRoute={route('packet.sub.category.exercise.show', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        exercise_question.id,
+      ])}
+    >
+      <div className="mt-6 p-7 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-3">
+        <div className='flex flex-col gap-1'>
+          <p>{exercise_question.name}</p>
+          <p>Tipe: {exercise_question.type}</p>
+          <p>
+            Batas waktu:{' '}
+            {
+              <span className="font-semibold">
+                {parseFloat(exercise_question.time_limit.toFixed(2))}
+              </span>
+            }{' '}
+            Menit
+          </p>
+          <p>Jumlah Soal Per Latihan: {exercise_question.number_of_question}</p>
+        </div>
         <LazyLoadMRT
           columns={dataColumns}
           data={exams}
@@ -49,6 +69,12 @@ export default function Index({ exams }: Props) {
           enableRowActions
           enableRowNumbers
           muiTableBodyRowProps={{ hover: false }}
+          muiTableHeadCellProps={{
+            sx: {
+              fontWeight: 'bold',
+              fontSize: '16px',
+            },
+          }}
           renderRowActions={({ row }) => (
             <div className="flex items-center justify-center gap-2">
               <Button
@@ -57,7 +83,13 @@ export default function Index({ exams }: Props) {
                 color="primary"
                 size="large"
               >
-                <Link href={route('exam-monitor.show', row.original.id)}>
+                <Link href={route('packet.sub.category.exercise.exam-monitor.show', [
+                  learning_packet,
+                  sub_learning_packet,
+                  learning_category,
+                  exercise_question.id,
+                  row.original.id
+                ])}>
                   Show
                 </Link>
               </Button>
@@ -65,6 +97,6 @@ export default function Index({ exams }: Props) {
           )}
         />
       </div>
-    </AdminTableLayout>
+    </AdminShowLayout>
   );
 }

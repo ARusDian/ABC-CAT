@@ -37,6 +37,7 @@ export interface BaseExamAnswerModel {
   answer: any;
   score: number;
   cluster: number;
+  bank_question_item_id: string;
   state: {
     mark: boolean;
   };

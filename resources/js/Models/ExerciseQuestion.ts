@@ -1,4 +1,5 @@
 import { BankQuestionItemModel } from './BankQuestionItem';
+import { ExamModel } from './Exam';
 
 export interface ExerciseQuestionFormModel {
   name: string;
@@ -17,6 +18,7 @@ export interface ExerciseQuestionModel {
 
   type: ExerciseQuestionType;
   deleted_at?: string;
+  exams ?: ExamModel[];
 }
 
 export const EXERCISE_QUESTION_TYPE = ['Pilihan', 'Kecermatan'] as const;

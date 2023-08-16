@@ -118,7 +118,7 @@ Route::middleware([
                                     Route::resource("question", ExerciseQuestionQuestionController::class);
                                     Route::post("create-many", [ExerciseQuestionQuestionController::class, "storeMany"])->name("question.store-many");
                                     Route::post("question/{question}/restore", [ExerciseQuestionQuestionController::class, "restore"])->name("question.restore");
-
+                                    Route::resource("exam-monitor", ExamMonitorController::class);
                                     Route::post(
                                         "upload",
                                         [BankQuestionController::class, "uploadImage"]
@@ -146,8 +146,6 @@ Route::middleware([
                                 });
                             });
                             // End Bank Soal
-
-                            Route::resource("exam-monitor", ExamMonitorController::class);
 
                             // Materi Belajar
                             Route::resource("/material", LearningMaterialController::class);

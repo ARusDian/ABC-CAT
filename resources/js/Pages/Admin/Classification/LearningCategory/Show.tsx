@@ -74,7 +74,6 @@ export default function Show({ learningCategory }: Props) {
   const { learning_packet, sub_learning_packet, learning_category } =
     useDefaultClassificationRouteParams();
 
-  console.log(learningCategory.exercise_questions);
 
   return (
     <AdminShowLayout
@@ -251,7 +250,7 @@ export default function Show({ learningCategory }: Props) {
                 },
                 {
                   header: 'Jumlah Soal',
-                  accessorFn: row => row.questions?.length ?? 0,
+                  accessorFn: row => row.number_of_question,
                 },
                 {
                   header: 'Aktif',

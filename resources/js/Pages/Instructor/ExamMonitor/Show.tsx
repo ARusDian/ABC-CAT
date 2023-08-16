@@ -1,3 +1,5 @@
+import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
+import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { ExamModel } from '@/Models/Exam';
 import { router } from '@inertiajs/react';
@@ -5,7 +7,6 @@ import React from 'react';
 import { useIdle, useInterval } from 'react-use';
 import { AutoSizer, Grid, List, ScrollSync } from 'react-virtualized';
 import route from 'ziggy-js';
-import workerUrl from 'pdfjs-dist/build/pdf.worker.min.js?url';
 
 interface Props {
   exam: ExamModel;
@@ -13,10 +14,8 @@ interface Props {
 
 export default function Show(props: Props) {
   const { exam } = props;
-  console.log(workerUrl);
-
   const isIdle = useIdle(5000);
-  const columnCount = 3;
+  const columnCount = 4;
   const re = React.useRef(0);
 
   useInterval(() => {
@@ -28,20 +27,27 @@ export default function Show(props: Props) {
       console.log({ isIdle });
     }
   }, 1000);
-
+  const { learning_packet, sub_learning_packet, learning_category } =
+    useDefaultClassificationRouteParams();
+  const rowHeight = 80;
+  
   return (
     <AdminShowLayout
-      title="Bank Soal"
-      headerTitle="Data Bank Soal"
-      editRoute={route('bank-question.edit', exam.id)}
-      backRoute={route('bank-question.index')}
+      title="Monitor Latihan"
+      headerTitle="Monitoring Ujian"
+      backRoute={route('packet.sub.category.exercise.exam-monitor.index', [
+        learning_packet,
+        sub_learning_packet,
+        learning_category,
+        exam.exercise_question_id,
+      ])}
     >
       <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
         <div className="flex">
           <div className=" text-lg">
             <p>{exam.user.name}</p>
             <p>{exam.user.email}</p>
-            <p>Finished: {exam.finished}</p>
+            <p>Selesai : {exam.finished ? new Date(exam.finished_at).toLocaleString() : "Belum Selesai"}</p>
           </div>
         </div>
 
@@ -61,6 +67,8 @@ export default function Show(props: Props) {
                         if (columnIndex == 0) {
                           text = 'Nomor';
                         } else if (columnIndex == columnCount - 1) {
+                          text = 'Lihat Soal'
+                        } else if (columnIndex == columnCount - 2) {
                           text = 'Benar';
                         } else {
                           text = `Nama soal`;
@@ -78,19 +86,30 @@ export default function Show(props: Props) {
                     />
 
                     <Grid
-                      height={500}
+                      height={rowHeight * exam.answers.length + 10}
                       width={width}
-                      rowHeight={40}
+                      rowHeight={80}
                       columnWidth={width / columnCount}
                       // overscanColumnCount={overscanColumnCount}
                       cellRenderer={({ columnIndex, key, rowIndex, style }) => {
                         const it = exam.answers[rowIndex];
-
                         let text;
+                        console.log(it)
                         if (columnIndex == 0) {
                           text = rowIndex + 1;
                         } else if (columnIndex == columnCount - 1) {
-                          text = `${it.answer == it.question.answer}`;
+                          text = (
+                            <MuiInertiaLinkButton
+                              href={route('packet.sub.category.bank-question.item.show', [
+                                learning_packet, sub_learning_packet, learning_category, it.question.bank_question_id, it.bank_question_item_id
+                              ])}
+                              color="primary"
+                            >
+                              Lihat Soal
+                            </MuiInertiaLinkButton>
+                          );
+                        } else if (columnIndex == columnCount - 2) {
+                          text = `${it.answer === it.question.answer.answer}`;
                         } else {
                           text = it.question.name;
                         }

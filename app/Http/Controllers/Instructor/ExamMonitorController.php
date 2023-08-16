@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
 use App\Models\Exam;
+use App\Models\ExerciseQuestion;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,19 +13,27 @@ class ExamMonitorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
-        $exercise_question_id = $request->query('exercise-question');
+    public function index(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $exercise_question_id
+    ) {
         return Inertia::render('Instructor/ExamMonitor/Index', [
-            'exams' => Exam::with(['exerciseQuestion', 'user'])
-                ->when(
-                    $exercise_question_id != null,
-                    fn($q) => $q->where(
-                        'exercise_question_id',
-                        $exercise_question_id,
-                    ),
-                )
-                ->get(),
+            'exercise_question' => ExerciseQuestion::with(
+                [
+                    'exams' =>  fn ($q) => $q->with('user')
+                ]
+            )->findOrFail($exercise_question_id),
+            // 'exams' => Exam::with(['exerciseQuestion', 'user'])
+            //     ->when(
+            //         $exercise_question_id != null,
+            //         fn($q) => $q->where(
+            //             'exercise_question_id',
+            //             $exercise_question_id,
+            //         ),
+            //     )
+            //     ->get(),
         ]);
     }
 
@@ -47,10 +56,15 @@ class ExamMonitorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
+    public function show(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $exercise_question_id,
+        string $id
+    ) {
         return Inertia::render('Instructor/ExamMonitor/Show', [
-            'exam' => fn() => Exam::with([
+            'exam' => fn () => Exam::with([
                 'exerciseQuestion',
                 'user',
                 'answers.question',
