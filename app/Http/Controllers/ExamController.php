@@ -90,7 +90,7 @@ class ExamController extends Controller
                         }
                         break;
                     case 'WeightedChoice':
-                        return $answer['weight'][$exam->answer]['weight'] ?? 0;
+                        return $answer['answer'][$exam->answer]['weight'] ?? 0;
                         break;
                 }
                 break;
