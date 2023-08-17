@@ -9,9 +9,9 @@ interface Props {
     index: number,
   ) =>
     | {
-        isRight?: boolean;
-        hide?: boolean;
-      }
+      isRight?: boolean;
+      hide?: boolean;
+    }
     | undefined;
   answers: ExamAnswerModel[];
   currentQuestion: number;
@@ -19,6 +19,7 @@ interface Props {
   title?: string;
   nextTitle?: string;
   prevTitle?: string;
+  isEvaluation?: boolean
 }
 
 export function ExamNavigation(props: Props) {
@@ -30,9 +31,9 @@ export function ExamNavigation(props: Props) {
     title,
     nextTitle,
     prevTitle,
+    isEvaluation
   } = props;
   const isLastQuestion = currentQuestion === answers.length - 1;
-
   const prevState =
     answers[currentQuestion - 1] != null
       ? getState?.(answers[currentQuestion - 1], currentQuestion - 1)
@@ -52,17 +53,29 @@ export function ExamNavigation(props: Props) {
               className="text-center border-2  rounded-md p-2"
               variant="contained"
               color={
-                it.state?.mark
-                  ? 'warning'
-                  : currentQuestion === index
-                  ? 'primary'
-                  : state?.isRight == true
-                  ? 'success'
-                  : state?.isRight == false
-                  ? 'error'
-                  : it.answer != undefined
-                  ? 'info'
-                  : 'inherit'
+                it.state?.mark ?
+                  'warning' :
+                  currentQuestion === index
+                    ? 'primary'
+                    : isEvaluation
+                      ? it.question.answer.type === 'WeightedChoice'
+                        ? it.answer != undefined
+                          ? 'success'
+                          : 'inherit'
+                        : state?.isRight == true
+                          ? 'success'
+                          : state?.isRight == false
+                            ? 'error'
+                            : it.answer != undefined
+                              ? 'info'
+                              : 'inherit'
+                      : state?.isRight == true
+                        ? 'success'
+                        : state?.isRight == false
+                          ? 'error'
+                          : it.answer != undefined
+                            ? 'info'
+                            : 'inherit'
               }
               onClick={() => {
                 if (state?.hide) {
@@ -102,6 +115,6 @@ export function ExamNavigation(props: Props) {
           {nextTitle ?? 'Selanjutnya'}
         </Button>
       </div>
-    </div>
+    </div >
   );
 }

@@ -54,6 +54,7 @@ export default function ShowAttempt({ exam }: Props) {
                     <ExamNavigation
                         currentQuestion={currentQuestion}
                         setCurrentQuestion={setCurrentQuestion}
+                        isEvaluation
                         answers={exam.answers}
                         getState={it => {
                             return {

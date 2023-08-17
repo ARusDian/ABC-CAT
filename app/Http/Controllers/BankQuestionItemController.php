@@ -284,6 +284,7 @@ class BankQuestionItemController extends Controller
 
             $question = BankQuestionItem::find($id);
             $question->update([
+                'name' => $data['name'],
                 'weight' => $data['weight'],
 
                 'type' => $data['type'],

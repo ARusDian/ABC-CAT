@@ -43,6 +43,7 @@ export default function ShowAttempt({ exam }: Props) {
         <div className="border-t border-gray-500 w-auto h-auto p-3 flex gap-6 divide-x">
           <ExamNavigation
             currentQuestion={currentQuestion}
+            isEvaluation
             setCurrentQuestion={setCurrentQuestion}
             answers={exam.answers}
             getState={it => {
