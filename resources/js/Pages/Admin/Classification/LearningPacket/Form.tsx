@@ -66,7 +66,7 @@ export default function Form({ form, className }: Props) {
             return (
               <div className="flex flex-col gap-3">
                 <img
-                  className="h-20 w-20 object-cover mx-auto"
+                  className="h-40 w-40 object-cover mx-auto"
                   src={
                     form.getValues('photo')?.file
                       ? getStorageFileUrl(
