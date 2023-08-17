@@ -133,7 +133,7 @@ export default function DashboardAdminLayout({
     };
 
   const sideBar = () => (
-    <Box sx={{ width: 250 }} role="presentation">
+    <Box sx={{ width: drawerWidth }} role="presentation">
       <ul className="">
         <li>
           <ResponsiveNavLink
