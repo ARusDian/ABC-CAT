@@ -8,6 +8,7 @@ import route from 'ziggy-js';
 import FolderIcon from '@mui/icons-material/Folder';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
+import { asset } from '@/Models/Helper';
 
 interface Props {
   learningPacket: LearningPacketModel;
@@ -35,6 +36,15 @@ export default function Show({ learningPacket }: Props) {
     >
       <div className="flex flex-col gap-5">
         <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-5">
+          <div className='flex justify-center'>
+            <img
+              className="w-40 h-40"
+              src={learningPacket.photo_path
+                ? asset('public', learningPacket.photo_path)
+                : asset('root', 'assets/image/default-image.jpg')}
+              alt={learningPacket.name}
+            />
+          </div>
           <table className="w-full">
             <thead>
               <tr className="border-b py-3 border-black">

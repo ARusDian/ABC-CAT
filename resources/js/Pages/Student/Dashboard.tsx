@@ -1,4 +1,5 @@
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
+import { asset } from '@/Models/Helper';
 import { LearningPacketModel } from '@/Models/LearningPacket';
 import { UserLearningPacketModel } from '@/Models/UserLearningPacket';
 import { Link, router } from '@inertiajs/react';
@@ -43,7 +44,13 @@ export default function Dashboard({
               >
                 <div className="flex flex-col gap-5 mx-auto p-4">
                   <div className="mx-auto">
-                    <Assignment fontSize="large" />
+                    <img
+                      className={`w-40 h-40 ${isSubscribed ? '' : 'grayscale'}`} 
+                      src={learningPacket.photo_path
+                        ? asset('public', learningPacket.photo_path)
+                        : asset('root', 'assets/image/default-image.jpg')}
+                      alt={learningPacket.name}
+                    />
                   </div>
                   <div className="text-3xl  text-center font-semibold">
                     {learningPacket.name}

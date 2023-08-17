@@ -1,6 +1,7 @@
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
+import { asset } from '@/Models/Helper';
 import { LearningPacketModel } from '@/Models/LearningPacket';
 import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
@@ -13,11 +14,26 @@ interface Props {
 export default function Index({ learningPackets }: Props) {
   const dataColumns = [
     {
-      Header: 'Nama',
-      accessorKey: 'name',
+      header: 'Nama',
+      accessorFn(originalRow) {
+        return (
+          <div className="flex gap-3">
+            <img
+              className=" h-20 w-20 object-cover"
+              src={
+                originalRow.photo_path
+                  ? asset('public', originalRow.photo_path)
+                  : asset('root', 'assets/image/default-image.jpg')
+              }
+              alt={originalRow.name}
+            />
+            <p className="my-auto font-semibold">{originalRow.name}</p>
+          </div>
+        );
+      },
     },
     {
-      Header: 'Deskripsi',
+      header: 'Deskripsi',
       accessorKey: 'description',
     },
   ] as MRT_ColumnDef<LearningPacketModel>[];

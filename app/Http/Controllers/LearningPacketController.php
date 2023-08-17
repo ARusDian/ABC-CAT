@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LearningPacket;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class LearningPacketController extends Controller
@@ -39,9 +40,21 @@ class LearningPacketController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
+            'photo.file' => 'nullable|max:2048',
         ]);
 
-        $learning_packet = LearningPacket::create($request->all());
+        $path = null;
+
+        if ($request->hasFile('photo.file')) {
+            $path = Storage::disk('public')->put('learning-packet', $request->file('photo.file'));
+        }
+
+        $learning_packet = LearningPacket::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'photo_path' => $path,
+        ]);
+
         activity()
             ->performedOn($learning_packet)
             ->causedBy(auth()->user())
@@ -92,10 +105,30 @@ class LearningPacketController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
+            'photo.file' => 'nullable|max:2048',
         ]);
 
         $learningPacket = LearningPacket::find($id);
-        $learningPacket->update($request->all());
+
+        if(isset($learningPacket->photo_path)) {
+            if($request->hasFile('photo.file')) {
+                Storage::disk('public')->delete($learningPacket->photo_path);
+                $path = Storage::disk('public')->put('learning-packet', $request->file('photo.file'));
+            }else{
+                $path = $learningPacket->photo_path;
+            }
+        }else{
+            if($request->hasFile('photo.file')) {
+                $path = Storage::disk('public')->put('learning-packet', $request->file('photo.file'));
+            }else{
+                $path = null;
+            }
+        }
+        $learningPacket->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'photo_path' => $path,
+        ]);
 
         activity()
             ->performedOn($learningPacket)
@@ -119,6 +152,7 @@ class LearningPacketController extends Controller
     {
         //
         $learningPacket = LearningPacket::find($id);
+        Storage::disk('public')->delete($learningPacket->photo_path);
         $learningPacket->delete();
 
         activity()
