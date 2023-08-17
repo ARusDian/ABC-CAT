@@ -113,6 +113,7 @@ export default function Form(props: Props) {
               {...form.register('weight', { valueAsNumber: true })}
               type="number"
               inputProps={{ step: 'any' }}
+              // inputProps={{ st }}
               label="Bobot Soal"
               defaultValue={form.formState.defaultValues?.weight}
               error={form.formState.errors?.weight != null}
@@ -244,6 +245,7 @@ function PilihanForm({
                         <TextField
                           label="Bobot"
                           type="number"
+                          inputProps={{ step: 'any'}}
                           error={
                             form.formState.errors.answer?.answer?.[index]
                               ?.weight != null
