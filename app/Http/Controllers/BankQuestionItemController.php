@@ -119,8 +119,6 @@ class BankQuestionItemController extends Controller
         ) {
             $data = $this->validateData($request->all());
 
-            dd($data);
-
             $newQuestion = BankQuestionItem::create([
                 'bank_question_id' => $bank_question,
                 'name' => $data['name'],
