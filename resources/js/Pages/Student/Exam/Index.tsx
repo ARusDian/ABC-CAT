@@ -88,7 +88,7 @@ export default function Index({ learningCategory, exerciseQuestions }: Props) {
             />
           ) : (
             <div className="flex justify-center">
-              <p className="text-3xl font-bold my-auto">Tidak Ada Materi</p>
+              <p className="text-3xl font-bold my-auto">Tidak Ada Latihan Soal</p>
             </div>
           )}
         </div>
