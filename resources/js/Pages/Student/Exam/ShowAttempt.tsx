@@ -1,13 +1,13 @@
 import { ExamModel } from '@/Models/Exam';
 import React from 'react';
-import Answer from './Answer';
+import ExamAnswer from '../../../Components/ExamAnswer';
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { Button } from '@mui/material';
 import { Link } from '@inertiajs/react';
 import route from 'ziggy-js';
 import { asset } from '@/Models/Helper';
 import { useSearchParam } from '@/Hooks/useSearchParam';
-import { Navigation } from './Navigation';
+import { ExamNavigation } from '../../../Components/ExamNavigation';
 
 interface Props {
   exam: ExamModel;
@@ -41,7 +41,7 @@ export default function ShowAttempt({ exam }: Props) {
           </div>
         </div>
         <div className="border-t border-gray-500 w-auto h-auto p-3 flex gap-6 divide-x">
-          <Navigation
+          <ExamNavigation
             currentQuestion={currentQuestion}
             setCurrentQuestion={setCurrentQuestion}
             answers={exam.answers}
@@ -70,7 +70,7 @@ export default function ShowAttempt({ exam }: Props) {
                 </div>
               </div>
               <div className="w-full h-auto p-3 flex flex-col gap-3 ">
-                <Answer answer={exam.answers[currentQuestion]} isEvaluation />
+                <ExamAnswer answer={exam.answers[currentQuestion]} isEvaluation />
               </div>
             </div>
           </div>

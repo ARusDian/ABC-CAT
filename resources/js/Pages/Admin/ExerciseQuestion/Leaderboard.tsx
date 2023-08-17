@@ -112,16 +112,22 @@ export default function Leaderboard({ exercise_question }: Props) {
               fontSize: '16px',
             },
           }}
-          // renderRowActions={({ row }) => (
-          //   <div className="flex items-center justify-center gap-2">
-          //     <Link
-          //       href={route('exam.show.attempt', [props.exercise_question.id, row.original.id])}
-          //       className="bg-blue-500 text-white hover:bg-blue-600 py-3 px-5 rounded-lg text-md font-semibold"
-          //     >
-          //       Show
-          //     </Link>
-          //   </div>
-          // )}
+          renderRowActions={({ row }) => (
+            <div className="flex items-center justify-center gap-2">
+              <MuiInertiaLinkButton
+                href={route('packet.sub.category.exercise.leaderboard.result',
+                  [
+                    learning_packet,
+                    sub_learning_packet,
+                    learning_category,
+                    exercise_question.id,
+                    row.original.id
+                  ])}
+              >
+                Show
+              </MuiInertiaLinkButton>
+            </div>
+          )}
         />
       </div>
     </AdminTableLayout>

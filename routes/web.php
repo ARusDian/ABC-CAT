@@ -114,6 +114,7 @@ Route::middleware([
                                 Route::prefix("{exercise_question}/")->group(function () {
                                     Route::post("restore", [ExerciseQuestionController::class, "restore"])->name("restore");
                                     Route::get("leaderboard", [ExerciseQuestionController::class, "leaderboard"])->name("leaderboard");
+                                    Route::get("leaderboard/{exam_id}", [ExerciseQuestionController::class, "leaderboardResult"])->name("leaderboard.result");
                                     Route::put("import", [ExerciseQuestionController::class, "importUpdate"])->name("import.update");
                                     Route::resource("question", ExerciseQuestionQuestionController::class);
                                     Route::post("create-many", [ExerciseQuestionQuestionController::class, "storeMany"])->name("question.store-many");

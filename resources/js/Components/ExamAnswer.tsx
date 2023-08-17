@@ -17,7 +17,7 @@ interface Props {
   isEvaluation?: boolean;
 }
 
-export default function Answer({
+export default function ExamAnswer({
   answer,
   updateAnswer,
   isEvaluation = false,

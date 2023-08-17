@@ -9,11 +9,11 @@ import { useCounter, useDebounce, useUpdate } from 'react-use';
 import { ExamAnswerModel, ExamModel, ExamPilihanModel } from '@/Models/Exam';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
-import Answer from './Answer';
+import ExamAnswer from '../../../Components/ExamAnswer';
 import { useConfirm } from 'material-ui-confirm';
 import { asset } from '@/Models/Helper';
 import { useSearchParam } from '@/Hooks/useSearchParam';
-import { Navigation } from './Navigation';
+import { ExamNavigation } from '../../../Components/ExamNavigation';
 import _ from 'lodash';
 
 export interface Props {
@@ -258,7 +258,7 @@ export default function Run({ exam }: Props) {
                         ujian
                       </p>
                     </div>
-                    <Navigation
+                    <ExamNavigation
                       answers={answerArray.fields}
                       setCurrentQuestion={setCurrentQuestion}
                       currentQuestion={currentQuestion}
@@ -310,7 +310,7 @@ export default function Run({ exam }: Props) {
                     </div>
                     <div className="w-full h-auto p-3 flex flex-col gap-3 z-50">
                       {answerArray.fields[currentQuestion] != null ? (
-                        <Answer
+                        <ExamAnswer
                           answer={answerArray.fields[currentQuestion]}
                           updateAnswer={answer => {
                             updateAnswer({

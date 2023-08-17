@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ExerciseQuestionTypeEnum;
 use App\Models\BankQuestion;
 use App\Models\DocumentFile;
+use App\Models\Exam;
 use App\Models\ExerciseQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -145,6 +146,25 @@ class ExerciseQuestionController extends Controller
                 ->withTrashed()
                 ->findOrFail($id),
         ]);
+    }
+
+    public function leaderboardResult(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $id,
+        $exam_id,
+    ) {
+        $exam = Exam::withScore()->find($exam_id)->load('answers.question');
+        return Inertia::render('Admin/ExerciseQuestion/DetailExamResult', [
+            'exercise_question' => fn() => ExerciseQuestion::with([
+                'exams' => fn($q) => $q->withScore(),
+                'exams.user',
+            ])
+                ->withTrashed()
+                ->findOrFail($id),
+            'exam' => $exam,
+        ]);        
     }
 
     public function getLeaderboardData($id)

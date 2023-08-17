@@ -21,7 +21,7 @@ interface Props {
   prevTitle?: string;
 }
 
-export function Navigation(props: Props) {
+export function ExamNavigation(props: Props) {
   const {
     answers,
     currentQuestion,
