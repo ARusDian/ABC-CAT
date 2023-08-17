@@ -172,6 +172,7 @@ export default function Run({ exam }: Props) {
           return [];
         } catch (e) {
           console.error(e);
+          setStateQueue([]);
           return queue;
         }
       })();
