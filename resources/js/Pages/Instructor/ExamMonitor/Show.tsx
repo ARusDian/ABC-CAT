@@ -30,7 +30,7 @@ export default function Show(props: Props) {
   const { learning_packet, sub_learning_packet, learning_category } =
     useDefaultClassificationRouteParams();
   const rowHeight = 80;
-  
+
   return (
     <AdminShowLayout
       title="Monitor Latihan"
@@ -69,7 +69,7 @@ export default function Show(props: Props) {
                         } else if (columnIndex == columnCount - 1) {
                           text = 'Lihat Soal'
                         } else if (columnIndex == columnCount - 2) {
-                          text = 'Benar';
+                          text = 'Score';
                         } else {
                           text = `Nama soal`;
                         }
@@ -109,7 +109,8 @@ export default function Show(props: Props) {
                             </MuiInertiaLinkButton>
                           );
                         } else if (columnIndex == columnCount - 2) {
-                          text = `${it.answer === it.question.answer.answer}`;
+                          text = it.score
+                          // text = `${it.answer === it.question.answer.answer}`;
                         } else {
                           text = it.question.name;
                         }
