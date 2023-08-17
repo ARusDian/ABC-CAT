@@ -112,7 +112,7 @@ export default function DashboardLayout({
   renderHeader,
   children,
 }: PropsWithChildren<Props>) {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
   const { props } = usePage();
   const user = props.user as unknown as User;
 
