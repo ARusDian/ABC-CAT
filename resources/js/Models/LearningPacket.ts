@@ -18,4 +18,5 @@ export interface LearningPacketModel {
   sub_learning_packets: SubLearningPacketModel[];
   users?: User[];
   user_learning_packets?: UserLearningPacketModel[];
+  deleted_at?: string;
 }

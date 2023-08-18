@@ -16,7 +16,7 @@ class LearningPacketController extends Controller
     public function index()
     {
         //
-        $learningPackets = LearningPacket::all();
+        $learningPackets = LearningPacket::withTrashed()->get();
         return Inertia::render('Admin/Classification/LearningPacket/Index', [
             'learningPackets' => $learningPackets,
         ]);
@@ -78,7 +78,7 @@ class LearningPacketController extends Controller
         //
         $learningPacket = LearningPacket::with(
             'subLearningPackets.learningCategories',
-        )->find($id);
+        )->withTrashed()->find($id);
         return Inertia::render('Admin/Classification/LearningPacket/Show', [
             'learningPacket' => $learningPacket,
         ]);
@@ -110,17 +110,17 @@ class LearningPacketController extends Controller
 
         $learningPacket = LearningPacket::find($id);
 
-        if(isset($learningPacket->photo_path)) {
-            if($request->hasFile('photo.file')) {
+        if (isset($learningPacket->photo_path)) {
+            if ($request->hasFile('photo.file')) {
                 Storage::disk('public')->delete($learningPacket->photo_path);
                 $path = Storage::disk('public')->put('learning-packet', $request->file('photo.file'));
-            }else{
+            } else {
                 $path = $learningPacket->photo_path;
             }
-        }else{
-            if($request->hasFile('photo.file')) {
+        } else {
+            if ($request->hasFile('photo.file')) {
                 $path = Storage::disk('public')->put('learning-packet', $request->file('photo.file'));
-            }else{
+            } else {
                 $path = null;
             }
         }
@@ -152,9 +152,6 @@ class LearningPacketController extends Controller
     {
         //
         $learningPacket = LearningPacket::find($id);
-        if(isset($learningPacket->photo_path)) {
-            Storage::disk('public')->delete($learningPacket->photo_path);
-        }
         $learningPacket->delete();
 
         activity()
@@ -170,5 +167,25 @@ class LearningPacketController extends Controller
         return redirect()
             ->route('packet.index')
             ->banner('Learning Packet deleted successfully.');
+    }
+
+    public function restore($id)
+    {
+        $learningPacket = LearningPacket::withTrashed()->find($id);
+        $learningPacket->restore();
+
+        activity()
+            ->performedOn($learningPacket)
+            ->causedBy(auth()->user())
+            ->withProperties(['method' => 'RESTORE'])
+            ->log(
+                'Learning Packet ' .
+                    $learningPacket->name .
+                    ' restored successfully.',
+            );
+
+        return redirect()
+            ->route('packet.index')
+            ->banner('Learning Packet restored successfully.');
     }
 }

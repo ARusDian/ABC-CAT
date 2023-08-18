@@ -22,17 +22,33 @@ export default function Show({ learningPacket }: Props) {
     },
   ] as MRT_ColumnDef<SubLearningPacketModel>[];
 
+  let editProps = {};
+
+  if (!learningPacket.deleted_at) {
+    editProps = {
+      editRoute: route('packet.edit', learningPacket.id),
+      editRouteTitle: 'Edit',
+    };
+  }
+
   return (
     <AdminShowLayout
       title="Paket Belajar"
       headerTitle="Paket Belajar"
       backRoute={route('packet.index')}
-      editRoute={route('packet.edit', learningPacket.id)}
-      editRouteTitle="Edit"
+      {...editProps}
+      isRestore={learningPacket.deleted_at ? true : false}
       onDelete={() => {
-        router.delete(route('packet.destroy', learningPacket.id));
+        learningPacket.deleted_at
+          ? router.post(route('packet.restore', [learningPacket.id]))
+          : router.delete(route('packet.destroy', [learningPacket.id]));
       }}
-      deleteTitle="Hapus"
+      deleteTitle={learningPacket.deleted_at ? 'Restore' : 'Hapus'}
+      onDeleteMessage={
+        learningPacket.deleted_at
+          ? `Ini akan mengembalikan Akun ${learningPacket.name}`
+          : `Ini akan menghapus Akun ${learningPacket.name}`
+      }
     >
       <div className="flex flex-col gap-5">
         <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-5">

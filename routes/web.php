@@ -97,6 +97,7 @@ Route::middleware([
             // Paket Belajar
             Route::prefix("packet")->name("packet.")->group(function () {
                 Route::resource("", LearningPacketController::class)->parameter("", "learning_packet");
+                Route::post("{learning_packet}/restore", [LearningPacketController::class, "restore"])->name("restore");
                 // Sub Paket Belajar
 
                 Route::prefix("{learning_packet}/sub")->name("sub.")->group(function () {

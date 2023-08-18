@@ -36,6 +36,12 @@ export default function Index({ learningPackets }: Props) {
       header: 'Deskripsi',
       accessorKey: 'description',
     },
+    {
+      header: "Aktif",
+      accessorFn(originalRow) {
+        return originalRow.deleted_at ? <span className='text-red-500'>Tidak Aktif</span> : <span className='text-green-500'>Aktif</span>;
+      },
+    }
   ] as MRT_ColumnDef<LearningPacketModel>[];
 
   return (
