@@ -337,39 +337,27 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        // $exams = Exam::where('exercise_question_id', $id)->with([
-        //     'exerciseQuestion' => fn ($q) => $q->select('id', 'name', 'learning_category_id')->with([
-        //         'learningCategory' => fn ($q) => $q->select('id', 'name', 'sub_learning_packet_id')->with([
-        //             'subLearningPacket' => fn ($q) => $q->select('id', 'name', 'learning_packet_id')->with([
-        //                 'learningPacket' => fn ($q) => $q->select('id', 'name')
-        //             ])
-        //         ])
-        //     ]),
-        //     'user' => fn ($q) => $q->select('id', 'name', 'email'),
-        // ])->withScore()->ofFinished(true)->get();
-
-        $exercise_question = ExerciseQuestion::select('id', 'name', 'learning_category_id')->with([
-            'exams' => fn ($q) => $q->withScore()->ofFinished(true),
-            'exams.user',
-            'learningCategory' => fn ($q) => $q->select('id', 'name', 'sub_learning_packet_id')->with([
-                'subLearningPacket' => fn ($q) => $q->select('id', 'name', 'learning_packet_id')->with([
-                    'learningPacket' => fn ($q) => $q->select('id', 'name')
+        $exams = Exam::where('exercise_question_id', $id)->with([
+            'exerciseQuestion' => fn ($q) => $q->select('id', 'name', 'learning_category_id')->with([
+                'learningCategory' => fn ($q) => $q->select('id', 'name', 'sub_learning_packet_id')->with([
+                    'subLearningPacket' => fn ($q) => $q->select('id', 'name', 'learning_packet_id')->with([
+                        'learningPacket' => fn ($q) => $q->select('id', 'name')
+                    ])
                 ])
-            ])
-        ])
-            ->withTrashed()
-            ->findOrFail($id);
+            ]),
+            'user' => fn ($q) => $q->select('id', 'name', 'email'),
+        ])->withScore()->ofFinished(true)->get();
 
-        return Excel::download(new ExamResultExport($exercise_question, "Hasil Ujian ". $exercise_question->name), 'Exam Result.xlsx');
+        activity()
+            ->performedOn($exams->first()->exerciseQuestion)
+            ->causedBy(auth()->user())
+            ->withProperties(['method' => 'EXPORT'])
+            ->log(
+                'Exercise Question ' .
+                    $exams->first()->exerciseQuestion->name .
+                    ' exported successfully.',
+            );
 
-        // activity()
-        //     ->performedOn($exams)
-        //     ->causedBy(auth()->user())
-        //     ->withProperties(['method' => 'EXPORT'])
-        //     ->log(
-        //         'Exercise Question ' .
-        //             $exams->first()->exerciseQuestion->name .
-        //             ' exported successfully.',
-        //     );
+        return Excel::download(new ExamResultExport($exams, "Hasil Ujian " . $exams->first()->exerciseQuestion->name), 'Exam Result.xlsx');
     }
 }

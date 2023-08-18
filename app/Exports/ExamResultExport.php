@@ -2,25 +2,25 @@
 
 namespace App\Exports;
 
-use App\Models\ExerciseQuestion;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
 class ExamResultExport implements FromView
 {
-    private $exercise_question;
+    private $exams;
     private $title;
 
-    public function __construct(ExerciseQuestion $exercise_question, $title)
+    public function __construct(EloquentCollection $exams, $title)
     {
-        $this->exercise_question = $exercise_question;
+        $this->exams = $exams;
         $this->title = $title;
     }
 
     public function view(): View
     {
         return view('exports.examResult', [
-            'exercise_question' => $this->exercise_question,
+            'exams' => $this->exams,
             'title' => $this->title,
         ]);
     }
