@@ -70,14 +70,13 @@ export default function ShowAttempt({ exam }: Props) {
                         </p>
                         <div className="relative flex">
                             <div className="absolute w-full h-full">
-                                <div className="flex justify-center h-full w-full p-10">
-                                    <div className="flex justify-center">
-                                        <img
-                                            src={asset('root', 'assets/image/logo.png')}
-                                            alt="logo"
-                                            className="w-full opacity-40"
-                                        />
-                                    </div>
+                                <div className="flex justify-center h-full w-full p-10" style={{
+                                    backgroundImage: `url(${asset('root', 'assets/image/logo.png')})`,
+                                    backgroundRepeat: 'repeat-y',
+                                    backgroundSize: 'contain',
+                                    backgroundPosition: 'center',
+                                    opacity: 0.4,
+                                }}>
                                 </div>
                             </div>
                             <div className="w-full h-auto p-3 flex flex-col gap-3 ">
