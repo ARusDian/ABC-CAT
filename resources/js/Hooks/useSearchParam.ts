@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   useSearchParam as useSearchParamOriginal,
   useLocation,

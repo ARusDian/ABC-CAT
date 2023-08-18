@@ -57,18 +57,20 @@ class ExamMonitorController extends Controller
      * Display the specified resource.
      */
     public function show(
+        Request $request,
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
         $exercise_question_id,
-        string $id
+        $exam_monitor
     ) {
+        // dd($exam_monitor, $request->path());
         return Inertia::render('Instructor/ExamMonitor/Show', [
             'exam' => fn () => Exam::with([
                 'exerciseQuestion',
                 'user',
                 'answers.question',
-            ])->findOrFail($id),
+            ])->findOrFail($exam_monitor),
         ]);
     }
 

@@ -5,8 +5,12 @@ import { ExamModel } from '@/Models/Exam';
 import { router } from '@inertiajs/react';
 import React from 'react';
 import { useIdle, useInterval } from 'react-use';
+import { useSearchParam } from '@/Hooks/useSearchParam';
 import { AutoSizer, Grid, List, ScrollSync } from 'react-virtualized';
 import route from 'ziggy-js';
+import { ExamNavigation } from '@/Components/ExamNavigation';
+import ExamAnswer from '@/Components/ExamAnswer';
+import { asset } from '@/Models/Helper';
 
 interface Props {
   exam: ExamModel;
@@ -18,19 +22,41 @@ export default function Show(props: Props) {
   const columnCount = 4;
   const re = React.useRef(0);
 
+  const currentQuestion =
+    (parseInt(useSearchParam('question') ?? '1') || 1) - 1;
+
+  const setCurrentQuestion = React.useCallback((index: number) => {
+    const url = new URL(location.toString());
+    router.reload({
+      replace: true, 
+      preserveScroll: true,
+      preserveState: true,
+      data: {
+        question: index + 1,
+      },
+      only: []
+    })
+    // url.searchParams.set('question', (index + 1).toString());
+    history.pushState({}, '', url);
+  }, []);
+
   useInterval(() => {
     if (!isIdle) {
+      console.error({ href: location.href });
       console.log('reloading', re);
-      console.log(router.reload({ only: ['exam'] }));
+      router.reload({
+        only: ['exam'],  data: {
+        question: currentQuestion + 1
+      } })
       re.current += 1;
     } else {
       console.log({ isIdle });
     }
-  }, 1000);
+  }, 5000);
   const { learning_packet, sub_learning_packet, learning_category } =
     useDefaultClassificationRouteParams();
-  const rowHeight = 80;
 
+  console.log({ href: location.href, currentQuestion});
   return (
     <AdminShowLayout
       title="Monitor Latihan"
@@ -51,8 +77,42 @@ export default function Show(props: Props) {
           </div>
         </div>
 
-        <div>
-          <AutoSizer disableHeight>
+        <div className=''>
+          <div className="border-t border-gray-500 w-auto h-auto p-3 flex gap-6 divide-x justify-center">
+            <ExamNavigation
+              currentQuestion={currentQuestion}
+              setCurrentQuestion={setCurrentQuestion}
+              answers={exam.answers}
+              getState={it => {
+                return {  
+                  isRight: it.score != 0,
+                };
+              }}
+            />
+            <div className='className="flex flex-col p-3 basis-2/3'>
+              <p className="text-lg font-semibold">
+                {' '}
+                Soal {currentQuestion + 1} (
+                {parseFloat(exam.answers[currentQuestion].score.toString())})
+              </p>
+              <div className="relative flex">
+                <div className="absolute w-full h-full">
+                  <div className="flex justify-center h-full w-full p-10" style={{
+                    backgroundImage: `url(${asset('root', 'assets/image/logo.png')})`,
+                    backgroundRepeat: 'repeat-y',
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    opacity: 0.4,
+                  }}>
+                  </div>
+                </div>
+                <div className="w-full h-auto p-3 flex flex-col gap-3 ">
+                  <ExamAnswer answer={exam.answers[currentQuestion]} />
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* <AutoSizer disableHeight>
             {({ width }) => (
               <ScrollSync>
                 {({ scrollLeft }) => (
@@ -129,7 +189,7 @@ export default function Show(props: Props) {
                 )}
               </ScrollSync>
             )}
-          </AutoSizer>
+          </AutoSizer> */}
         </div>
       </div>
     </AdminShowLayout>
