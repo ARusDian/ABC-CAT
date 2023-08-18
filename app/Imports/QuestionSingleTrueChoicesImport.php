@@ -49,15 +49,78 @@ class QuestionSingleTrueChoicesImport implements WithStartRow, OnEachRow, WithHe
             $row["pilihan_4"],
             $row["pilihan_5"],
         ];
-        $formatted_question = json_decode('{"type":"tiptap","content":{"type":"doc","content":[{"type":"paragraph","attrs":{"textAlign":"left"},"content":[{"type":"text","text":"' . $row["pertanyaan"] . '"}]}]}}');
-        $choices_formatted_arr = array_map(function ($choice) {
-            return ('{"type":"tiptap","content":{"type":"doc","content":[{"type":"paragraph","attrs":{"textAlign":"left"},"content":[{"type":"text","text":"' . $choice . '"}]}]}}');
-        }, $row_pilihan);
-        $formatted_answer = json_decode('{"type":"Single","answer":' . (intval($row["jawaban"]) - 1) . '}');
-        $formatted_explanation = json_decode('{"type":"tiptap","content":{"type":"doc","content":[{"type":"paragraph","attrs":{"textAlign":"left"},"content":[{"type":"text","text":"' . $row["pembahasan"] . '"}]}]}}');
+        
+        $formatted_question = [
+            "type" => "tiptap",
+            "content" => [
+                "type" => "doc",
+                "content" => [
+                    [
+                        "type" => "paragraph",
+                        "attrs" => [
+                            "textAlign" => "left"
+                        ],
+                        "content" => [
+                            [
+                                "type" => "text",
+                                "text" => $row["pertanyaan"]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
 
+        $formatted_answer = [
+            "type" => "Single",
+            "answer" => intval($row["jawaban"]) - 1
+        ];
 
-        $choices_formatted = json_decode('{"choices" : [' . implode(",", $choices_formatted_arr) . ']}');
+        $formatted_explanation = [
+            "type" => "tiptap",
+            "content" => [
+                "type" => "doc",
+                "content" => [
+                    [
+                        "type" => "paragraph",
+                        "attrs" => [
+                            "textAlign" => "left"
+                        ],
+                        "content" => [
+                            [
+                                "type" => "text",
+                                "text" => $row["pembahasan"]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $choices_formatted = [
+            "choices" =>  array_map(function ($choice) {
+                return [
+                    "type" => "tiptap",
+                    "content" => [
+                        "type" => "doc",
+                        "content" => [
+                            [
+                                "type" => "paragraph",
+                                "attrs" => [
+                                    "textAlign" => "left"
+                                ],
+                                "content" => [
+                                    [
+                                        "type" => "text",
+                                        "text" => $choice
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ];
+            }, $row_pilihan)
+        ];
 
         $bank_question = BankQuestionItem::create([
             'bank_question_id' => $this->bank_question->id,
