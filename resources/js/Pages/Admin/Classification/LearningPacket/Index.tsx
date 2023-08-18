@@ -3,6 +3,8 @@ import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
 import { asset } from '@/Models/Helper';
 import { LearningPacketModel } from '@/Models/LearningPacket';
+import { User } from '@/types';
+import { usePage } from '@inertiajs/react';
 import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
@@ -12,6 +14,10 @@ interface Props {
 }
 
 export default function Index({ learningPackets }: Props) {
+
+  const { props } = usePage();
+  const user = props.user as unknown as User;
+  
   const dataColumns = [
     {
       header: 'Nama',
@@ -77,14 +83,18 @@ export default function Index({ learningPackets }: Props) {
               >
                 Show
               </MuiInertiaLinkButton>
-              <MuiInertiaLinkButton
-                color="success"
-                href={route('user-learning-packet.create', {
-                  learning_packet: row.original.id,
-                })}
-              >
-                Tambah Pengguna
-              </MuiInertiaLinkButton>
+              {
+                user.roles[0].name !== 'instructor' && (
+                  <MuiInertiaLinkButton
+                    color="success"
+                    href={route('user-learning-packet.create', {
+                      learning_packet: row.original.id,
+                    })}
+                  >
+                    Tambah Pengguna
+                  </MuiInertiaLinkButton>
+                )
+              }
             </div>
           )}
         />
