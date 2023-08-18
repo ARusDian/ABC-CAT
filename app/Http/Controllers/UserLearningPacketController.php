@@ -159,7 +159,8 @@ class UserLearningPacketController extends Controller
         return Excel::download(new UserPacketsTemplateExport($learningPacket), 'user-' . $learningPacket->name . '-template.xlsx');
     }
 
-    public function users($learning_packet){
+    public function users($learning_packet)
+    {
         $learningPacket = LearningPacket::with('users:id,name,email')->find($learning_packet);
         $unregisteredUsers = User::whereNotIn(
             'id',
@@ -172,5 +173,65 @@ class UserLearningPacketController extends Controller
             'learningPacket' => $learningPacket,
             'unregisteredUsers' => $unregisteredUsers,
         ]);
+    }
+
+    public function storeMany(Request $request, $id)
+    {
+        return \DB::transaction(function () use ($request, $id) {
+            $packet = LearningPacket::with('users:id')->findOrFail($id);
+
+            $data = $request->validate([
+                'users' => 'array',
+                'users.*.id' => 'numeric',
+            ]);
+
+            $users = collect($data['users']);
+
+            $registerUser = $users->whereNotIn('id', $packet->users->pluck('id'));
+            $unregisterUser = $packet->users->whereNotIn('id', $users->pluck('id'));
+
+            foreach ($registerUser as $user) {
+                $userId = $user['id'];
+
+                $userLearningPacket = UserLearningPacket::create([
+                    'learning_packet_id' => $id,
+                    'user_id' => $userId,
+                    'subscription_date' => \Carbon\Carbon::today()
+                ]);
+
+                activity()
+                    ->performedOn($userLearningPacket)
+                    ->causedBy(auth()->user())
+                    ->withProperties(['method' => 'CREATE'])
+                    ->log(
+                        'User ' .
+                            $userLearningPacket->user->name .
+                            ' assigned to learning packet ' .
+                            $userLearningPacket->learningPacket->name,
+                    );
+            }
+
+            foreach ($unregisterUser as $user){
+                $userId = $user['id'];
+
+                $userLearningPacket = UserLearningPacket::whereUserId($userId)->first();
+                $userLearningPacket->delete();
+
+
+                activity()
+                    ->performedOn($userLearningPacket)
+                    ->causedBy(auth()->user())
+                    ->withProperties(['method' => 'DELETE'])
+                    ->log(
+                        'User ' .
+                            $userLearningPacket->user->name .
+                            ' unassigned to learning packet ' .
+                            $userLearningPacket->learningPacket->name,
+                    );
+            }
+
+
+            return redirect()->route('user-learning-packet.index');
+        });
     }
 }

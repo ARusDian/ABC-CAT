@@ -93,6 +93,7 @@ Route::middleware([
 
                 Route::resource('/user-learning-packet', UserLearningPacketController::class);
                 Route::get('/learning-packet-users/{learning_packet}', [UserLearningPacketController::class, "users"])->name('user-packet.users');
+                Route::post('/user-learning-packet/{learning_packet}/store-many', [UserLearningPacketController::class, 'storeMany'])->name('user-learning-packet.store-many');
                 Route::post('/user-learning-packet-import/{learning_packet}', [UserLearningPacketController::class, "Import"])->name('user-packet.import');
                 Route::get('/user-learning-packet-export/{learning_packet}', [UserLearningPacketController::class, "Export"])->name('user-packet.export');
                 Route::get('/user-learning-packet-template/{learning_packet}', [UserLearningPacketController::class, "Template"])->name('user-packet.import-template');

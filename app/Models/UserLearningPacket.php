@@ -15,6 +15,11 @@ class UserLearningPacket extends Model
         'subscription_date',
     ];
 
+
+    protected $casts = [
+        'subscription_date' => 'date'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
