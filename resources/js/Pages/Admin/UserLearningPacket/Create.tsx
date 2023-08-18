@@ -37,7 +37,7 @@ export default function Create({ users, learningPackets }: Props) {
 					it => it.id.toString() === params.learning_packet,
 				)
 				: {},
-			subscription_date: new Date().toDateString(),
+			subscription_date: new Date().toISOString().split('T')[0],
 
 		},
 	});
