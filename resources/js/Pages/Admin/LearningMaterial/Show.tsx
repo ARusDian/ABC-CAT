@@ -63,9 +63,10 @@ export default function Index(props: Props) {
         </div>
         <div>Deskripsi Materi Pembelajaran :</div>
         <div className="border-2 border-gray-200 p-5">
-          <div className="prose ">
+          <div className="prose min-w-full">
             <ResourceEditor
               content={learningMaterial.description.content}
+              editorClassName=""
               disableEdit
             />
           </div>
