@@ -6,6 +6,7 @@ use App\Enums\ExerciseQuestionTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -35,5 +36,10 @@ class ExerciseQuestion extends Model
     public function exams(): HasMany
     {
         return $this->hasMany(Exam::class);
+    }
+
+    public function learningCategory(): BelongsTo
+    {
+        return $this->belongsTo(LearningCategory::class);
     }
 }

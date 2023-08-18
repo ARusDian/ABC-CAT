@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ExerciseQuestionTypeEnum;
+use App\Exports\ExamResultExport;
 use App\Models\BankQuestion;
 use App\Models\DocumentFile;
 use App\Models\Exam;
@@ -10,6 +11,7 @@ use App\Models\ExerciseQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 
 class ExerciseQuestionController extends Controller
@@ -20,7 +22,7 @@ class ExerciseQuestionController extends Controller
     public function index()
     {
         return Inertia::render('Admin/ExerciseQuestion/Index', [
-            'exercise_questions' => fn() => ExerciseQuestion::all(),
+            'exercise_questions' => fn () => ExerciseQuestion::all(),
         ]);
     }
 
@@ -126,7 +128,7 @@ class ExerciseQuestionController extends Controller
         $id,
     ) {
         return Inertia::render('Admin/ExerciseQuestion/Show', [
-            'exercise_question' => fn() => ExerciseQuestion::with(['questions'])
+            'exercise_question' => fn () => ExerciseQuestion::with(['questions'])
                 ->withTrashed()
                 ->findOrFail($id),
         ]);
@@ -139,8 +141,8 @@ class ExerciseQuestionController extends Controller
         $id,
     ) {
         return Inertia::render('Admin/ExerciseQuestion/Leaderboard', [
-            'exercise_question' => fn() => ExerciseQuestion::with([
-                'exams' => fn($q) => $q->withScore(),
+            'exercise_question' => fn () => ExerciseQuestion::with([
+                'exams' => fn ($q) => $q->withScore(),
                 'exams.user',
             ])
                 ->withTrashed()
@@ -157,20 +159,20 @@ class ExerciseQuestionController extends Controller
     ) {
         $exam = Exam::withScore()->find($exam_id)->load('answers.question');
         return Inertia::render('Admin/ExerciseQuestion/DetailExamResult', [
-            'exercise_question' => fn() => ExerciseQuestion::with([
-                'exams' => fn($q) => $q->withScore(),
+            'exercise_question' => fn () => ExerciseQuestion::with([
+                'exams' => fn ($q) => $q->withScore(),
                 'exams.user',
             ])
                 ->withTrashed()
                 ->findOrFail($id),
             'exam' => $exam,
-        ]);        
+        ]);
     }
 
     public function getLeaderboardData($id)
     {
         $exercise_question = ExerciseQuestion::with([
-            'exams' => fn($q) => $q->withScore(),
+            'exams' => fn ($q) => $q->withScore(),
             'exams.user',
         ])
             ->withTrashed()
@@ -189,7 +191,7 @@ class ExerciseQuestionController extends Controller
         $id,
     ) {
         return Inertia::render('Admin/ExerciseQuestion/Edit', [
-            'exercise_question' => fn() => ExerciseQuestion::withTrashed()->findOrFail(
+            'exercise_question' => fn () => ExerciseQuestion::withTrashed()->findOrFail(
                 $id,
             ),
         ]);
@@ -327,5 +329,47 @@ class ExerciseQuestionController extends Controller
                 $learning_category_id,
             ])
             ->banner('Latihan Soal berhasil dikembalikan');
+    }
+
+    public function export(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $id,
+    ) {
+        // $exams = Exam::where('exercise_question_id', $id)->with([
+        //     'exerciseQuestion' => fn ($q) => $q->select('id', 'name', 'learning_category_id')->with([
+        //         'learningCategory' => fn ($q) => $q->select('id', 'name', 'sub_learning_packet_id')->with([
+        //             'subLearningPacket' => fn ($q) => $q->select('id', 'name', 'learning_packet_id')->with([
+        //                 'learningPacket' => fn ($q) => $q->select('id', 'name')
+        //             ])
+        //         ])
+        //     ]),
+        //     'user' => fn ($q) => $q->select('id', 'name', 'email'),
+        // ])->withScore()->ofFinished(true)->get();
+
+        $exercise_question = ExerciseQuestion::select('id', 'name', 'learning_category_id')->with([
+            'exams' => fn ($q) => $q->withScore()->ofFinished(true),
+            'exams.user',
+            'learningCategory' => fn ($q) => $q->select('id', 'name', 'sub_learning_packet_id')->with([
+                'subLearningPacket' => fn ($q) => $q->select('id', 'name', 'learning_packet_id')->with([
+                    'learningPacket' => fn ($q) => $q->select('id', 'name')
+                ])
+            ])
+        ])
+            ->withTrashed()
+            ->findOrFail($id);
+
+        return Excel::download(new ExamResultExport($exercise_question, "Hasil Ujian ". $exercise_question->name), 'Exam Result.xlsx');
+
+        // activity()
+        //     ->performedOn($exams)
+        //     ->causedBy(auth()->user())
+        //     ->withProperties(['method' => 'EXPORT'])
+        //     ->log(
+        //         'Exercise Question ' .
+        //             $exams->first()->exerciseQuestion->name .
+        //             ' exported successfully.',
+        //     );
     }
 }

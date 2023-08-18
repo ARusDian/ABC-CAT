@@ -113,6 +113,7 @@ Route::middleware([
                                 Route::get("import/bank-question/{bank_question}", [ExerciseQuestionController::class, "importFromBank"])->name("import");
                                 Route::prefix("{exercise_question}/")->group(function () {
                                     Route::post("restore", [ExerciseQuestionController::class, "restore"])->name("restore");
+                                    Route::get("export", [ExerciseQuestionController::class, "export"])->name("export");
                                     Route::get("leaderboard", [ExerciseQuestionController::class, "leaderboard"])->name("leaderboard");
                                     Route::get("leaderboard/{exam_id}", [ExerciseQuestionController::class, "leaderboardResult"])->name("leaderboard.result");
                                     Route::put("import", [ExerciseQuestionController::class, "importUpdate"])->name("import.update");

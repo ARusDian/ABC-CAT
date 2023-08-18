@@ -80,8 +80,20 @@ export default function Leaderboard({ exercise_question }: Props) {
   ] as MRT_ColumnDef<ExamModel>[];
 
   return (
-    <AdminTableLayout title="Leaderboard">
-      <div className="flex justify-end">
+    <AdminTableLayout title={`Leaderboard Latihan Soal ${exercise_question.name}`}>
+      <div className="flex justify-between my-3">
+        <MuiInertiaLinkButton
+          href={route('packet.sub.category.exercise.export', [
+            learning_packet,
+            sub_learning_packet,
+            learning_category,
+            exercise_question.id,
+          ])}
+          isNextPage
+          color='secondary'
+        >
+          Export Hasil Ujian Keseluruhan
+        </MuiInertiaLinkButton>
         <MuiInertiaLinkButton
           href={route('packet.sub.category.exercise.show', [
             learning_packet,
@@ -93,7 +105,10 @@ export default function Leaderboard({ exercise_question }: Props) {
           Kembali
         </MuiInertiaLinkButton>
       </div>
-      <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+      <div className="mt-6 p-7 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-3">
+        <p>
+          <span className="font-bold">*Hanya Menampilkan Nilai Tertinggi dari Tiap Siswa</span>{' '}
+        </p>
         <LazyLoadMRT
           columns={dataColumns}
           data={sortedExam}
