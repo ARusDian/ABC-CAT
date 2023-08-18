@@ -89,6 +89,7 @@ Route::middleware([
                 Route::get('/user-template', [UserController::class, "Template"])->name('user.import-template');
                 Route::post('/user/{user}/restore', [UserController::class, "restore"])->name('user.restore');
                 Route::get('/user-activity', [UserActivityController::class, "Index"])->name('user-activity');
+                Route::get('/user/{user}/result', [UserController::class, "exportExamResult"])->name('user.export-result');
             });
 
             Route::resource("document-file", DocumentFileController::class);

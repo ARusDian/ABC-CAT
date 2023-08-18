@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExamResultExport;
 use App\Exports\UsersExport;
 use App\Exports\UsersTemplateExport;
 use App\Imports\UsersImport;
+use App\Models\Exam;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -260,6 +262,31 @@ class UserController extends Controller
         return Excel::download(
             new UsersTemplateExport(),
             'users_template.xlsx',
+        );
+    }
+
+    public function exportExamResult($id)
+    {
+        $user = User::find($id);
+        $exams = Exam::where('user_id', $id)->with([
+            'exerciseQuestion' => fn ($q) => $q->select('id', 'name', 'learning_category_id')->with([
+                'learningCategory' => fn ($q) => $q->select('id', 'name', 'sub_learning_packet_id')->with([
+                    'subLearningPacket' => fn ($q) => $q->select('id', 'name', 'learning_packet_id')->with([
+                        'learningPacket' => fn ($q) => $q->select('id', 'name')
+                    ])
+                ])
+            ]),
+            'user' => fn ($q) => $q->select('id', 'name', 'email'),
+        ])->withScore()->ofFinished(true)->get();
+
+        activity()
+            ->performedOn($user)
+            ->causedBy(Auth::user())
+            ->withProperties(['method' => 'EXPORT'])
+            ->log('Exported Exam Result');
+        return Excel::download(
+            new ExamResultExport($exams, "Hasil Latihan Pengguna " . $user->name . " - ". $user->email),
+            'Hasil Ujian Pengguna.xlsx',
         );
     }
 }
