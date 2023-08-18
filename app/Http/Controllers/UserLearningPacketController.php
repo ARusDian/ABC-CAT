@@ -164,7 +164,10 @@ class UserLearningPacketController extends Controller
         $unregisteredUsers = User::whereNotIn(
             'id',
             $learningPacket->users->pluck('id'),
-        )->select('id', 'name', 'email')->get();
+        )->whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'admin')->orWhere('name', 'super-admin');
+        })->select('id', 'name', 'email')->get();
+
         return Inertia::render('Admin/UserLearningPacket/User', [
             'learningPacket' => $learningPacket,
             'unregisteredUsers' => $unregisteredUsers,

@@ -4,44 +4,42 @@ import route, { RouteParams } from 'ziggy-js';
 import { User } from '@/types';
 
 import Form from './Form';
-import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button, Card, CardHeader, Checkbox, Divider, Grid, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import _ from 'lodash';
 import Api from '@/Utils/Api';
 import { LearningPacketModel } from '@/Models/LearningPacket';
 import { UserLearningPacketFormModel } from '@/Models/UserLearningPacket';
-import { usePage } from '@inertiajs/react';
-import useRoute from '@/Hooks/useRoute';
+import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
 
 interface Props {
     learningPacket: LearningPacketModel;
     unregisteredUsers: Array<User>;
 }
 
-function not(a: readonly number[], b: readonly number[]) {
+function not(a: readonly User[], b: readonly User[]) {
     return a.filter((value) => b.indexOf(value) === -1);
 }
 
-function intersection(a: readonly number[], b: readonly number[]) {
+function intersection(a: readonly User[], b: readonly User[]) {
     return a.filter((value) => b.indexOf(value) !== -1);
 }
 
-function union(a: readonly number[], b: readonly number[]) {
+function union(a: readonly User[], b: readonly User[]) {
     return [...a, ...not(b, a)];
 }
 
 
 export default function Create({ unregisteredUsers, learningPacket }: Props) {
 
-    const [checked, setChecked] = React.useState<readonly number[]>([]);
-    const [left, setLeft] = React.useState<readonly number[]>([0, 1, 2, 3]);
-    const [right, setRight] = React.useState<readonly number[]>([4, 5, 6, 7]);
+    const [checked, setChecked] = React.useState<readonly User[]>([]);
+    const [left, setLeft] = React.useState<readonly User[]>(unregisteredUsers);
+    const [right, setRight] = React.useState<readonly User[]>(learningPacket.users ?? []);
 
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
 
-    const handleToggle = (value: number) => () => {
+    const handleToggle = (value: User) => () => {
         const currentIndex = checked.indexOf(value);
         const newChecked = [...checked];
 
@@ -54,10 +52,10 @@ export default function Create({ unregisteredUsers, learningPacket }: Props) {
         setChecked(newChecked);
     };
 
-    const numberOfChecked = (items: readonly number[]) =>
+    const numberOfChecked = (items: readonly User[]) =>
         intersection(checked, items).length;
 
-    const handleToggleAll = (items: readonly number[]) => () => {
+    const handleToggleAll = (items: readonly User[]) => () => {
         if (numberOfChecked(items) === items.length) {
             setChecked(not(checked, items));
         } else {
@@ -77,8 +75,8 @@ export default function Create({ unregisteredUsers, learningPacket }: Props) {
         setChecked(not(checked, rightChecked));
     };
 
-    const customList = (title: React.ReactNode, items: readonly number[]) => (
-        <Card>
+    const customList = (title: React.ReactNode, items: readonly User[]) => (
+        <div className='rounded-3xl shadow-2xl shadow-sky-400/50 p-3 bg-white'>
             <CardHeader
                 sx={{ px: 2, py: 1 }}
                 avatar={
@@ -94,13 +92,14 @@ export default function Create({ unregisteredUsers, learningPacket }: Props) {
                         }}
                     />
                 }
-                title={title}
-                subheader={`${numberOfChecked(items)}/${items.length} selected`}
+                title={<p className='text-xl'>
+                    {title}
+                </p>}
+                subheader={`${numberOfChecked(items)}/${items.length} Dipilih`}
             />
             <Divider />
             <List
                 sx={{
-                    width: 200,
                     height: 230,
                     bgcolor: 'background.paper',
                     overflow: 'auto',
@@ -109,12 +108,12 @@ export default function Create({ unregisteredUsers, learningPacket }: Props) {
                 component="div"
                 role="list"
             >
-                {items.map((value: number) => {
-                    const labelId = `transfer-list-all-item-${value}-label`;
+                {items.map((value: User) => {
+                    const labelId = `transfer-list-all-item-${value.id}-label`;
 
                     return (
                         <ListItemButton
-                            key={value}
+                            key={value.id}
                             role="listitem"
                             onClick={handleToggle(value)}
                         >
@@ -128,12 +127,12 @@ export default function Create({ unregisteredUsers, learningPacket }: Props) {
                                     }}
                                 />
                             </ListItemIcon>
-                            <ListItemText id={labelId} primary={`List item ${value + 1}`} />
+                            <ListItemText id={labelId} primary={`${value.name} - ${value.email}`} />
                         </ListItemButton>
                     );
                 })}
             </List>
-        </Card>
+        </div>
     );
 
     let form = useForm<UserLearningPacketFormModel>({
@@ -148,50 +147,53 @@ export default function Create({ unregisteredUsers, learningPacket }: Props) {
     }
 
     return (
-        <AdminFormLayout
+        <DashboardAdminLayout
             title="Tambah Paket Belajar Pengguna"
-            backRoute={route('user-learning-packet.index')}
-            backRouteTitle="Kembali"
         >
-            <Grid container spacing={2} justifyContent="center" alignItems="center">
-                <Grid item>{customList('Choices', left)}</Grid>
-                <Grid item>
-                    <Grid container direction="column" alignItems="center">
-                        <Button
-                            sx={{ my: 0.5 }}
-                            variant="outlined"
-                            size="small"
-                            onClick={handleCheckedRight}
-                            disabled={leftChecked.length === 0}
-                            aria-label="move selected right"
-                        >
-                            &gt;
-                        </Button>
-                        <Button
-                            sx={{ my: 0.5 }}
-                            variant="outlined"
-                            size="small"
-                            onClick={handleCheckedLeft}
-                            disabled={rightChecked.length === 0}
-                            aria-label="move selected left"
-                        >
-                            &lt;
-                        </Button>
-                    </Grid>
-                </Grid>
-                <Grid item>{customList('Chosen', right)}</Grid>
-            </Grid>
-            <div className="flex justify-end">
-                <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    disabled={form.formState.isSubmitting}
-                >
-                    Submit
-                </Button>
+            <div className=' flex flex-col gap-3  mx-8'>
+                <p className='my-8 text-2xl'>
+                    Langganan Paket Belajar {learningPacket.name}
+                </p>
+                <div className='grid grid-cols-3 gap-2 justify-center items-center'>
+                    <div>{customList('Pengguna Belum Terdaftar', left)}</div>
+                    <div className='mx-auto'>
+                        <div className='flex flex-col gap-3  items-center rounded-3xl shadow-2xl shadow-sky-400/50 p-3 bg-white'>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                color={leftChecked.length > 0 ? 'primary' : 'inherit'}
+                                onClick={handleCheckedRight}
+                                disabled={leftChecked.length === 0}
+                                aria-label="move selected right"
+                            >
+                               <p className='text-xl'> &gt; </p>
+                            </Button>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                color={rightChecked.length > 0 ? 'primary' : 'inherit'}
+                                onClick={handleCheckedLeft}
+                                disabled={rightChecked.length === 0}
+                                aria-label="move selected left"
+                            >
+                                <p className='text-xl'> &lt; </p>
+                            </Button>
+                        </div>
+                    </div>
+                    <div>{customList('Pengguna Berlangganan', right)}</div>
+                </div>
+                <div className="flex justify-end">
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        disabled={form.formState.isSubmitting}
+                    >
+                        Simpan
+                    </Button>
+                </div>
             </div>
-        </AdminFormLayout>
+        </DashboardAdminLayout>
     );
 }
