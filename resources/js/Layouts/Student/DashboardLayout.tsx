@@ -56,6 +56,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
+  height: navHeight,
   alignItems: 'center',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
@@ -169,7 +170,10 @@ export default function DashboardLayout({
   );
 
   return (
-    <div>
+    <div className="min-h-screen" style={{
+      backgroundImage:
+        "linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgb(255, 255, 255) 85%), radial-gradient(ellipse at center left, rgba(4, 159, 249, 0.384), transparent 50%), radial-gradient(ellipse at center right, rgba(35, 18, 190, 0.13), transparent 50%), radial-gradient(ellipse at bottom right, rgba(20, 4, 249, 0.363), transparent 50%), radial-gradient(ellipse at bottom left, rgba(252, 202, 38, 0.342), transparent 50%)"
+    }}>
       <Head>
         <title>{title || 'ABC CAT'}</title>
         <meta name="description" content="ABC CAT" />
@@ -179,7 +183,7 @@ export default function DashboardLayout({
         <AppBar position="absolute" open={isSidebarOpen}>
           <Banner />
           <nav
-            className="flex justify-between w-full sticky bg-main-blue my-auto px-7 shadow  bg-white"
+            className="flex justify-between w-full sticky bg-main-blue my-auto px-7 bg-white shadow-xl shadow-sky-200/100"
             style={{ height: navHeight }}
           >
             <div className="flex gap-3 max-w-6xl mr-30 text-3xl">
