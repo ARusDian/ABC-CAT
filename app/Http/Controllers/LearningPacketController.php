@@ -152,7 +152,9 @@ class LearningPacketController extends Controller
     {
         //
         $learningPacket = LearningPacket::find($id);
-        Storage::disk('public')->delete($learningPacket->photo_path);
+        if(isset($learningPacket->photo_path)) {
+            Storage::disk('public')->delete($learningPacket->photo_path);
+        }
         $learningPacket->delete();
 
         activity()
