@@ -214,7 +214,9 @@ export default function DashboardLayout({
 
                 {/* <!-- Authentication --> */}
                 <form onSubmit={logout}>
-                  <DropdownLink as="button">Log Out</DropdownLink>
+                  <DropdownLink as="button">
+                    <div className="text-red-700 font-bold">Log Out</div>{' '}
+                  </DropdownLink>
                 </form>
               </Dropdown>
             </div>
