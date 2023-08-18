@@ -158,4 +158,16 @@ class UserLearningPacketController extends Controller
         $learningPacket = LearningPacket::find($id);
         return Excel::download(new UserPacketsTemplateExport($learningPacket), 'user-' . $learningPacket->name . '-template.xlsx');
     }
+
+    public function users($learning_packet){
+        $learningPacket = LearningPacket::with('users:id,name,email')->find($learning_packet);
+        $unregisteredUsers = User::whereNotIn(
+            'id',
+            $learningPacket->users->pluck('id'),
+        )->select('id', 'name', 'email')->get();
+        return Inertia::render('Admin/UserLearningPacket/User', [
+            'learningPacket' => $learningPacket,
+            'unregisteredUsers' => $unregisteredUsers,
+        ]);
+    }
 }

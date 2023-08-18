@@ -83,14 +83,16 @@ Route::middleware([
         Route::prefix("admin")->group(function () {
             Route::middleware(["role:super-admin"])->group(function () {
                 Route::resource("/user", UserController::class);
+                Route::post('/user/{user}/restore', [UserController::class, "restore"])->name('user.restore');
+                Route::get('/user/{user}/result', [UserController::class, "exportExamResult"])->name('user.export-result');
                 Route::get('/user-ImEx', [UserController::class, "ImportExportView"])->name('ImEx');
                 Route::post('/user-import', [UserController::class, "Import"])->name('user.import');
                 Route::get('/user-export', [UserController::class, "Export"])->name('user.export');
                 Route::get('/user-template', [UserController::class, "Template"])->name('user.import-template');
-                Route::post('/user/{user}/restore', [UserController::class, "restore"])->name('user.restore');
                 Route::get('/user-activity', [UserActivityController::class, "Index"])->name('user-activity');
-                Route::get('/user/{user}/result', [UserController::class, "exportExamResult"])->name('user.export-result');
+
                 Route::resource('/user-learning-packet', UserLearningPacketController::class);
+                Route::get('/learning-packet-users/{learning_packet}', [UserLearningPacketController::class, "users"])->name('user-packet.users');
                 Route::post('/user-learning-packet-import/{learning_packet}', [UserLearningPacketController::class, "Import"])->name('user-packet.import');
                 Route::get('/user-learning-packet-export/{learning_packet}', [UserLearningPacketController::class, "Export"])->name('user-packet.export');
                 Route::get('/user-learning-packet-template/{learning_packet}', [UserLearningPacketController::class, "Template"])->name('user-packet.import-template');
