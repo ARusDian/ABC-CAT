@@ -45,7 +45,7 @@ export function ExamNavigation(props: Props) {
   return (
     <div className="flex flex-col p-3 basis-1/3">
       <p className="font-bold text-lg">{title ?? 'Navigasi Soal'}</p>
-      <div className="p-2 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-2">
+      <div className="p-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-6 gap-2">
         {answers.map((it, index) => {
           const state = getState?.(it, index);
           return (
