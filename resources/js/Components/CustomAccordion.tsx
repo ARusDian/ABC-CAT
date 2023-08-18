@@ -10,6 +10,7 @@ import { styled } from '@mui/material';
 export const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
+  backgroundColor: 'transparent',
   '&:not(:last-child)': {
     borderBottom: 0,
   },
@@ -43,6 +44,7 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
 }));
 
 export const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  backgroundColor: 'white',
   marginTop: theme.spacing(2),
   padding: theme.spacing(2),
   border: '1px solid rgba(0, 0, 0, .125)',
