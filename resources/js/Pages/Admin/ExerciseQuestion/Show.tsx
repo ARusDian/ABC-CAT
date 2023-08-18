@@ -119,18 +119,6 @@ export default function Show(props: Props) {
               >
                 Show
               </MuiInertiaLinkButton>
-              <MuiInertiaLinkButton
-                color="error"
-                href={route('packet.sub.category.exercise.question.destroy', [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
-                  exercise_question.id,
-                  row.original.id,
-                ])}
-              >
-                Hapus
-              </MuiInertiaLinkButton>
             </div>
           )}
         />
