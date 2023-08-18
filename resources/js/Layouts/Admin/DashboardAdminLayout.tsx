@@ -168,28 +168,43 @@ export default function DashboardAdminLayout({
             Dashboard
           </ResponsiveNavLink>
         </li>
-        <li>
-          <ResponsiveNavLink
-            href={route('user.index')}
-            active={route().current('user.index')}
-          >
-            <span className={'mr-4'}>
-              <ManageAccountsIcon fontSize="large" />
-            </span>
-            Pengguna
-          </ResponsiveNavLink>
-        </li>
-        <li>
-          <ResponsiveNavLink
-            href={route('user-activity')}
-            active={route().current('user-activity')}
-          >
-            <span className={'mr-4'}>
-              <ManageHistoryIcon fontSize="large" />
-            </span>
-            Log Aktivitas
-          </ResponsiveNavLink>
-        </li>
+        {!(user.roles[0].name === 'instructor') && (
+          <>
+            <li>
+              <ResponsiveNavLink
+                href={route('user.index')}
+                active={route().current('user.index')}
+              >
+                <span className={'mr-4'}>
+                  <ManageAccountsIcon fontSize="large" />
+                </span>
+                Pengguna
+              </ResponsiveNavLink>
+            </li>
+            <li>
+              <ResponsiveNavLink
+                href={route('user-activity')}
+                active={route().current('user-activity')}
+              >
+                <span className={'mr-4'}>
+                  <ManageHistoryIcon fontSize="large" />
+                </span>
+                Log Aktivitas
+              </ResponsiveNavLink>
+            </li>
+            <li>
+              <ResponsiveNavLink
+                href={route('user-learning-packet.index')}
+                active={route().current('user-learning-packet.index')}
+              >
+                <span className={'mr-4'}>
+                  <FolderSharedIcon fontSize="large" />
+                </span>
+                Paket Belajar Pengguna
+              </ResponsiveNavLink>
+            </li>
+          </>
+        )}
         <li>
           <ResponsiveNavLink
             href={route('packet.index')}
@@ -199,17 +214,6 @@ export default function DashboardAdminLayout({
               <FolderCopyIcon fontSize="large" />
             </span>
             Paket Belajar
-          </ResponsiveNavLink>
-        </li>
-        <li>
-          <ResponsiveNavLink
-            href={route('user-learning-packet.index')}
-            active={route().current('user-learning-packet.index')}
-          >
-            <span className={'mr-4'}>
-              <FolderSharedIcon fontSize="large" />
-            </span>
-            Paket Belajar Pengguna
           </ResponsiveNavLink>
         </li>
       </ul>

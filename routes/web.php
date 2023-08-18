@@ -79,7 +79,7 @@ Route::middleware([
         // End Exercise Question
     });
 
-    Route::middleware(["role:admin|super-admin"])->group(function () {
+    Route::middleware(["role:admin|super-admin|instructor"])->group(function () {
         Route::prefix("admin")->group(function () {
             Route::middleware(["role:super-admin"])->group(function () {
                 Route::resource("/user", UserController::class);
@@ -90,6 +90,10 @@ Route::middleware([
                 Route::post('/user/{user}/restore', [UserController::class, "restore"])->name('user.restore');
                 Route::get('/user-activity', [UserActivityController::class, "Index"])->name('user-activity');
                 Route::get('/user/{user}/result', [UserController::class, "exportExamResult"])->name('user.export-result');
+                Route::resource('/user-learning-packet', UserLearningPacketController::class);
+                Route::post('/user-learning-packet-import/{learning_packet}', [UserLearningPacketController::class, "Import"])->name('user-packet.import');
+                Route::get('/user-learning-packet-export/{learning_packet}', [UserLearningPacketController::class, "Export"])->name('user-packet.export');
+                Route::get('/user-learning-packet-template/{learning_packet}', [UserLearningPacketController::class, "Template"])->name('user-packet.import-template');
             });
 
             Route::resource("document-file", DocumentFileController::class);
@@ -157,11 +161,6 @@ Route::middleware([
                     });
                 });
             });
-
-            Route::resource('/user-learning-packet', UserLearningPacketController::class);
-            Route::post('/user-learning-packet-import/{learning_packet}', [UserLearningPacketController::class, "Import"])->name('user-packet.import');
-            Route::get('/user-learning-packet-export/{learning_packet}', [UserLearningPacketController::class, "Export"])->name('user-packet.export');
-            Route::get('/user-learning-packet-template/{learning_packet}', [UserLearningPacketController::class, "Template"])->name('user-packet.import-template');
         });
     });
 });

@@ -28,7 +28,10 @@ class DashboardController extends Controller
                 ->hasRole('admin') ||
             auth()
                 ->user()
-                ->hasRole('super-admin')
+                ->hasRole('super-admin') ||
+            auth()
+                ->user()
+                ->hasRole('instructor')
         ) {
             $users_count = User::all()->count();
             $students_count = User::role('student')->count();
