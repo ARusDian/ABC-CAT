@@ -74,7 +74,7 @@ export default function Leaderboard({ exercise_question }: Props) {
             Kembali
           </LinkButton>
         </div>
-        <div className="p-5 rounded-lg border overflow-hidden shadow-2xl sm:rounded-3xl flex flex-col gap-3">
+        <div className="p-5 rounded-lg border overflow-hidden shadow-2xl sm:rounded-3xl flex flex-col gap-3 bg-white">
           <LazyLoadMRT
             columns={dataColumns}
             data={sortedExam}

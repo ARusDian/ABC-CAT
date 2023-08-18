@@ -59,7 +59,7 @@ export default function Show(props: Props) {
             Kembali
           </LinkButton>
         </div>
-        <div className="shadow-lg w-full h-full p-7 rounded-2xl shadow-[#7c98fd]">
+        <div className="shadow-lg w-full h-full p-7 rounded-2xl shadow-[#c5d2ff] bg-white">
           <p className="my-3 text-2xl font-semibold text-center">
             Data Latihan Soal
           </p>
@@ -90,7 +90,7 @@ export default function Show(props: Props) {
             </div>
           </div>
         </div>
-        <div className="shadow-lg w-full h-full p-7 rounded-2xl shadow-[#7c98fd] flex flex-col gap-2">
+        <div className="shadow-lg w-full h-full p-7 rounded-2xl shadow-[#c5d2ff] bg-white flex flex-col gap-2">
           <div className="flex justify-between">
             <p className="my-3 text-2xl font-semibold">
               Riwayat Pengerjaan Latihan Soal
