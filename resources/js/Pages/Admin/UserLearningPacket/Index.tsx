@@ -53,7 +53,7 @@ export default function Index({ learningPackets }: Props) {
 										Paket Belajar {learningPacket.name}
 									</h1>
 									<MuiInertiaLinkButton
-										href={route('user-learning-packet.create', {
+										href={route('user-packet.users', {
 											learning_packet: learningPacket.id,
 										})}
 									>

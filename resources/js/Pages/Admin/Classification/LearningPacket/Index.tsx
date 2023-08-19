@@ -87,7 +87,7 @@ export default function Index({ learningPackets }: Props) {
                 user.roles[0].name !== 'instructor' && (
                   <MuiInertiaLinkButton
                     color="success"
-                    href={route('user-learning-packet.create', {
+                    href={route('user-packet.users', {
                       learning_packet: row.original.id,
                     })}
                   >

@@ -161,13 +161,18 @@ class UserLearningPacketController extends Controller
 
     public function users($learning_packet)
     {
-        $learningPacket = LearningPacket::with('users:id,name,email')->find($learning_packet);
+        $learningPacket = LearningPacket::with([
+            'users:id,name,email,active_year',
+            'userLearningPackets.user' => function ($query) {
+                $query->select('id', 'name', 'email', 'active_year');
+            }
+        ])->find($learning_packet);
         $unregisteredUsers = User::whereNotIn(
             'id',
             $learningPacket->users->pluck('id'),
         )->whereDoesntHave('roles', function ($query) {
             $query->where('name', 'admin')->orWhere('name', 'super-admin');
-        })->select('id', 'name', 'email')->get();
+        })->select('id', 'name', 'email', 'active_year')->get();
 
         return Inertia::render('Admin/UserLearningPacket/User', [
             'learningPacket' => $learningPacket,
@@ -183,6 +188,7 @@ class UserLearningPacketController extends Controller
             $data = $request->validate([
                 'users' => 'array',
                 'users.*.id' => 'numeric',
+                'subscription_date' => 'required',
             ]);
 
             $users = collect($data['users']);
@@ -196,7 +202,7 @@ class UserLearningPacketController extends Controller
                 $userLearningPacket = UserLearningPacket::create([
                     'learning_packet_id' => $id,
                     'user_id' => $userId,
-                    'subscription_date' => \Carbon\Carbon::today()
+                    'subscription_date' => $data['subscription_date'],
                 ]);
 
                 activity()
@@ -211,7 +217,7 @@ class UserLearningPacketController extends Controller
                     );
             }
 
-            foreach ($unregisterUser as $user){
+            foreach ($unregisterUser as $user) {
                 $userId = $user['id'];
 
                 $userLearningPacket = UserLearningPacket::whereUserId($userId)->first();
