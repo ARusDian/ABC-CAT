@@ -23,12 +23,13 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = User::withTrashed()
             ->with('roles')
+            ->whereColumns($request->get('columnFilters'))
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
         return Inertia::render('Admin/User/Index', [
             'users' => $user,
         ]);

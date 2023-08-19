@@ -1,4 +1,4 @@
-import { MRT_ColumnDef } from 'material-react-table';
+import { MRT_ColumnDef, MRT_ColumnFiltersState, MRT_PaginationState } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 import { User } from '@/types';
@@ -10,13 +10,60 @@ import { Controller, useForm } from 'react-hook-form';
 import Api from '@/Utils/Api';
 import { ImportFileModel } from '@/Models/FileModel';
 import { Button } from '@mui/material';
+import { router } from '@inertiajs/react';
 
 interface Props {
-  users: Array<User>;
+  users: {
+    data: User[];
+    per_page: number;
+    total: number;
+    current_page: number;
+  }
 }
 
 export default function Index(props: Props) {
   const users = props.users;
+
+  const [dataState, setDataState] = React.useState(users.data);
+  const [columnFilters, setColumnFilters] =
+    React.useState<MRT_ColumnFiltersState>([]);
+
+  const [pagination, setPagination] = React.useState<MRT_PaginationState>({
+    pageIndex: users.current_page - 1,
+    pageSize: users.per_page,
+  });
+
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    const url = new URL(route(route().current()!).toString());
+
+    url.searchParams.set('columnFilters', JSON.stringify(columnFilters ?? []));
+    url.searchParams.set('page', (pagination.pageIndex + 1).toString());
+    url.searchParams.set('perPage', pagination.pageSize.toString());
+    // url.searchParams.set('globalFilter', globalFilter ?? '');
+
+    if (window.location.href == url.toString()) {
+      return;
+    }
+
+    setIsLoading(true);
+    router.reload({
+      // preserveState: true,
+      // preserveScroll: true,
+      data: {
+        page: pagination.pageIndex + 1,
+        perPage: pagination.pageSize,
+        columnFilters: JSON.stringify(columnFilters),
+        // globalFilter: globalFilter,
+      },
+      only: ['activities'],
+      onFinish: () => {
+        setIsLoading(false);
+      },
+    });
+  }, [pagination.pageIndex, pagination.pageSize, columnFilters]);
+
 
   const form = useForm<ImportFileModel>();
 
@@ -26,23 +73,23 @@ export default function Index(props: Props) {
 
   const dataColumns = [
     {
+      id: 'name',
       header: 'Nama User',
-      accessorFn(originalRow) {
-        return (
-          <div className="flex gap-3">
-            <img
-              className="rounded-full h-20 w-20 object-cover"
-              src={
-                originalRow.profile_photo_path
-                  ? asset('public', originalRow.profile_photo_path)
-                  : asset('root', 'assets/image/default-profile.png')
-              }
-              alt={originalRow.name}
-            />
-            <p className="my-auto font-semibold">{originalRow.name}</p>
-          </div>
-        );
-      },
+      accessorFn: (row) => row.name,
+      Cell: ({ renderedCellValue, row }) => (
+        <div className="flex gap-3">
+          <img
+            className="rounded-full h-20 w-20 object-cover"
+            src={
+              row.original.profile_photo_path
+                ? asset('public', row.original.profile_photo_path)
+                : asset('root', 'assets/image/default-profile.png')
+            }
+            alt={`${row.original.name} profile photo}`}
+          />
+          <p className="my-auto font-semibold">{renderedCellValue}</p>
+        </div>
+      ),
     },
     {
       accessorKey: 'email',
@@ -69,7 +116,7 @@ export default function Index(props: Props) {
       accessorFn: (row: User) => row.roles.map(role => role.name).join(', '),
       header: 'Status',
     },
-  ] as MRT_ColumnDef<(typeof users)[0]>[];
+  ] as MRT_ColumnDef<User>[];
   return (
     <AdminTableLayout
       title="User"
@@ -130,7 +177,8 @@ export default function Index(props: Props) {
         </div>
         <LazyLoadMRT
           columns={dataColumns}
-          data={users}
+          data={users.data}
+          enableGlobalFilter={false}
           enableColumnActions
           enableColumnFilters
           enablePagination
@@ -140,6 +188,15 @@ export default function Index(props: Props) {
           enableRowActions
           enableRowNumbers
           muiTableBodyRowProps={{ hover: false }}
+          state={{
+            pagination,
+            isLoading,
+            columnFilters,
+          }}
+          getRowId={(it) => it.id?.toString()}
+          manualPagination
+          onPaginationChange={setPagination}
+          onColumnFiltersChange={setColumnFilters}
           muiTableHeadCellProps={{
             sx: {
               fontWeight: 'bold',

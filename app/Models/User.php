@@ -83,4 +83,40 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserLearningPacket::class);
     }
+
+    public function scopeWhereColumns($query, $filters)
+    {
+        $allowed = ['name', 'email', 'phone_number', 'active_year', 'roles.name'];
+
+        if (isset($filters)) {
+            foreach (json_decode($filters) as $value) {
+                $key = explode('.', $value->id);
+
+                if (!in_array($value->id, $allowed)) {
+                    continue;
+                }
+
+                // dd($value);
+                if (count($key) > 1) {
+                    // dd($key);
+                    $query->whereHas($key[0], function ($query) use (
+                        $value,
+                        $key,
+                    ) {
+                        return $query->where(
+                            $key[1],
+                            'like',
+                            '%' . $value->value . '%',
+                        );
+                    });
+                } else {
+                    $query->where(
+                        $value->id,
+                        'like',
+                        "%{$value->value}%",
+                    );
+                }
+            }
+        }
+    }
 }
