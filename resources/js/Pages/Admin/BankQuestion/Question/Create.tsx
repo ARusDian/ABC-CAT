@@ -22,7 +22,6 @@ export default function Create({ bank_question }: Props) {
         type: 'tiptap',
         content: {},
       },
-      weight: 1,
       type: 'Pilihan',
       answer: {
         type: 'Single',

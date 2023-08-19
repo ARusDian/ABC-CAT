@@ -4,7 +4,6 @@ export interface BaseBankQuestionItemModel {
   id?: number;
   bank_question_id?: string;
   name: string;
-  weight: number;
   is_active: boolean;
 }
 

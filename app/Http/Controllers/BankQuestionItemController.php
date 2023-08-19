@@ -66,7 +66,6 @@ class BankQuestionItemController extends Controller
                 'required',
                 Rule::in(BankQuestionItemTypeEnum::casesString()),
             ],
-            'weight' => 'required|numeric',
             'answer' => 'required',
             'answer.type' => Rule::in(['Single', 'WeightedChoice']),
         ]);
@@ -86,7 +85,7 @@ class BankQuestionItemController extends Controller
         );
         $validator->sometimes(
             'answer.answer.*.weight',
-            'required|number',
+            'required|number|min:0',
             $isWeightedChoice,
         );
 
@@ -122,7 +121,6 @@ class BankQuestionItemController extends Controller
             $newQuestion = BankQuestionItem::create([
                 'bank_question_id' => $bank_question,
                 'name' => $data['name'],
-                'weight' => $data['weight'],
 
                 'type' => $data['type'],
                 'question' => $data['question'],
@@ -171,7 +169,6 @@ class BankQuestionItemController extends Controller
                     Rule::in(BankQuestionItemTypeEnum::casesString()),
                 ],
                 'name' => 'required|string',
-                'weight' => 'required|numeric',
                 'stores' => 'required|array',
             ]);
 
@@ -190,7 +187,6 @@ class BankQuestionItemController extends Controller
                 $data = [
                     'name' => $all['name'],
                     'type' => $all['type'],
-                    'weight' => $all['weight'],
                     ...$store,
                 ];
 
@@ -199,7 +195,6 @@ class BankQuestionItemController extends Controller
                 $questions[] = BankQuestionItem::create([
                     'bank_question_id' => $bank_question,
                     'name' => $data['name'],
-                    'weight' => $data['weight'],
 
                     'type' => $data['type'],
                     'question' => $data['question'],
@@ -285,7 +280,6 @@ class BankQuestionItemController extends Controller
             $question = BankQuestionItem::find($id);
             $question->update([
                 'name' => $data['name'],
-                'weight' => $data['weight'],
 
                 'type' => $data['type'],
                 'question' => $data['question'],

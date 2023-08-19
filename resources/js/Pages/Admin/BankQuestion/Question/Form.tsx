@@ -109,17 +109,6 @@ export default function Form(props: Props) {
               helperText={form.formState.errors?.name?.message}
             />
 
-            <TextField
-              {...form.register('weight', { valueAsNumber: true })}
-              type="number"
-              inputProps={{ step: 'any' }}
-              // inputProps={{ st }}
-              label="Bobot Soal"
-              defaultValue={form.formState.defaultValues?.weight}
-              error={form.formState.errors?.weight != null}
-              helperText={form.formState.errors?.weight?.message}
-            />
-
             <Select
               value={answerType}
               onChange={e => {
