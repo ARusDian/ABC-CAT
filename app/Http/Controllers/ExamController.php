@@ -30,7 +30,7 @@ class ExamController extends Controller
         $exerciseQuestions = ExerciseQuestion::where(
             'learning_category_id',
             $learning_category,
-        )->get();
+        )->orderBy('id', 'asc')->get();
         return Inertia::render('Student/Exam/Index', [
             'learningCategory' => $learningCategory,
             'exerciseQuestions' => $exerciseQuestions,
@@ -126,6 +126,7 @@ class ExamController extends Controller
             'exams' => Exam::withScore()
                 ->ofExercise($exercise_id)
                 ->ofUser(auth()->id())
+                ->orderBy('created_at', 'desc')
                 ->get(),
         ]);
     }
@@ -191,13 +192,11 @@ class ExamController extends Controller
             ]);
 
             foreach ($groupedQuestions as $cluster => $questions) {
-                foreach (
-                    $questions
-                        ->filter(fn($q) => $q['is_active'])
-                        ->shuffle()
-                        ->take($exercise->number_of_question)
-                    as $question
-                ) {
+                foreach ($questions
+                    ->filter(fn ($q) => $q['is_active'])
+                    ->shuffle()
+                    ->take($exercise->number_of_question)
+                    as $question) {
                     ExamAnswer::create([
                         'exam_id' => $exam->id,
                         'bank_question_item_id' => $question->id,
@@ -276,8 +275,8 @@ class ExamController extends Controller
     public function leaderboard($id)
     {
         return Inertia::render('Student/Exam/Leaderboard', [
-            'exercise_question' => fn() => ExerciseQuestion::with([
-                'exams' => fn($q) => $q->withScore(),
+            'exercise_question' => fn () => ExerciseQuestion::with([
+                'exams' => fn ($q) => $q->withScore(),
                 'exams.user',
             ])->findOrFail($id),
         ]);

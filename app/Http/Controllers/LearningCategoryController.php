@@ -78,7 +78,7 @@ class LearningCategoryController extends Controller
             'learningMaterials.documents.documentFile',
             'bankQuestions.items',
             'exerciseQuestions' => function ($q) {
-                return $q->withTrashed();
+                return $q->withTrashed()->orderBy('id', 'asc');
             },
         ])->find($id);
         return Inertia::render('Admin/Classification/LearningCategory/Show', [

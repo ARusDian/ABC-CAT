@@ -16,7 +16,7 @@ class LearningPacketController extends Controller
     public function index()
     {
         //
-        $learningPackets = LearningPacket::withTrashed()->get();
+        $learningPackets = LearningPacket::withTrashed()->orderBy('id', 'asc')->get();
         return Inertia::render('Admin/Classification/LearningPacket/Index', [
             'learningPackets' => $learningPackets,
         ]);
@@ -76,9 +76,12 @@ class LearningPacketController extends Controller
     public function show($id)
     {
         //
-        $learningPacket = LearningPacket::with(
+        $learningPacket = LearningPacket::with([
+            'subLearningPackets' => function ($query) {
+                $query->orderBy('id', 'asc');
+            },
             'subLearningPackets.learningCategories',
-        )->withTrashed()->find($id);
+        ])->withTrashed()->find($id);
         return Inertia::render('Admin/Classification/LearningPacket/Show', [
             'learningPacket' => $learningPacket,
         ]);

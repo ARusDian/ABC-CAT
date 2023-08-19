@@ -20,7 +20,7 @@ class DashboardController extends Controller
         ) {
             return Inertia::render('Student/Dashboard', [
                 'userLearningPackets' => auth()->user()->userLearningPackets,
-                'learningPackets' => LearningPacket::all(),
+                'learningPackets' => LearningPacket::orderBy('id', 'asc')->get(),
             ]);
         } elseif (
             auth()
@@ -39,6 +39,7 @@ class DashboardController extends Controller
             $learning_packets = LearningPacket::with([
                 'learningCategories.bankQuestions.items',
             ])
+                ->orderBy('id', 'asc')
                 ->withCount(['users'])
                 ->get();
 

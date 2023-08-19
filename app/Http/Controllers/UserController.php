@@ -27,6 +27,7 @@ class UserController extends Controller
     {
         $user = User::withTrashed()
             ->with('roles')
+            ->orderBy('created_at', 'desc')
             ->get();
         return Inertia::render('Admin/User/Index', [
             'users' => $user,

@@ -128,7 +128,7 @@ class ExerciseQuestionController extends Controller
         $id,
     ) {
         return Inertia::render('Admin/ExerciseQuestion/Show', [
-            'exercise_question' => fn () => ExerciseQuestion::with(['questions'])
+            'exercise_question' => fn () => ExerciseQuestion::with(['questions' => fn ($q) => $q->orderBy('id', 'asc')])
                 ->withTrashed()
                 ->findOrFail($id),
         ]);

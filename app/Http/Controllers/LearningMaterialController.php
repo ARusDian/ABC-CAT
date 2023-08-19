@@ -106,9 +106,11 @@ class LearningMaterialController extends Controller
         $id,
     ) {
         //
-        $learningMaterial = LearningMaterial::with(
-            'documents.documentFile',
-        )->find($id);
+        $learningMaterial = LearningMaterial::with([
+            'documents' => function ($query) {
+                $query->with('documentFile')->orderBy('id', 'asc');
+            },
+        ])->find($id);
         return Inertia::render('Admin/LearningMaterial/Show', [
             'learningMaterial' => $learningMaterial,
         ]);

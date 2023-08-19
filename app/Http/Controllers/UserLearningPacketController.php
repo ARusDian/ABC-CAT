@@ -22,10 +22,13 @@ class UserLearningPacketController extends Controller
     {
         //
         $learningPackets = LearningPacket::with([
+            'userLearningPackets' => function ($query) {
+                $query->select('id', 'user_id', 'learning_packet_id', 'subscription_date')->orderBy('created_at', 'desc');
+            },
             'userLearningPackets.user' => function ($query) {
                 $query->select('id', 'name', 'email');
             },
-        ])->get();
+        ])->orderBy('id', 'asc')->get();
         return Inertia::render('Admin/UserLearningPacket/Index', [
             'learningPackets' => $learningPackets,
         ])->with('success', 'User Learning Packet created successfully');
@@ -164,7 +167,7 @@ class UserLearningPacketController extends Controller
         $learningPacket = LearningPacket::with([
             'users:id,name,email,active_year',
             'userLearningPackets.user' => function ($query) {
-                $query->select('id', 'name', 'email', 'active_year');
+                $query->select('id', 'name', 'email', 'active_year')->orderBy('created_at', 'desc');
             }
         ])->find($learning_packet);
         $unregisteredUsers = User::whereNotIn(
@@ -172,7 +175,7 @@ class UserLearningPacketController extends Controller
             $learningPacket->users->pluck('id'),
         )->whereDoesntHave('roles', function ($query) {
             $query->where('name', 'admin')->orWhere('name', 'super-admin');
-        })->select('id', 'name', 'email', 'active_year')->get();
+        })->select('id', 'name', 'email', 'active_year')->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('Admin/UserLearningPacket/User', [
             'learningPacket' => $learningPacket,
@@ -210,7 +213,7 @@ class UserLearningPacketController extends Controller
                     ->causedBy(auth()->user())
                     ->withProperties(['method' => 'CREATE'])
                     ->log(
-                        'User ' .
+                        'Users ' .
                             $userLearningPacket->user->name .
                             ' assigned to learning packet ' .
                             $userLearningPacket->learningPacket->name,

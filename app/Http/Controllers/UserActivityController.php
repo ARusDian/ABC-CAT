@@ -15,6 +15,7 @@ class UserActivityController extends Controller
         return Inertia::render('Admin/UserActivity/Index', [
             'activities' => fn() => Activity::with(['causer'])
                 ->whereColumns($request->get('columnFilters'))
+                ->orderBy('created_at', 'desc')
                 ->paginate(10),
         ]);
     }
