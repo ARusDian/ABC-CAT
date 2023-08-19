@@ -12,12 +12,12 @@ import { useForm } from 'react-hook-form';
 import Api from '@/Utils/Api';
 
 interface Props {
-  user: NewUser;
+  userData: NewUser;
   roles: Array<Role>;
 }
 
 export default function Edit(props: Props) {
-  let user = props.user;
+  let user = props.userData;
   let form = useForm<NewUser>({
     defaultValues: user,
   });

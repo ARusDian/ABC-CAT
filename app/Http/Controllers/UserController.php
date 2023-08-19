@@ -111,7 +111,7 @@ class UserController extends Controller
             ->with(['roles'])
             ->find($id);
         return Inertia::render('Admin/User/Show', [
-            'user' => $user,
+            'userData' => $user,
         ]);
     }
 
@@ -129,7 +129,7 @@ class UserController extends Controller
             ->find($id);
         $roles = Role::all();
         return Inertia::render('Admin/User/Edit', [
-            'user' => $user,
+            'userData' => $user,
             'roles' => $roles,
         ]);
     }
