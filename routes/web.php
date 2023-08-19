@@ -31,9 +31,6 @@ use Spatie\Permission\Models\Role;
 |
 */
 
-$role = Role::findByName("admin");
-$role->delete();
-
 Route::get("/", function () {
     return redirect(route("login"));
 });
