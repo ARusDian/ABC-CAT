@@ -79,7 +79,7 @@ Route::middleware([
         // End Exercise Question
     });
 
-    Route::middleware(["role:admin|super-admin|instructor"])->group(function () {
+    Route::middleware(["role:super-admin|instructor"])->group(function () {
         Route::prefix("admin")->group(function () {
             Route::middleware(["role:super-admin"])->group(function () {
                 Route::resource("/user", UserController::class);
