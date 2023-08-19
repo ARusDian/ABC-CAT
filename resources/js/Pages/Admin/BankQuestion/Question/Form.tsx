@@ -11,14 +11,13 @@ import {
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
-import QuestionEditor from '@/Components/QuestionEditor';
 import {
   AnswerWeightedChoiceVariant,
   BankQuestionItemFormModel,
   BankQuestionItemModel,
   BankQuestionItemPilihanFormModel,
 } from '@/Models/BankQuestionItem';
-import { Tabs, Tab, Checkbox, Select, MenuItem } from '@mui/material';
+import { Tabs, Tab, Select, MenuItem } from '@mui/material';
 import BankQuestionItemEditor from '@/Components/BankQuestionItemEditor';
 
 interface TabPanelProps {
@@ -247,16 +246,16 @@ function PilihanForm({
                           {...form.register(
                             `answer.answer.${index}.weight` as 'answer.answer.0.weight',
                             {
-                              max: {
-                                message: 'Bobot harus diantara 0 dan 1',
-                                value: 1,
-                              },
+                              // max: {
+                              //   message: 'Bobot harus diantara 0 dan 1',
+                              //   value: 1,
+                              // },
                               min: {
-                                message: 'Bobot harus diantara 0 dan 1',
+                                message: 'Bobot harus lebih dari 0',
                                 value: 0,
                               },
                               valueAsNumber: true,
-                              validate: value => value >= 0 && value <= 1,
+                              validate: value => value > 0,
                               // pattern: {
                               //   value: /^(0|[1-9]\d*)(\.\d+)?$/,
                               // },
