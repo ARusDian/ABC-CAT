@@ -47,7 +47,7 @@ export default function Index(props: React.PropsWithChildren<Props>) {
 
   return (
     <DashboardAdminLayout title={title}>
-      <div className="bg-white flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         <div className="flex justify-between mx-8">
           <div className="mt-8 text-2xl">{headerTitle}</div>
           <div className="flex flex-col md:flex-row gap-3">
