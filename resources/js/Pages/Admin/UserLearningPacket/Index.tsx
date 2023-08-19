@@ -61,56 +61,6 @@ export default function Index({ learningPackets }: Props) {
 									</MuiInertiaLinkButton>
 								</div>
 								<div className="flex justify-between">
-									<div className="flex justify-center">
-										<form
-											className="flex-col gap-5 py-5"
-											onSubmit={form.handleSubmit((e) => Api.post(route('user-packet.import', learningPacket.id), e, form))}
-										>
-											<div className="flex justify-end gap-3">
-												<div className='flex flex-col'>
-													<Controller
-														name="import_file"
-														control={form.control}
-														render={({ field }) => (
-															<input
-																type="file"
-																ref={field.ref}
-																className=""
-																onChange={e => {
-																	field.onChange({
-																		file: e.target.files![0],
-																		path: '',
-																		disk: 'public',
-																	});
-																}}
-															/>
-														)}
-													/>
-													<InputError
-														message={form.formState.errors.import_file?.message}
-														className="mt-2"
-													/>
-												</div>
-												<div className='my-auto'>
-													<Button
-														type="submit"
-														variant="contained"
-														size="large"
-														color="success"
-													>
-														Import Student
-													</Button>
-												</div>
-												<MuiInertiaLinkButton
-													href={route('user-packet.import-template', learningPacket.id)}
-													color="secondary"
-													isNextPage
-												>
-													Template
-												</MuiInertiaLinkButton>
-											</div>
-										</form>
-									</div>
 									<MuiInertiaLinkButton
 										href={route('user-packet.export', learningPacket.id)}
 										color="primary"
