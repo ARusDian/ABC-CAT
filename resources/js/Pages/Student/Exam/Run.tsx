@@ -333,7 +333,7 @@ export default function Run({ exam }: Props) {
                         backgroundRepeat: 'repeat-y',
                         backgroundSize: 'contain',
                         backgroundPosition: 'center',
-                        opacity: 0.4,
+                        opacity: 0.1,
                       }}>
                       </div>
                     </div>

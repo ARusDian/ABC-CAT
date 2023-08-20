@@ -1,4 +1,3 @@
-import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { ExamModel } from '@/Models/Exam';
@@ -6,7 +5,6 @@ import { router } from '@inertiajs/react';
 import React from 'react';
 import { useIdle, useInterval } from 'react-use';
 import { useSearchParam } from '@/Hooks/useSearchParam';
-import { AutoSizer, Grid, List, ScrollSync } from 'react-virtualized';
 import route from 'ziggy-js';
 import { ExamNavigation } from '@/Components/ExamNavigation';
 import ExamAnswer from '@/Components/ExamAnswer';
@@ -19,7 +17,6 @@ interface Props {
 export default function Show(props: Props) {
   const { exam } = props;
   const isIdle = useIdle(5000);
-  const columnCount = 4;
   const re = React.useRef(0);
 
   const currentQuestion =
@@ -36,7 +33,6 @@ export default function Show(props: Props) {
       },
       only: []
     })
-    // url.searchParams.set('question', (index + 1).toString());
     history.pushState({}, '', url);
   }, []);
 
@@ -102,7 +98,7 @@ export default function Show(props: Props) {
                     backgroundRepeat: 'repeat-y',
                     backgroundSize: 'contain',
                     backgroundPosition: 'center',
-                    opacity: 0.4,
+                    opacity: 0.1,
                   }}>
                   </div>
                 </div>
@@ -112,84 +108,6 @@ export default function Show(props: Props) {
               </div>
             </div>
           </div>
-          {/* <AutoSizer disableHeight>
-            {({ width }) => (
-              <ScrollSync>
-                {({ scrollLeft }) => (
-                  <div className="Table">
-                    <Grid
-                      height={40}
-                      width={width}
-                      rowHeight={40}
-                      columnWidth={width / columnCount}
-                      cellRenderer={({ columnIndex, key, style }) => {
-                        let text;
-                        if (columnIndex == 0) {
-                          text = 'Nomor';
-                        } else if (columnIndex == columnCount - 1) {
-                          text = 'Lihat Soal'
-                        } else if (columnIndex == columnCount - 2) {
-                          text = 'Score';
-                        } else {
-                          text = `Nama soal`;
-                        }
-
-                        return (
-                          <div key={key} style={style}>
-                            {text}
-                          </div>
-                        );
-                      }}
-                      rowCount={1}
-                      columnCount={columnCount}
-                      scrollLeft={scrollLeft}
-                    />
-
-                    <Grid
-                      height={rowHeight * exam.answers.length + 10}
-                      width={width}
-                      rowHeight={80}
-                      columnWidth={width / columnCount}
-                      // overscanColumnCount={overscanColumnCount}
-                      cellRenderer={({ columnIndex, key, rowIndex, style }) => {
-                        const it = exam.answers[rowIndex];
-                        let text;
-                        console.log(it)
-                        if (columnIndex == 0) {
-                          text = rowIndex + 1;
-                        } else if (columnIndex == columnCount - 1) {
-                          text = (
-                            <MuiInertiaLinkButton
-                              href={route('packet.sub.category.bank-question.item.show', [
-                                learning_packet, sub_learning_packet, learning_category, it.question.bank_question_id, it.bank_question_item_id
-                              ])}
-                              color="primary"
-                            >
-                              Lihat Soal
-                            </MuiInertiaLinkButton>
-                          );
-                        } else if (columnIndex == columnCount - 2) {
-                          text = it.score
-                          // text = `${it.answer === it.question.answer.answer}`;
-                        } else {
-                          text = it.question.name;
-                        }
-
-                        return (
-                          <div key={key} style={style}>
-                            {text}
-                          </div>
-                        );
-                      }}
-                      rowCount={exam.answers.length}
-                      columnCount={columnCount}
-                      scrollLeft={scrollLeft}
-                    />
-                  </div>
-                )}
-              </ScrollSync>
-            )}
-          </AutoSizer> */}
         </div>
       </div>
     </AdminShowLayout>
