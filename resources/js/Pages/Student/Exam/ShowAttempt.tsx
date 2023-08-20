@@ -25,7 +25,7 @@ export default function ShowAttempt({ exam }: Props) {
 
   return (
     <DashboardLayout title="Evaluasi">
-      <div className="flex flex-col shadow-lg w-full h-full p-7 rounded-2xl shadow-[#7c98fd]">
+      <div className="flex flex-col shadow-lg w-full h-full p-7 rounded-2xl shadow-[#7c98fd] bg-white">
         <div className="flex justify-between p-3">
           <div className="text-4xl">
             <span className="font-bold">Hasil Ujian</span>
