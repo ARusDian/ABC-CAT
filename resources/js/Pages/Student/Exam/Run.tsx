@@ -145,14 +145,14 @@ export default function Run({ exam }: Props) {
       }
 
       const queuePromise = (async () => {
+        // clear queue so we if next this is called again before await is done,
+        // the current queue is not run again
+        setStateQueue([]);
         const prev = await previousQueuePromise;
 
         // so if the previous attempt is failed, this can retry it
         const queue = [...(prev ?? []), ...stateQueue];
         console.log(queue);
-
-        // clear queue
-        setStateQueue([]);
 
         try {
           setIsUpdating(true);
