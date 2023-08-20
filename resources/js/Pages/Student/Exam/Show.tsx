@@ -128,6 +128,16 @@ export default function Show(props: Props) {
                   colorCode="#3A63F5"
                   className="px-5 rounded-md"
                 >
+                  Evaluasi
+                </LinkButton>
+                <LinkButton
+                  href={route('student.exam.show.result', [
+                    props.exercise_question.id,
+                    row.original.id,
+                  ])}
+                  colorCode="#00b506"
+                  className="px-5 rounded-md"
+                >
                   Lihat Hasil
                 </LinkButton>
               </div>

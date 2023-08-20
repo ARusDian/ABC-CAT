@@ -287,8 +287,57 @@ class UserController extends Controller
             ->withProperties(['method' => 'EXPORT'])
             ->log('Exported Exam Result');
         return Excel::download(
-            new ExamResultExport($exams, "Hasil Latihan Pengguna " . $user->name . " - ". $user->email),
+            new ExamResultExport($exams, "Hasil Latihan Pengguna " . $user->name . " - " . $user->email),
             'Hasil Ujian Pengguna.xlsx',
         );
+    }
+
+    public function exams($id)
+    {
+        $user = User::select('id', 'name', 'email')->with([
+            'exams' => fn ($q) => $q->with([
+                'exerciseQuestion' => fn ($q) => $q->select('id', 'name', 'type', 'learning_category_id')->with([
+                    'learningCategory' => fn ($q) => $q->select('id', 'name', 'sub_learning_packet_id')->with([
+                        'subLearningPacket' => fn ($q) => $q->select('id', 'name', 'learning_packet_id')->with([
+                            'learningPacket' => fn ($q) => $q->select('id', 'name')
+                        ])
+                    ])
+                ])
+            ])->withScore()->ofFinished(true)->orderBy('created_at', 'desc'),
+        ])->find($id);
+        return Inertia::render('Admin/User/Exam/Index', [
+            'userData' => $user,
+        ]);
+    }
+
+    public function examShow($user_id, $id)
+    {
+        $exam = Exam::with([
+            'exerciseQuestion' => fn ($q) => $q->select('id', 'name', 'type', 'learning_category_id')->with([
+                'learningCategory' => fn ($q) => $q->select('id', 'name', 'sub_learning_packet_id')->with([
+                    'subLearningPacket' => fn ($q) => $q->select('id', 'name', 'learning_packet_id')->with([
+                        'learningPacket' => fn ($q) => $q->select('id', 'name')
+                    ])
+                ])
+            ]),
+            'answers.question',
+            'user' => fn ($q) => $q->select('id', 'name', 'email'),
+        ])->withScore()->ofFinished(true)->find($id);
+        return Inertia::render('Admin/User/Exam/Show', [
+            'exam' => $exam,
+        ]);
+    }
+
+    public function examResult($user_id, $id)
+    {
+        $exam = Exam::with([
+            'exerciseQuestion' => fn ($q) => $q->select('id', 'name', 'learning_category_id')->with([
+                'learningCategory' => fn ($q) => $q->select('id', 'name', 'sub_learning_packet_id')
+            ]),
+            'user' => fn ($q) => $q->select('id', 'name', 'email'),
+        ])->withScore()->ofFinished(true)->find($id);
+        return Inertia::render('Admin/User/Exam/Result', [
+            'exam' => $exam,
+        ]);
     }
 }

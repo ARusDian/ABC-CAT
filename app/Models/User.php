@@ -84,6 +84,11 @@ class User extends Authenticatable
         return $this->hasMany(UserLearningPacket::class);
     }
 
+    public function exams()
+    {
+        return $this->hasMany(Exam::class);
+    }
+
     public function scopeWhereColumns($query, $filters)
     {
         $allowed = ['name', 'email', 'phone_number', 'active_year', 'roles.name'];
@@ -96,9 +101,7 @@ class User extends Authenticatable
                     continue;
                 }
 
-                // dd($value);
                 if (count($key) > 1) {
-                    // dd($key);
                     $query->whereHas($key[0], function ($query) use (
                         $value,
                         $key,

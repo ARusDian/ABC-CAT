@@ -1,3 +1,4 @@
+import { LearningCategoryModel } from './LearningCategory';
 import { BankQuestionItemModel } from './BankQuestionItem';
 import { ExamModel } from './Exam';
 
@@ -18,7 +19,8 @@ export interface ExerciseQuestionModel {
 
   type: ExerciseQuestionType;
   deleted_at?: string;
-  exams ?: ExamModel[];
+  exams?: ExamModel[];
+  learning_category?: LearningCategoryModel;
 }
 
 export const EXERCISE_QUESTION_TYPE = ['Pilihan', 'Kecermatan'] as const;

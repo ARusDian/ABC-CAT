@@ -1,3 +1,4 @@
+import { ExamModel } from './Models/Exam';
 import { BaseDocumentFileModel } from './Models/FileModel';
 
 type DateTime = string;
@@ -41,6 +42,7 @@ export interface User extends BaseUser {
   updated_at: DateTime;
   deleted_at?: Nullable<DateTime>;
   user_profile?: {};
+  exams ?: Array<ExamModel>;
 }
 
 export type InertiaSharedProps<T = {}> = T & {

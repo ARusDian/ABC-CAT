@@ -54,13 +54,12 @@ export default function Show(props: Props) {
       <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
         <div className="flex justify-between my-3">
           <MuiInertiaLinkButton
-            href={route('user.export-result', [
+            href={route('user.exam.index', [
               user.id,
             ])}
-            isNextPage
-            color='secondary'
+            color='info'
           >
-            Export Hasil Ujian Keseluruhan
+            Hasil Ujian Pengguna
           </MuiInertiaLinkButton>
           <MuiInertiaLinkButton
             color="success"

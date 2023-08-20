@@ -281,4 +281,18 @@ class ExamController extends Controller
             ])->findOrFail($id),
         ]);
     }
+
+    public function showResult($exercise_question, Exam $exam)
+    {
+        $exam =  $exam->with([
+            'exerciseQuestion.learningCategory',
+            'user',
+        ])
+        ->withScore()
+        ->findOrFail($exam->id);
+        return Inertia::render('Student/Exam/ShowResult', [
+            'exam' => $exam,
+            // 'exam' => $exam->load('answers.question'),
+        ]);
+    }
 }

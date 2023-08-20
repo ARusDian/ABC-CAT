@@ -83,6 +83,7 @@ Route::middleware([
 
             Route::get("{exercise_question}/leaderboard", [ExamController::class, "leaderboard"])->name("leaderboard");
             Route::get("{exercise_question}/attempt/{exam}", [ExamController::class, "showAttempt"])->name("show.attempt");
+            Route::get("{exercise_question}/result/{exam}", [ExamController::class, "showResult"])->name("show.result");
         });
         // End Exercise Question
     });
@@ -92,7 +93,10 @@ Route::middleware([
             Route::middleware(["role:super-admin"])->group(function () {
                 Route::resource("/user", UserController::class);
                 Route::post('/user/{user}/restore', [UserController::class, "restore"])->name('user.restore');
-                Route::get('/user/{user}/result', [UserController::class, "exportExamResult"])->name('user.export-result');
+                Route::get('/user/{user}/export-result', [UserController::class, "exportExamResult"])->name('user.export-result');
+                Route::get('/user/{user}/exam', [UserController::class, "exams"])->name('user.exam.index');
+                Route::get('/user/{user}/exam/{exam}', [UserController::class, "examShow"])->name('user.exam.show');
+                Route::get('/user/{user}/exam/{exam}/result', [UserController::class, "examResult"])->name('user.exam.result');
                 Route::get('/user-ImEx', [UserController::class, "ImportExportView"])->name('ImEx');
                 Route::post('/user-import', [UserController::class, "Import"])->name('user.import');
                 Route::get('/user-export', [UserController::class, "Export"])->name('user.export');
