@@ -279,8 +279,37 @@ export default function Run({ exam }: Props) {
                 <div className="w-full md:w-2/3 ">
                   <div className="flex flex-col gap-5">
                     <div className="flex justify-between p-3 h-20 py-auto">
-                      <div className="font-bold text-2xl">
-                        Soal {currentQuestion + 1}
+                      <div className=" flex gap-3">
+                        <p className='font-bold text-2xl'>
+                          Soal {currentQuestion + 1}
+                        </p>
+                        <div>
+                          <Button
+                            variant="contained"
+                            color="warning"
+                            onClick={() => {
+                              const value = answerArray.fields[currentQuestion];
+                              answerArray.update(currentQuestion, {
+                                ...value,
+                                state: {
+                                  ...value.state,
+                                  mark: !value.state?.mark,
+                                },
+                              });
+                              updateAnswer({
+                                ...value,
+                                state: {
+                                  ...(value.state ?? {}),
+                                  mark: !value.state?.mark,
+                                },
+                              });
+                            }}
+                          >
+                            {answerArray.fields[currentQuestion]?.state?.mark
+                              ? 'Batal Tandai'
+                              : 'Tandai'}
+                          </Button>
+                        </div>
                       </div>
                       <div className="font-bold text-lg flex gap-3">
                         <div>
@@ -292,9 +321,8 @@ export default function Run({ exam }: Props) {
                             ''
                           )}
                         </div>
-                        <p className="text-2xl">{`${currentQuestion + 1}/${
-                          answers.length
-                        }`}</p>
+                        <p className="text-2xl">{`${currentQuestion + 1}/${answers.length
+                          }`}</p>
                       </div>
                     </div>
                   </div>
@@ -324,34 +352,6 @@ export default function Run({ exam }: Props) {
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="flex justify-end">
-              <div>
-                <button
-                  className="bg-yellow-500 hover:bg-yellow-700 text-black font-bold py-2 px-8 rounded"
-                  onClick={() => {
-                    const value = answerArray.fields[currentQuestion];
-                    answerArray.update(currentQuestion, {
-                      ...value,
-                      state: {
-                        ...value.state,
-                        mark: !value.state?.mark,
-                      },
-                    });
-                    updateAnswer({
-                      ...value,
-                      state: {
-                        ...(value.state ?? {}),
-                        mark: !value.state?.mark,
-                      },
-                    });
-                  }}
-                >
-                  {answerArray.fields[currentQuestion]?.state?.mark
-                    ? 'Batal Tandai'
-                    : 'Tandai'}
-                </button>
               </div>
             </div>
           </div>
