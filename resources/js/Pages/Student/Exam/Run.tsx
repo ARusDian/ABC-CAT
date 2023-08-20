@@ -99,7 +99,6 @@ export default function Run({ exam }: Props) {
     }
   };
 
-  const [stateQueue, setStateQueue] = React.useState<Task[]>([]);
 
   const currentQuestion =
     (parseInt(useSearchParam('question') ?? '1') || 1) - 1;
@@ -110,8 +109,6 @@ export default function Run({ exam }: Props) {
     history.pushState({}, '', url);
   }, []);
 
-  const [previousQueuePromise, setPreviousQueuePromise] =
-    React.useState<Promise<Task[]> | null>(null);
 
   React.useEffect(() => {
     setShouldUpdate(true);
@@ -136,7 +133,11 @@ export default function Run({ exam }: Props) {
 
   const [isUpdating, setIsUpdating] = React.useState(false);
 
+  const [stateQueue, setStateQueue] = React.useState<Task[]>([]);
+  const [previousQueuePromise, setPreviousQueuePromise] =
+    React.useState<Promise<Task[]> | null>(null);
   const isLastQuestion = currentQuestion === answers.length - 1;
+  const [stateQueueCounter, { inc: updateStateQueueCounter }] = useCounter(0);
   useDebounce(
     () => {
       if (stateQueue.length == 0) {
@@ -172,7 +173,7 @@ export default function Run({ exam }: Props) {
           return [];
         } catch (e) {
           console.error(e);
-          setStateQueue([]);
+          updateStateQueueCounter();
           return queue;
         }
       })();
@@ -180,7 +181,7 @@ export default function Run({ exam }: Props) {
       setPreviousQueuePromise(queuePromise);
     },
     2000,
-    [stateQueue],
+    [stateQueue, stateQueueCounter],
   );
 
   const addStateQueue = (task: Task) => {
