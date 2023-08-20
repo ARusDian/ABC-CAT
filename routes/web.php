@@ -73,17 +73,21 @@ Route::middleware([
         // TODO: Move to above inside learning_packet prefix
         // Exercise Question
         Route::prefix("exam")->as("exam.")->group(function () {
-            Route::get("{exercise_question}", [ExamController::class, "show"])->name("show");
-            Route::put("{exercise_question}", [ExamController::class, "update"])->name("update");
             Route::post("{exercise_question}", [ExamController::class, "attempt"])->name("attempt");
-            Route::post("{exercise_question}/finish", [ExamController::class, "finish"])->name("finish");
+
+            Route::withoutMiddleware(['exam'])->group(function () {
+                Route::get("{exercise_question}", [ExamController::class, "show"])->name("show");
+                Route::put("{exercise_question}", [ExamController::class, "update"])->name("update");
+                Route::post("{exercise_question}/finish", [ExamController::class, "finish"])->name("finish");
+            });
+
             Route::get("{exercise_question}/leaderboard", [ExamController::class, "leaderboard"])->name("leaderboard");
             Route::get("{exercise_question}/attempt/{exam}", [ExamController::class, "showAttempt"])->name("show.attempt");
         });
         // End Exercise Question
     });
 
-    Route::middleware(["role:super-admin|instructor"])->group(function () {
+    Route::middleware(["role:super-admin|instructor"])->withoutMiddleware(['exam'])->group(function () {
         Route::prefix("admin")->group(function () {
             Route::middleware(["role:super-admin"])->group(function () {
                 Route::resource("/user", UserController::class);
