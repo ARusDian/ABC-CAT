@@ -71,7 +71,16 @@ export function useEditor(
       }),
       TextStyle,
       FontFamily,
-      FontSize,
+      FontSize.extend({
+        addAttributes() {
+          return {
+            ...this.parent?.(),
+            fontSize: {
+              default: '16pt',
+            },
+          };
+        }
+      }),
     ],
 
     content: content,

@@ -70,6 +70,15 @@ class QuestionMultiTrueChoicesImport implements WithStartRow, OnEachRow, WithHea
                         "content" => [
                             [
                                 "type" => "text",
+                                "marks" => [
+                                    [
+                                        "type" => "textStyle",
+                                        "attrs" => [
+                                            "fontFamily" => null,
+                                            "fontSize" => "16pt"
+                                        ]
+                                    ]
+                                ],
                                 "text" => $row["pertanyaan"]
                             ]
                         ]
@@ -100,6 +109,15 @@ class QuestionMultiTrueChoicesImport implements WithStartRow, OnEachRow, WithHea
                         "content" => [
                             [
                                 "type" => "text",
+                                "marks" => [
+                                    [
+                                        "type" => "textStyle",
+                                        "attrs" => [
+                                            "fontFamily" => null,
+                                            "fontSize" => "16pt"
+                                        ]
+                                    ]
+                                ],
                                 "text" => $row["pembahasan"]
                             ]
                         ]
@@ -123,6 +141,15 @@ class QuestionMultiTrueChoicesImport implements WithStartRow, OnEachRow, WithHea
                                 "content" => [
                                     [
                                         "type" => "text",
+                                        "marks" => [
+                                            [
+                                                "type" => "textStyle",
+                                                "attrs" => [
+                                                    "fontFamily" => null,
+                                                    "fontSize" => "16pt"
+                                                ]
+                                            ]
+                                        ],
                                         "text" => $choice
                                     ]
                                 ]

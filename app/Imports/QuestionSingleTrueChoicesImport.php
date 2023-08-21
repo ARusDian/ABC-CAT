@@ -49,7 +49,7 @@ class QuestionSingleTrueChoicesImport implements WithStartRow, OnEachRow, WithHe
             $row["pilihan_4"],
             $row["pilihan_5"],
         ];
-        
+
         $formatted_question = [
             "type" => "tiptap",
             "content" => [
@@ -63,6 +63,15 @@ class QuestionSingleTrueChoicesImport implements WithStartRow, OnEachRow, WithHe
                         "content" => [
                             [
                                 "type" => "text",
+                                "marks" => [
+                                    [
+                                        "type" => "textStyle",
+                                        "attrs" => [
+                                            "fontFamily" => null,
+                                            "fontSize" => "16pt"
+                                        ]
+                                    ]
+                                ],
                                 "text" => $row["pertanyaan"]
                             ]
                         ]
@@ -89,6 +98,15 @@ class QuestionSingleTrueChoicesImport implements WithStartRow, OnEachRow, WithHe
                         "content" => [
                             [
                                 "type" => "text",
+                                "marks" => [
+                                    [
+                                        "type" => "textStyle",
+                                        "attrs" => [
+                                            "fontFamily" => null,
+                                            "fontSize" => "16pt"
+                                        ]
+                                    ]
+                                ],
                                 "text" => $row["pembahasan"]
                             ]
                         ]
@@ -112,6 +130,15 @@ class QuestionSingleTrueChoicesImport implements WithStartRow, OnEachRow, WithHe
                                 "content" => [
                                     [
                                         "type" => "text",
+                                        "marks" => [
+                                            [
+                                                "type" => "textStyle",
+                                                "attrs" => [
+                                                    "fontFamily" => null,
+                                                    "fontSize" => "16pt"
+                                                ]
+                                            ]
+                                        ],
                                         "text" => $choice
                                     ]
                                 ]
