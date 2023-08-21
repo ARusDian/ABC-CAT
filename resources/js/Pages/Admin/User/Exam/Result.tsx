@@ -32,7 +32,7 @@ export default function Result({ exam }: Props) {
                             </Button>}
                     </Pdf>
                     <MuiInertiaLinkButton
-                        href={route('user.exam.index', exam.exercise_question_id)}
+                        href={route('user.exam.index', exam.user_id)}
                     >
                         Kembali
                     </MuiInertiaLinkButton>

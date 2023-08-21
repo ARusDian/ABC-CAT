@@ -38,7 +38,7 @@ export default function KecermatanResultDocument({ exam }: Props) {
                 fill: false,
                 borderColor: 'rgb(0, 192, 0)',
                 tension: 0.1
-            },{
+            }, {
                 label: 'Salah',
                 data: [5, 1, 9, 2, 10, 1, 2, 15, 0, 0],
                 fill: false,
@@ -64,7 +64,9 @@ export default function KecermatanResultDocument({ exam }: Props) {
     return (
         <div className="w-full">
             <div className="border-b-4 border-y-black border-double border-t ">
-                <div className="flex justify-center bg-orange-300">
+                <div className="flex justify-center text-white" style={{
+                    backgroundColor: '#4383e8'
+                }}>
                     <p className="text-2xl font-bold p-3 uppercase ">
                         HASIL TES
                     </p>
@@ -133,7 +135,9 @@ export default function KecermatanResultDocument({ exam }: Props) {
                 </div>
             </div>
             <div className="border-y-black border-y ">
-                <div className="bg-orange-300">
+                <div className="text-white" style={{
+                    backgroundColor: '#4383e8'
+                }}>
                     <p className="text-lg font-bold p-1 uppercase ">
                         {exam.exercise_question.learning_category?.name}
                     </p>
@@ -358,7 +362,7 @@ export default function KecermatanResultDocument({ exam }: Props) {
                             50
                         </td>
                         <td className="border border-black" >
-                           35
+                            35
                         </td>
                         <td className="border border-black" >
                             00:01:21
@@ -473,5 +477,4 @@ export default function KecermatanResultDocument({ exam }: Props) {
     )
 }
 
-             
-                    
+

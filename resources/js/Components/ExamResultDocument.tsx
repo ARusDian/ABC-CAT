@@ -9,7 +9,9 @@ export default function ExamResultDocument({ exam }: Props) {
     return (
         <div  >
             <div className="border-b-4 border-y-black border-double border-t ">
-                <div className="flex justify-center bg-orange-300">
+                <div className="flex justify-center text-white" style={{
+                    backgroundColor: '#4383e8'
+                }}>
                     <p className="text-2xl font-bold p-3 uppercase ">
                         HASIL TES
                     </p>
@@ -78,7 +80,9 @@ export default function ExamResultDocument({ exam }: Props) {
                 </div>
             </div>
             <div className="border-y-black border-y ">
-                <div className="bg-orange-300">
+                <div className="text-white" style={{
+                    backgroundColor: '#4383e8'
+                }}>
                     <p className="text-lg font-bold p-1 uppercase ">
                         {exam.exercise_question.learning_category?.name}
                     </p>
