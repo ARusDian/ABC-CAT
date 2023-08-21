@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ExerciseQuestionTypeEnum;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,6 +15,7 @@ class ExerciseQuestion extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Cachable;
 
     protected $fillable = [
         'name',
