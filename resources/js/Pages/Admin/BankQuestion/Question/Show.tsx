@@ -174,7 +174,7 @@ export default function Index(props: Props) {
                     {props.item.answer.type == 'WeightedChoice' ? (
                       <div>Bobot: {props.item.answer.answer[index].weight}</div>
                     ) : null}
-                    <div className="mx-auto border rounded-2xl p-5">
+                    <div className="mx-auto border rounded-2xl p-5 text-xl">
                       {choice}
                     </div>
                   </div>

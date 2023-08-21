@@ -39,7 +39,7 @@ export default function ExamAnswer({
   });
 
   return (
-    <div className="px-3">
+    <div className="px-3 flex flex-col gap-3">
       <div className="prose">
         <BankQuestionItemShow
           question={answer.question}
@@ -187,10 +187,10 @@ function KecermatanAnswerForm({
   }
 
   return (
-    <div>
+    <div className='flex flex-col gap-3'>
       {choices.map((choice, index) => {
         return (
-          <div className="flex justify-between" key={index}>
+          <div className="flex justify-between text-3xl" key={index}>
             <div className="flex gap-3">
               <input
                 type="radio"
@@ -203,8 +203,8 @@ function KecermatanAnswerForm({
                 }}
                 checked={answer.answer == index}
               />
-              <div className="prose mx-auto">
-                <Typography>{choice}</Typography>
+              <div className=" mx-auto ">
+                <p>{choice}</p>
               </div>
             </div>
           </div>
