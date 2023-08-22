@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,7 @@ class LearningPacket extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Cachable;
 
     protected $fillable = ['name', 'description', 'photo_path'];
 
