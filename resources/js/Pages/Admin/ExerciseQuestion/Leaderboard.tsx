@@ -18,7 +18,11 @@ interface Props {
 export default function Leaderboard({ exercise_question }: Props) {
   const [data, setData] = useState<ExamModel[]>(exercise_question.exams);
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   useEffect(() => {
@@ -84,9 +88,9 @@ export default function Leaderboard({ exercise_question }: Props) {
       <div className="flex justify-between my-3">
         <MuiInertiaLinkButton
           href={route('packet.sub.category.exercise.export', [
-            learning_packet,
-            sub_learning_packet,
-            learning_category,
+            learning_packet_id,
+            sub_learning_packet_id,
+            learning_category_id,
             exercise_question.id,
           ])}
           isNextPage
@@ -96,9 +100,9 @@ export default function Leaderboard({ exercise_question }: Props) {
         </MuiInertiaLinkButton>
         <MuiInertiaLinkButton
           href={route('packet.sub.category.exercise.show', [
-            learning_packet,
-            sub_learning_packet,
-            learning_category,
+            learning_packet_id,
+            sub_learning_packet_id,
+            learning_category_id,
             exercise_question.id,
           ])}
         >
@@ -132,9 +136,9 @@ export default function Leaderboard({ exercise_question }: Props) {
               <MuiInertiaLinkButton
                 href={route('packet.sub.category.exercise.leaderboard.result',
                   [
-                    learning_packet,
-                    sub_learning_packet,
-                    learning_category,
+                    learning_packet_id,
+                    sub_learning_packet_id,
+                    learning_category_id,
                     exercise_question.id,
                     row.original.id
                   ])}

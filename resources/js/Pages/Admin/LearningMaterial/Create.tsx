@@ -27,15 +27,20 @@ export default function Create(props: Props) {
     },
   });
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   function onSubmit(e: BaseLearningMaterialModel) {
     Api.post(
       route('packet.sub.category.material.store', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
       ]),
       e,
       form,
@@ -46,9 +51,9 @@ export default function Create(props: Props) {
     <AdminFormLayout
       title="Tambah Materi Belajar"
       backRoute={route('packet.sub.category.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
       ])}
       backRouteTitle="Kembali"
     >

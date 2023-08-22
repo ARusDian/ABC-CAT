@@ -24,7 +24,11 @@ interface QuestionImportForm extends ImportFileModel {
 export default function Show(props: Props) {
   const { bank_question } = props;
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   const form = useForm<QuestionImportForm>({
@@ -37,9 +41,9 @@ export default function Show(props: Props) {
 
   function onSubmit(e: any) {
     Api.post(route('packet.sub.category.bank-question.import', [
-      learning_packet,
-      sub_learning_packet,
-      learning_category,
+      learning_packet_id,
+      sub_learning_packet_id,
+      learning_category_id,
       bank_question.id,
     ]), e, form);
     setOpenImportModal(false);
@@ -73,15 +77,15 @@ export default function Show(props: Props) {
       title="Bank Soal"
       headerTitle="Data Bank Soal"
       editRoute={route('packet.sub.category.bank-question.edit', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         bank_question.id,
       ])}
       backRoute={route('packet.sub.category.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
       ])}
     >
       <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
@@ -103,9 +107,9 @@ export default function Show(props: Props) {
           <div className="flex place-content-end grow gap-2">
             <MuiInertiaLinkButton
               href={route('packet.sub.category.bank-question.item.create', [
-                learning_packet,
-                sub_learning_packet,
-                learning_category,
+                learning_packet_id,
+                sub_learning_packet_id,
+                learning_category_id,
                 bank_question.id,
               ])}
               color="success"
@@ -115,9 +119,9 @@ export default function Show(props: Props) {
 
             <MuiInertiaLinkButton
               href={route('packet.sub.category.exercise.import', [
-                learning_packet,
-                sub_learning_packet,
-                learning_category,
+                learning_packet_id,
+                sub_learning_packet_id,
+                learning_category_id,
                 bank_question.id,
               ])}
               color="primary"
@@ -142,9 +146,9 @@ export default function Show(props: Props) {
             <div className="flex items-center justify-center gap-2">
               <MuiInertiaLinkButton
                 href={route('packet.sub.category.bank-question.item.show', [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
+                  learning_packet_id,
+                  sub_learning_packet_id,
+                  learning_category_id,
                   bank_question.id,
                   row.original.id,
                 ])}
@@ -226,9 +230,9 @@ export default function Show(props: Props) {
               </Button>
               <MuiInertiaLinkButton
                 href={route(`packet.sub.category.bank-question.template-${typeSelected === "Single" ? "single" : "multiple"}`, [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
+                  learning_packet_id,
+                  sub_learning_packet_id,
+                  learning_category_id,
                   bank_question.id,
                 ])}
                 color="secondary"

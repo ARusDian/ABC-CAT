@@ -58,7 +58,11 @@ export default function Create({ bank_question }: Props) {
     },
   });
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   function onSubmit(e: BankQuestionItemFormModel) {
@@ -67,9 +71,9 @@ export default function Create({ bank_question }: Props) {
 
     router.post(
       route('packet.sub.category.bank-question.item.store', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         bank_question.id,
       ]),
 
@@ -86,9 +90,9 @@ export default function Create({ bank_question }: Props) {
     <AdminFormLayout
       title="Tambah Pertanyaan"
       backRoute={route('packet.sub.category.bank-question.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         bank_question.id,
       ])}
       backRouteTitle="Kembali"

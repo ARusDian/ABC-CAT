@@ -26,15 +26,20 @@ export default function Edit(props: Props) {
     defaultValues: learningMaterial,
   });
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   function onSubmit(e: BaseLearningMaterialModel) {
     Api.post(
       route('packet.sub.category.material.update', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         learningMaterial.id,
       ]),
       {
@@ -49,9 +54,9 @@ export default function Edit(props: Props) {
     <AdminFormLayout
       title="Edit Materi Belajar"
       backRoute={route('packet.sub.category.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
       ])}
       backRouteTitle="Kembali"
     >

@@ -51,7 +51,11 @@ export default function Index(props: Props) {
     setTabValue(newValue);
   };
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   const getMostRightAnswer = () => {
@@ -74,16 +78,16 @@ export default function Index(props: Props) {
       title={`Pertanyaan ${item.id}`}
       headerTitle={'Data Pertanyaan'}
       backRoute={route('packet.sub.category.bank-question.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         item.bank_question_id,
       ])}
       backRouteTitle="Kembali"
       editRoute={route('packet.sub.category.bank-question.item.edit', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         item.bank_question_id,
         item.id,
       ])}
@@ -92,18 +96,18 @@ export default function Index(props: Props) {
         item.is_active
           ? router.delete(
             route('packet.sub.category.bank-question.item.destroy', [
-              learning_packet,
-              sub_learning_packet,
-              learning_category,
+              learning_packet_id,
+              sub_learning_packet_id,
+              learning_category_id,
               item.bank_question_id,
               item.id,
             ]),
           )
           : router.post(
             route('packet.sub.category.bank-question.item.restore', [
-              learning_packet,
-              sub_learning_packet,
-              learning_category,
+              learning_packet_id,
+              sub_learning_packet_id,
+              learning_category_id,
               item.bank_question_id,
               item.id,
             ]),

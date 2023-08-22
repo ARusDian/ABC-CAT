@@ -17,7 +17,11 @@ interface Props {
 }
 
 export default function Edit({ learningCategory }: Props) {
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   let form = useForm<LearningCategoryFormModel>({
@@ -26,11 +30,11 @@ export default function Edit({ learningCategory }: Props) {
 
   function onSubmit(e: LearningCategoryFormModel) {
     Api.post(
-      route('packet.sub.category.update', {
-        learning_packet: learning_packet,
-        sub_learning_packet: sub_learning_packet,
-        learning_category: learning_category,
-      }),
+      route('packet.sub.category.update', [
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
+      ]),
       { ...e, _method: 'PUT' },
       form,
     );
@@ -39,11 +43,11 @@ export default function Edit({ learningCategory }: Props) {
   return (
     <AdminFormLayout
       title="Edit Kategori Belajar"
-      backRoute={route('packet.sub.category.show', {
-        learning_packet: learning_packet,
-        sub_learning_packet: sub_learning_packet,
-        learning_category: learning_category,
-      })}
+      backRoute={route('packet.sub.category.show', [
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
+      ])}
       backRouteTitle="Kembali"
     >
       <form

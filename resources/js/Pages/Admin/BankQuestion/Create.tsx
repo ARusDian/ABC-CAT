@@ -11,7 +11,7 @@ import {
 } from '@/Models/BankQuestion';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
-interface Props {}
+interface Props { }
 
 export default function Create(props: Props) {
   let form = useForm<BankQuestionFormModel>({
@@ -21,15 +21,19 @@ export default function Create(props: Props) {
     },
   });
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   function onSubmit(e: BankQuestionFormModel) {
     router.post(
       route('packet.sub.category.bank-question.store', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
       ]),
       e as any,
       {
@@ -46,9 +50,9 @@ export default function Create(props: Props) {
     <AdminFormLayout
       title="Tambah Soal Latihan"
       backRoute={route('packet.sub.category.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
       ])}
     >
       <Form

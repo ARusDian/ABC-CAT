@@ -20,15 +20,22 @@ export default function Edit({ question }: Props) {
     defaultValues: question,
   });
 
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
+    useDefaultClassificationRouteParams();
+
   function onSubmit(data: QuestionFormModel) {
     console.log(data);
 
     form.clearErrors();
     router.post(
       route('packet.sub.category.exercise.question.update', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         question.exercise_question_id,
         question.id,
       ]),
@@ -55,16 +62,13 @@ export default function Edit({ question }: Props) {
     // });
   }
 
-  const { learning_packet, sub_learning_packet, learning_category } =
-    useDefaultClassificationRouteParams();
-
   return (
     <AdminFormLayout
       title="Edit Pertanyaan"
       backRoute={route('packet.sub.category.exercise.question.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         question.exercise_question_id,
         question.id,
       ])}

@@ -40,7 +40,11 @@ export default function Show(props: Props) {
 
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   const [type, setType] = React.useState(1);
@@ -60,9 +64,9 @@ export default function Show(props: Props) {
     if (type == 1) {
       router.post(
         route('packet.sub.category.exercise.store', [
-          learning_packet,
-          sub_learning_packet,
-          learning_category,
+          learning_packet_id,
+          sub_learning_packet_id,
+          learning_category_id,
           exerciseId!,
         ]),
         {
@@ -78,9 +82,9 @@ export default function Show(props: Props) {
     } else if (type == 2) {
       router.post(
         route('packet.sub.category.exercise.import.update', [
-          learning_packet,
-          sub_learning_packet,
-          learning_category,
+          learning_packet_id,
+          sub_learning_packet_id,
+          learning_category_id,
           exerciseId!,
         ]),
         {
@@ -102,9 +106,9 @@ export default function Show(props: Props) {
       // headerTitle="Import Latihan Soal"
       // editRoute={route('bank-question.edit', bank_question.id)}
       backRoute={route('packet.sub.category.bank-question.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         bank_question.id,
       ])}
     >
@@ -165,9 +169,9 @@ export default function Show(props: Props) {
             <MuiInertiaLinkButton
               color="primary"
               href={route('packet.sub.category.bank-question.item.show', [
-                learning_packet,
-                sub_learning_packet,
-                learning_category,
+                learning_packet_id,
+                sub_learning_packet_id,
+                learning_category_id,
                 bank_question.id,
                 row.original.id,
               ])}

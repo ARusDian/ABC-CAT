@@ -17,7 +17,12 @@ interface Props {
 export default function Index(props: Props) {
   const learningMaterial = props.learningMaterial;
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   const descriptionEditor = useEditor({
@@ -30,24 +35,24 @@ export default function Index(props: Props) {
       title={`Materi Belajar ${learningMaterial.title}`}
       headerTitle={'Data Materi Belajar'}
       backRoute={route('packet.sub.category.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
       ])}
       backRouteTitle="Kembali"
       editRoute={route('packet.sub.category.material.edit', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         learningMaterial.id,
       ])}
       editRouteTitle="Edit"
       onDelete={() => {
         router.post(
           route('packet.sub.category.material.destroy', [
-            learning_packet,
-            sub_learning_packet,
-            learning_category,
+            learning_packet_id,
+            sub_learning_packet_id,
+            learning_category_id,
             learningMaterial.id,
           ]),
           {

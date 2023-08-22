@@ -26,16 +26,20 @@ export default function Create({ exercise_question }: Props) {
     },
   });
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   const onSubmit = React.useCallback(
     (e: ExerciseQuestionFormModel) => {
       router.put(
         route('packet.sub.category.exercise.update', [
-          learning_packet,
-          sub_learning_packet,
-          learning_category,
+          learning_packet_id,
+          sub_learning_packet_id,
+          learning_category_id,
           exercise_question.id,
         ]),
         e as any,
@@ -56,9 +60,9 @@ export default function Create({ exercise_question }: Props) {
     <AdminFormLayout
       title="Edit Latihan Soal"
       backRoute={route('packet.sub.category.exercise.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         exercise_question.id,
       ])}
     >

@@ -15,7 +15,11 @@ interface Props {
 }
 
 export default function Index({ learningCategory, exerciseQuestions }: Props) {
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   const columns = [
@@ -47,7 +51,7 @@ export default function Index({ learningCategory, exerciseQuestions }: Props) {
             Daftar Latihan Soal {learningCategory.name}
           </p>
           <LinkButton
-            href={route('student.packet.show', learning_packet)}
+            href={route('student.packet.show', learning_packet_id)}
             colorCode="#3A63F5"
             className="px-5 rounded-md"
           >

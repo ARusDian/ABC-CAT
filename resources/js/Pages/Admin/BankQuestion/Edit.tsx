@@ -23,16 +23,20 @@ export default function Create({ bank_question }: Props) {
     },
   });
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   const onSubmit = React.useCallback(
     (e: BankQuestionFormModel) => {
       router.put(
         route('packet.sub.category.bank-question.update', [
-          learning_packet,
-          sub_learning_packet,
-          learning_category,
+          learning_packet_id,
+          sub_learning_packet_id,
+          learning_category_id,
           bank_question.id,
         ]),
         e as any,
@@ -53,9 +57,9 @@ export default function Create({ bank_question }: Props) {
     <AdminFormLayout
       title="Tambah Soal Latihan"
       backRoute={route('packet.sub.category.bank-question.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         bank_question.id,
       ])}
     >

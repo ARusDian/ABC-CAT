@@ -13,20 +13,24 @@ import { useDefaultExerciseQuestionFormModel } from '@/Hooks/useDefaultExerciseQ
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import { Button } from '@mui/material';
 
-interface Props {}
+interface Props { }
 
 export default function Create(props: Props) {
   let form = useDefaultExerciseQuestionFormModel();
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   function onSubmit(e: ExerciseQuestionFormModel) {
     router.post(
       route('packet.sub.category.exercise.store', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
       ]),
       e as any,
       {
@@ -43,9 +47,9 @@ export default function Create(props: Props) {
     <AdminFormLayout
       title="Tambah Latihan Soal"
       backRoute={route('packet.sub.category.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
       ])}
     >
       <form

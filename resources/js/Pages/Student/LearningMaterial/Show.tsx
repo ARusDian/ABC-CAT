@@ -11,7 +11,11 @@ interface Props {
 }
 
 export default function Index({ document }: Props) {
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   return (
@@ -21,9 +25,9 @@ export default function Index({ document }: Props) {
           <p className="text-5xl text-[#3A63F5]">{document.caption}</p>
           <LinkButton
             href={route('student.packet.category.material.index', [
-              learning_packet,
-              sub_learning_packet,
-              learning_category,
+              learning_packet_id,
+              sub_learning_packet_id,
+              learning_category_id,
             ])}
             colorCode="#3A63F5"
             className="px-5 rounded-md"

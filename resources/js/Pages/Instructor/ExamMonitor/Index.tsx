@@ -28,7 +28,11 @@ export default function Index({ exercise_question }: Props) {
     },
   ] as MRT_ColumnDef<ExamModel>[];
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   return (
@@ -36,9 +40,9 @@ export default function Index({ exercise_question }: Props) {
       title="Monitor Exam"
       headerTitle='Monitor Ujian'
       backRoute={route('packet.sub.category.exercise.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         exercise_question.id,
       ])}
     >
@@ -84,9 +88,9 @@ export default function Index({ exercise_question }: Props) {
                 size="large"
               >
                 <Link href={route('packet.sub.category.exercise.exam-monitor.show', [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
+                  learning_packet_id,
+                  sub_learning_packet_id,
+                  learning_category_id,
                   exercise_question.id,
                   row.original.id
                 ])}>

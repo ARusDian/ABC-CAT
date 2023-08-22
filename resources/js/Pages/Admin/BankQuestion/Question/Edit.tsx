@@ -24,15 +24,19 @@ export default function Edit(props: Props) {
     defaultValues: question,
   });
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   function onSubmit(data: BankQuestionItemFormModel) {
     Api.post(
       route('packet.sub.category.bank-question.item.update', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         question.bank_question_id,
         question.id,
       ]),
@@ -70,9 +74,9 @@ export default function Edit(props: Props) {
     <AdminFormLayout
       title="Edit Pertanyaan"
       backRoute={route('packet.sub.category.bank-question.item.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         question.bank_question_id,
         question.id,
       ])}

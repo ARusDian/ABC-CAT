@@ -49,7 +49,12 @@ export default function Show(props: Props) {
       console.log({ isIdle });
     }
   }, 5000);
-  const { learning_packet, sub_learning_packet, learning_category } =
+
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   console.log({ href: location.href, currentQuestion});
@@ -58,9 +63,9 @@ export default function Show(props: Props) {
       title="Monitor Latihan"
       headerTitle="Monitoring Ujian"
       backRoute={route('packet.sub.category.exercise.exam-monitor.index', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         exam.exercise_question_id,
       ])}
     >

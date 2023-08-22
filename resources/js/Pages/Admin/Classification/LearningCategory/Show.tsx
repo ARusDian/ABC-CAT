@@ -71,7 +71,11 @@ export default function Show({ learningCategory }: Props) {
     setTabValue(newValue);
   };
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
 
@@ -79,23 +83,24 @@ export default function Show({ learningCategory }: Props) {
     <AdminShowLayout
       title="Kategori Belajar"
       headerTitle="Kategori Belajar"
-      backRoute={route('packet.sub.show', {
-        learning_packet: learning_packet,
-        sub_learning_packet: sub_learning_packet,
-      })}
-      editRoute={route('packet.sub.category.edit', {
-        learning_packet: learning_packet,
-        sub_learning_packet: sub_learning_packet,
-        learning_category: learning_category,
-      })}
+      backRoute={route('packet.sub.show', [
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
+      ])}
+      editRoute={route('packet.sub.category.edit', [
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
+      ])}
       editRouteTitle="Edit"
       onDelete={() => {
         router.delete(
-          route('packet.sub.category.destroy', {
-            learning_packet: learning_packet,
-            sub_learning_packet: sub_learning_packet,
-            learning_category: learning_category,
-          }),
+          route('packet.sub.category.destroy', [
+            learning_packet_id,
+            sub_learning_packet_id,
+            learning_category_id,
+          ]),
         );
       }}
       deleteTitle="Hapus"
@@ -315,28 +320,28 @@ export default function Show({ learningCategory }: Props) {
                         (row.original.deleted_at === null
                           ? 'Nonaktifkan'
                           : 'Aktifkan') +
-                          ' Latihan Soal ' +
-                          row.original.name,
+                        ' Latihan Soal ' +
+                        row.original.name,
                         () => {
                           row.original.deleted_at === null
                             ? router.delete(
-                                route('packet.sub.category.exercise.destroy', [
-                                  learningCategory.sub_learning_packet
-                                    ?.learning_packet_id ?? 0,
-                                  learningCategory.sub_learning_packet_id,
-                                  learningCategory.id,
-                                  row.original.id,
-                                ]),
-                              )
+                              route('packet.sub.category.exercise.destroy', [
+                                learningCategory.sub_learning_packet
+                                  ?.learning_packet_id ?? 0,
+                                learningCategory.sub_learning_packet_id,
+                                learningCategory.id,
+                                row.original.id,
+                              ]),
+                            )
                             : router.post(
-                                route('packet.sub.category.exercise.restore', [
-                                  learningCategory.sub_learning_packet
-                                    ?.learning_packet_id ?? 0,
-                                  learningCategory.sub_learning_packet_id,
-                                  learningCategory.id,
-                                  row.original.id,
-                                ]),
-                              );
+                              route('packet.sub.category.exercise.restore', [
+                                learningCategory.sub_learning_packet
+                                  ?.learning_packet_id ?? 0,
+                                learningCategory.sub_learning_packet_id,
+                                learningCategory.id,
+                                row.original.id,
+                              ]),
+                            );
                         },
                         'Latihan Soal ' + row.original.name,
                       );

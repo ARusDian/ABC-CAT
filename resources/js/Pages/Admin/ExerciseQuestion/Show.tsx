@@ -21,7 +21,11 @@ export default function Show(props: Props) {
     },
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
-  const { learning_packet, sub_learning_packet, learning_category } =
+  const {
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id
+  } =
     useDefaultClassificationRouteParams();
 
   return (
@@ -29,15 +33,15 @@ export default function Show(props: Props) {
       title="Latihan Soal"
       headerTitle="Data Latihan Soal"
       editRoute={route('packet.sub.category.exercise.edit', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
         exercise_question.id,
       ])}
       backRoute={route('packet.sub.category.show', [
-        learning_packet,
-        sub_learning_packet,
-        learning_category,
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
       ])}
     >
       <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-3">
@@ -54,11 +58,10 @@ export default function Show(props: Props) {
               }{' '}
               Menit
             </p>
-            <p>Jumlah Soal Per Latihan: { exercise_question.number_of_question}</p>
+            <p>Jumlah Soal Per Latihan: {exercise_question.number_of_question}</p>
             <p
-              className={`${
-                exercise_question.deleted_at ? 'text-red-500' : 'text-green-500'
-              } font-semibold`}
+              className={`${exercise_question.deleted_at ? 'text-red-500' : 'text-green-500'
+                } font-semibold`}
             >
               Status : {exercise_question.deleted_at ? 'Nonaktif' : 'Aktif'}
             </p>
@@ -67,9 +70,9 @@ export default function Show(props: Props) {
             <MuiInertiaLinkButton
               color="secondary"
               href={route('packet.sub.category.exercise.exam-monitor.index', [
-                learning_packet,
-                sub_learning_packet,
-                learning_category,
+                learning_packet_id,
+                sub_learning_packet_id,
+                learning_category_id,
                 exercise_question.id,
               ])}
             >
@@ -78,9 +81,9 @@ export default function Show(props: Props) {
             <MuiInertiaLinkButton
               color="primary"
               href={route('packet.sub.category.exercise.leaderboard', [
-                learning_packet,
-                sub_learning_packet,
-                learning_category,
+                learning_packet_id,
+                sub_learning_packet_id,
+                learning_category_id,
                 exercise_question.id,
               ])}
             >
@@ -110,9 +113,9 @@ export default function Show(props: Props) {
             <div className="flex items-center justify-center gap-2">
               <MuiInertiaLinkButton
                 href={route('packet.sub.category.exercise.question.show', [
-                  learning_packet,
-                  sub_learning_packet,
-                  learning_category,
+                  learning_packet_id,
+                  sub_learning_packet_id,
+                  learning_category_id,
                   exercise_question.id,
                   row.original.id,
                 ])}
