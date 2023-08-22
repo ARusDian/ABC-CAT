@@ -20,15 +20,22 @@ import { LearningCategoryModel } from '@/Models/LearningCategory';
 import LinkButton from '@/Components/LinkButton';
 
 interface Props {
-  learningCategory: LearningCategoryModel;
-  learningMaterials: LearningMaterialModel[];
+  learning_category: LearningCategoryModel;
 }
 
-export default function Index({ learningCategory, learningMaterials }: Props) {
+export default function Index({ learning_category: learningCategory }: Props) {
   const [expanded, setExpanded] = React.useState<string | false>('panel1');
+  console.log(learningCategory);
+  const learningMaterials = React.useMemo(
+    () => learningCategory.learning_materials!,
+    [learningCategory.learning_materials!],
+  );
 
-  const { learning_packet, sub_learning_packet, learning_category } =
-    useDefaultClassificationRouteParams();
+  const {
+    learning_packet,
+    sub_learning_packet,
+    learning_category: learning_category_id,
+  } = useDefaultClassificationRouteParams();
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
