@@ -44,7 +44,7 @@ export default function ResourceEditor(props: Props) {
           class: props.editorClassName ?? 'h-96',
         },
       },
-      onFocus: ({ editor }) => {
+      onCreate: ({ editor }) => {
         editor.commands.setFontSize('16pt');
       }
     },
