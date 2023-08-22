@@ -107,6 +107,6 @@ export default function Index({ user_data }: Props) {
                     )}
                 />
             </div>
-        </AdminShowLayout>
-    );
+    </AdminShowLayout>
+  );
 }
