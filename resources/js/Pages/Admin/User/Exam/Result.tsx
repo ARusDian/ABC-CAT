@@ -22,7 +22,7 @@ export default function Result({ exam }: Props) {
           {/* @ts-ignore */}
           <Pdf
             targetRef={ref}
-            filename={`Hasil Tes ${exam.exercise_question.name} - ${user.name} No.${exam.id}.pdf`}
+            filename={`Hasil Tes ${exam.exercise_question.name} - ${exam.user.name} No.${exam.id}.pdf`}
             scale={1}
           >
             {({ toPdf }: never) => (
@@ -41,8 +41,8 @@ export default function Result({ exam }: Props) {
           </MuiInertiaLinkButton>
         </div>
         <div className="border border-black mx-auto">
-          {/* @ts-ignore */}
           <div
+          {/* @ts-ignore */}
             ref={ref}
             style={{ width: '795px' }}
             className=" bg-white flex flex-col gap-1 w-full flex-1 p-1"
