@@ -3,6 +3,7 @@ import KecermatanResultDocument from "@/Components/KecermatanResultDocument";
 import MuiInertiaLinkButton from "@/Components/MuiInertiaLinkButton";
 import DashboardLayout from "@/Layouts/Student/DashboardLayout";
 import { ExamModel } from "@/Models/Exam";
+import { User } from "@/types";
 import { Button } from "@mui/material";
 import React, { useRef } from "react";
 import Pdf from "react-to-pdf";
@@ -10,9 +11,10 @@ import route from "ziggy-js";
 
 interface Props {
     exam: ExamModel;
+    user: User;
 }
 
-export default function ShowResult({ exam }: Props) {
+export default function ShowResult({ exam, user }: Props) {
     const ref = useRef();
 
     return (
@@ -22,7 +24,7 @@ export default function ShowResult({ exam }: Props) {
             <div className="flex flex-col shadow-lg w-full h-full p-7 rounded-2xl shadow-[#c9d4fc] bg-white">
                 <div className="flex justify-between">
                     {/* @ts-ignore */}
-                    <Pdf targetRef={ref} filename={`Hasil Tes ${exam.exercise_question.name} - ${exam.user.name} No.${exam.id}.pdf`} scale={1}>
+                    <Pdf targetRef={ref} filename={`Hasil Tes ${exam.exercise_question.name} - ${user.name} No.${exam.id}.pdf`} scale={1}>
                         {({ toPdf }: never) =>
                             <Button
                                 variant="contained"
@@ -42,9 +44,9 @@ export default function ShowResult({ exam }: Props) {
                     <div ref={ref} style={{ width: "795px" }} className=" bg-white flex flex-col gap-1 w-full flex-1 p-1">
                         {
                             exam.exercise_question.type === 'Kecermatan' ?
-                                <KecermatanResultDocument exam={exam} />
+                                <KecermatanResultDocument exam={exam} user={user} />
                                 :
-                                <ExamResultDocument exam={exam} />
+                                <ExamResultDocument exam={exam} user={user}/>
                         }
                     </div>
                 </div>

@@ -22,7 +22,7 @@ export default function Result({ exam }: Props) {
             <div className="flex flex-col shadow-lg w-full h-full p-7 rounded-2xl shadow-[#c9d4fc] bg-white">
                 <div className="flex justify-between">
                     {/* @ts-ignore */}
-                    <Pdf targetRef={ref} filename={`Hasil Tes ${exam.exercise_question.name} - ${exam.user.name} No.${exam.id}.pdf`} scale={1}>
+                    <Pdf targetRef={ref} filename={`Hasil Tes ${exam.exercise_question.name} - ${user.name} No.${exam.id}.pdf`} scale={1}>
                         {({ toPdf }: never) =>
                             <Button
                                 variant="contained"
@@ -42,9 +42,9 @@ export default function Result({ exam }: Props) {
                     <div ref={ref} style={{ width: "795px" }} className=" bg-white flex flex-col gap-1 w-full flex-1 p-1">
                         {
                             exam.exercise_question.type === 'Kecermatan' ?
-                                <KecermatanResultDocument exam={exam} />
+                                <KecermatanResultDocument exam={exam} user={exam.user}/>
                                 :
-                                <ExamResultDocument exam={exam} />
+                                <ExamResultDocument exam={exam} user={exam.user}/>
                         }
                     </div>
                 </div>

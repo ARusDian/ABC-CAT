@@ -11,9 +11,11 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { User } from "@/types";
 
 interface Props {
     exam: ExamModel;
+    user: User;
 }
 
 ChartJS.register(
@@ -26,7 +28,7 @@ ChartJS.register(
     Legend
 );
 
-export default function KecermatanResultDocument({ exam }: Props) {
+export default function KecermatanResultDocument({ exam, user }: Props) {
 
     const labels = ['Kolom 1', 'Kolom 2', 'Kolom 3', 'Kolom 4', 'Kolom 5', 'Kolom 6', 'Kolom 7', 'Kolom 8', 'Kolom 9', 'Kolom 10'];
     const data = {
@@ -106,7 +108,7 @@ export default function KecermatanResultDocument({ exam }: Props) {
                         <tr>
                             <td>Peserta</td>
                             <td>:</td>
-                            <td>{exam.user.name}</td>
+                            <td>{user.name}</td>
                         </tr>
                         <tr>
                             <td>No Tes</td>

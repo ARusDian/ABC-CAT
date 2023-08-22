@@ -1,11 +1,13 @@
 import { ExamModel } from "@/Models/Exam";
+import { User } from "@/types";
 import React from "react";
 
 interface Props {
     exam: ExamModel;
+    user: User;
 }
 
-export default function ExamResultDocument({ exam }: Props) {
+export default function ExamResultDocument({ exam, user }: Props) {
     return (
         <div  >
             <div className="border-b-4 border-y-black border-double border-t ">
@@ -51,7 +53,7 @@ export default function ExamResultDocument({ exam }: Props) {
                         <tr>
                             <td>Peserta</td>
                             <td>:</td>
-                            <td>{exam.user.name}</td>
+                            <td>{user.name}</td>
                         </tr>
                         <tr>
                             <td>No Tes</td>
