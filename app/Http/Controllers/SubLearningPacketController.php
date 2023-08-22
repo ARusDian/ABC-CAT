@@ -149,13 +149,10 @@ class SubLearningPacketController extends Controller
 
     public function studentIndex($learning_packet)
     {
-        $learningPacket = LearningPacket::with([
-            'subLearningPackets'=>function($query){
-                $query->orderBy('id', 'asc')->with('learningCategories');
-            },
-        ])->find($learning_packet);
         return Inertia::render('Student/SubLearningPacket', [
-            'learningPacket' => $learningPacket,
+            'learningPacket' => fn () => LearningPacket::with([
+                'subLearningPackets.learningCategories',
+            ])->findOrFail($learning_packet),
         ]);
     }
 }

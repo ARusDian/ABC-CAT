@@ -20,7 +20,6 @@ class LearningMaterialController extends Controller
      */
     public function index()
     {
-        //
         $learningMaterials = LearningMaterial::all();
         return Inertia::render('Admin/LearningMaterial/Index', [
             'learningMaterials' => $learningMaterials,
@@ -305,14 +304,8 @@ class LearningMaterialController extends Controller
         $sub_learning_packet,
         $learning_category,
     ) {
-        //
-        $learningMaterials = LearningMaterial::with('documents.documentFile')
-            ->where('learning_category_id', $learning_category)
-            ->get();
-        $learningCategory = LearningCategory::find($learning_category);
         return Inertia::render('Student/LearningMaterial/Index', [
-            'learningCategory' => $learningCategory,
-            'learningMaterials' => $learningMaterials,
+            'learning_category' => fn () => LearningCategory::with(['learningMaterials.documents.documentFile'])->findOrFail($learning_category),
         ]);
     }
 
@@ -322,10 +315,8 @@ class LearningMaterialController extends Controller
         $learning_category,
         $id,
     ) {
-        //
-        $document = LearningMaterialDocument::with('documentFile')->find($id);
         return Inertia::render('Student/LearningMaterial/Show', [
-            'document' => $document,
+            'document' => fn () => LearningMaterialDocument::with('documentFile')->find($id)
         ]);
     }
 }
