@@ -10,10 +10,10 @@ import React from 'react';
 import route from 'ziggy-js';
 
 interface Props {
-  learningPackets: LearningPacketModel[];
+  learning_packets: LearningPacketModel[];
 }
 
-export default function Index({ learningPackets }: Props) {
+export default function Index({ learning_packets }: Props) {
 
   const { props } = usePage();
   const user = props.user as unknown as User;
@@ -59,7 +59,7 @@ export default function Index({ learningPackets }: Props) {
       <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
         <LazyLoadMRT
           columns={dataColumns}
-          data={learningPackets}
+          data={learning_packets}
           enableColumnActions
           enableColumnFilters
           enablePagination

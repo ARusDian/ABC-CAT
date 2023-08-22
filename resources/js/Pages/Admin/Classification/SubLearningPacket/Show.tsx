@@ -10,10 +10,10 @@ import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
 
 interface Props {
-  subLearningPacket: SubLearningPacketModel;
+  sub_learning_packet: SubLearningPacketModel;
 }
 
-export default function Show({ subLearningPacket }: Props) {
+export default function Show({ sub_learning_packet }: Props) {
   const dataColumns = [
     {
       Header: 'Nama',
@@ -26,18 +26,18 @@ export default function Show({ subLearningPacket }: Props) {
       title="Sub Paket Belajar"
       headerTitle="Sub Paket Belajar"
       backRoute={route('packet.show', {
-        learning_packet: subLearningPacket.learning_packet_id,
+        learning_packet: sub_learning_packet.learning_packet_id,
       })}
       editRoute={route('packet.sub.edit', {
-        learning_packet: subLearningPacket.learning_packet_id,
-        sub_learning_packet: subLearningPacket.id,
+        learning_packet: sub_learning_packet.learning_packet_id,
+        sub_learning_packet: sub_learning_packet.id,
       })}
       editRouteTitle="Edit"
       onDelete={() => {
         router.delete(
           route('packet.sub.destroy', {
-            learning_packet: subLearningPacket.learning_packet_id,
-            sub_learning_packet: subLearningPacket.id,
+            learning_packet: sub_learning_packet.learning_packet_id,
+            sub_learning_packet: sub_learning_packet.id,
           }),
         );
       }}
@@ -55,7 +55,7 @@ export default function Show({ subLearningPacket }: Props) {
             <tbody>
               <tr className="border-b py-3 border-black">
                 <td className="py-3 text-center">Nama</td>
-                <td className="py-3 text-center">{subLearningPacket.name}</td>
+                <td className="py-3 text-center">{sub_learning_packet.name}</td>
               </tr>
             </tbody>
           </table>
@@ -69,7 +69,7 @@ export default function Show({ subLearningPacket }: Props) {
           </p>
           <LazyLoadMRT
             columns={dataColumns}
-            data={subLearningPacket.learning_categories ?? []}
+            data={sub_learning_packet.learning_categories ?? []}
             enableColumnActions
             enableColumnFilters
             enablePagination
@@ -90,8 +90,8 @@ export default function Show({ subLearningPacket }: Props) {
                 <MuiInertiaLinkButton
                   color="success"
                   href={route('packet.sub.category.create', {
-                    learning_packet: subLearningPacket.learning_packet_id,
-                    sub_learning_packet: subLearningPacket.id,
+                    learning_packet: sub_learning_packet.learning_packet_id,
+                    sub_learning_packet: sub_learning_packet.id,
                   })}
                 >
                   Tambah Kategori Belajar
@@ -103,8 +103,8 @@ export default function Show({ subLearningPacket }: Props) {
                 <MuiInertiaLinkButton
                   color="primary"
                   href={route('packet.sub.category.show', {
-                    learning_packet: subLearningPacket.learning_packet_id,
-                    sub_learning_packet: subLearningPacket.id,
+                    learning_packet: sub_learning_packet.learning_packet_id,
+                    sub_learning_packet: sub_learning_packet.id,
                     learning_category: row.original.id,
                   })}
                 >

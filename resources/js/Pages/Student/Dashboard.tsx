@@ -2,27 +2,26 @@ import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { asset } from '@/Models/Helper';
 import { LearningPacketModel } from '@/Models/LearningPacket';
 import { UserLearningPacketModel } from '@/Models/UserLearningPacket';
-import { Link, router } from '@inertiajs/react';
-import { Assignment } from '@mui/icons-material';
+import { Link } from '@inertiajs/react';
 import React from 'react';
 import route from 'ziggy-js';
 
 interface Props {
-  userLearningPackets: UserLearningPacketModel[];
-  learningPackets: LearningPacketModel[];
+  user_learning_packets: UserLearningPacketModel[];
+  learning_packets: LearningPacketModel[];
 }
 
 export default function Dashboard({
-  userLearningPackets,
-  learningPackets,
+  user_learning_packets,
+  learning_packets,
 }: Props) {
   return (
     <DashboardLayout title="Home">
       <div className="flex flex-col gap-5">
         <div className="text-5xl text-[#3A63F5]">LAYANAN BELAJAR</div>
         <div className="grid grid-cols-2 gap-5 justify-around py-5 ">
-          {learningPackets.map(learningPacket => {
-            const isSubscribed = userLearningPackets.some(
+          {learning_packets.map(learningPacket => {
+            const isSubscribed = user_learning_packets.some(
               userLearningPacket =>
                 userLearningPacket.learning_packet_id === learningPacket.id,
             );

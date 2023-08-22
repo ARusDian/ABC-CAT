@@ -11,11 +11,11 @@ import { useEditor } from '@/Components/Tiptap/useEditor';
 import ResourceEditor from '@/Components/ResourceEditor';
 
 interface Props {
-  learningMaterial: LearningMaterialModel;
+  learning_material: LearningMaterialModel;
 }
 
 export default function Index(props: Props) {
-  const learningMaterial = props.learningMaterial;
+  const learningMaterial = props.learning_material;
 
 
   const {

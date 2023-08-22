@@ -13,10 +13,10 @@ import { usePage } from '@inertiajs/react';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 
 interface Props {
-  learningCategory: LearningCategoryModel;
+  learning_category: LearningCategoryModel;
 }
 
-export default function Edit({ learningCategory }: Props) {
+export default function Edit({ learning_category }: Props) {
   const {
     learning_packet_id,
     sub_learning_packet_id,
@@ -25,7 +25,7 @@ export default function Edit({ learningCategory }: Props) {
     useDefaultClassificationRouteParams();
 
   let form = useForm<LearningCategoryFormModel>({
-    defaultValues: learningCategory,
+    defaultValues: learning_category,
   });
 
   function onSubmit(e: LearningCategoryFormModel) {

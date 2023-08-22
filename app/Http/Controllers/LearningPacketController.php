@@ -16,9 +16,9 @@ class LearningPacketController extends Controller
     public function index()
     {
         //
-        $learningPackets = LearningPacket::withTrashed()->orderBy('id', 'asc')->get();
+        $learning_packets = LearningPacket::withTrashed()->orderBy('id', 'asc')->get();
         return Inertia::render('Admin/Classification/LearningPacket/Index', [
-            'learningPackets' => $learningPackets,
+            'learning_packets' => $learning_packets,
         ]);
     }
 
@@ -76,14 +76,14 @@ class LearningPacketController extends Controller
     public function show($id)
     {
         //
-        $learningPacket = LearningPacket::with([
+        $learning_packet = LearningPacket::with([
             'subLearningPackets' => function ($query) {
                 $query->orderBy('id', 'asc');
             },
             'subLearningPackets.learningCategories',
         ])->withTrashed()->find($id);
         return Inertia::render('Admin/Classification/LearningPacket/Show', [
-            'learningPacket' => $learningPacket,
+            'learning_packet' => $learning_packet,
         ]);
     }
 
@@ -93,9 +93,9 @@ class LearningPacketController extends Controller
     public function edit($id)
     {
         //
-        $learningPacket = LearningPacket::find($id);
+        $learning_packet = LearningPacket::find($id);
         return Inertia::render('Admin/Classification/LearningPacket/Edit', [
-            'learningPacket' => $learningPacket,
+            'learning_packet' => $learning_packet,
         ]);
     }
 
@@ -111,14 +111,14 @@ class LearningPacketController extends Controller
             'photo.file' => 'nullable|max:2048',
         ]);
 
-        $learningPacket = LearningPacket::find($id);
+        $learning_packet = LearningPacket::find($id);
 
-        if (isset($learningPacket->photo_path)) {
+        if (isset($learning_packet->photo_path)) {
             if ($request->hasFile('photo.file')) {
-                Storage::disk('public')->delete($learningPacket->photo_path);
+                Storage::disk('public')->delete($learning_packet->photo_path);
                 $path = Storage::disk('public')->put('learning-packet', $request->file('photo.file'));
             } else {
-                $path = $learningPacket->photo_path;
+                $path = $learning_packet->photo_path;
             }
         } else {
             if ($request->hasFile('photo.file')) {
@@ -127,19 +127,19 @@ class LearningPacketController extends Controller
                 $path = null;
             }
         }
-        $learningPacket->update([
+        $learning_packet->update([
             'name' => $request->name,
             'description' => $request->description,
             'photo_path' => $path,
         ]);
 
         activity()
-            ->performedOn($learningPacket)
+            ->performedOn($learning_packet)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'UPDATE'])
             ->log(
                 'Learning Packet ' .
-                    $learningPacket->name .
+                    $learning_packet->name .
                     ' updated successfully.',
             );
 
@@ -154,16 +154,16 @@ class LearningPacketController extends Controller
     public function destroy($id)
     {
         //
-        $learningPacket = LearningPacket::find($id);
-        $learningPacket->delete();
+        $learning_packet = learningPacket::find($id);
+        $learning_packet->delete();
 
         activity()
-            ->performedOn($learningPacket)
+            ->performedOn($learning_packet)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'DELETE'])
             ->log(
                 'Learning Packet ' .
-                    $learningPacket->name .
+                    $learning_packet->name .
                     ' deleted successfully.',
             );
 
@@ -174,16 +174,16 @@ class LearningPacketController extends Controller
 
     public function restore($id)
     {
-        $learningPacket = LearningPacket::withTrashed()->find($id);
-        $learningPacket->restore();
+        $learning_packet = LearningPacket::withTrashed()->find($id);
+        $learning_packet->restore();
 
         activity()
-            ->performedOn($learningPacket)
+            ->performedOn($learning_packet)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'RESTORE'])
             ->log(
                 'Learning Packet ' .
-                    $learningPacket->name .
+                    $learning_packet->name .
                     ' restored successfully.',
             );
 

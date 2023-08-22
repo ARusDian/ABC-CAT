@@ -11,10 +11,10 @@ import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import { asset } from '@/Models/Helper';
 
 interface Props {
-  learningPacket: LearningPacketModel;
+  learning_packet: LearningPacketModel;
 }
 
-export default function Show({ learningPacket }: Props) {
+export default function Show({ learning_packet }: Props) {
   const dataColumns = [
     {
       Header: 'Nama',
@@ -24,9 +24,9 @@ export default function Show({ learningPacket }: Props) {
 
   let editProps = {};
 
-  if (!learningPacket.deleted_at) {
+  if (!learning_packet.deleted_at) {
     editProps = {
-      editRoute: route('packet.edit', learningPacket.id),
+      editRoute: route('packet.edit', learning_packet.id),
       editRouteTitle: 'Edit',
     };
   }
@@ -37,17 +37,17 @@ export default function Show({ learningPacket }: Props) {
       headerTitle="Paket Belajar"
       backRoute={route('packet.index')}
       {...editProps}
-      isRestore={learningPacket.deleted_at ? true : false}
+      isRestore={learning_packet.deleted_at ? true : false}
       onDelete={() => {
-        learningPacket.deleted_at
-          ? router.post(route('packet.restore', [learningPacket.id]))
-          : router.delete(route('packet.destroy', [learningPacket.id]));
+        learning_packet.deleted_at
+          ? router.post(route('packet.restore', [learning_packet.id]))
+          : router.delete(route('packet.destroy', [learning_packet.id]));
       }}
-      deleteTitle={learningPacket.deleted_at ? 'Restore' : 'Hapus'}
+      deleteTitle={learning_packet.deleted_at ? 'Restore' : 'Hapus'}
       onDeleteMessage={
-        learningPacket.deleted_at
-          ? `Ini akan mengembalikan Akun ${learningPacket.name}`
-          : `Ini akan menghapus Akun ${learningPacket.name}`
+        learning_packet.deleted_at
+          ? `Ini akan mengembalikan Akun ${learning_packet.name}`
+          : `Ini akan menghapus Akun ${learning_packet.name}`
       }
     >
       <div className="flex flex-col gap-5">
@@ -55,10 +55,10 @@ export default function Show({ learningPacket }: Props) {
           <div className='flex justify-center'>
             <img
               className="w-40 h-40"
-              src={learningPacket.photo_path
-                ? asset('public', learningPacket.photo_path)
+              src={learning_packet.photo_path
+                ? asset('public', learning_packet.photo_path)
                 : asset('root', 'assets/image/default-image.jpg')}
-              alt={learningPacket.name}
+              alt={learning_packet.name}
             />
           </div>
           <table className="w-full">
@@ -71,12 +71,12 @@ export default function Show({ learningPacket }: Props) {
             <tbody>
               <tr className="border-b py-3 border-black">
                 <td className="py-3 text-center">Nama</td>
-                <td className="py-3 text-center">{learningPacket.name}</td>
+                <td className="py-3 text-center">{learning_packet.name}</td>
               </tr>
               <tr className="border-b py-3 border-black">
                 <td className="py-3 text-center">Deskripsi</td>
                 <td className="py-3 text-center">
-                  {learningPacket.description}
+                  {learning_packet.description}
                 </td>
               </tr>
             </tbody>
@@ -91,7 +91,7 @@ export default function Show({ learningPacket }: Props) {
           </p>
           <LazyLoadMRT
             columns={dataColumns}
-            data={learningPacket.sub_learning_packets}
+            data={learning_packet.sub_learning_packets}
             enableColumnActions
             enableColumnFilters
             enablePagination
@@ -116,7 +116,7 @@ export default function Show({ learningPacket }: Props) {
                       <Link
                         className="px-3 py-3 rounded-lg bg-[#77c3f9] hover:bg-[#3da5f5] transition duration-300 ease-in-out"
                         href={route('packet.sub.category.show', [
-                          learningPacket.id,
+                          learning_packet.id,
                           row.original.id,
                           category.id,
                         ])}
@@ -141,7 +141,7 @@ export default function Show({ learningPacket }: Props) {
               <div className="flex items-center justify-center gap-2">
                 <MuiInertiaLinkButton
                   color="success"
-                  href={route('packet.sub.create', learningPacket.id)}
+                  href={route('packet.sub.create', learning_packet.id)}
                 >
                   Tambah Sub Paket Belajar
                 </MuiInertiaLinkButton>
@@ -152,7 +152,7 @@ export default function Show({ learningPacket }: Props) {
                 <MuiInertiaLinkButton
                   color="primary"
                   href={route('packet.sub.show', [
-                    learningPacket.id,
+                    learning_packet.id,
                     row.original.id,
                   ])}
                 >

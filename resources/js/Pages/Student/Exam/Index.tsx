@@ -10,11 +10,11 @@ import { LearningCategoryModel } from '@/Models/LearningCategory';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
 
 interface Props {
-  learningCategory: LearningCategoryModel;
-  exerciseQuestions: ExerciseQuestionModel[];
+  learning_category: LearningCategoryModel;
+  exercise_questions: ExerciseQuestionModel[];
 }
 
-export default function Index({ learningCategory, exerciseQuestions }: Props) {
+export default function Index({ learning_category, exercise_questions }: Props) {
   const {
     learning_packet_id,
     sub_learning_packet_id,
@@ -48,7 +48,7 @@ export default function Index({ learningCategory, exerciseQuestions }: Props) {
       <div className="flex flex-col gap-5 mx-10">
         <div className="flex justify-between">
           <p className="text-5xl text-[#3A63F5] capitalize">
-            Daftar Latihan Soal {learningCategory.name}
+            Daftar Latihan Soal {learning_category.name}
           </p>
           <LinkButton
             href={route('student.packet.show', learning_packet_id)}
@@ -59,10 +59,10 @@ export default function Index({ learningCategory, exerciseQuestions }: Props) {
           </LinkButton>
         </div>
         <div className="flex flex-col gap-3">
-          {exerciseQuestions.length > 0 ? (
+          {exercise_questions.length > 0 ? (
             <LazyLoadMRT
               columns={columns}
-              data={exerciseQuestions}
+              data={exercise_questions}
               enableColumnActions
               enableColumnFilters
               enablePagination

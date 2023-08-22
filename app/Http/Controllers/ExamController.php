@@ -32,8 +32,8 @@ class ExamController extends Controller
             $learning_category,
         )->orderBy('id', 'asc')->get();
         return Inertia::render('Student/Exam/Index', [
-            'learningCategory' => $learningCategory,
-            'exerciseQuestions' => $exerciseQuestions,
+            'learning_category' => $learningCategory,
+            'exercise_questions' => $exerciseQuestions,
         ]);
     }
 

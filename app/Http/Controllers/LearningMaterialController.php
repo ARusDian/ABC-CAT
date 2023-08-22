@@ -22,7 +22,7 @@ class LearningMaterialController extends Controller
     {
         $learningMaterials = LearningMaterial::all();
         return Inertia::render('Admin/LearningMaterial/Index', [
-            'learningMaterials' => $learningMaterials,
+            'learning_materials' => $learningMaterials,
         ]);
     }
 
@@ -105,13 +105,13 @@ class LearningMaterialController extends Controller
         $id,
     ) {
         //
-        $learningMaterial = LearningMaterial::with([
+        $learning_material = LearningMaterial::with([
             'documents' => function ($query) {
                 $query->with('documentFile')->orderBy('id', 'asc');
             },
         ])->find($id);
         return Inertia::render('Admin/LearningMaterial/Show', [
-            'learningMaterial' => $learningMaterial,
+            'learning_material' => $learning_material,
         ]);
     }
 
@@ -125,11 +125,11 @@ class LearningMaterialController extends Controller
         $id,
     ) {
         //
-        $learningMaterial = LearningMaterial::with(
+        $learning_material = LearningMaterial::with(
             'documents.documentFile',
         )->find($id);
         return Inertia::render('Admin/LearningMaterial/Edit', [
-            'learningMaterial' => $learningMaterial,
+            'learning_material' => $learning_material,
         ]);
     }
 

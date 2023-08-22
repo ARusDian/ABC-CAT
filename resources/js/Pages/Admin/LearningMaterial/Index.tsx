@@ -9,11 +9,11 @@ import { Button } from '@mui/material';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
 
 interface Props {
-  learningMaterials: Array<LearningMaterialModel>;
+  learning_materials: Array<LearningMaterialModel>;
 }
 
 export default function Index(props: Props) {
-  const learningMaterials = props.learningMaterials;
+  const learningMaterials = props.learning_materials;
 
   const dataColumns = [] as MRT_ColumnDef<LearningMaterialModel>[];
   return (

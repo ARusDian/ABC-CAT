@@ -11,19 +11,19 @@ import {
 } from '@/Models/SubLearningPacket';
 
 interface Props {
-  subLearningPacket: SubLearningPacketModel;
+  sub_learning_packet: SubLearningPacketModel;
 }
 
-export default function Edit({ subLearningPacket }: Props) {
+export default function Edit({ sub_learning_packet }: Props) {
   let form = useForm<SubLearningPacketFormModel>({
-    defaultValues: subLearningPacket,
+    defaultValues: sub_learning_packet,
   });
 
   function onSubmit(e: SubLearningPacketFormModel) {
     Api.post(
       route('packet.sub.update', {
-        learning_packet: subLearningPacket.learning_packet_id,
-        sub_learning_packet: subLearningPacket.id,
+        learning_packet: sub_learning_packet.learning_packet_id,
+        sub_learning_packet: sub_learning_packet.id,
       }),
       { ...e, _method: 'PUT' },
       form,
@@ -34,8 +34,8 @@ export default function Edit({ subLearningPacket }: Props) {
     <AdminFormLayout
       title="Edit Sub Paket Belajar"
       backRoute={route('packet.sub.show', {
-        learning_packet: subLearningPacket.learning_packet_id,
-        sub_learning_packet: subLearningPacket.id,
+        learning_packet: sub_learning_packet.learning_packet_id,
+        sub_learning_packet: sub_learning_packet.id,
       })}
       backRouteTitle="Kembali"
     >

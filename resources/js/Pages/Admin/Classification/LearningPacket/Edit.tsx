@@ -11,17 +11,17 @@ import route from 'ziggy-js';
 import Form from './Form';
 
 interface Props {
-  learningPacket: LearningPacketModel;
+  learning_packet: LearningPacketModel;
 }
 
-export default function Edit({ learningPacket }: Props) {
+export default function Edit({ learning_packet }: Props) {
   let form = useForm<LearningPacketFormModel>({
-    defaultValues: learningPacket,
+    defaultValues: learning_packet,
   });
 
   function onSubmit(e: LearningPacketFormModel) {
     Api.post(
-      route('packet.update', learningPacket.id),
+      route('packet.update', learning_packet.id),
       { ...e, _method: 'PUT' },
       form,
     );
@@ -30,7 +30,7 @@ export default function Edit({ learningPacket }: Props) {
   return (
     <AdminFormLayout
       title="Edit Paket Belajar"
-      backRoute={route('packet.show', learningPacket.id)}
+      backRoute={route('packet.show', learning_packet.id)}
       backRouteTitle="Kembali"
     >
       <form

@@ -19,8 +19,8 @@ class DashboardController extends Controller
                 ->hasRole('student')
         ) {
             return Inertia::render('Student/Dashboard', [
-                'userLearningPackets' => auth()->user()->userLearningPackets,
-                'learningPackets' => LearningPacket::orderBy('id', 'asc')->get(),
+                'user_learning_packets' => auth()->user()->userLearningPackets,
+                'learning_packets' => LearningPacket::orderBy('id', 'asc')->get(),
             ]);
         } elseif (
             auth()

@@ -49,10 +49,10 @@ class SubLearningPacketController extends Controller
             'learning_packet_id' => 'required',
         ]);
 
-        $subLearningPacket = SubLearningPacket::create($request->all());
+        $sub_learning_packet = SubLearningPacket::create($request->all());
 
         activity()
-            ->performedOn($subLearningPacket)
+            ->performedOn($sub_learning_packet)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'CREATE'])
             ->log(
@@ -72,11 +72,11 @@ class SubLearningPacketController extends Controller
     public function show($learning_packet, $id)
     {
         //
-        $subLearningPacket = SubLearningPacket::with(
+        $sub_learning_packet = SubLearningPacket::with(
             'learningCategories',
         )->find($id);
         return Inertia::render('Admin/Classification/SubLearningPacket/Show', [
-            'subLearningPacket' => $subLearningPacket,
+            'sub_learning_packet' => $sub_learning_packet,
         ]);
     }
 
@@ -86,9 +86,9 @@ class SubLearningPacketController extends Controller
     public function edit($learning_packet, $id)
     {
         //
-        $subLearningPacket = SubLearningPacket::find($id);
+        $sub_learning_packet = SubLearningPacket::find($id);
         return Inertia::render('Admin/Classification/SubLearningPacket/Edit', [
-            'subLearningPacket' => $subLearningPacket,
+            'sub_learning_packet' => $sub_learning_packet,
         ]);
     }
 
@@ -102,23 +102,23 @@ class SubLearningPacketController extends Controller
             'name' => 'required',
         ]);
 
-        $subLearningPacket = SubLearningPacket::find($id);
-        $subLearningPacket->update($request->all());
+        $sub_learning_packet = SubLearningPacket::find($id);
+        $sub_learning_packet->update($request->all());
 
         activity()
-            ->performedOn($subLearningPacket)
+            ->performedOn($sub_learning_packet)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'UPDATE'])
             ->log(
                 'Sub Learning Packet ' .
-                    $subLearningPacket->name .
+                    $sub_learning_packet->name .
                     ' updated successfully.',
             );
 
         return redirect()
             ->route('packet.sub.show', [
                 $learning_packet,
-                $subLearningPacket->learning_packet_id,
+                $sub_learning_packet->learning_packet_id,
             ])
             ->banner('Sub Learning Packet updated successfully.');
     }
@@ -129,21 +129,21 @@ class SubLearningPacketController extends Controller
     public function destroy($learning_packet, $id)
     {
         //
-        $subLearningPacket = SubLearningPacket::find($id);
-        $subLearningPacket->delete();
+        $sub_learning_packet = SubLearningPacket::find($id);
+        $sub_learning_packet->delete();
 
         activity()
-            ->performedOn($subLearningPacket)
+            ->performedOn($sub_learning_packet)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'DELETE'])
             ->log(
                 'Sub Learning Packet ' .
-                    $subLearningPacket->name .
+                    $sub_learning_packet->name .
                     ' deleted successfully.',
             );
 
         return redirect()
-            ->route('packet.show', $subLearningPacket->learning_packet_id)
+            ->route('packet.show', $sub_learning_packet->learning_packet_id)
             ->banner('Sub Learning Packet deleted successfully.');
     }
 

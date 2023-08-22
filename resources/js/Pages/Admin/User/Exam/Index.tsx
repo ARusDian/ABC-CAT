@@ -13,11 +13,11 @@ import { User } from '@/types';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 
 interface Props {
-    userData: User;
+    user_data: User;
 }
 
-export default function Index({ userData }: Props) {
-    const exams = userData.exams as ExamModel[];
+export default function Index({ user_data }: Props) {
+    const exams = user_data.exams as ExamModel[];
     const dataColumns = [
         {
             header: 'Nama Latihan Soal',
@@ -43,22 +43,22 @@ export default function Index({ userData }: Props) {
             title="Monitor Exam"
             headerTitle='Monitor Ujian'
             backRoute={route('user.show', [
-                userData.id
+                user_data.id
             ])}
         >
             <div className="mt-6 p-7 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-3">
                 <div className='flex justify-between gap-1'>
                     <div className='text-lg'>
                         <p>
-                            <span className='font-bold'>Nama:</span> {userData.name}
+                            <span className='font-bold'>Nama:</span> {user_data.name}
                         </p>
                         <p>
-                            <span className='font-bold'>Email:</span> {userData.email}
+                            <span className='font-bold'>Email:</span> {user_data.email}
                         </p>
                     </div>
                     <MuiInertiaLinkButton
                         href={route('user.export-result', [
-                            userData.id,
+                            user_data.id,
                         ])}
                         isNextPage
                         color='secondary'
@@ -89,7 +89,7 @@ export default function Index({ userData }: Props) {
                             <MuiInertiaLinkButton
                                 href={route('user.exam.show',
                                     [
-                                        userData.id,
+                                        user_data.id,
                                         row.original.id
                                     ])}>
                                 Evaluasi
@@ -98,7 +98,7 @@ export default function Index({ userData }: Props) {
                                 color='success'
                                 href={route('user.exam.result',
                                     [
-                                        userData.id,
+                                        user_data.id,
                                         row.original.id
                                     ])}>
                                 Lihat Hasil

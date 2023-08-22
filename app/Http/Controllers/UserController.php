@@ -111,7 +111,7 @@ class UserController extends Controller
             ->with(['roles'])
             ->find($id);
         return Inertia::render('Admin/User/Show', [
-            'userData' => $user,
+            'user_data' => $user,
         ]);
     }
 
@@ -129,7 +129,7 @@ class UserController extends Controller
             ->find($id);
         $roles = Role::all();
         return Inertia::render('Admin/User/Edit', [
-            'userData' => $user,
+            'user_data' => $user,
             'roles' => $roles,
         ]);
     }
@@ -306,7 +306,7 @@ class UserController extends Controller
             ])->withScore()->ofFinished(true)->orderBy('created_at', 'desc'),
         ])->find($id);
         return Inertia::render('Admin/User/Exam/Index', [
-            'userData' => $user,
+            'user_data' => $user,
         ]);
     }
 

@@ -46,10 +46,10 @@ function a11yProps(index: number) {
 }
 
 interface Props {
-  learningCategory: LearningCategoryModel;
+  learning_category: LearningCategoryModel;
 }
 
-export default function Show({ learningCategory }: Props) {
+export default function Show({ learning_category }: Props) {
   const confirm = useConfirm();
 
   const handleDelete = (
@@ -117,7 +117,7 @@ export default function Show({ learningCategory }: Props) {
             <tbody>
               <tr className="border-b py-3 border-black">
                 <td className="py-3 text-center">Nama</td>
-                <td className="py-3 text-center">{learningCategory.name}</td>
+                <td className="py-3 text-center">{learning_category.name}</td>
               </tr>
             </tbody>
           </table>
@@ -150,14 +150,14 @@ export default function Show({ learningCategory }: Props) {
               accessorKey: 'title',
             },
           ]}
-          data={learningCategory.learning_materials ?? []}
+          data={learning_category.learning_materials ?? []}
           showRoute="packet.sub.category.material.show"
           showRouteTitle="Show"
           learningPacketId={
-            learningCategory.sub_learning_packet?.learning_packet_id ?? 0
+            learning_category.sub_learning_packet?.learning_packet_id ?? 0
           }
-          subLearningPacketId={learningCategory.sub_learning_packet_id}
-          learningCategoryId={learningCategory.id}
+          subLearningPacketId={learning_category.sub_learning_packet_id}
+          learningCategoryId={learning_category.id}
           isExpandable
           detailPanel={row => (
             <div className="flex flex-col gap-3">
@@ -224,14 +224,14 @@ export default function Show({ learningCategory }: Props) {
               accessorFn: row => row.items?.length ?? 0,
             },
           ]}
-          data={learningCategory.bank_questions ?? []}
+          data={learning_category.bank_questions ?? []}
           showRoute="packet.sub.category.bank-question.show"
           showRouteTitle="Show"
           learningPacketId={
-            learningCategory.sub_learning_packet?.learning_packet_id ?? 0
+            learning_category.sub_learning_packet?.learning_packet_id ?? 0
           }
-          subLearningPacketId={learningCategory.sub_learning_packet_id}
-          learningCategoryId={learningCategory.id}
+          subLearningPacketId={learning_category.sub_learning_packet_id}
+          learningCategoryId={learning_category.id}
           isExpandable={false}
         />
       </CustomTabPanel>
@@ -267,7 +267,7 @@ export default function Show({ learningCategory }: Props) {
                     ),
                 },
               ]}
-              data={learningCategory.exercise_questions ?? []}
+              data={learning_category.exercise_questions ?? []}
               enableColumnActions
               enableColumnFilters
               enablePagination
@@ -288,10 +288,10 @@ export default function Show({ learningCategory }: Props) {
                   <MuiInertiaLinkButton
                     color="success"
                     href={route('packet.sub.category.exercise.create', [
-                      learningCategory.sub_learning_packet
+                      learning_category.sub_learning_packet
                         ?.learning_packet_id ?? 0,
-                      learningCategory.sub_learning_packet_id,
-                      learningCategory.id,
+                      learning_category.sub_learning_packet_id,
+                      learning_category.id,
                     ])}
                   >
                     Tambah Latihan Soal
@@ -303,10 +303,10 @@ export default function Show({ learningCategory }: Props) {
                   <MuiInertiaLinkButton
                     color="primary"
                     href={route('packet.sub.category.exercise.show', [
-                      learningCategory.sub_learning_packet
+                      learning_category.sub_learning_packet
                         ?.learning_packet_id ?? 0,
-                      learningCategory.sub_learning_packet_id,
-                      learningCategory.id,
+                      learning_category.sub_learning_packet_id,
+                      learning_category.id,
                       row.original.id,
                     ])}
                   >
@@ -326,19 +326,19 @@ export default function Show({ learningCategory }: Props) {
                           row.original.deleted_at === null
                             ? router.delete(
                               route('packet.sub.category.exercise.destroy', [
-                                learningCategory.sub_learning_packet
+                                learning_category.sub_learning_packet
                                   ?.learning_packet_id ?? 0,
-                                learningCategory.sub_learning_packet_id,
-                                learningCategory.id,
+                                learning_category.sub_learning_packet_id,
+                                learning_category.id,
                                 row.original.id,
                               ]),
                             )
                             : router.post(
                               route('packet.sub.category.exercise.restore', [
-                                learningCategory.sub_learning_packet
+                                learning_category.sub_learning_packet
                                   ?.learning_packet_id ?? 0,
-                                learningCategory.sub_learning_packet_id,
-                                learningCategory.id,
+                                learning_category.sub_learning_packet_id,
+                                learning_category.id,
                                 row.original.id,
                               ]),
                             );

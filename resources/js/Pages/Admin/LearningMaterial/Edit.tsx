@@ -16,11 +16,11 @@ import { useForm } from 'react-hook-form';
 import Api from '@/Utils/Api';
 
 interface Props {
-  learningMaterial: LearningMaterialModel;
+  learning_material: LearningMaterialModel;
 }
 
 export default function Edit(props: Props) {
-  const learningMaterial = props.learningMaterial;
+  const learningMaterial = props.learning_material;
   console.log(props);
   let form = useForm<BaseLearningMaterialModel>({
     defaultValues: learningMaterial,

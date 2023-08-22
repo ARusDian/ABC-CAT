@@ -7,11 +7,11 @@ import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import { asset } from '@/Models/Helper';
 
 interface Props {
-  userData: User;
+  user_data: User;
 }
 
 export default function Show(props: Props) {
-  let user = props.userData;
+  let user = props.user_data;
   console.log(user);
   const [open, setOpen] = React.useState(false);
 

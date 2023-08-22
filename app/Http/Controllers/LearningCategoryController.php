@@ -82,7 +82,7 @@ class LearningCategoryController extends Controller
             },
         ])->find($id);
         return Inertia::render('Admin/Classification/LearningCategory/Show', [
-            'learningCategory' => $learningCategory,
+            'learning_category' => $learningCategory,
         ]);
     }
 
@@ -94,7 +94,7 @@ class LearningCategoryController extends Controller
         //
         $learningCategory = LearningCategory::find($id);
         return Inertia::render('Admin/Classification/LearningCategory/Edit', [
-            'learningCategory' => $learningCategory,
+            'learning_category' => $learningCategory,
         ]);
     }
 
