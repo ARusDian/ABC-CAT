@@ -55,7 +55,7 @@ export default function Create({ bank_question }: Props) {
 
   return (
     <AdminFormLayout
-      title="Tambah Soal Latihan"
+      title="Edit Bank Soal"
       backRoute={route('packet.sub.category.bank-question.show', [
         learning_packet_id,
         sub_learning_packet_id,

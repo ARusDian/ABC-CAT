@@ -48,7 +48,7 @@ export default function Create(props: Props) {
   }
   return (
     <AdminFormLayout
-      title="Tambah Soal Latihan"
+      title="Tambah Bank Soal"
       backRoute={route('packet.sub.category.show', [
         learning_packet_id,
         sub_learning_packet_id,
