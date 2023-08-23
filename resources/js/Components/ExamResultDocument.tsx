@@ -197,8 +197,8 @@ export default function ExamResultDocument({ exam, user }: Props) {
             <th className="border border-black">Skor</th>
           </tr>
           {/* TODO: Change with Exact Value */}
-          {resultData.map((item, index) => (
-            <tr className="text-lg font-semibold" key={index}>
+          {resultData.map((item) => (
+            <tr className="text-lg font-semibold" key={getUniqueKey(item)}>
               <td className="border border-black">{item.aspect}</td>
               <td className="border border-black">{item.count}</td>
               <td className="border border-black">{item.answered}</td>

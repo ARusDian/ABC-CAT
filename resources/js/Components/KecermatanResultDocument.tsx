@@ -14,6 +14,7 @@ import { Line } from 'react-chartjs-2';
 import { User } from '@/types';
 import { result } from 'lodash';
 import _ from 'lodash';
+import { getUniqueKey } from '@/Models/Helper';
 
 interface Props {
   exam: ExamModel;
@@ -156,7 +157,8 @@ export default function KecermatanResultDocument({ exam, user }: Props) {
   };
 
   const getScoreCategory = (score: number) => {
-    return score > 25 ? 'Sangat Baik' : score > 22 ? 'Baik' : 'Cukup';
+    if (score > 25) { return 'Sangat Baik'; }
+    return score > 22 ? 'Baik' : 'Cukup';
   }
 
   return (
@@ -261,7 +263,7 @@ export default function KecermatanResultDocument({ exam, user }: Props) {
           </tr>
           {/* TODO: Change with Exact Value */}
           {resultData.map((item) => (
-            <tr className="text-lg font-semibold">
+            <tr className="text-lg font-semibold" key={getUniqueKey(item)}>
               <td className="border border-black">{item.aspect}</td>
               <td className="border border-black">{item.count}</td>
               <td className="border border-black">{item.answered}</td>
