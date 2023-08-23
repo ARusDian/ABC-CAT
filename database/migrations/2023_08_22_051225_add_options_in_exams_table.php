@@ -16,7 +16,7 @@ return new class extends Migration
             $table->json('options')->nullable();
         });
 
-        $exams = Exam::with(['exerciseQuestion'])->all();
+        $exams = Exam::with(['exerciseQuestion'])->get();
 
         foreach ($exams as $exam) {
             $exam->update([

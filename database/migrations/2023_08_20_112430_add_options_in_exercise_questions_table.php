@@ -19,7 +19,7 @@ return new class extends Migration
 
 
 
-        $exercise_questions = ExerciseQuestion::all();
+        $exercise_questions = ExerciseQuestion::withTrashed()->get();
 
         foreach ($exercise_questions as $exercise) {
             $exercise->update([

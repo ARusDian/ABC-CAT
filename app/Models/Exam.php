@@ -49,7 +49,7 @@ class Exam extends Model
 
     public function exerciseQuestion(): BelongsTo
     {
-        return $this->belongsTo(ExerciseQuestion::class);
+        return $this->belongsTo(ExerciseQuestion::class)->withTrashed();
     }
 
     public function scopeOfExercise($query, $exercise_question_id)
