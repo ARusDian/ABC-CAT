@@ -80,14 +80,14 @@ export default function Show(props: Props) {
             </MuiInertiaLinkButton>
             <MuiInertiaLinkButton
               color="primary"
-              href={route('packet.sub.category.exercise.leaderboard', [
+              href={route('packet.sub.category.exercise.exam', [
                 learning_packet_id,
                 sub_learning_packet_id,
                 learning_category_id,
                 exercise_question.id,
               ])}
             >
-              Leaderboard
+              Riwayat Pengerjaan
             </MuiInertiaLinkButton>
           </div>
         </div>

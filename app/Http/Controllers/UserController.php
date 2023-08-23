@@ -29,7 +29,7 @@ class UserController extends Controller
             ->with('roles')
             ->whereColumns($request->get('columnFilters'))
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate($request->get('perPage') ?? 10);
         return Inertia::render('Admin/User/Index', [
             'users' => $user,
         ]);

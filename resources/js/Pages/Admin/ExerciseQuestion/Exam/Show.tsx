@@ -1,8 +1,5 @@
 import { ExamModel } from '@/Models/Exam';
 import React from 'react';
-import DashboardLayout from '@/Layouts/Student/DashboardLayout';
-import { Button } from '@mui/material';
-import { Link } from '@inertiajs/react';
 import route from 'ziggy-js';
 import { asset } from '@/Models/Helper';
 import { useSearchParam } from '@/Hooks/useSearchParam';
@@ -26,7 +23,7 @@ export default function ShowAttempt({ exam }: Props) {
         history.pushState({}, '', url);
     }, []);
 
-    const { learning_packet, sub_learning_packet, learning_category } =
+    const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
         useDefaultClassificationRouteParams();
 
     return (
@@ -34,9 +31,7 @@ export default function ShowAttempt({ exam }: Props) {
             <div className="flex justify-end mb-3">
                 <MuiInertiaLinkButton
                     href={route('packet.sub.category.exercise.leaderboard', [
-                        learning_packet,
-                        sub_learning_packet,
-                        learning_category,
+                        learning_packet_id, sub_learning_packet_id, learning_category_id,
                         exam.exercise_question_id,
                     ])}
                 >

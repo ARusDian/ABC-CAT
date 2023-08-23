@@ -85,21 +85,9 @@ export default function Leaderboard({ exercise_question }: Props) {
 
   return (
     <AdminTableLayout title={`Leaderboard Latihan Soal ${exercise_question.name}`}>
-      <div className="flex justify-between my-3">
+      <div className="flex justify-end my-3">
         <MuiInertiaLinkButton
-          href={route('packet.sub.category.exercise.export', [
-            learning_packet_id,
-            sub_learning_packet_id,
-            learning_category_id,
-            exercise_question.id,
-          ])}
-          isNextPage
-          color='secondary'
-        >
-          Export Hasil Ujian Keseluruhan
-        </MuiInertiaLinkButton>
-        <MuiInertiaLinkButton
-          href={route('packet.sub.category.exercise.show', [
+          href={route('packet.sub.category.exercise.exam', [
             learning_packet_id,
             sub_learning_packet_id,
             learning_category_id,
@@ -134,7 +122,7 @@ export default function Leaderboard({ exercise_question }: Props) {
           renderRowActions={({ row }) => (
             <div className="flex items-center justify-center gap-2">
               <MuiInertiaLinkButton
-                href={route('packet.sub.category.exercise.leaderboard.result',
+                href={route('packet.sub.category.exercise.exam.result',
                   [
                     learning_packet_id,
                     sub_learning_packet_id,

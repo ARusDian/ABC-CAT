@@ -146,7 +146,7 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        return Inertia::render('Admin/ExerciseQuestion/Leaderboard', [
+        return Inertia::render('Admin/ExerciseQuestion/Exam/Leaderboard', [
             'exercise_question' => fn () => ExerciseQuestion::with([
                 'exams' => fn ($q) => $q->withScore(),
                 'exams.user',
@@ -156,7 +156,23 @@ class ExerciseQuestionController extends Controller
         ]);
     }
 
-    public function leaderboardResult(
+
+    public function ExamIndex($learning_packet, $sub_learning_packet, $learning_category_id, $id, Request $request)
+    {
+        $exams = Exam::withScore()
+            ->with('user')
+            ->ofFinished(true)
+            ->ofExercise($id)
+            ->whereColumns($request->get('columnFilters'))
+            ->orderBy('finished_at', 'desc')
+            ->get();
+        return Inertia::render('Admin/ExerciseQuestion/Exam/Index', [
+            'exercise_question' => fn () => ExerciseQuestion::findOrFail($id),
+            'exams' => $exams,
+        ]);
+    }
+
+    public function examShow(
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
@@ -164,13 +180,29 @@ class ExerciseQuestionController extends Controller
         $exam_id,
     ) {
         $exam = Exam::withScore()->find($exam_id)->load('answers.question');
-        return Inertia::render('Admin/ExerciseQuestion/DetailExamResult', [
+        return Inertia::render('Admin/ExerciseQuestion/Exam/Show', [
             'exercise_question' => fn () => ExerciseQuestion::with([
                 'exams' => fn ($q) => $q->withScore(),
                 'exams.user',
             ])
                 ->withTrashed()
                 ->findOrFail($id),
+            'exam' => $exam,
+        ]);
+    }
+
+    public function examResult(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $id,
+        $exam_id,
+    ) {
+        $exam = Exam::with([
+            'exerciseQuestion.learningCategory',
+            'user' => fn ($q) => $q->select('id', 'name', 'email'),
+        ])->withScore()->ofFinished(true)->find($id);
+        return Inertia::render('Admin/ExerciseQuestion/Exam/Result', [
             'exam' => $exam,
         ]);
     }

@@ -182,4 +182,40 @@ class Exam extends Model
 
         return $this->append('result');
     }
+    
+    public function scopeWhereColumns($query, $filters)
+    {
+        $allowed = ['user.name'];
+
+        if (isset($filters)) {
+            foreach (json_decode($filters) as $value) {
+                $key = explode('.', $value->id);
+
+                if (!in_array($value->id, $allowed)) {
+                    continue;
+                }
+
+                if (count($key) > 1) {
+                    $query->whereHas($key[0], function ($query) use (
+                        $value,
+                        $key,
+                    ) {
+                        return $query->where(
+                            $key[1],
+                            'like',
+                            '%' . $value->value . '%',
+                        );
+                    });
+                } else {
+                    $query->where(
+                        $value->id,
+                        'like',
+                        '%' . $value->value . '%',
+                    );
+                }
+            }
+        }
+
+        return $query;
+    }
 }

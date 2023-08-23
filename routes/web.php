@@ -136,7 +136,9 @@ Route::middleware([
                                     Route::post("restore", [ExerciseQuestionController::class, "restore"])->name("restore");
                                     Route::get("export", [ExerciseQuestionController::class, "export"])->name("export");
                                     Route::get("leaderboard", [ExerciseQuestionController::class, "leaderboard"])->name("leaderboard");
-                                    Route::get("leaderboard/{exam_id}", [ExerciseQuestionController::class, "leaderboardResult"])->name("leaderboard.result");
+                                    Route::get("exam", [ExerciseQuestionController::class, "ExamIndex"])->name("exam");
+                                    Route::get("exam/{exam_id}", [ExerciseQuestionController::class, "examShow"])->name("exam.show");
+                                    Route::get("exam/{exam_id}/result", [ExerciseQuestionController::class, "examResult"])->name("exam.result");
                                     Route::put("import", [ExerciseQuestionController::class, "importUpdate"])->name("import.update");
                                     Route::resource("question", ExerciseQuestionQuestionController::class);
                                     Route::post("create-many", [ExerciseQuestionQuestionController::class, "storeMany"])->name("question.store-many");
