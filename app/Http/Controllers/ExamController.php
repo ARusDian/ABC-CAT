@@ -82,9 +82,9 @@ class ExamController extends Controller
     public function markFinished(Exam $exam)
     {
         $exam->finished_at = $exam->expire_in->minimum();
-        $exam->server_state = null;
 
         $exam->markClusterChange($exam->finished_at);
+        $exam->server_state = null;
 
         $exam->answers()->update([
             'state' => null,
