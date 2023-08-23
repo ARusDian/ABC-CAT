@@ -22,7 +22,7 @@ interface Props {
 export default function Index({ learningPacket }: Props) {
   const [expanded, setExpanded] = React.useState<string | false>('panel1');
 
-  const { learning_packet } = useDefaultClassificationRouteParams();
+  const { learning_packet_id } = useDefaultClassificationRouteParams();
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
@@ -91,7 +91,7 @@ export default function Index({ learningPacket }: Props) {
                                   href={route(
                                     'student.packet.category.material.index',
                                     [
-                                      learning_packet,
+                                      learning_packet_id,
                                       subLearningPacket.id,
                                       learningCategory.id,
                                     ],
@@ -106,7 +106,7 @@ export default function Index({ learningPacket }: Props) {
                                   href={route(
                                     'student.packet.category.exercise.index',
                                     [
-                                      learning_packet,
+                                      learning_packet_id,
                                       subLearningPacket.id,
                                       learningCategory.id,
                                     ],

@@ -385,6 +385,14 @@ class ExamController extends Controller
 
     public function showResult($exercise_question, $exam)
     {
+        $exam = Exam::with([
+            'answers.question',
+            'exerciseQuestion.learningCategory'
+        ])
+            ->ofExercise($exercise_question)
+            ->ofUser(auth()->id())
+            ->ofFinished(true)
+            ->findOrFail($exam->id);
         return Inertia::render('Student/Exam/ShowResult', [
             'exam' => fn () => Exam::with([
                 'exerciseQuestion',

@@ -15,7 +15,6 @@ import React from 'react';
 import route from 'ziggy-js';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { Link } from '@inertiajs/react';
 import { LearningCategoryModel } from '@/Models/LearningCategory';
 import LinkButton from '@/Components/LinkButton';
 
@@ -25,16 +24,15 @@ interface Props {
 
 export default function Index({ learning_category: learningCategory }: Props) {
   const [expanded, setExpanded] = React.useState<string | false>('panel1');
-  console.log(learningCategory);
   const learningMaterials = React.useMemo(
     () => learningCategory.learning_materials!,
     [learningCategory.learning_materials!],
   );
 
   const {
-    learning_packet,
-    sub_learning_packet,
-    learning_category: learning_category_id,
+    learning_packet_id,
+    sub_learning_packet_id,
+    learning_category_id,
   } = useDefaultClassificationRouteParams();
 
   const handleChange =
@@ -50,7 +48,7 @@ export default function Index({ learning_category: learningCategory }: Props) {
             Daftar Materi {learningCategory.name}
           </p>
           <LinkButton
-            href={route('student.packet.show', learning_packet)}
+            href={route('student.packet.show', learning_packet_id)}
             colorCode="#3A63F5"
             className="px-5 rounded-md"
           >
@@ -105,9 +103,9 @@ export default function Index({ learning_category: learningCategory }: Props) {
                                   href={route(
                                     'student.packet.category.material.show',
                                     [
-                                      learning_packet,
-                                      sub_learning_packet,
-                                      learning_category,
+                                      learning_packet_id,
+                                      sub_learning_packet_id,
+                                      learning_category_id,
                                       document.id as unknown as string,
                                     ],
                                   )}
