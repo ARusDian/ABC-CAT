@@ -102,7 +102,11 @@ function PilihanAnswerForm({
     choices.map((choice, index) => {
       const editorRef = arrayEditorRef.current[index];
 
-      editorRef?.current?.commands.setContent(choice.content);
+      if (Object.keys(choice.content).length != 0) {
+        editorRef?.current?.commands.setContent(choice.content);
+      } else {
+        editorRef?.current?.commands.clearContent();
+      }
     });
   }, [answer.id]);
 
@@ -187,7 +191,7 @@ function KecermatanAnswerForm({
   }
 
   return (
-    <div className='flex flex-col gap-3'>
+    <div className="flex flex-col gap-3">
       {choices.map((choice, index) => {
         return (
           <div className="flex justify-between text-3xl" key={index}>

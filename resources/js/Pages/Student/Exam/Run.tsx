@@ -5,7 +5,7 @@ import Countdown, { CountdownRenderProps } from 'react-countdown';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { router } from '@inertiajs/react';
 import route from 'ziggy-js';
-import { useCounter, useDebounce, useUpdate } from 'react-use';
+import { useCounter, useDebounce, useEffectOnce, useUpdate } from 'react-use';
 import { ExamAnswerModel, ExamModel, ExamPilihanModel } from '@/Models/Exam';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
@@ -20,18 +20,31 @@ export interface Props {
   exam: ExamModel;
 }
 
-export interface Task {
-  exam_answer_id: string;
+export type Task =
+  | {
+      change_answer: {
+        exam_answer_id: string;
 
-  state: {
-    mark: boolean;
-  };
+        state: {
+          mark: boolean;
+        };
 
-  answer: any;
-}
+        answer: any;
+      };
+    }
+  | {
+      change_question: {
+        date: Date;
+        question: number;
+        exam_answer_id?: string;
+      };
+    };
 
 export default function Run({ exam }: Props) {
-  const expireInTime = new Date(Date.parse(exam.expire_in));
+  const expireInTime = React.useMemo(
+    () => new Date(Date.parse(exam.expire_in)),
+    [exam.expire_in],
+  );
   const { answers } = exam;
 
   const confirm = useConfirm();
@@ -47,9 +60,13 @@ export default function Run({ exam }: Props) {
 
   const [updateCount, { inc: update }] = useCounter(1);
 
+  const {
+    time_limit_per_cluster: splitQuestionByCluster,
+    next_question_after_answer: changeAnswerAfterAnswering,
+  } = exam.options.exercise_question;
+
   const currentClusterDateEnd = React.useMemo(() => {
-    console.log('currentClusterDateEnd');
-    if (exam.exercise_question.type == 'Kecermatan') {
+    if (splitQuestionByCluster) {
       let minutes = exam.exercise_question.time_limit;
       let count = 1;
 
@@ -65,8 +82,6 @@ export default function Run({ exam }: Props) {
       return { current: expireInTime, count: 0 };
     }
   }, [updateCount]);
-
-  const [shouldUpdate, setShouldUpdate] = React.useState(true);
 
   const currentCluster = React.useMemo(() => {
     const cluster = _.uniq(_.map(exam.answers, 'cluster'));
@@ -99,63 +114,90 @@ export default function Run({ exam }: Props) {
     }
   };
 
-
-  const currentQuestion =
-    (parseInt(useSearchParam('question') ?? '1') || 1) - 1;
-
-  const setCurrentQuestion = React.useCallback((index: number) => {
-    const url = new URL(location.toString());
-    url.searchParams.set('question', (index + 1).toString());
-    history.pushState({}, '', url);
-  }, []);
-
-
-  React.useEffect(() => {
-    setShouldUpdate(true);
-
-    if (answers?.at(currentQuestion)?.cluster != currentCluster) {
-      const index = answers.findIndex(it => it.cluster == currentCluster);
-      if (index == -1) {
-        setCurrentQuestion(answers.length);
-
-        if (stateQueue.length == 0) {
-          location.reload();
-        }
-      } else {
-        setCurrentQuestion(index);
-      }
-    }
-
-    setTimeout(() => {
-      update();
-    }, currentClusterDateEnd.current.getTime() - Date.now());
-  }, [currentCluster, currentQuestion]);
-
   const [isUpdating, setIsUpdating] = React.useState(false);
 
   const [stateQueue, setStateQueue] = React.useState<Task[]>([]);
+  const addStateQueue = (task: Task[]) => {
+    setIsUpdating(true);
+    setStateQueue([...stateQueue, ...task]);
+  };
   const [previousQueuePromise, setPreviousQueuePromise] =
     React.useState<Promise<Task[]> | null>(null);
-  const isLastQuestion = currentQuestion === answers.length - 1;
   const [stateQueueCounter, { inc: updateStateQueueCounter }] = useCounter(0);
+
+  const currentQuestion =
+    (parseInt(useSearchParam('question') ?? '1') || 1) - 1;
+  const isLastQuestion = currentQuestion === answers.length - 1;
+
+  const doSetCurrentQuestion = (index: number): Task[] => {
+    const url = new URL(location.toString());
+    url.searchParams.set('question', (index + 1).toString());
+    history.pushState({}, '', url);
+
+    return [{
+      change_question: {
+        date: new Date(),
+        question: index,
+        exam_answer_id: answers[index]?.id,
+      },
+    }]
+  }
+
+  const setCurrentQuestion = (index: number) => {
+    const tasks = doSetCurrentQuestion(index);
+
+    addStateQueue(tasks);
+  };
+
+  useEffectOnce(() => {
+    addStateQueue([{
+      change_question: {
+        date: new Date(),
+        question: currentQuestion,
+        exam_answer_id: answers[currentQuestion]?.id,
+      },
+    }]);
+  });
+
+  React.useEffect(() => {
+    if (splitQuestionByCluster) {
+      if (answers?.at(currentQuestion)?.cluster != currentCluster) {
+        const index = answers.findIndex(it => it.cluster == currentCluster);
+        if (index == -1) {
+          setCurrentQuestion(answers.length);
+
+          if (stateQueue.length == 0) {
+            location.reload();
+          }
+        } else {
+          setCurrentQuestion(index);
+        }
+      }
+
+      setTimeout(() => {
+        update();
+      }, currentClusterDateEnd.current.getTime() - Date.now());
+    }
+  }, [currentCluster, currentQuestion]);
+
   useDebounce(
     () => {
       if (stateQueue.length == 0) {
         return;
       }
+      setStateQueue([]);
 
       const queuePromise = (async () => {
         // clear queue so we if next this is called again before await is done,
         // the current queue is not run again
-        setStateQueue([]);
         const prev = await previousQueuePromise;
 
         // so if the previous attempt is failed, this can retry it
         const queue = [...(prev ?? []), ...stateQueue];
-        console.log(queue);
 
         try {
           setIsUpdating(true);
+
           let response = await axios.post(
             route('student.exam.update', exam.id),
             {
@@ -169,6 +211,23 @@ export default function Run({ exam }: Props) {
             // TODO: create exam attempt page
             location.reload();
           }
+          // router.post(
+          //   route('student.exam.update', exam.id),
+          //   {
+          //     _method: 'put',
+          //     exam_id: exam.id,
+          //     queue,
+          //   },
+          //   {
+          //     onError: e => {
+          //       console.log(e);
+          //     },
+          //     data: {
+          //       question: currentQuestion,
+          //     },
+          //   },
+          // );
+
           setIsUpdating(false);
           return [];
         } catch (e) {
@@ -184,24 +243,27 @@ export default function Run({ exam }: Props) {
     [stateQueue, stateQueueCounter],
   );
 
-  const addStateQueue = (task: Task) => {
-    setIsUpdating(true);
-    // console.log('addStateQueue', [...stateQueue, task]);
-    setStateQueue([...stateQueue, task]);
-  };
-
-  const updateAnswer = (answer: ExamAnswerModel) => {
+  const doUpdateAnswer = (answer: ExamAnswerModel) => {
     answerArray.update(currentQuestion, answer);
 
-    addStateQueue({
-      exam_answer_id: answer.id,
-      state: answer.state,
-      answer: answer.answer,
-    });
+    let tasks: Task[] = [{
+      change_answer: {
+        exam_answer_id: answer.id,
+        state: answer.state,
+        answer: answer.answer,
+      },
+    }]
 
-    if (exam.exercise_question.type == 'Kecermatan' && !isLastQuestion) {
-      setCurrentQuestion(currentQuestion + 1);
+    if (changeAnswerAfterAnswering && !isLastQuestion) {
+      tasks = [...tasks, ...doSetCurrentQuestion(currentQuestion + 1)];
     }
+
+    return tasks
+  }
+  const updateAnswer = (answer: ExamAnswerModel) => {
+    const tasks = doUpdateAnswer(answer);
+
+    addStateQueue(tasks);
   };
 
   function onSelesaiUjian() {
@@ -265,7 +327,7 @@ export default function Run({ exam }: Props) {
                       setCurrentQuestion={setCurrentQuestion}
                       currentQuestion={currentQuestion}
                       getState={(it, index) => {
-                        if (exam.exercise_question.type == 'Kecermatan') {
+                        if (splitQuestionByCluster) {
                           if (currentCluster != it.cluster) {
                             return {
                               hide: true,
@@ -280,7 +342,7 @@ export default function Run({ exam }: Props) {
                   <div className="flex flex-col gap-5">
                     <div className="flex justify-between p-3 h-20 py-auto">
                       <div className=" flex gap-3">
-                        <p className='font-bold text-2xl'>
+                        <p className="font-bold text-2xl">
                           Soal {currentQuestion + 1}
                         </p>
                         <div>
@@ -321,21 +383,27 @@ export default function Run({ exam }: Props) {
                             ''
                           )}
                         </div>
-                        <p className="text-2xl">{`${currentQuestion + 1}/${answers.length
-                          }`}</p>
+                        <p className="text-2xl">{`${currentQuestion + 1}/${
+                          answers.length
+                        }`}</p>
                       </div>
                     </div>
                   </div>
                   <div className="relative flex">
                     <div className="absolute w-full h-full">
-                      <div className="flex justify-center h-full w-full p-10" style={{
-                        backgroundImage: `url(${asset('root', 'assets/image/logo.png')})`,
-                        backgroundRepeat: 'repeat-y',
-                        backgroundSize: 'contain',
-                        backgroundPosition: 'center',
-                        opacity: 0.1,
-                      }}>
-                      </div>
+                      <div
+                        className="flex justify-center h-full w-full p-10"
+                        style={{
+                          backgroundImage: `url(${asset(
+                            'root',
+                            'assets/image/logo.png',
+                          )})`,
+                          backgroundRepeat: 'repeat-y',
+                          backgroundSize: 'contain',
+                          backgroundPosition: 'center',
+                          opacity: 0.1,
+                        }}
+                      ></div>
                     </div>
                     <div className="w-full h-auto p-3 flex flex-col gap-3 z-50">
                       {answerArray.fields[currentQuestion] != null ? (

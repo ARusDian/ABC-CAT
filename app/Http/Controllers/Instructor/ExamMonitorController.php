@@ -22,7 +22,7 @@ class ExamMonitorController extends Controller
         return Inertia::render('Instructor/ExamMonitor/Index', [
             'exercise_question' => ExerciseQuestion::with(
                 [
-                    'exams' =>  fn ($q) => $q->with('user')->orderBy('id', 'desc'),
+                    'exams' =>  fn ($q) => $q->disableCache()->with('user')->orderBy('id', 'desc'),
                 ]
             )->findOrFail($exercise_question_id),
             // 'exams' => Exam::with(['exerciseQuestion', 'user'])
@@ -70,7 +70,7 @@ class ExamMonitorController extends Controller
                 'exerciseQuestion',
                 'user',
                 'answers.question',
-            ])->findOrFail($exam_monitor),
+            ])->disableCache()->findOrFail($exam_monitor),
         ]);
     }
 

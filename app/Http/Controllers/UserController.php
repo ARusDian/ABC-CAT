@@ -296,13 +296,7 @@ class UserController extends Controller
     {
         $user = User::select('id', 'name', 'email')->with([
             'exams' => fn ($q) => $q->with([
-                'exerciseQuestion' => fn ($q) => $q->select('id', 'name', 'type', 'learning_category_id')->with([
-                    'learningCategory' => fn ($q) => $q->select('id', 'name', 'sub_learning_packet_id')->with([
-                        'subLearningPacket' => fn ($q) => $q->select('id', 'name', 'learning_packet_id')->with([
-                            'learningPacket' => fn ($q) => $q->select('id', 'name')
-                        ])
-                    ])
-                ])
+                'exerciseQuestion.learningCategory.subLearningPacket.learningPacket',
             ])->withScore()->ofFinished(true)->orderBy('created_at', 'desc'),
         ])->find($id);
         return Inertia::render('Admin/User/Exam/Index', [
@@ -327,7 +321,7 @@ class UserController extends Controller
             'exam' => Exam::with([
                 'exerciseQuestion.learningCategory',
                 'user' => fn ($q) => $q->select('id', 'name', 'email'),
-            ])->withScore()->ofFinished(true)->find($id)
+            ])->withScore()->ofFinished(true)->findOrFail($id)->appendResult()
         ]);
     }
 }

@@ -21,6 +21,8 @@ export interface ExerciseQuestionModel {
   deleted_at?: string;
   exams?: ExamModel[];
   learning_category?: LearningCategoryModel;
+
+  cluster_names: Record<number, string>;
 }
 
 export const EXERCISE_QUESTION_TYPE = ['Pilihan', 'Kecermatan'] as const;

@@ -73,7 +73,6 @@ Route::middleware([
         // TODO: Move to above inside learning_packet prefix
         // Exercise Question
         Route::prefix("exam")->as("exam.")->group(function () {
-            Route::post("{exercise_question}", [ExamController::class, "attempt"])->name("attempt");
 
             Route::withoutMiddleware(['exam'])->group(function () {
                 Route::get("{exercise_question}", [ExamController::class, "show"])->name("show");
@@ -81,6 +80,7 @@ Route::middleware([
                 Route::post("{exercise_question}/finish", [ExamController::class, "finish"])->name("finish");
             });
 
+            Route::post("{exercise_question}", [ExamController::class, "attempt"])->name("attempt");
             Route::get("{exercise_question}/leaderboard", [ExamController::class, "leaderboard"])->name("leaderboard");
             Route::get("{exercise_question}/attempt/{exam}", [ExamController::class, "showAttempt"])->name("show.attempt");
             Route::get("{exercise_question}/result/{exam}", [ExamController::class, "showResult"])->name("show.result");

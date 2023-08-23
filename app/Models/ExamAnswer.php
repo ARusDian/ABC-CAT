@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,19 +11,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ExamAnswer extends Model
 {
     use HasFactory;
+    use Cachable;
 
     protected $fillable = [
         'exam_id',
         'bank_question_item_id',
         'answer',
         'state',
+        'server_state',
         'score',
         'cluster',
     ];
 
     protected $casts = [
+        'score' => 'float',
         'answer' => 'json',
-        'state' => 'json',
+        'state' => 'object',
+        'server_state' => 'object',
     ];
 
     public function question(): BelongsTo
@@ -30,5 +36,9 @@ class ExamAnswer extends Model
             BankQuestionItem::class,
             'bank_question_item_id',
         );
+    }
+
+    public function questionNumber(): Attribute {
+        return Attribute::get(fn () => $this->server_state->question_number);
     }
 }

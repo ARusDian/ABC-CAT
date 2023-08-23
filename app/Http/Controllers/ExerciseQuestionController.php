@@ -67,6 +67,12 @@ class ExerciseQuestionController extends Controller
             'name' => $data['name'],
             'type' => $data['type'],
             'time_limit' => $data['time_limit'],
+            'options' => [
+                'time_limit_per_cluster' => $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
+                'number_of_question_per_cluster' => $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
+                'next_question_after_answer' => $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
+                'cluster_by_bank_question' => $data['type'] != ExerciseQuestionTypeEnum::Kecermatan->name,
+            ],
             'number_of_question' => $data['number_of_question'],
             'learning_category_id' => $learning_category_id,
         ]);
