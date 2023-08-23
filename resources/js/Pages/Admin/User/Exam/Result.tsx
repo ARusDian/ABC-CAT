@@ -42,7 +42,6 @@ export default function Result({ exam }: Props) {
         </div>
         <div className="border border-black mx-auto">
           <div
-          {/* @ts-ignore */}
             ref={ref}
             style={{ width: '795px' }}
             className=" bg-white flex flex-col gap-1 w-full flex-1 p-1"
