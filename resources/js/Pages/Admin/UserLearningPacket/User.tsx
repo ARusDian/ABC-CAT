@@ -29,6 +29,7 @@ import useRoute from '@/Hooks/useRoute';
 import InputError from '@/Components/Jetstream/InputError';
 import FilterForm from './FilterForm';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
+import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 
 interface Props {
 	learningPacket: LearningPacketModel;
@@ -188,9 +189,16 @@ export default function Create({ unregisteredUsers, learningPacket }: Props) {
 			title="Tambah Paket Belajar Pengguna"
 		>
 			<div className=' flex flex-col gap-3  mx-8'>
-				<p className='my-8 text-2xl'>
-					Langganan Paket Belajar {learningPacket.name}
-				</p>
+				<div className='flex justify-between'>
+					<p className='my-8 text-2xl'>
+						Langganan Paket Belajar {learningPacket.name}
+					</p>
+					<MuiInertiaLinkButton
+						href={route('user-learning-packet.index')}
+					>
+						Kembali
+					</MuiInertiaLinkButton>
+				</div>
 
 				<div className='grid grid-cols-3 gap-2 justify-center items-center'>
 					<div className="flex flex-col gap-3  rounded-3xl shadow-2xl shadow-sky-400/50 p-3 bg-white">
@@ -237,7 +245,7 @@ export default function Create({ unregisteredUsers, learningPacket }: Props) {
 							{customList('Pengguna Berlangganan', registered)}
 						</div>
 					</div>
-				</div>
+					d</div>
 				<div className="form-control w-full mt-4">
 					<Controller
 						control={form.control}
