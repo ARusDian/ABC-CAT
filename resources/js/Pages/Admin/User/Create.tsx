@@ -11,9 +11,11 @@ import { Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import _ from 'lodash';
 import Api from '@/Utils/Api';
+import { LearningCategoryModel } from '@/Models/LearningCategory';
 
 interface Props {
   roles: Array<Role>;
+  learning_categories: Array<LearningCategoryModel>;
 }
 
 export default function Create(props: Props) {
@@ -24,6 +26,7 @@ export default function Create(props: Props) {
       phone_number: '',
       password: '',
       roles: [],
+      learning_categories: [],
     },
   });
 
@@ -41,7 +44,7 @@ export default function Create(props: Props) {
         className="flex-col gap-5 py-5"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <Form form={form} roles={props.roles} className="my-5 mx-2" />
+        <Form form={form} roles={props.roles} learningCategories={props.learning_categories} className="my-5 mx-2" />
         <div className="flex justify-end">
           <Button
             type="submit"

@@ -9,9 +9,9 @@ use App\Models\LearningMaterialDocument;
 use App\Models\DocumentFile;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class LearningMaterialController extends Controller

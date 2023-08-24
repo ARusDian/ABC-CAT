@@ -6,12 +6,13 @@ use App\Enums\ExerciseQuestionTypeEnum;
 use App\Enums\QuestionTypeEnum;
 use App\Models\Question;
 use App\Models\BankQuestionItem;
-
+use App\Models\LearningCategory;
 use App\Models\QuestionImage;
 use App\Http\Controllers\Controller;
 use App\Models\ExerciseQuestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Fluent;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -40,6 +41,7 @@ class ExerciseQuestionQuestionController extends Controller
         $learning_category_id,
         ExerciseQuestion $exercise_question,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         $view = null;
         switch ($exercise_question->type) {
             case ExerciseQuestionTypeEnum::Pilihan:
@@ -85,6 +87,7 @@ class ExerciseQuestionQuestionController extends Controller
         $learning_category_id,
         $exercise_question,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return DB::transaction(function () use (
             $request,
             $learning_packet,
@@ -143,6 +146,7 @@ class ExerciseQuestionQuestionController extends Controller
         $learning_category_id,
         $exercise_question,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return \DB::transaction(function () use (
             $request,
             $learning_packet,
@@ -210,6 +214,7 @@ class ExerciseQuestionQuestionController extends Controller
         $exercise_question,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return Inertia::render('Admin/ExerciseQuestion/Question/Show', [
             'question' => fn() => BankQuestionItem::find($id),
             'exercise_question_id' => $exercise_question,
@@ -227,6 +232,7 @@ class ExerciseQuestionQuestionController extends Controller
         $id,
     ) {
         //
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         $question = Question::find($id);
         return Inertia::render('Admin/ExerciseQuestion/Question/Edit', [
             'question' => $question,
@@ -244,6 +250,7 @@ class ExerciseQuestionQuestionController extends Controller
         $exercise_question,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return DB::transaction(function () use (
             $request,
             $learning_packet,
@@ -295,6 +302,8 @@ class ExerciseQuestionQuestionController extends Controller
         $exercise_question,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
+
         return DB::transaction(function () use ($exercise_question, $id) {
             $question = Question::find($id);
             $question->update([
@@ -324,6 +333,8 @@ class ExerciseQuestionQuestionController extends Controller
         $exercise_question,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
+
         return DB::transaction(function () use (
             $learning_packet,
             $sub_learning_packet,

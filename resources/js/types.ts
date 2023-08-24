@@ -1,5 +1,6 @@
 import { ExamModel } from './Models/Exam';
 import { BaseDocumentFileModel } from './Models/FileModel';
+import { LearningCategoryModel } from './Models/LearningCategory';
 
 type DateTime = string;
 
@@ -21,6 +22,7 @@ export interface BaseUser {
   phone_number: string;
   active_year?: number;
   roles?: Array<Role>;
+  learning_categories?: Array<LearningCategoryModel>;
   gender: 'L' | 'P';
   address: string;
 }

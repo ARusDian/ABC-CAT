@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\BankQuestionTypeEnum;
 use App\Models\BankQuestion;
 use App\Models\DocumentFile;
+use App\Models\LearningCategory;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -38,6 +40,7 @@ class BankQuestionController extends Controller
      */
     public function create($learning_packet, $sub_learning_packet, $id)
     {
+        Gate::authorize('view', LearningCategory::findOrFail($id));
         return Inertia::render('Admin/BankQuestion/Create', []);
     }
 
@@ -50,6 +53,7 @@ class BankQuestionController extends Controller
         $sub_learning_packet,
         $learning_category_id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         $data = $this->validateData($request->all());
 
         $bank = BankQuestion::create([
@@ -83,6 +87,7 @@ class BankQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return Inertia::render('Admin/BankQuestion/Show', [
             'bank_question' => fn() => BankQuestion::with([
                 'items',
@@ -108,6 +113,7 @@ class BankQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return Inertia::render('Admin/BankQuestion/Edit', [
             'bank_question' => fn() => BankQuestion::findOrFail($id),
         ]);
@@ -123,6 +129,7 @@ class BankQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         $data = $this->validateData($request->all());
 
         $bank = BankQuestion::findOrFail($id);

@@ -7,6 +7,7 @@ use App\Exports\UsersExport;
 use App\Exports\UsersTemplateExport;
 use App\Imports\UsersImport;
 use App\Models\Exam;
+use App\Models\LearningCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -44,8 +45,14 @@ class UserController extends Controller
     {
         //
         $roles = Role::all();
+        $learning_categories = LearningCategory::with([
+            'subLearningPacket' => fn ($q) => $q->with([
+                'learningPacket' => fn ($q) => $q->select('id', 'name')
+            ])->select('id', 'name', 'learning_packet_id')
+        ])->select('id', 'name', 'sub_learning_packet_id')->get();
         return Inertia::render('Admin/User/Create', [
             'roles' => $roles,
+            'learning_categories' => $learning_categories,
         ]);
     }
 
@@ -68,6 +75,7 @@ class UserController extends Controller
                 'photo.file' => 'nullable|max:2048',
                 'address' => 'required|string',
                 'gender' => 'required|in:L,P',
+                'learning_categories.*.id' => 'exists:learning_categories,id|distinct|required_if:roles.*.name,==,instructor',
             ]);
             $user = User::create([
                 'name' => $validated['name'],
@@ -81,6 +89,12 @@ class UserController extends Controller
 
             if (isset($request['photo']['file'])) {
                 $user->updateProfilePhoto($request['photo']['file']);
+            }
+
+            if (isset($validated['learning_categories'])) {
+                $user->learningCategories()->attach(array_map(function ($learning_category) {
+                    return $learning_category['id'];
+                }, $validated['learning_categories'] ?? []));
             }
 
             foreach ($validated['roles'] as $role) {
@@ -125,12 +139,18 @@ class UserController extends Controller
     {
         //
         $user = User::withTrashed()
-            ->with(['roles'])
+            ->with(['roles', 'learningCategories.subLearningPacket.learningPacket'])
             ->find($id);
         $roles = Role::all();
+        $learning_categories = LearningCategory::with([
+            'subLearningPacket' => fn ($q) => $q->with([
+                'learningPacket' => fn ($q) => $q->select('id', 'name')
+            ])->select('id', 'name', 'learning_packet_id')
+        ])->select('id', 'name', 'sub_learning_packet_id')->get();
         return Inertia::render('Admin/User/Edit', [
             'user_data' => $user,
             'roles' => $roles,
+            'learning_categories' => $learning_categories,
         ]);
     }
 
@@ -156,6 +176,7 @@ class UserController extends Controller
                 'photo_profile_path' => 'nullable|string',
                 'address' => 'required|string',
                 'gender' => 'required|in:L,P',
+                'learning_categories.*.id' => 'exists:learning_categories,id|distinct|required_if:roles.*.name,==,instructor',
             ]);
 
             $user = User::findOrFail($id);
@@ -170,6 +191,12 @@ class UserController extends Controller
 
             if (isset($request['photo']['file'])) {
                 $user->updateProfilePhoto($request['photo']['file']);
+            }
+
+            if (isset($validated['learning_categories'])) {
+                $user->learningCategories()->sync(array_map(function ($learning_category) {
+                    return $learning_category['id'];
+                }, $validated['learning_categories'] ?? []));
             }
 
             if (isset($validated['password'])) {

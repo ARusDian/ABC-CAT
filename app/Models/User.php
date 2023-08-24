@@ -122,4 +122,17 @@ class User extends Authenticatable
             }
         }
     }
+
+    public function userLearningCategories()
+    {
+        return $this->hasMany(UserLearningCategory::class);
+    }
+
+    public function learningCategories()
+    {
+        return $this->belongsToMany(
+            LearningCategory::class,
+            UserLearningCategory::class,
+        );
+    }
 }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\LearningCategory;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class LearningCategoryController extends Controller
@@ -81,6 +83,7 @@ class LearningCategoryController extends Controller
                 return $q->withTrashed()->orderBy('id', 'asc');
             },
         ])->find($id);
+        Gate::authorize('view', $learningCategory);
         return Inertia::render('Admin/Classification/LearningCategory/Show', [
             'learning_category' => $learningCategory,
         ]);

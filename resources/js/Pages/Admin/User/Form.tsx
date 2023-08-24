@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useRef, useState } from 'react';
+import React, { ChangeEvent, useCallback, useRef, useState, useEffect } from 'react';
 import Select from 'react-select';
 
 import InputError from '@/Components/Jetstream/InputError';
@@ -16,11 +16,13 @@ import { asset } from '@/Models/Helper';
 import { BaseDocumentFileModel, getStorageFileUrl } from '@/Models/FileModel';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
+import { LearningCategoryModel } from '@/Models/LearningCategory';
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   form: UseFormReturn<NewUser>;
   className?: string;
   roles: Array<Role>;
+  learningCategories?: Array<LearningCategoryModel>;
   isUpdate?: boolean;
 }
 
@@ -40,6 +42,9 @@ export default function Form(props: Props) {
   const [cropperModalOpen, setCropperModalOpen] = useState(false);
   const [image, setImage] = useState<string | null>(null);
   const [cropper, setCropper] = useState<any>();
+  const [isInstructor, setIsInstructor] = useState(form.getValues('roles')?.some((it: Role) => it.name === 'instructor') ?? false);
+
+  console.log(form.getValues('learning_categories'));
 
   const getNewImageUrl = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -80,15 +85,15 @@ export default function Form(props: Props) {
                   src={
                     form.getValues('photo')?.file
                       ? getStorageFileUrl(
-                          form.getValues('photo') as BaseDocumentFileModel,
-                        )!
+                        form.getValues('photo') as BaseDocumentFileModel,
+                      )!
                       : form.formState.defaultValues?.profile_photo_path
-                      ? asset(
+                        ? asset(
                           'public',
                           form.formState.defaultValues
                             ?.profile_photo_path as string,
                         )
-                      : asset('root', 'assets/image/default-profile.png')
+                        : asset('root', 'assets/image/default-profile.png')
                   }
                   alt={form.formState.defaultValues?.name}
                 />
@@ -237,6 +242,9 @@ export default function Form(props: Props) {
                   value={field.value}
                   onChange={value => {
                     field.onChange(value.slice());
+                    setIsInstructor(
+                      value.some((it: Role) => it.name === 'instructor'),
+                    );
                   }}
                 />
                 <InputError
@@ -248,6 +256,38 @@ export default function Form(props: Props) {
           }}
         />
       </div>
+      {isInstructor && (
+        <div className="form-control w-full mt-4 z-50">
+          <Controller
+            control={form.control}
+            name="learning_categories"
+            render={({ field }) => {
+              return (
+                <>
+                  <InputLabel htmlFor="learning_categories">
+                    Kategori Belajar
+                  </InputLabel>
+                  <Select
+                    ref={field.ref}
+                    isMulti
+                    options={props.learningCategories}
+                    getOptionValue={it => it.id!.toString()}
+                    getOptionLabel={it => `${it.name} - ${it.sub_learning_packet?.name} - ${it.sub_learning_packet?.learning_packet?.name}`}
+                    value={field.value}
+                    onChange={value => {
+                      field.onChange(value.slice());
+                    }}
+                  />
+                  <InputError
+                    message={form.formState.errors.learning_categories?.message}
+                    className="mt-2"
+                  />
+                </>
+              );
+            }}
+          />
+        </div>
+      )}
       <Modal
         open={cropperModalOpen}
         onClose={() => setCropperModalOpen(false)}

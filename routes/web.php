@@ -70,7 +70,6 @@ Route::middleware([
         });
         // End Sub Paket Belajar
 
-        // TODO: Move to above inside learning_packet prefix
         // Exercise Question
         Route::prefix("exam")->as("exam.")->group(function () {
 
@@ -109,23 +108,37 @@ Route::middleware([
                 Route::post('/user-learning-packet-import/{learning_packet}', [UserLearningPacketController::class, "Import"])->name('user-packet.import');
                 Route::get('/user-learning-packet-export/{learning_packet}', [UserLearningPacketController::class, "Export"])->name('user-packet.export');
                 Route::get('/user-learning-packet-template/{learning_packet}', [UserLearningPacketController::class, "Template"])->name('user-packet.import-template');
+
+                Route::prefix("packet")->name("packet.")->group(function () {
+                    Route::resource("", LearningPacketController::class)->parameter("", "learning_packet");
+                    Route::post("{learning_packet}/restore", [LearningPacketController::class, "restore"])->name("restore");
+                    // Sub Paket Belajar
+
+                    Route::prefix("{learning_packet}/sub")->name("sub.")->group(function () {
+                        Route::resource("", SubLearningPacketController::class)->parameter("", "sub_learning_packet");
+
+                        // Kategori Belajar
+                        Route::prefix("{sub_learning_packet}/category")->name("category.")->group(function () {
+                            Route::resource("", LearningCategoryController::class)->parameter("", "learning_category");
+                        });
+                    });
+                });
             });
 
             Route::resource("document-file", DocumentFileController::class);
 
             // Paket Belajar
             Route::prefix("packet")->name("packet.")->group(function () {
-                Route::resource("", LearningPacketController::class)->parameter("", "learning_packet");
-                Route::post("{learning_packet}/restore", [LearningPacketController::class, "restore"])->name("restore");
+                
+                Route::get("{learning_packet}", [LearningPacketController::class, "show"])->name("show");
                 // Sub Paket Belajar
 
                 Route::prefix("{learning_packet}/sub")->name("sub.")->group(function () {
-                    Route::resource("", SubLearningPacketController::class)->parameter("", "sub_learning_packet");
+                    Route::get("{sub_learning_packet}", [SubLearningPacketController::class, "show"])->name("show");
 
                     // Kategori Belajar
                     Route::prefix("{sub_learning_packet}/category")->name("category.")->group(function () {
-                        Route::resource("", LearningCategoryController::class)->parameter("", "learning_category");
-
+                        Route::get("{learning_category}", [LearningCategoryController::class, "show"])->name("show");
                         Route::prefix("{learning_category}/")->group(function () {
 
                             // Soal Latihan

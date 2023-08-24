@@ -10,7 +10,9 @@ use App\Imports\QuestionMultiTrueChoicesImport;
 use App\Imports\QuestionSingleTrueChoicesImport;
 use App\Models\BankQuestion;
 use App\Models\BankQuestionItem;
+use App\Models\LearningCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Fluent;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -40,6 +42,7 @@ class BankQuestionItemController extends Controller
         $learning_category_id,
         BankQuestion $bank_question,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         $view = null;
         switch ($bank_question->type) {
             case BankQuestionTypeEnum::Pilihan:
@@ -109,6 +112,7 @@ class BankQuestionItemController extends Controller
         $learning_category_id,
         $bank_question,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return \DB::transaction(function () use (
             $request,
             $learning_packet,
@@ -156,6 +160,7 @@ class BankQuestionItemController extends Controller
         $learning_category_id,
         $bank_question,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return \DB::transaction(function () use (
             $request,
             $learning_packet,
@@ -233,6 +238,7 @@ class BankQuestionItemController extends Controller
         $bank_question,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return Inertia::render('Admin/BankQuestion/Question/Show', [
             'item' => fn () => BankQuestionItem::find($id),
             'bank_question_id' => $bank_question,
@@ -250,6 +256,7 @@ class BankQuestionItemController extends Controller
         $id,
     ) {
         //
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         $question = BankQuestionItem::find($id);
         return Inertia::render('Admin/BankQuestion/Question/Edit', [
             'question' => $question,
@@ -267,6 +274,7 @@ class BankQuestionItemController extends Controller
         $bank_question,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return \DB::transaction(function () use (
             $request,
             $learning_packet,
@@ -318,6 +326,7 @@ class BankQuestionItemController extends Controller
         $bank_question,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return \DB::transaction(function () use (
             $learning_packet,
             $sub_learning_packet,
@@ -354,6 +363,7 @@ class BankQuestionItemController extends Controller
         $bank_question,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         return \DB::transaction(function () use (
             $learning_packet,
             $sub_learning_packet,
@@ -390,6 +400,7 @@ class BankQuestionItemController extends Controller
         $id,
         Request $request,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         $request->validate([
             'type' => [
                 'required',
@@ -426,6 +437,7 @@ class BankQuestionItemController extends Controller
         $learning_category_id,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         $bank_question = BankQuestion::find($id);
         return Excel::download(new QuestionSingleTrueChoicesTemplateExport($bank_question), 'Template Soal Pilihan Jawaban Tunggal.xlsx');
     }
@@ -436,6 +448,7 @@ class BankQuestionItemController extends Controller
         $learning_category_id,
         $id,
     ) {
+        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
         $bank_question = BankQuestion::find($id);
         return Excel::download(new QuestionMultipleTrueChoicesTemplateExport($bank_question), 'Template Soal Pilihan Jawaban Ganda.xlsx');
     }

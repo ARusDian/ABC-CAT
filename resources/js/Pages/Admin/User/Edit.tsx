@@ -10,10 +10,12 @@ import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
 import { Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import Api from '@/Utils/Api';
+import { LearningCategoryModel } from '@/Models/LearningCategory';
 
 interface Props {
   user_data: NewUser;
   roles: Array<Role>;
+  learning_categories: Array<LearningCategoryModel>;
 }
 
 export default function Edit(props: Props) {
@@ -36,7 +38,7 @@ export default function Edit(props: Props) {
         className="flex-col gap-5 py-5"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <Form form={form} roles={props.roles} className="my-5 mx-2" isUpdate />
+        <Form form={form} roles={props.roles} learningCategories={props.learning_categories}  className="my-5 mx-2" isUpdate />
         <div className="flex justify-end">
           <Button
             type="submit"
