@@ -245,7 +245,7 @@ export default function Create({ unregisteredUsers, learningPacket }: Props) {
 							{customList('Pengguna Berlangganan', registered)}
 						</div>
 					</div>
-					d</div>
+				</div>
 				<div className="form-control w-full mt-4">
 					<Controller
 						control={form.control}
