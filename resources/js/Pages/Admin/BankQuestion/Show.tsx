@@ -238,7 +238,7 @@ export default function Show(props: Props) {
                     color="success"
                     disabled={form.formState.isSubmitting}
                   >
-                    {form.formState.isSubmitting ? 'Importing...' : 'Import Student'}
+                    {form.formState.isSubmitting ? 'Importing...' : 'Import Soal'}
                   </Button>
                 </div>
               )}
