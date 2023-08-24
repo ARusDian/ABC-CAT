@@ -42,6 +42,7 @@ export default function Show({ sub_learning_packet }: Props) {
         );
       }}
       deleteTitle="Hapus"
+      isAdminOnlyAction
     >
       <div className="flex flex-col gap-5">
         <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">

@@ -55,6 +55,7 @@ export default function Index({ learning_packets }: Props) {
       title="Paket Belajar"
       addRoute={route('packet.create')}
       addRouteTitle="Tambah Paket Belajar"
+      isAdminOnlyAction
     >
       <div className="mt-6 p-7 text-gray-500 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
         <LazyLoadMRT

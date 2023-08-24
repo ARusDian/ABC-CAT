@@ -129,7 +129,7 @@ Route::middleware([
 
             // Paket Belajar
             Route::prefix("packet")->name("packet.")->group(function () {
-                
+                Route::get("", [LearningPacketController::class, "index"])->name("index");
                 Route::get("{learning_packet}", [LearningPacketController::class, "show"])->name("show");
                 // Sub Paket Belajar
 

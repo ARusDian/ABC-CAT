@@ -104,6 +104,7 @@ export default function Show({ learning_category }: Props) {
         );
       }}
       deleteTitle="Hapus"
+      isAdminOnlyAction
     >
       <div className="flex flex-col gap-2">
         <div className="m-8 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
