@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material';
-import { blue, yellow } from '@mui/material/colors';
+import { blue, yellow,lightBlue } from '@mui/material/colors';
 
 // allow configuration using `createTheme`
 interface ThemeOptions {
@@ -15,6 +15,10 @@ export const theme = createTheme({
     },
     warning: {
       main: yellow[700],
+    },
+    info: {
+      main: lightBlue[400],
+      contrastText: '#fff',
     },
     success: {
       main: '#00b51d',
