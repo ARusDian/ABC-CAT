@@ -73,7 +73,6 @@ class LearningCategoryController extends Controller
      */
     public function show($learning_packet, $sub_learning_packet, $id)
     {
-        //
         $learningCategory = LearningCategory::with([
             'subLearningPacket',
             'subLearningPacket.learningPacket',
@@ -83,7 +82,9 @@ class LearningCategoryController extends Controller
                 return $q->withTrashed()->orderBy('id', 'asc');
             },
         ])->find($id);
+
         Gate::authorize('view', $learningCategory);
+
         return Inertia::render('Admin/Classification/LearningCategory/Show', [
             'learning_category' => $learningCategory,
         ]);
@@ -94,8 +95,8 @@ class LearningCategoryController extends Controller
      */
     public function edit($learning_packet, $sub_learning_packet, $id)
     {
-        //
-        $learningCategory = LearningCategory::find($id);
+        $learningCategory = LearningCategory::findOrFail($id);
+        Gate::authorize('update', $learningCategory);
         return Inertia::render('Admin/Classification/LearningCategory/Edit', [
             'learning_category' => $learningCategory,
         ]);
@@ -116,6 +117,8 @@ class LearningCategoryController extends Controller
         ]);
 
         $learningCategory = LearningCategory::find($id);
+        Gate::authorize('update', $learningCategory);
+
         $learningCategory->update([
             'name' => $validated['name'],
             'sub_learning_packet_id' => $sub_learning_packet,
@@ -146,7 +149,9 @@ class LearningCategoryController extends Controller
     public function destroy($learning_packet, $sub_learning_packet, $id)
     {
         //
-        $learningCategory = LearningCategory::find($id);
+        $learningCategory = LearningCategory::findOrFail($id);
+        Gate::authorize('delete', $learningCategory);
+
         $learningCategory->delete();
 
         activity()

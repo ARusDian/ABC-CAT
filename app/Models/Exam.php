@@ -11,11 +11,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Znck\Eloquent\Relations\BelongsToThrough;
 
 class Exam extends Model
 {
     use HasFactory;
     use Cachable;
+    use \Znck\Eloquent\Traits\BelongsToThrough;
 
     protected $fillable = [
         'user_id',
@@ -50,6 +52,11 @@ class Exam extends Model
     public function exerciseQuestion(): BelongsTo
     {
         return $this->belongsTo(ExerciseQuestion::class)->withTrashed();
+    }
+
+    public function learningCategory(): BelongsToThrough
+    {
+        return $this->belongsToThrough(LearningCategory::class, [ExerciseQuestion::class]);
     }
 
     public function scopeOfExercise($query, $exercise_question_id)

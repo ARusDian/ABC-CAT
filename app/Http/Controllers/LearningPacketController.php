@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LearningPacket;
 use App\Http\Controllers\Controller;
+use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -15,10 +16,10 @@ class LearningPacketController extends Controller
      */
     public function index()
     {
-        //
         $learning_packets = LearningPacket::withTrashed()
             ->orderBy('id', 'asc')
             ->get();
+
         return Inertia::render('Admin/Classification/LearningPacket/Index', [
             'learning_packets' => $learning_packets,
         ]);
@@ -29,7 +30,7 @@ class LearningPacketController extends Controller
      */
     public function create()
     {
-        //
+        // Gate::authorize('create', new LearningPacket);
         return Inertia::render('Admin/Classification/LearningPacket/Create');
     }
 
@@ -38,7 +39,8 @@ class LearningPacketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Gate::authorize('create', new LearningPacket);
+
         $request->validate([
             'name' => 'required',
             'description' => 'required',

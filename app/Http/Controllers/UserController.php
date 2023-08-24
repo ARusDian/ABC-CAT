@@ -43,16 +43,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
         $roles = Role::all();
         $learning_categories = LearningCategory::with([
-            'subLearningPacket' => fn($q) => $q
-                ->with([
-                    'learningPacket' => fn($q) => $q->select('id', 'name'),
-                ])
-                ->select('id', 'name', 'learning_packet_id'),
+            'subLearningPacket.learningPacket',
         ])
-            ->select('id', 'name', 'sub_learning_packet_id')
             ->get();
         return Inertia::render('Admin/User/Create', [
             'roles' => $roles,
@@ -80,7 +74,7 @@ class UserController extends Controller
                 'address' => 'required|string',
                 'gender' => 'required|in:L,P',
                 'learning_categories.*.id' =>
-                    'exists:learning_categories,id|distinct|required_if:roles.*.name,==,instructor',
+                'exists:learning_categories,id|distinct|required_if:roles.*.name,==,instructor',
             ]);
             $user = User::create([
                 'name' => $validated['name'],
@@ -153,13 +147,8 @@ class UserController extends Controller
             ->find($id);
         $roles = Role::all();
         $learning_categories = LearningCategory::with([
-            'subLearningPacket' => fn($q) => $q
-                ->with([
-                    'learningPacket' => fn($q) => $q->select('id', 'name'),
-                ])
-                ->select('id', 'name', 'learning_packet_id'),
+            'subLearningPacket.learningPacket'
         ])
-            ->select('id', 'name', 'sub_learning_packet_id')
             ->get();
         return Inertia::render('Admin/User/Edit', [
             'user_data' => $user,
@@ -191,7 +180,7 @@ class UserController extends Controller
                 'address' => 'required|string',
                 'gender' => 'required|in:L,P',
                 'learning_categories.*.id' =>
-                    'exists:learning_categories,id|distinct|required_if:roles.*.name,==,instructor',
+                'exists:learning_categories,id|distinct|required_if:roles.*.name,==,instructor',
             ]);
 
             $user = User::findOrFail($id);
@@ -316,22 +305,8 @@ class UserController extends Controller
         $user = User::find($id);
         $exams = Exam::where('user_id', $id)
             ->with([
-                'exerciseQuestion' => fn($q) => $q
-                    ->select('id', 'name', 'learning_category_id')
-                    ->with([
-                        'learningCategory' => fn($q) => $q
-                            ->select('id', 'name', 'sub_learning_packet_id')
-                            ->with([
-                                'subLearningPacket' => fn($q) => $q
-                                    ->select('id', 'name', 'learning_packet_id')
-                                    ->with([
-                                        'learningPacket' => fn(
-                                            $q,
-                                        ) => $q->select('id', 'name'),
-                                    ]),
-                            ]),
-                    ]),
-                'user' => fn($q) => $q->select('id', 'name', 'email'),
+                'exerciseQuestion.learningCategory.subLearningPacket.learningPacket',
+                'user' => fn ($q) => $q->select('id', 'name', 'email'),
             ])
             ->withScore()
             ->ofFinished(true)
@@ -355,7 +330,7 @@ class UserController extends Controller
     {
         $user = User::select('id', 'name', 'email')
             ->with([
-                'exams' => fn($q) => $q
+                'exams' => fn ($q) => $q
                     ->with([
                         'exerciseQuestion.learningCategory.subLearningPacket.learningPacket',
                     ])
@@ -375,7 +350,7 @@ class UserController extends Controller
             'exam' => Exam::with([
                 'exerciseQuestion.learningCategory.subLearningPacket.learningPacket',
                 'answers.question',
-                'user' => fn($q) => $q->select('id', 'name', 'email'),
+                'user' => fn ($q) => $q->select('id', 'name', 'email'),
             ])
                 ->withScore()
                 ->ofFinished(true)
@@ -388,7 +363,7 @@ class UserController extends Controller
         return Inertia::render('Admin/User/Exam/Result', [
             'exam' => Exam::with([
                 'exerciseQuestion.learningCategory',
-                'user' => fn($q) => $q->select('id', 'name', 'email'),
+                'user' => fn ($q) => $q->select('id', 'name', 'email'),
             ])
                 ->withScore()
                 ->ofFinished(true)

@@ -23,7 +23,7 @@ class ExerciseQuestionController extends Controller
     public function index()
     {
         return Inertia::render('Admin/ExerciseQuestion/Index', [
-            'exercise_questions' => fn() => ExerciseQuestion::all(),
+            'exercise_questions' => fn () => ExerciseQuestion::all(),
         ]);
     }
 
@@ -51,9 +51,10 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
     ) {
         Gate::authorize(
-            'view',
+            'update',
             LearningCategory::findOrFail($learning_category_id),
         );
+
         return Inertia::render('Admin/ExerciseQuestion/Create', []);
     }
 
@@ -67,7 +68,7 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
     ) {
         Gate::authorize(
-            'view',
+            'update',
             LearningCategory::findOrFail($learning_category_id),
         );
         $data = $this->validateData($request->all());
@@ -78,13 +79,13 @@ class ExerciseQuestionController extends Controller
             'time_limit' => $data['time_limit'],
             'options' => [
                 'time_limit_per_cluster' =>
-                    $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
+                $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
                 'number_of_question_per_cluster' =>
-                    $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
+                $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
                 'next_question_after_answer' =>
-                    $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
+                $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
                 'cluster_by_bank_question' =>
-                    $data['type'] != ExerciseQuestionTypeEnum::Kecermatan->name,
+                $data['type'] != ExerciseQuestionTypeEnum::Kecermatan->name,
             ],
             'number_of_question' => $data['number_of_question'],
             'learning_category_id' => $learning_category_id,
@@ -123,7 +124,7 @@ class ExerciseQuestionController extends Controller
         $id,
     ) {
         Gate::authorize(
-            'view',
+            'update',
             LearningCategory::findOrFail($learning_category_id),
         );
         $bank_question = BankQuestion::with([
@@ -150,16 +151,19 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
+        $exerciseQuestion = ExerciseQuestion::with([
+            'questions' => fn ($q) => $q->orderBy('id', 'asc'),
+        ])
+            ->withTrashed()
+            ->findOrFail($id);
+
         Gate::authorize(
             'view',
-            LearningCategory::findOrFail($learning_category_id),
+            $exerciseQuestion->learningCategory,
         );
+
         return Inertia::render('Admin/ExerciseQuestion/Show', [
-            'exercise_question' => fn() => ExerciseQuestion::with([
-                'questions' => fn($q) => $q->orderBy('id', 'asc'),
-            ])
-                ->withTrashed()
-                ->findOrFail($id),
+            'exercise_question' =>  $exerciseQuestion
         ]);
     }
 
@@ -169,17 +173,19 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
+        $exerciseQuestion = ExerciseQuestion::with([
+            'exams' => fn ($q) => $q->with(['user'])->withScore()
+        ])
+            ->withTrashed()
+            ->findOrFail($id);
+
         Gate::authorize(
             'view',
-            LearningCategory::findOrFail($learning_category_id),
+            $exerciseQuestion->learningCategory,
         );
+
         return Inertia::render('Admin/ExerciseQuestion/Exam/Leaderboard', [
-            'exercise_question' => fn() => ExerciseQuestion::with([
-                'exams' => fn($q) => $q->withScore(),
-                'exams.user',
-            ])
-                ->withTrashed()
-                ->findOrFail($id),
+            'exercise_question' => $exerciseQuestion,
         ]);
     }
 
@@ -190,10 +196,15 @@ class ExerciseQuestionController extends Controller
         $id,
         Request $request,
     ) {
+        $exerciseQuestion = ExerciseQuestion::with([])
+            ->withTrashed()
+            ->findOrFail($id);
+
         Gate::authorize(
             'view',
-            LearningCategory::findOrFail($learning_category_id),
+            $exerciseQuestion->learningCategory,
         );
+
         $exams = Exam::withScore()
             ->with('user')
             ->ofFinished(true)
@@ -201,8 +212,9 @@ class ExerciseQuestionController extends Controller
             ->whereColumns($request->get('columnFilters'))
             ->orderBy('finished_at', 'desc')
             ->get();
+
         return Inertia::render('Admin/ExerciseQuestion/Exam/Index', [
-            'exercise_question' => fn() => ExerciseQuestion::findOrFail($id),
+            'exercise_question' => fn () => ExerciseQuestion::findOrFail($id),
             'exams' => $exams,
         ]);
     }
@@ -214,20 +226,18 @@ class ExerciseQuestionController extends Controller
         $id,
         $exam_id,
     ) {
+
+
+        $exam = Exam::with(['answers.question', 'learningCategory'])
+            ->withScore()
+            ->findOrFail($exam_id);
+
         Gate::authorize(
             'view',
-            LearningCategory::findOrFail($learning_category_id),
+            $exam->learningCategory,
         );
-        $exam = Exam::withScore()
-            ->find($exam_id)
-            ->load('answers.question');
+
         return Inertia::render('Admin/ExerciseQuestion/Exam/Show', [
-            'exercise_question' => fn() => ExerciseQuestion::with([
-                'exams' => fn($q) => $q->withScore(),
-                'exams.user',
-            ])
-                ->withTrashed()
-                ->findOrFail($id),
             'exam' => $exam,
         ]);
     }
@@ -239,18 +249,21 @@ class ExerciseQuestionController extends Controller
         $exercise_question_id,
         $exam_id,
     ) {
-        Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
-        );
+
         $exam = Exam::with([
             'exerciseQuestion.learningCategory',
-            'user' => fn($q) => $q->select('id', 'name', 'email'),
+            'user' => fn ($q) => $q->select('id', 'name', 'email'),
         ])
             ->withScore()
             ->ofFinished(true)
             ->find($exam_id)
             ->appendResult();
+
+        Gate::authorize(
+            'view',
+            $exam->exerciseQuestion->learningCategory,
+        );
+
         return Inertia::render('Admin/ExerciseQuestion/Exam/Result', [
             'exam' => $exam,
         ]);
@@ -259,7 +272,7 @@ class ExerciseQuestionController extends Controller
     public function getLeaderboardData($id)
     {
         $exercise_question = ExerciseQuestion::with([
-            'exams' => fn($q) => $q->withScore(),
+            'exams' => fn ($q) => $q->withScore(),
             'exams.user',
         ])
             ->withTrashed()
@@ -277,14 +290,16 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
+        $exercise = ExerciseQuestion::with([])
+            ->withTrashed()
+            ->findOrFail($id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $exercise->learningCategory,
         );
         return Inertia::render('Admin/ExerciseQuestion/Edit', [
-            'exercise_question' => fn() => ExerciseQuestion::withTrashed()->findOrFail(
-                $id,
-            ),
+            'exercise_question' => $exercise
         ]);
     }
 
@@ -298,33 +313,38 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
-        );
-        $data = $this->validateData($request->all());
+        return \DB::transaction(function ()  use ($request, $learning_packet, $sub_learning_packet, $learning_category_id, $id) {
+            $data = $this->validateData($request->all());
 
-        $exercise = ExerciseQuestion::withTrashed()->findOrFail($id);
-        $exercise->update($data);
+            $exercise = ExerciseQuestion::with([])
+                ->withTrashed()
+                ->findOrFail($id);
 
-        activity()
-            ->performedOn($exercise)
-            ->causedBy(auth()->user())
-            ->withProperties(['method' => 'UPDATE'])
-            ->log(
-                'Exercise Question ' .
-                    $exercise->name .
-                    ' updated successfully.',
+            Gate::authorize(
+                'update',
+                $exercise->learningCategory,
             );
+            $exercise->update($data);
 
-        return redirect()
-            ->route('packet.sub.category.exercise.show', [
-                $learning_packet,
-                $sub_learning_packet,
-                $learning_category_id,
-                $id,
-            ])
-            ->banner('Soal Lathian berhasil diedit');
+            activity()
+                ->performedOn($exercise)
+                ->causedBy(auth()->user())
+                ->withProperties(['method' => 'UPDATE'])
+                ->log(
+                    'Exercise Question ' .
+                        $exercise->name .
+                        ' updated successfully.',
+                );
+
+            return redirect()
+                ->route('packet.sub.category.exercise.show', [
+                    $learning_packet,
+                    $sub_learning_packet,
+                    $learning_category_id,
+                    $id,
+                ])
+                ->banner('Soal Lathian berhasil diedit');
+        });
     }
 
     public function importUpdate(
@@ -334,16 +354,19 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
-        );
         $data = $request->validate([
             'bank_question_items' => 'required|array',
             'bank_question_items.*' => 'numeric',
         ]);
 
-        $exercise_question = ExerciseQuestion::withTrashed()->findOrFail($id);
+        $exercise_question = ExerciseQuestion::with([])
+            ->withTrashed()
+            ->findOrFail($id);
+
+        Gate::authorize(
+            'update',
+            $exercise_question->learningCategory,
+        );
 
         $exercise_question
             ->questions()
@@ -378,13 +401,15 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        //
+        $exercise = ExerciseQuestion::with([])
+            ->withTrashed()
+            ->findOrFail($id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $exercise->learningCategory,
         );
 
-        $exercise = ExerciseQuestion::findOrFail($id);
         $exercise->delete();
 
         activity()
@@ -412,12 +437,14 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
-        );
+        $exercise = ExerciseQuestion::with([])
+            ->withTrashed()
+            ->findOrFail($id);
 
-        $exercise = ExerciseQuestion::withTrashed()->findOrFail($id);
+        Gate::authorize(
+            'update',
+            $exercise->learningCategory,
+        );
         $exercise->restore();
 
         activity()
@@ -445,29 +472,34 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
+        $exercise = ExerciseQuestion::with([])
+            ->withTrashed()
+            ->findOrFail($id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $exercise->learningCategory,
         );
+
 
         $exams = Exam::where('exercise_question_id', $id)
             ->with([
-                'exerciseQuestion' => fn($q) => $q
+                'exerciseQuestion' => fn ($q) => $q
                     ->select('id', 'name', 'learning_category_id')
                     ->with([
-                        'learningCategory' => fn($q) => $q
+                        'learningCategory' => fn ($q) => $q
                             ->select('id', 'name', 'sub_learning_packet_id')
                             ->with([
-                                'subLearningPacket' => fn($q) => $q
+                                'subLearningPacket' => fn ($q) => $q
                                     ->select('id', 'name', 'learning_packet_id')
                                     ->with([
-                                        'learningPacket' => fn(
+                                        'learningPacket' => fn (
                                             $q,
                                         ) => $q->select('id', 'name'),
                                     ]),
                             ]),
                     ]),
-                'user' => fn($q) => $q->select('id', 'name', 'email'),
+                'user' => fn ($q) => $q->select('id', 'name', 'email'),
             ])
             ->withScore()
             ->ofFinished(true)

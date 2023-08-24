@@ -23,13 +23,22 @@ class LearningCategoryPolicy
      */
     public function view(User $user, LearningCategory $learningCategory): bool
     {
-        //
-        if ($user->hasRole('instructor')) {
+        return $this->hasAccess($user, $learningCategory);
+    }
+
+    public function hasAccess(User $user, LearningCategory $learningCategory = null): bool
+    {
+        if ($user->hasRole('admin') || $user->hasRole('super-admin')) {
+            return true;
+        }
+
+        if ($learningCategory && $user->hasRole('instructor')) {
             return InstructorLearningCategory::ofUser($user->id)
                 ->ofCategory($learningCategory->id)
                 ->count() == 1;
         }
-        return true;
+
+        return false;
     }
 
     /**
@@ -37,8 +46,7 @@ class LearningCategoryPolicy
      */
     public function create(User $user): bool
     {
-        //
-        return $user->hasRole('super-admin') || $user->hasRole('admin');
+        return $this->hasAccess($user);
     }
 
     /**
@@ -46,7 +54,7 @@ class LearningCategoryPolicy
      */
     public function update(User $user, LearningCategory $learningCategory): bool
     {
-        //
+        return $this->hasAccess($user, $learningCategory);
         return $user->hasRole('super-admin') || $user->hasRole('admin');
     }
 
@@ -55,7 +63,7 @@ class LearningCategoryPolicy
      */
     public function delete(User $user, LearningCategory $learningCategory): bool
     {
-        //
+        return $this->hasAccess($user, $learningCategory);
         return $user->hasRole('super-admin') || $user->hasRole('admin');
     }
 
@@ -66,8 +74,7 @@ class LearningCategoryPolicy
         User $user,
         LearningCategory $learningCategory,
     ): bool {
-        //
-        return $user->hasRole('super-admin') || $user->hasRole('admin');
+        return $this->hasAccess($user, $learningCategory);
     }
 
     /**
@@ -77,7 +84,6 @@ class LearningCategoryPolicy
         User $user,
         LearningCategory $learningCategory,
     ): bool {
-        //
-        return $user->hasRole('super-admin') || $user->hasRole('admin');
+        return $this->hasAccess($user);
     }
 }

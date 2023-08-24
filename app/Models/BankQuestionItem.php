@@ -6,11 +6,13 @@ use App\Enums\BankQuestionItemTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
+use Znck\Eloquent\Relations\BelongsToThrough;
 
 class BankQuestionItem extends Model
 {
     use HasFactory;
     use Cachable;
+    use \Znck\Eloquent\Traits\BelongsToThrough;
 
     protected $casts = [
         'answers' => 'json',
@@ -41,5 +43,10 @@ class BankQuestionItem extends Model
     public function bankQuestion()
     {
         return $this->belongsTo(BankQuestion::class);
+    }
+
+    public function learningCategory(): BelongsToThrough
+    {
+        return $this->belongsToThrough(LearningCategory::class, [BankQuestion::class]);
     }
 }

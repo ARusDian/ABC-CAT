@@ -40,12 +40,15 @@ class BankQuestionItemController extends Controller
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
-        BankQuestion $bank_question,
+        $bank_question_id,
     ) {
+        $bank_question = BankQuestion::with(['learningCategory'])->findOrFail($bank_question_id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $bank_question->learningCategory,
         );
+
         $view = null;
         switch ($bank_question->type) {
             case BankQuestionTypeEnum::Pilihan:
@@ -113,23 +116,26 @@ class BankQuestionItemController extends Controller
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
-        $bank_question,
+        $bank_question_id,
     ) {
+        $bank_question = BankQuestion::with(['learningCategory'])->findOrFail($bank_question_id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $bank_question->learningCategory,
         );
+
         return \DB::transaction(function () use (
             $request,
             $learning_packet,
             $sub_learning_packet,
             $learning_category_id,
-            $bank_question,
+            $bank_question_id,
         ) {
             $data = $this->validateData($request->all());
 
             $newQuestion = BankQuestionItem::create([
-                'bank_question_id' => $bank_question,
+                'bank_question_id' => $bank_question_id,
                 'name' => $data['name'],
 
                 'type' => $data['type'],
@@ -153,7 +159,7 @@ class BankQuestionItemController extends Controller
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
-                    $bank_question,
+                    $bank_question_id,
                 ])
                 ->banner('Question created successfully');
         });
@@ -164,18 +170,21 @@ class BankQuestionItemController extends Controller
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
-        $bank_question,
+        $bank_question_id,
     ) {
+        $bank_question = BankQuestion::with(['learningCategory'])->findOrFail($bank_question_id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $bank_question->learningCategory,
         );
+
         return \DB::transaction(function () use (
             $request,
             $learning_packet,
             $sub_learning_packet,
             $learning_category_id,
-            $bank_question,
+            $bank_question_id,
         ) {
             $all = $request->validate([
                 'type' => [
@@ -207,7 +216,7 @@ class BankQuestionItemController extends Controller
                 $data = $this->validateData($data);
 
                 $questions[] = BankQuestionItem::create([
-                    'bank_question_id' => $bank_question,
+                    'bank_question_id' => $bank_question_id,
                     'name' => $data['name'],
 
                     'type' => $data['type'],
@@ -231,7 +240,7 @@ class BankQuestionItemController extends Controller
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
-                    $bank_question,
+                    $bank_question_id,
                 ])
                 ->banner('Question created successfully');
         });
@@ -244,16 +253,19 @@ class BankQuestionItemController extends Controller
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
-        $bank_question,
+        $bank_question_id,
         $id,
     ) {
+        $item = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
+
         Gate::authorize(
             'view',
-            LearningCategory::findOrFail($learning_category_id),
+            $item->learningCategory,
         );
+
         return Inertia::render('Admin/BankQuestion/Question/Show', [
-            'item' => fn() => BankQuestionItem::find($id),
-            'bank_question_id' => $bank_question,
+            'item' => $item,
+            'bank_question_id' => $bank_question_id,
         ]);
     }
 
@@ -267,14 +279,15 @@ class BankQuestionItemController extends Controller
         $bank_question,
         $id,
     ) {
-        //
+        $item = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
+
         Gate::authorize(
             'view',
-            LearningCategory::findOrFail($learning_category_id),
+            $item->learningCategory,
         );
-        $question = BankQuestionItem::find($id);
+
         return Inertia::render('Admin/BankQuestion/Question/Edit', [
-            'question' => $question,
+            'question' => $item,
         ]);
     }
 
@@ -289,10 +302,13 @@ class BankQuestionItemController extends Controller
         $bank_question,
         $id,
     ) {
+        $item = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $item->learningCategory,
         );
+        
         return \DB::transaction(function () use (
             $request,
             $learning_packet,
@@ -344,10 +360,13 @@ class BankQuestionItemController extends Controller
         $bank_question,
         $id,
     ) {
+        $item = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $item->learningCategory,
         );
+
         return \DB::transaction(function () use (
             $learning_packet,
             $sub_learning_packet,
@@ -384,9 +403,11 @@ class BankQuestionItemController extends Controller
         $bank_question,
         $id,
     ) {
+        $item = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $item->learningCategory,
         );
         return \DB::transaction(function () use (
             $learning_packet,
@@ -424,15 +445,17 @@ class BankQuestionItemController extends Controller
         $id,
         Request $request,
     ) {
+        $bank_question = BankQuestion::with(['learningCategory'])->find($id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $bank_question->learningCategory,
         );
+
         $request->validate([
             'type' => ['required', 'in:WeightedChoice,Single'],
             'import_file' => 'required',
         ]);
-        $bank_question = BankQuestion::find($id);
         if ($request['type'] == 'Single') {
             Excel::import(
                 new QuestionSingleTrueChoicesImport($bank_question),
@@ -469,9 +492,11 @@ class BankQuestionItemController extends Controller
         $learning_category_id,
         $id,
     ) {
+        $bank_question = BankQuestion::with(['learningCategory'])->find($id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $bank_question->learningCategory,
         );
         $bank_question = BankQuestion::find($id);
         return Excel::download(
@@ -486,11 +511,13 @@ class BankQuestionItemController extends Controller
         $learning_category_id,
         $id,
     ) {
+        $bank_question = BankQuestion::with(['learningCategory'])->find($id);
+
         Gate::authorize(
-            'view',
-            LearningCategory::findOrFail($learning_category_id),
+            'update',
+            $bank_question->learningCategory,
         );
-        $bank_question = BankQuestion::find($id);
+
         return Excel::download(
             new QuestionMultipleTrueChoicesTemplateExport($bank_question),
             'Template Soal Pilihan Jawaban Ganda.xlsx',
