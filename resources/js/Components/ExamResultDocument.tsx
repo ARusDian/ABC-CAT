@@ -1,4 +1,9 @@
-import { ExamModel, ExamResult, examToResult, resultToTotal } from '@/Models/Exam';
+import {
+  ExamModel,
+  ExamResult,
+  examToResult,
+  resultToTotal,
+} from '@/Models/Exam';
 import { getUniqueKey } from '@/Models/Helper';
 import { User } from '@/types';
 import _ from 'lodash';
@@ -91,12 +96,11 @@ export default function ExamResultDocument({ exam, user }: Props) {
     return examToResult(exam);
   }, [exam]);
 
-
   const totalResult = React.useMemo(() => {
     return resultToTotal(resultData);
-  }, [resultData])
+  }, [resultData]);
 
-  console.log({ resultData, totalResult })
+  console.log({ resultData, totalResult });
 
   return (
     <div>
@@ -111,7 +115,7 @@ export default function ExamResultDocument({ exam, user }: Props) {
         </div>
       </div>
       <div className="grid grid-cols-2 px-1">
-        <table className='w-full'>
+        <table className="w-full">
           <tr>
             <td>Judul</td>
             <td>:</td>
@@ -198,7 +202,7 @@ export default function ExamResultDocument({ exam, user }: Props) {
             <th className="border border-black">Skor</th>
           </tr>
           {/* TODO: Change with Exact Value */}
-          {resultData.map((item) => (
+          {resultData.map(item => (
             <tr className="text-lg font-semibold" key={getUniqueKey(item)}>
               <td className="border border-black">{item.aspect}</td>
               <td className="border border-black">{item.count}</td>
@@ -213,12 +217,13 @@ export default function ExamResultDocument({ exam, user }: Props) {
             <td className="border border-black">Total</td>
             <td className="border border-black">{totalResult.count}</td>
             <td className="border border-black">{totalResult.answered}</td>
-            <td className="border border-black">{totalResult.time_formatted}</td>
+            <td className="border border-black">
+              {totalResult.time_formatted}
+            </td>
             <td className="border border-black">{totalResult.correct}</td>
             <td className="border border-black">{totalResult.incorrect}</td>
             <td className="border border-black">{totalResult.score}</td>
           </tr>
-
         </table>
       </div>
       <div className="flex justify-end text-lg font-bold">
@@ -227,6 +232,6 @@ export default function ExamResultDocument({ exam, user }: Props) {
           <p className="mt-10 underline-offset-2 underline">Admin CAT</p>
         </div>
       </div>
-    </div >
+    </div>
   );
 }

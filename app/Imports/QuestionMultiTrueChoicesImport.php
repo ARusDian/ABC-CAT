@@ -9,7 +9,10 @@ use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class QuestionMultiTrueChoicesImport implements WithStartRow, OnEachRow, WithHeadingRow
+class QuestionMultiTrueChoicesImport implements
+    WithStartRow,
+    OnEachRow,
+    WithHeadingRow
 {
     private $bank_question;
 
@@ -40,129 +43,129 @@ class QuestionMultiTrueChoicesImport implements WithStartRow, OnEachRow, WithHea
     public function onRow(Row $row)
     {
         $rowIndex = $row->getIndex();
-        $row      = $row->toArray();
+        $row = $row->toArray();
 
         $row_choices = [
-            $row["pilihan_1"],
-            $row["pilihan_2"],
-            $row["pilihan_3"],
-            $row["pilihan_4"],
-            $row["pilihan_5"],
+            $row['pilihan_1'],
+            $row['pilihan_2'],
+            $row['pilihan_3'],
+            $row['pilihan_4'],
+            $row['pilihan_5'],
         ];
         $row_weight = [
-            $row["bobot_1"],
-            $row["bobot_2"],
-            $row["bobot_3"],
-            $row["bobot_4"],
-            $row["bobot_5"],
+            $row['bobot_1'],
+            $row['bobot_2'],
+            $row['bobot_3'],
+            $row['bobot_4'],
+            $row['bobot_5'],
         ];
 
         $formatted_question = [
-            "type" => "tiptap",
-            "content" => [
-                "type" => "doc",
-                "content" => [
+            'type' => 'tiptap',
+            'content' => [
+                'type' => 'doc',
+                'content' => [
                     [
-                        "type" => "paragraph",
-                        "attrs" => [
-                            "textAlign" => "left"
+                        'type' => 'paragraph',
+                        'attrs' => [
+                            'textAlign' => 'left',
                         ],
-                        "content" => [
+                        'content' => [
                             [
-                                "type" => "text",
-                                "marks" => [
+                                'type' => 'text',
+                                'marks' => [
                                     [
-                                        "type" => "textStyle",
-                                        "attrs" => [
-                                            "fontFamily" => null,
-                                            "fontSize" => "16pt"
-                                        ]
-                                    ]
+                                        'type' => 'textStyle',
+                                        'attrs' => [
+                                            'fontFamily' => null,
+                                            'fontSize' => '16pt',
+                                        ],
+                                    ],
                                 ],
-                                "text" => $row["pertanyaan"]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                'text' => $row['pertanyaan'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
-        
+
         $formatted_answer = [
-            "type" => "WeightedChoice",
-            "answer" => array_map(function ($choice) {
+            'type' => 'WeightedChoice',
+            'answer' => array_map(function ($choice) {
                 return [
-                    "weight" => floatval($choice)
+                    'weight' => floatval($choice),
                 ];
-            }, $row_weight)
+            }, $row_weight),
         ];
 
         $formatted_explanation = [
-            "type" => "tiptap",
-            "content" => [
-                "type" => "doc",
-                "content" => [
+            'type' => 'tiptap',
+            'content' => [
+                'type' => 'doc',
+                'content' => [
                     [
-                        "type" => "paragraph",
-                        "attrs" => [
-                            "textAlign" => "left"
+                        'type' => 'paragraph',
+                        'attrs' => [
+                            'textAlign' => 'left',
                         ],
-                        "content" => [
+                        'content' => [
                             [
-                                "type" => "text",
-                                "marks" => [
+                                'type' => 'text',
+                                'marks' => [
                                     [
-                                        "type" => "textStyle",
-                                        "attrs" => [
-                                            "fontFamily" => null,
-                                            "fontSize" => "16pt"
-                                        ]
-                                    ]
+                                        'type' => 'textStyle',
+                                        'attrs' => [
+                                            'fontFamily' => null,
+                                            'fontSize' => '16pt',
+                                        ],
+                                    ],
                                 ],
-                                "text" => $row["pembahasan"]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
+                                'text' => $row['pembahasan'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $choices_formatted = [
-            "choices" =>  array_map(function ($choice) {
+            'choices' => array_map(function ($choice) {
                 return [
-                    "type" => "tiptap",
-                    "content" => [
-                        "type" => "doc",
-                        "content" => [
+                    'type' => 'tiptap',
+                    'content' => [
+                        'type' => 'doc',
+                        'content' => [
                             [
-                                "type" => "paragraph",
-                                "attrs" => [
-                                    "textAlign" => "left"
+                                'type' => 'paragraph',
+                                'attrs' => [
+                                    'textAlign' => 'left',
                                 ],
-                                "content" => [
+                                'content' => [
                                     [
-                                        "type" => "text",
-                                        "marks" => [
+                                        'type' => 'text',
+                                        'marks' => [
                                             [
-                                                "type" => "textStyle",
-                                                "attrs" => [
-                                                    "fontFamily" => null,
-                                                    "fontSize" => "16pt"
-                                                ]
-                                            ]
+                                                'type' => 'textStyle',
+                                                'attrs' => [
+                                                    'fontFamily' => null,
+                                                    'fontSize' => '16pt',
+                                                ],
+                                            ],
                                         ],
-                                        "text" => $choice
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
+                                        'text' => $choice,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                 ];
-            }, $row_choices)
+            }, $row_choices),
         ];
 
         $bank_question = BankQuestionItem::create([
             'bank_question_id' => $this->bank_question->id,
-            'name' => $row["nama"],
+            'name' => $row['nama'],
 
             'type' => 'Pilihan',
             'question' => $formatted_question,

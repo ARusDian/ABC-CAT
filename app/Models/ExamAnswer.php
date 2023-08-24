@@ -38,7 +38,8 @@ class ExamAnswer extends Model
         );
     }
 
-    public function questionNumber(): Attribute {
-        return Attribute::get(fn () => $this->server_state->question_number);
+    public function questionNumber(): Attribute
+    {
+        return Attribute::get(fn() => $this->server_state->question_number);
     }
 }

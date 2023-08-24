@@ -25,11 +25,7 @@ interface QuestionImportForm extends ImportFileModel {
 export default function Show(props: Props) {
   const { bank_question } = props;
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   const form = useForm<QuestionImportForm>({
@@ -41,12 +37,16 @@ export default function Show(props: Props) {
   const [openImportModal, setOpenImportModal] = React.useState(false);
 
   function onSubmit(e: any) {
-    Api.post(route('packet.sub.category.bank-question.import', [
-      learning_packet_id,
-      sub_learning_packet_id,
-      learning_category_id,
-      bank_question.id,
-    ]), e, form);
+    Api.post(
+      route('packet.sub.category.bank-question.import', [
+        learning_packet_id,
+        sub_learning_packet_id,
+        learning_category_id,
+        bank_question.id,
+      ]),
+      e,
+      form,
+    );
   }
 
   const [typeSelected, setTypeSelected] = React.useState('Single');
@@ -93,7 +93,7 @@ export default function Show(props: Props) {
           <p>Type: {bank_question.type}</p>
         </div>
         <div className="flex my-3">
-          {bank_question.type === "Pilihan" ? (
+          {bank_question.type === 'Pilihan' ? (
             <Button
               variant="contained"
               size="large"
@@ -102,7 +102,9 @@ export default function Show(props: Props) {
             >
               Import Soal
             </Button>
-          ) : (<div></div>)}
+          ) : (
+            <div></div>
+          )}
           <div className="flex place-content-end grow gap-2">
             <MuiInertiaLinkButton
               href={route('packet.sub.category.bank-question.item.create', [
@@ -159,24 +161,18 @@ export default function Show(props: Props) {
           )}
         />
       </div>
-      <Modal
-        open={openImportModal}
-        onClose={() => setOpenImportModal(false)}
-      >
-        <div
-          className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 bg-white shadow-2xl p-7 rounded-3xl'
-        >
+      <Modal open={openImportModal} onClose={() => setOpenImportModal(false)}>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 bg-white shadow-2xl p-7 rounded-3xl">
           <form
             className="flex flex-col gap-5 py-5 justify-between h-full"
-            onSubmit={(e) => {
+            onSubmit={e => {
               form.handleSubmit(() => {
                 onSubmit(form.getValues());
-                setTimeout(() => {
-                }, 1000);
+                setTimeout(() => {}, 1000);
               })(e);
             }}
           >
-            <div className=''>
+            <div className="">
               <Controller
                 name="import_file"
                 control={form.control}
@@ -201,7 +197,7 @@ export default function Show(props: Props) {
                 className="mt-2"
               />
             </div>
-            <div className=''>
+            <div className="">
               <label htmlFor="type">Tipe Soal Pilihan</label>
               <Controller
                 name="type"
@@ -226,11 +222,11 @@ export default function Show(props: Props) {
                 className="mt-2"
               />
             </div>
-            <div className='flex justify-between my-auto gap-3'>
+            <div className="flex justify-between my-auto gap-3">
               {form.formState.isSubmitting ? (
                 <ReactLoading color="#1964AD" type="spin" />
               ) : (
-                <div className='my-auto'>
+                <div className="my-auto">
                   <Button
                     type="submit"
                     variant="contained"
@@ -238,17 +234,24 @@ export default function Show(props: Props) {
                     color="success"
                     disabled={form.formState.isSubmitting}
                   >
-                    {form.formState.isSubmitting ? 'Importing...' : 'Import Soal'}
+                    {form.formState.isSubmitting
+                      ? 'Importing...'
+                      : 'Import Soal'}
                   </Button>
                 </div>
               )}
               <MuiInertiaLinkButton
-                href={route(`packet.sub.category.bank-question.template-${typeSelected === "Single" ? "single" : "multiple"}`, [
-                  learning_packet_id,
-                  sub_learning_packet_id,
-                  learning_category_id,
-                  bank_question.id,
-                ])}
+                href={route(
+                  `packet.sub.category.bank-question.template-${
+                    typeSelected === 'Single' ? 'single' : 'multiple'
+                  }`,
+                  [
+                    learning_packet_id,
+                    sub_learning_packet_id,
+                    learning_category_id,
+                    bank_question.id,
+                  ],
+                )}
                 color="secondary"
                 isNextPage
               >

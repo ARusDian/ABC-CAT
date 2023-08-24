@@ -79,7 +79,7 @@ export function useEditor(
               default: '16pt',
             },
           };
-        }
+        },
       }),
     ],
 

@@ -16,7 +16,9 @@ class LearningPacketController extends Controller
     public function index()
     {
         //
-        $learning_packets = LearningPacket::withTrashed()->orderBy('id', 'asc')->get();
+        $learning_packets = LearningPacket::withTrashed()
+            ->orderBy('id', 'asc')
+            ->get();
         return Inertia::render('Admin/Classification/LearningPacket/Index', [
             'learning_packets' => $learning_packets,
         ]);
@@ -46,7 +48,10 @@ class LearningPacketController extends Controller
         $path = null;
 
         if ($request->hasFile('photo.file')) {
-            $path = Storage::disk('public')->put('learning-packet', $request->file('photo.file'));
+            $path = Storage::disk('public')->put(
+                'learning-packet',
+                $request->file('photo.file'),
+            );
         }
 
         $learning_packet = LearningPacket::create([
@@ -81,7 +86,9 @@ class LearningPacketController extends Controller
                 $query->orderBy('id', 'asc');
             },
             'subLearningPackets.learningCategories',
-        ])->withTrashed()->find($id);
+        ])
+            ->withTrashed()
+            ->find($id);
         return Inertia::render('Admin/Classification/LearningPacket/Show', [
             'learning_packet' => $learning_packet,
         ]);
@@ -116,13 +123,19 @@ class LearningPacketController extends Controller
         if (isset($learning_packet->photo_path)) {
             if ($request->hasFile('photo.file')) {
                 Storage::disk('public')->delete($learning_packet->photo_path);
-                $path = Storage::disk('public')->put('learning-packet', $request->file('photo.file'));
+                $path = Storage::disk('public')->put(
+                    'learning-packet',
+                    $request->file('photo.file'),
+                );
             } else {
                 $path = $learning_packet->photo_path;
             }
         } else {
             if ($request->hasFile('photo.file')) {
-                $path = Storage::disk('public')->put('learning-packet', $request->file('photo.file'));
+                $path = Storage::disk('public')->put(
+                    'learning-packet',
+                    $request->file('photo.file'),
+                );
             } else {
                 $path = null;
             }

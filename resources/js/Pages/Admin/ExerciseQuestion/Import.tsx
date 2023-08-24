@@ -40,11 +40,7 @@ export default function Show(props: Props) {
 
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   const [type, setType] = React.useState(1);

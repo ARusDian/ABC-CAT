@@ -71,13 +71,8 @@ export default function Show({ learning_category }: Props) {
     setTabValue(newValue);
   };
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
-
 
   return (
     <AdminShowLayout
@@ -321,28 +316,28 @@ export default function Show({ learning_category }: Props) {
                         (row.original.deleted_at === null
                           ? 'Nonaktifkan'
                           : 'Aktifkan') +
-                        ' Latihan Soal ' +
-                        row.original.name,
+                          ' Latihan Soal ' +
+                          row.original.name,
                         () => {
                           row.original.deleted_at === null
                             ? router.delete(
-                              route('packet.sub.category.exercise.destroy', [
-                                learning_category.sub_learning_packet
-                                  ?.learning_packet_id ?? 0,
-                                learning_category.sub_learning_packet_id,
-                                learning_category.id,
-                                row.original.id,
-                              ]),
-                            )
+                                route('packet.sub.category.exercise.destroy', [
+                                  learning_category.sub_learning_packet
+                                    ?.learning_packet_id ?? 0,
+                                  learning_category.sub_learning_packet_id,
+                                  learning_category.id,
+                                  row.original.id,
+                                ]),
+                              )
                             : router.post(
-                              route('packet.sub.category.exercise.restore', [
-                                learning_category.sub_learning_packet
-                                  ?.learning_packet_id ?? 0,
-                                learning_category.sub_learning_packet_id,
-                                learning_category.id,
-                                row.original.id,
-                              ]),
-                            );
+                                route('packet.sub.category.exercise.restore', [
+                                  learning_category.sub_learning_packet
+                                    ?.learning_packet_id ?? 0,
+                                  learning_category.sub_learning_packet_id,
+                                  learning_category.id,
+                                  row.original.id,
+                                ]),
+                              );
                         },
                         'Latihan Soal ' + row.original.name,
                       );

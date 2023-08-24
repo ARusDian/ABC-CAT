@@ -17,11 +17,7 @@ interface Props {
 }
 
 export default function Edit({ learning_category }: Props) {
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   let form = useForm<LearningCategoryFormModel>({

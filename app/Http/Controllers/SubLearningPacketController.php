@@ -157,7 +157,7 @@ class SubLearningPacketController extends Controller
         Gate::authorize('view', $learningPacket);
 
         return Inertia::render('Student/SubLearningPacket', [
-            'learningPacket' => fn () => $learningPacket,
+            'learningPacket' => fn() => $learningPacket,
         ]);
     }
 }

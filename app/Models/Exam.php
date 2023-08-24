@@ -87,21 +87,22 @@ class Exam extends Model
 
     public function finished(): Attribute
     {
-        return Attribute::get(fn () => $this->finished_at != null);
+        return Attribute::get(fn() => $this->finished_at != null);
     }
 
     public function markClusterChange(Carbon $date)
     {
         $last_change_cluster = $this->last_change_cluster;
 
-        $changed = $date->getTimestampMs() - $last_change_cluster->getTimestampMs();
+        $changed =
+            $date->getTimestampMs() - $last_change_cluster->getTimestampMs();
         $this->cluster[$this->current_cluster]['counter'] += $changed;
 
         $last_change_cluster = $date;
 
         $this->server_state = [
             ...$this->server_state,
-            'last_change_cluster' => $last_change_cluster
+            'last_change_cluster' => $last_change_cluster,
         ];
     }
 
@@ -122,14 +123,14 @@ class Exam extends Model
     public function currentQuestion(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->server_state['current_question'],
+            get: fn() => $this->server_state['current_question'],
         )->withoutObjectCaching();
     }
 
     public function currentCluster(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->server_state['current_cluster'],
+            get: fn() => $this->server_state['current_cluster'],
             // set: function ($value) {
             //     return $this->server_state->current_cluster = $value;
             // },
@@ -138,13 +139,17 @@ class Exam extends Model
 
     public function lastChangeCluster(): Attribute
     {
-        return Attribute::make(get: fn () => Carbon::parse($this->server_state['last_change_cluster']))->withoutObjectCaching();
+        return Attribute::make(
+            get: fn() => Carbon::parse(
+                $this->server_state['last_change_cluster'],
+            ),
+        )->withoutObjectCaching();
     }
 
     public function currentCounter(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->cluster[$this->current_cluster]['counter'] ?? 0,
+            get: fn() => $this->cluster[$this->current_cluster]['counter'] ?? 0,
         );
     }
 
@@ -153,15 +158,13 @@ class Exam extends Model
         return Attribute::get(function () {
             $cluster = $this->answers->groupBy('cluster');
 
-            \Log::info("called");
-
+            \Log::info('called');
 
             $result = $cluster->map(function ($c, $key) {
                 $count = $c->count();
-                $correct = $c->whereNotIn("score", [0])->count();
+                $correct = $c->whereNotIn('score', [0])->count();
                 $answered = $c->whereNotNull('answer');
                 $score = $c->sum('score');
-
 
                 return [
                     'correct' => $correct,
@@ -182,7 +185,7 @@ class Exam extends Model
 
         return $this->append('result');
     }
-    
+
     public function scopeWhereColumns($query, $filters)
     {
         $allowed = ['user.name'];

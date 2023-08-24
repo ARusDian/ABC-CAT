@@ -134,14 +134,16 @@ export default function Run({ exam }: Props) {
     url.searchParams.set('question', (index + 1).toString());
     history.pushState({}, '', url);
 
-    return [{
-      change_question: {
-        date: new Date(),
-        question: index,
-        exam_answer_id: answers[index]?.id,
+    return [
+      {
+        change_question: {
+          date: new Date(),
+          question: index,
+          exam_answer_id: answers[index]?.id,
+        },
       },
-    }]
-  }
+    ];
+  };
 
   const setCurrentQuestion = (index: number) => {
     const tasks = doSetCurrentQuestion(index);
@@ -150,13 +152,15 @@ export default function Run({ exam }: Props) {
   };
 
   useEffectOnce(() => {
-    addStateQueue([{
-      change_question: {
-        date: new Date(),
-        question: currentQuestion,
-        exam_answer_id: answers[currentQuestion]?.id,
+    addStateQueue([
+      {
+        change_question: {
+          date: new Date(),
+          question: currentQuestion,
+          exam_answer_id: answers[currentQuestion]?.id,
+        },
       },
-    }]);
+    ]);
   });
 
   React.useEffect(() => {
@@ -246,20 +250,22 @@ export default function Run({ exam }: Props) {
   const doUpdateAnswer = (answer: ExamAnswerModel) => {
     answerArray.update(currentQuestion, answer);
 
-    let tasks: Task[] = [{
-      change_answer: {
-        exam_answer_id: answer.id,
-        state: answer.state,
-        answer: answer.answer,
+    let tasks: Task[] = [
+      {
+        change_answer: {
+          exam_answer_id: answer.id,
+          state: answer.state,
+          answer: answer.answer,
+        },
       },
-    }]
+    ];
 
     if (changeAnswerAfterAnswering && !isLastQuestion) {
       tasks = [...tasks, ...doSetCurrentQuestion(currentQuestion + 1)];
     }
 
-    return tasks
-  }
+    return tasks;
+  };
   const updateAnswer = (answer: ExamAnswerModel) => {
     const tasks = doUpdateAnswer(answer);
 

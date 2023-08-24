@@ -170,10 +170,13 @@ export default function DashboardLayout({
   );
 
   return (
-    <div className="min-h-screen" style={{
-      backgroundImage:
-        "linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgb(255, 255, 255) 85%), radial-gradient(ellipse at center left, rgba(4, 159, 249, 0.384), transparent 50%), radial-gradient(ellipse at center right, rgba(35, 18, 190, 0.13), transparent 50%), radial-gradient(ellipse at bottom right, rgba(20, 4, 249, 0.363), transparent 50%), radial-gradient(ellipse at bottom left, rgba(252, 202, 38, 0.342), transparent 50%)"
-    }}>
+    <div
+      className="min-h-screen"
+      style={{
+        backgroundImage:
+          'linear-gradient(180deg, rgba(255, 255, 255, 0.01), rgb(255, 255, 255) 85%), radial-gradient(ellipse at center left, rgba(4, 159, 249, 0.384), transparent 50%), radial-gradient(ellipse at center right, rgba(35, 18, 190, 0.13), transparent 50%), radial-gradient(ellipse at bottom right, rgba(20, 4, 249, 0.363), transparent 50%), radial-gradient(ellipse at bottom left, rgba(252, 202, 38, 0.342), transparent 50%)',
+      }}
+    >
       <Head>
         <title>{title || 'ABC CAT'}</title>
         <meta name="description" content="ABC CAT" />

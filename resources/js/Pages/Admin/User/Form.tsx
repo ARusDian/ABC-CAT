@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useCallback, useRef, useState, useEffect } from 'react';
+import React, {
+  ChangeEvent,
+  useCallback,
+  useRef,
+  useState,
+  useEffect,
+} from 'react';
 import Select from 'react-select';
 
 import InputError from '@/Components/Jetstream/InputError';
@@ -42,7 +48,10 @@ export default function Form(props: Props) {
   const [cropperModalOpen, setCropperModalOpen] = useState(false);
   const [image, setImage] = useState<string | null>(null);
   const [cropper, setCropper] = useState<any>();
-  const [isInstructor, setIsInstructor] = useState(form.getValues('roles')?.some((it: Role) => it.name === 'instructor') ?? false);
+  const [isInstructor, setIsInstructor] = useState(
+    form.getValues('roles')?.some((it: Role) => it.name === 'instructor') ??
+      false,
+  );
 
   console.log(form.getValues('learning_categories'));
 
@@ -85,15 +94,15 @@ export default function Form(props: Props) {
                   src={
                     form.getValues('photo')?.file
                       ? getStorageFileUrl(
-                        form.getValues('photo') as BaseDocumentFileModel,
-                      )!
+                          form.getValues('photo') as BaseDocumentFileModel,
+                        )!
                       : form.formState.defaultValues?.profile_photo_path
-                        ? asset(
+                      ? asset(
                           'public',
                           form.formState.defaultValues
                             ?.profile_photo_path as string,
                         )
-                        : asset('root', 'assets/image/default-profile.png')
+                      : asset('root', 'assets/image/default-profile.png')
                   }
                   alt={form.formState.defaultValues?.name}
                 />
@@ -272,7 +281,9 @@ export default function Form(props: Props) {
                     isMulti
                     options={props.learningCategories}
                     getOptionValue={it => it.id!.toString()}
-                    getOptionLabel={it => `${it.name} - ${it.sub_learning_packet?.name} - ${it.sub_learning_packet?.learning_packet?.name}`}
+                    getOptionLabel={it =>
+                      `${it.name} - ${it.sub_learning_packet?.name} - ${it.sub_learning_packet?.learning_packet?.name}`
+                    }
                     value={field.value}
                     onChange={value => {
                       field.onChange(value.slice());

@@ -25,14 +25,14 @@ export default function Show(props: Props) {
   const setCurrentQuestion = React.useCallback((index: number) => {
     const url = new URL(location.toString());
     router.reload({
-      replace: true, 
+      replace: true,
       preserveScroll: true,
       preserveState: true,
       data: {
         question: index + 1,
       },
-      only: []
-    })
+      only: [],
+    });
     history.pushState({}, '', url);
   }, []);
 
@@ -41,23 +41,21 @@ export default function Show(props: Props) {
       console.error({ href: location.href });
       console.log('reloading', re);
       router.reload({
-        only: ['exam'],  data: {
-        question: currentQuestion + 1
-      } })
+        only: ['exam'],
+        data: {
+          question: currentQuestion + 1,
+        },
+      });
       re.current += 1;
     } else {
       console.log({ isIdle });
     }
   }, 5000);
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
-  console.log({ href: location.href, currentQuestion});
+  console.log({ href: location.href, currentQuestion });
   return (
     <AdminShowLayout
       title="Monitor Latihan"
@@ -74,18 +72,23 @@ export default function Show(props: Props) {
           <div className=" text-lg">
             <p>{exam.user.name}</p>
             <p>{exam.user.email}</p>
-            <p>Selesai : {exam.finished ? new Date(exam.finished_at).toLocaleString() : "Belum Selesai"}</p>
+            <p>
+              Selesai :{' '}
+              {exam.finished
+                ? new Date(exam.finished_at).toLocaleString()
+                : 'Belum Selesai'}
+            </p>
           </div>
         </div>
 
-        <div className=''>
+        <div className="">
           <div className="border-t border-gray-500 w-auto h-auto p-3 flex gap-6 divide-x justify-center">
             <ExamNavigation
               currentQuestion={currentQuestion}
               setCurrentQuestion={setCurrentQuestion}
               answers={exam.answers}
               getState={it => {
-                return {  
+                return {
                   isRight: it.score != 0,
                 };
               }}
@@ -98,14 +101,19 @@ export default function Show(props: Props) {
               </p>
               <div className="relative flex">
                 <div className="absolute w-full h-full">
-                  <div className="flex justify-center h-full w-full p-10" style={{
-                    backgroundImage: `url(${asset('root', 'assets/image/logo.png')})`,
-                    backgroundRepeat: 'repeat-y',
-                    backgroundSize: 'contain',
-                    backgroundPosition: 'center',
-                    opacity: 0.1,
-                  }}>
-                  </div>
+                  <div
+                    className="flex justify-center h-full w-full p-10"
+                    style={{
+                      backgroundImage: `url(${asset(
+                        'root',
+                        'assets/image/logo.png',
+                      )})`,
+                      backgroundRepeat: 'repeat-y',
+                      backgroundSize: 'contain',
+                      backgroundPosition: 'center',
+                      opacity: 0.1,
+                    }}
+                  ></div>
                 </div>
                 <div className="w-full h-auto p-3 flex flex-col gap-3 ">
                   <ExamAnswer answer={exam.answers[currentQuestion]} />

@@ -16,8 +16,8 @@ class UserPacketsTemplateExport implements FromView
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function view(): View
     {
         return view('templates.userPacket', [

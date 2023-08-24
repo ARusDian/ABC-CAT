@@ -24,8 +24,10 @@ class LearningCategoryPolicy
     public function view(User $user, LearningCategory $learningCategory): bool
     {
         //
-        if($user->hasRole('instructor')){
-            return InstructorLearningCategory::ofUser($user->id)->ofCategory($learningCategory->id)->count() == 1; 
+        if ($user->hasRole('instructor')) {
+            return InstructorLearningCategory::ofUser($user->id)
+                ->ofCategory($learningCategory->id)
+                ->count() == 1;
         }
         return true;
     }
@@ -38,7 +40,6 @@ class LearningCategoryPolicy
         //
         return $user->hasRole('super-admin') || $user->hasRole('admin');
     }
-    
 
     /**
      * Determine whether the user can update the model.
@@ -61,18 +62,21 @@ class LearningCategoryPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, LearningCategory $learningCategory): bool
-    {
+    public function restore(
+        User $user,
+        LearningCategory $learningCategory,
+    ): bool {
         //
         return $user->hasRole('super-admin') || $user->hasRole('admin');
-
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, LearningCategory $learningCategory): bool
-    {
+    public function forceDelete(
+        User $user,
+        LearningCategory $learningCategory,
+    ): bool {
         //
         return $user->hasRole('super-admin') || $user->hasRole('admin');
     }

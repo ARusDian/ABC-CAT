@@ -33,7 +33,9 @@ export default function Index({ learningPacket }: Props) {
     <DashboardLayout title="SubKategori">
       <div className="flex flex-col gap-5 mx-10">
         <div className="flex justify-between">
-          <p className="text-5xl text-[#3A63F5]">Kategori {learningPacket.name}</p>
+          <p className="text-5xl text-[#3A63F5]">
+            Kategori {learningPacket.name}
+          </p>
           <LinkButton
             href={route('dashboard')}
             colorCode="#3A63F5"
@@ -42,12 +44,14 @@ export default function Index({ learningPacket }: Props) {
             Kembali
           </LinkButton>
         </div>
-        <div className='flex justify-center'>
+        <div className="flex justify-center">
           <img
             className="w-40 -h-40"
-            src={learningPacket.photo_path
-              ? asset('public', learningPacket.photo_path)
-              : asset('root', 'assets/image/default-image.jpg')}
+            src={
+              learningPacket.photo_path
+                ? asset('public', learningPacket.photo_path)
+                : asset('root', 'assets/image/default-image.jpg')
+            }
             alt={learningPacket.name}
           />
         </div>
@@ -72,7 +76,7 @@ export default function Index({ learningPacket }: Props) {
                 </AccordionSummary>
                 <AccordionDetails>
                   {subLearningPacket.learning_categories &&
-                    subLearningPacket.learning_categories.length > 0 ? (
+                  subLearningPacket.learning_categories.length > 0 ? (
                     <ul className="p-3 flex flex-col gap-3">
                       {subLearningPacket.learning_categories.map(
                         (learningCategory, i) => (

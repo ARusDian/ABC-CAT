@@ -44,10 +44,12 @@ export default function Dashboard({
                 <div className="flex flex-col gap-5 mx-auto p-4">
                   <div className="mx-auto">
                     <img
-                      className={`w-40 h-40 ${isSubscribed ? '' : 'grayscale'}`} 
-                      src={learningPacket.photo_path
-                        ? asset('public', learningPacket.photo_path)
-                        : asset('root', 'assets/image/default-image.jpg')}
+                      className={`w-40 h-40 ${isSubscribed ? '' : 'grayscale'}`}
+                      src={
+                        learningPacket.photo_path
+                          ? asset('public', learningPacket.photo_path)
+                          : asset('root', 'assets/image/default-image.jpg')
+                      }
                       alt={learningPacket.name}
                     />
                   </div>

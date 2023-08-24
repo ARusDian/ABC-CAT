@@ -17,12 +17,7 @@ interface Props {
 export default function Index(props: Props) {
   const learningMaterial = props.learning_material;
 
-
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   const descriptionEditor = useEditor({

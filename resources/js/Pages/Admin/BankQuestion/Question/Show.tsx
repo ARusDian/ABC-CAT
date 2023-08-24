@@ -51,11 +51,7 @@ export default function Index(props: Props) {
     setTabValue(newValue);
   };
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   const getMostRightAnswer = () => {
@@ -95,23 +91,23 @@ export default function Index(props: Props) {
       onDelete={() => {
         item.is_active
           ? router.delete(
-            route('packet.sub.category.bank-question.item.destroy', [
-              learning_packet_id,
-              sub_learning_packet_id,
-              learning_category_id,
-              item.bank_question_id,
-              item.id,
-            ]),
-          )
+              route('packet.sub.category.bank-question.item.destroy', [
+                learning_packet_id,
+                sub_learning_packet_id,
+                learning_category_id,
+                item.bank_question_id,
+                item.id,
+              ]),
+            )
           : router.post(
-            route('packet.sub.category.bank-question.item.restore', [
-              learning_packet_id,
-              sub_learning_packet_id,
-              learning_category_id,
-              item.bank_question_id,
-              item.id,
-            ]),
-          );
+              route('packet.sub.category.bank-question.item.restore', [
+                learning_packet_id,
+                sub_learning_packet_id,
+                learning_category_id,
+                item.bank_question_id,
+                item.id,
+              ]),
+            );
       }}
       deleteTitle={item.is_active ? 'Hapus' : 'Restore'}
       onDeleteMessage={
@@ -198,7 +194,9 @@ export default function Index(props: Props) {
               <>
                 <>
                   <label className="text-lg">Jawaban Benar</label>
-                  <p className='font-bold'>Pilihan {numberToUpperCase(getMostRightAnswer())}</p>
+                  <p className="font-bold">
+                    Pilihan {numberToUpperCase(getMostRightAnswer())}
+                  </p>
                 </>
                 <label className="text-lg">Penjelasan Jawaban</label>
                 <div className="mx-auto border rounded-2xl p-5">

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,10 +12,10 @@ return new class extends Migration
     {
         Schema::create('exam_answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("exam_id");
-            $table->foreignId("bank_question_item_id")->constrained();
-            $table->json("answer")->nullable();
-            $table->json("state")->nullable();
+            $table->foreignId('exam_id');
+            $table->foreignId('bank_question_item_id')->constrained();
+            $table->json('answer')->nullable();
+            $table->json('state')->nullable();
             $table->timestamps();
         });
     }
@@ -29,4 +28,3 @@ return new class extends Migration
         Schema::dropIfExists('exam_answers');
     }
 };
-

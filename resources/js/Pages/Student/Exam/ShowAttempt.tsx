@@ -60,17 +60,25 @@ export default function ShowAttempt({ exam }: Props) {
             </p>
             <div className="relative flex">
               <div className="absolute w-full h-full">
-                <div className="flex justify-center h-full w-full p-10" style={{
-                  backgroundImage: `url(${asset('root', 'assets/image/logo.png')})`,
-                  backgroundRepeat: 'repeat-y',
-                  backgroundSize: 'contain',
-                  backgroundPosition: 'center',
-                  opacity: 0.1,
-                }}>
-                </div>
+                <div
+                  className="flex justify-center h-full w-full p-10"
+                  style={{
+                    backgroundImage: `url(${asset(
+                      'root',
+                      'assets/image/logo.png',
+                    )})`,
+                    backgroundRepeat: 'repeat-y',
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    opacity: 0.1,
+                  }}
+                ></div>
               </div>
               <div className="w-full h-auto p-3 flex flex-col gap-3 ">
-                <ExamAnswer answer={exam.answers[currentQuestion]} isEvaluation />
+                <ExamAnswer
+                  answer={exam.answers[currentQuestion]}
+                  isEvaluation
+                />
               </div>
             </div>
           </div>

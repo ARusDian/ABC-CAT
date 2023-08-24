@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,7 +12,9 @@ return new class extends Migration
     {
         Schema::create('learning_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('learning_category_id')->constrained('learning_categories');
+            $table
+                ->foreignId('learning_category_id')
+                ->constrained('learning_categories');
             $table->string('title');
             $table->json('description');
             $table->timestamps();

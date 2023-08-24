@@ -14,10 +14,9 @@ interface Props {
 }
 
 export default function Index({ learning_packets }: Props) {
-
   const { props } = usePage();
   const user = props.user as unknown as User;
-  
+
   const dataColumns = [
     {
       header: 'Nama',
@@ -43,11 +42,15 @@ export default function Index({ learning_packets }: Props) {
       accessorKey: 'description',
     },
     {
-      header: "Aktif",
+      header: 'Aktif',
       accessorFn(originalRow) {
-        return originalRow.deleted_at ? <span className='text-red-500'>Tidak Aktif</span> : <span className='text-green-500'>Aktif</span>;
+        return originalRow.deleted_at ? (
+          <span className="text-red-500">Tidak Aktif</span>
+        ) : (
+          <span className="text-green-500">Aktif</span>
+        );
       },
-    }
+    },
   ] as MRT_ColumnDef<LearningPacketModel>[];
 
   return (
@@ -84,18 +87,16 @@ export default function Index({ learning_packets }: Props) {
               >
                 Show
               </MuiInertiaLinkButton>
-              {
-                user.roles[0].name !== 'instructor' && (
-                  <MuiInertiaLinkButton
-                    color="success"
-                    href={route('user-packet.users', {
-                      learning_packet: row.original.id,
-                    })}
-                  >
-                    Tambah Pengguna
-                  </MuiInertiaLinkButton>
-                )
-              }
+              {user.roles[0].name !== 'instructor' && (
+                <MuiInertiaLinkButton
+                  color="success"
+                  href={route('user-packet.users', {
+                    learning_packet: row.original.id,
+                  })}
+                >
+                  Tambah Pengguna
+                </MuiInertiaLinkButton>
+              )}
             </div>
           )}
         />

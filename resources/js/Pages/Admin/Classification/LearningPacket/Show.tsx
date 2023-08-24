@@ -53,12 +53,14 @@ export default function Show({ learning_packet }: Props) {
     >
       <div className="flex flex-col gap-5">
         <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-5">
-          <div className='flex justify-center'>
+          <div className="flex justify-center">
             <img
               className="w-40 h-40"
-              src={learning_packet.photo_path
-                ? asset('public', learning_packet.photo_path)
-                : asset('root', 'assets/image/default-image.jpg')}
+              src={
+                learning_packet.photo_path
+                  ? asset('public', learning_packet.photo_path)
+                  : asset('root', 'assets/image/default-image.jpg')
+              }
               alt={learning_packet.name}
             />
           </div>

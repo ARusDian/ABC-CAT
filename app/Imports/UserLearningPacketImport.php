@@ -9,10 +9,13 @@ use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class UserLearningPacketImport implements WithStartRow, OnEachRow, WithHeadingRow
+class UserLearningPacketImport implements
+    WithStartRow,
+    OnEachRow,
+    WithHeadingRow
 {
     private $learningPacketId;
-    
+
     public function __construct(int $learningPacketId)
     {
         $this->learningPacketId = $learningPacketId;
@@ -40,7 +43,7 @@ class UserLearningPacketImport implements WithStartRow, OnEachRow, WithHeadingRo
     public function onRow(Row $row)
     {
         $rowIndex = $row->getIndex();
-        $row      = $row->toArray();
+        $row = $row->toArray();
         $email = $row['email'];
         $date = date_create('30-12-1899');
 
@@ -52,10 +55,14 @@ class UserLearningPacketImport implements WithStartRow, OnEachRow, WithHeadingRo
                     'learning_packet_id' => $this->learningPacketId,
                 ],
                 [
-                    'subscription_date' => date_add($date, date_interval_create_from_date_string("{$row['tanggal_berlangganan_dd_mm_yyyy']} days")),
-                ]
+                    'subscription_date' => date_add(
+                        $date,
+                        date_interval_create_from_date_string(
+                            "{$row['tanggal_berlangganan_dd_mm_yyyy']} days",
+                        ),
+                    ),
+                ],
             );
         }
     }
-
 }

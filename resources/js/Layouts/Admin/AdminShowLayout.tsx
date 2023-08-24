@@ -21,7 +21,6 @@ interface Props {
   onDeleteMessage?: string;
   isRestore?: boolean;
   isAdminOnlyAction?: boolean;
-
 }
 
 export default function Index(props: React.PropsWithChildren<Props>) {
@@ -37,7 +36,7 @@ export default function Index(props: React.PropsWithChildren<Props>) {
     deleteTitle,
     onDeleteMessage,
     isRestore,
-    isAdminOnlyAction
+    isAdminOnlyAction,
   } = props;
 
   const handleDelete = () => {
@@ -51,7 +50,9 @@ export default function Index(props: React.PropsWithChildren<Props>) {
   };
   const page = usePage();
   const user = page.props.user as unknown as User;
-  const isAdmin = user.roles.some((role) => role.name === 'super-admin' || role.name === 'admin');
+  const isAdmin = user.roles.some(
+    role => role.name === 'super-admin' || role.name === 'admin',
+  );
   const allowedAction = isAdmin || !isAdminOnlyAction;
   return (
     <DashboardAdminLayout title={title}>
@@ -65,35 +66,32 @@ export default function Index(props: React.PropsWithChildren<Props>) {
                 {backRouteTitle ?? 'Kembali'}
               </MuiInertiaLinkButton>
             ) : null}
-            {
-              allowedAction && (
-                <>
-                  {
-                    editRoute ? (
-                      <MuiInertiaLinkButton color="warning" href={editRoute} >
-                        {editRouteTitle ?? 'Edit'}
-                      </MuiInertiaLinkButton>
-                    ) : null}
+            {allowedAction && (
+              <>
+                {editRoute ? (
+                  <MuiInertiaLinkButton color="warning" href={editRoute}>
+                    {editRouteTitle ?? 'Edit'}
+                  </MuiInertiaLinkButton>
+                ) : null}
 
-                  {onDelete ? (
-                    <div className="flex flex-col justify-center">
-                      <Button
-                        variant="contained"
-                        color={isRestore ? 'success' : 'error'}
-                        onClick={handleDelete}
-                        size="large"
-                      >
-                        <label htmlFor="my-modal">{deleteTitle ?? 'Hapus'}</label>
-                      </Button>
-                    </div>
-                  ) : null}
-                </>
-              )}
+                {onDelete ? (
+                  <div className="flex flex-col justify-center">
+                    <Button
+                      variant="contained"
+                      color={isRestore ? 'success' : 'error'}
+                      onClick={handleDelete}
+                      size="large"
+                    >
+                      <label htmlFor="my-modal">{deleteTitle ?? 'Hapus'}</label>
+                    </Button>
+                  </div>
+                ) : null}
+              </>
+            )}
           </div>
-
         </div>
         {props.children}
       </div>
-    </DashboardAdminLayout >
+    </DashboardAdminLayout>
   );
 }

@@ -1,4 +1,9 @@
-import { ExamModel, ExamResult, examToResult, resultToTotal } from '@/Models/Exam';
+import {
+  ExamModel,
+  ExamResult,
+  examToResult,
+  resultToTotal,
+} from '@/Models/Exam';
 import React from 'react';
 import {
   Chart as ChartJS,
@@ -120,22 +125,24 @@ export default function KecermatanResultDocument({ exam, user }: Props) {
     return examToResult(exam);
   }, [exam]);
 
-  const totalResult = React.useMemo(() => resultToTotal(resultData), [resultData]);
-
+  const totalResult = React.useMemo(
+    () => resultToTotal(resultData),
+    [resultData],
+  );
 
   const data = {
-    labels: resultData.map((item) => item.aspect),
+    labels: resultData.map(item => item.aspect),
     datasets: [
       {
         label: 'Benar',
-        data: resultData.map((item) => item.correct),
+        data: resultData.map(item => item.correct),
         fill: false,
         borderColor: 'rgb(0, 192, 0)',
         tension: 0.1,
       },
       {
         label: 'Salah',
-        data: resultData.map((item) => item.incorrect),
+        data: resultData.map(item => item.incorrect),
         fill: false,
         borderColor: 'rgb(255, 99, 132)',
         tension: 0.1,
@@ -157,9 +164,11 @@ export default function KecermatanResultDocument({ exam, user }: Props) {
   };
 
   const getScoreCategory = (score: number) => {
-    if (score > 25) { return 'Sangat Baik'; }
+    if (score > 25) {
+      return 'Sangat Baik';
+    }
     return score > 22 ? 'Baik' : 'Cukup';
-  }
+  };
 
   return (
     <div className="w-full">
@@ -174,7 +183,7 @@ export default function KecermatanResultDocument({ exam, user }: Props) {
         </div>
       </div>
       <div className="grid grid-cols-2 px-1">
-        <table className='w-full'>
+        <table className="w-full">
           <tr>
             <td>Judul</td>
             <td>:</td>
@@ -262,7 +271,7 @@ export default function KecermatanResultDocument({ exam, user }: Props) {
             <th className="border border-black">Kategori</th>
           </tr>
           {/* TODO: Change with Exact Value */}
-          {resultData.map((item) => (
+          {resultData.map(item => (
             <tr className="text-lg font-semibold" key={getUniqueKey(item)}>
               <td className="border border-black">{item.aspect}</td>
               <td className="border border-black">{item.count}</td>
@@ -271,14 +280,18 @@ export default function KecermatanResultDocument({ exam, user }: Props) {
               <td className="border border-black">{item.correct}</td>
               <td className="border border-black">{item.incorrect}</td>
               <td className="border border-black">{item.score}</td>
-              <td className="border border-black">{getScoreCategory(item.score)}</td>
+              <td className="border border-black">
+                {getScoreCategory(item.score)}
+              </td>
             </tr>
           ))}
           <tr className="text-lg font-semibold">
             <td className="border border-black">Total</td>
             <td className="border border-black">{totalResult.count}</td>
             <td className="border border-black">{totalResult.answered}</td>
-            <td className="border border-black">{totalResult.time_formatted}</td>
+            <td className="border border-black">
+              {totalResult.time_formatted}
+            </td>
             <td className="border border-black">{totalResult.correct}</td>
             <td className="border border-black">{totalResult.incorrect}</td>
             <td className="border border-black">{totalResult.score}</td>

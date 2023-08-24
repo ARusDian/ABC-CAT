@@ -5,15 +5,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::table('exams', function (Blueprint $table) {
-            $table->json("cluster")->nullable();
+            $table->json('cluster')->nullable();
         });
 
         $exams = Exam::with(['exerciseQuestion'])->get();
@@ -24,7 +23,12 @@ return new class extends Migration
                 'options' => [
                     'exercise_question' => $exam->exerciseQuestion->options,
                 ],
-                'cluster' => collect($cluster_names)->map(fn ($name, $key) => ['counter' => $exam->counter[$key] ?? 0, 'name' => $name])
+                'cluster' => collect($cluster_names)->map(
+                    fn($name, $key) => [
+                        'counter' => $exam->counter[$key] ?? 0,
+                        'name' => $name,
+                    ],
+                ),
             ]);
         }
     }
@@ -35,7 +39,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('exams', function (Blueprint $table) {
-            $table->dropColumn("cluster");
+            $table->dropColumn('cluster');
         });
     }
 };

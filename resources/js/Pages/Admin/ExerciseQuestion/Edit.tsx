@@ -26,11 +26,7 @@ export default function Create({ exercise_question }: Props) {
     },
   });
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   const onSubmit = React.useCallback(

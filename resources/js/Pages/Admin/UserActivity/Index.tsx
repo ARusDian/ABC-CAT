@@ -15,7 +15,14 @@ interface UserActivity {
   description: string;
   causer: User;
   properties: {
-    method: 'CREATE' | 'UPDATE' | 'DELETE' | 'RESTORE' | 'FORCE_DELETE' | 'IMPORT' | 'EXPORT';
+    method:
+      | 'CREATE'
+      | 'UPDATE'
+      | 'DELETE'
+      | 'RESTORE'
+      | 'FORCE_DELETE'
+      | 'IMPORT'
+      | 'EXPORT';
   };
   subject_type: string;
   created_at: string;
@@ -68,9 +75,7 @@ export default function UserActivityIndex({ activities }: Props) {
     {
       header: 'Waktu',
       accessorFn: (originalRow: UserActivity) => {
-        return (
-          new Date(originalRow.created_at).toLocaleString('id')
-        );
+        return new Date(originalRow.created_at).toLocaleString('id');
       },
       enableColumnFilter: false,
     },
@@ -143,7 +148,7 @@ export default function UserActivityIndex({ activities }: Props) {
             isLoading,
             columnFilters,
           }}
-          getRowId={(it) => it.id?.toString()}
+          getRowId={it => it.id?.toString()}
           manualPagination
           onPaginationChange={setPagination}
           onColumnFiltersChange={setColumnFilters}

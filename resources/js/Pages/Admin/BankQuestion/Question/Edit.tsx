@@ -24,11 +24,7 @@ export default function Edit(props: Props) {
     defaultValues: question,
   });
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   function onSubmit(data: BankQuestionItemFormModel) {

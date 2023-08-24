@@ -18,11 +18,7 @@ interface Props {
 export default function Leaderboard({ exercise_question }: Props) {
   const [data, setData] = useState<ExamModel[]>(exercise_question.exams);
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   useEffect(() => {
@@ -84,7 +80,9 @@ export default function Leaderboard({ exercise_question }: Props) {
   ] as MRT_ColumnDef<ExamModel>[];
 
   return (
-    <AdminTableLayout title={`Leaderboard Latihan Soal ${exercise_question.name}`}>
+    <AdminTableLayout
+      title={`Leaderboard Latihan Soal ${exercise_question.name}`}
+    >
       <div className="flex justify-end my-3">
         <MuiInertiaLinkButton
           href={route('packet.sub.category.exercise.exam', [
@@ -99,7 +97,9 @@ export default function Leaderboard({ exercise_question }: Props) {
       </div>
       <div className="mt-6 p-7 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-3">
         <p>
-          <span className="font-bold">*Hanya Menampilkan Nilai Tertinggi dari Tiap Siswa</span>{' '}
+          <span className="font-bold">
+            *Hanya Menampilkan Nilai Tertinggi dari Tiap Siswa
+          </span>{' '}
         </p>
         <LazyLoadMRT
           columns={dataColumns}
@@ -122,14 +122,13 @@ export default function Leaderboard({ exercise_question }: Props) {
           renderRowActions={({ row }) => (
             <div className="flex items-center justify-center gap-2">
               <MuiInertiaLinkButton
-                href={route('packet.sub.category.exercise.exam.result',
-                  [
-                    learning_packet_id,
-                    sub_learning_packet_id,
-                    learning_category_id,
-                    exercise_question.id,
-                    row.original.id
-                  ])}
+                href={route('packet.sub.category.exercise.exam.result', [
+                  learning_packet_id,
+                  sub_learning_packet_id,
+                  learning_category_id,
+                  exercise_question.id,
+                  row.original.id,
+                ])}
               >
                 Show
               </MuiInertiaLinkButton>

@@ -9,10 +9,7 @@ class InstructorLearningCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'learning_category_id',
-    ];
+    protected $fillable = ['user_id', 'learning_category_id'];
 
     public function user()
     {
@@ -26,11 +23,11 @@ class InstructorLearningCategory extends Model
 
     public function scopeOfUser($query, $id)
     {
-        return $query->where("user_id", $id);
+        return $query->where('user_id', $id);
     }
 
     public function scopeOfCategory($query, $id)
     {
-        return $query->where("learning_category_id", $id);
+        return $query->where('learning_category_id', $id);
     }
 }

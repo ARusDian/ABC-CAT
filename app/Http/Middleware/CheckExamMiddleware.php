@@ -18,10 +18,15 @@ class CheckExamMiddleware
     {
         $userId = auth()->id();
         if (auth()->id()) {
-            $exam = Exam::disableCache()->ofUser($userId)->ofFinished(false)->first();
+            $exam = Exam::disableCache()
+                ->ofUser($userId)
+                ->ofFinished(false)
+                ->first();
 
             if ($exam) {
-                return redirect()->route('student.exam.show', [$exam->exercise_question_id]);
+                return redirect()->route('student.exam.show', [
+                    $exam->exercise_question_id,
+                ]);
             }
         }
         return $next($request);

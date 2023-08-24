@@ -44,11 +44,7 @@ export default function Show(props: Props) {
     },
   ] as MRT_ColumnDef<Model>[];
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   return (

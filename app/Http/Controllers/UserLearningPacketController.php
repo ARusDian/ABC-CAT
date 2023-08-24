@@ -23,12 +23,21 @@ class UserLearningPacketController extends Controller
         //
         $learningPackets = LearningPacket::with([
             'userLearningPackets' => function ($query) {
-                $query->select('id', 'user_id', 'learning_packet_id', 'subscription_date')->orderBy('created_at', 'desc');
+                $query
+                    ->select(
+                        'id',
+                        'user_id',
+                        'learning_packet_id',
+                        'subscription_date',
+                    )
+                    ->orderBy('created_at', 'desc');
             },
             'userLearningPackets.user' => function ($query) {
                 $query->select('id', 'name', 'email');
             },
-        ])->orderBy('id', 'asc')->get();
+        ])
+            ->orderBy('id', 'asc')
+            ->get();
         return Inertia::render('Admin/UserLearningPacket/Index', [
             'learningPackets' => $learningPackets,
         ])->with('success', 'User Learning Packet created successfully');
@@ -132,13 +141,18 @@ class UserLearningPacketController extends Controller
             'import_file' => 'required',
         ]);
         $learningPacket = LearningPacket::find($id);
-        Excel::import(new UserLearningPacketImport($id), $request->file('import_file.file')->store('temp'));
+        Excel::import(
+            new UserLearningPacketImport($id),
+            $request->file('import_file.file')->store('temp'),
+        );
         activity()
             ->performedOn($learningPacket)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'IMPORT'])
             ->log('User Learning Packet imported');
-        return redirect()->route('user-learning-packet.index')->banner('User Learning Packet imported successfully');
+        return redirect()
+            ->route('user-learning-packet.index')
+            ->banner('User Learning Packet imported successfully');
     }
 
     public function export($id)
@@ -146,20 +160,26 @@ class UserLearningPacketController extends Controller
         $learningPacket = LearningPacket::with([
             'userLearningPackets' => function ($q) {
                 return $q->with('user:id,name,email');
-            }
+            },
         ])->find($id);
         activity()
             ->performedOn($learningPacket)
             ->causedBy(auth()->user())
             ->withProperties(['method' => 'EXPORT'])
             ->log('User Learning Packet exported');
-        return Excel::download(new UserPacketsExport($learningPacket), 'user-' . $learningPacket->name . '.xlsx');
+        return Excel::download(
+            new UserPacketsExport($learningPacket),
+            'user-' . $learningPacket->name . '.xlsx',
+        );
     }
 
     public function template($id)
     {
         $learningPacket = LearningPacket::find($id);
-        return Excel::download(new UserPacketsTemplateExport($learningPacket), 'user-' . $learningPacket->name . '-template.xlsx');
+        return Excel::download(
+            new UserPacketsTemplateExport($learningPacket),
+            'user-' . $learningPacket->name . '-template.xlsx',
+        );
     }
 
     public function users($learning_packet)
@@ -167,14 +187,19 @@ class UserLearningPacketController extends Controller
         $learningPacket = LearningPacket::with([
             'users:id,name,email,active_year',
             'userLearningPackets.user' => function ($query) {
-                $query->select('id', 'name', 'email', 'active_year')->orderBy('created_at', 'desc');
-            }
+                $query
+                    ->select('id', 'name', 'email', 'active_year')
+                    ->orderBy('created_at', 'desc');
+            },
         ])->find($learning_packet);
         $unregisteredUsers = User::whereNotIn(
             'id',
             $learningPacket->users->pluck('id'),
-        )->role('student')
-        ->select('id', 'name', 'email', 'active_year')->orderBy('created_at', 'desc')->get();
+        )
+            ->role('student')
+            ->select('id', 'name', 'email', 'active_year')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return Inertia::render('Admin/UserLearningPacket/User', [
             'learningPacket' => $learningPacket,
@@ -195,8 +220,14 @@ class UserLearningPacketController extends Controller
 
             $users = collect($data['users']);
 
-            $registerUser = $users->whereNotIn('id', $packet->users->pluck('id'));
-            $unregisterUser = $packet->users->whereNotIn('id', $users->pluck('id'));
+            $registerUser = $users->whereNotIn(
+                'id',
+                $packet->users->pluck('id'),
+            );
+            $unregisterUser = $packet->users->whereNotIn(
+                'id',
+                $users->pluck('id'),
+            );
 
             foreach ($registerUser as $user) {
                 $userId = $user['id'];
@@ -222,9 +253,10 @@ class UserLearningPacketController extends Controller
             foreach ($unregisterUser as $user) {
                 $userId = $user['id'];
 
-                $userLearningPacket = UserLearningPacket::whereUserId($userId)->first();
+                $userLearningPacket = UserLearningPacket::whereUserId(
+                    $userId,
+                )->first();
                 $userLearningPacket->delete();
-
 
                 activity()
                     ->performedOn($userLearningPacket)
@@ -237,7 +269,6 @@ class UserLearningPacketController extends Controller
                             $userLearningPacket->learningPacket->name,
                     );
             }
-
 
             return redirect()->route('user-learning-packet.index');
         });

@@ -13,16 +13,12 @@ import { useDefaultExerciseQuestionFormModel } from '@/Hooks/useDefaultExerciseQ
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
 import { Button } from '@mui/material';
 
-interface Props { }
+interface Props {}
 
 export default function Create(props: Props) {
   let form = useDefaultExerciseQuestionFormModel();
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   function onSubmit(e: ExerciseQuestionFormModel) {

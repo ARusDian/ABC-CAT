@@ -57,8 +57,7 @@ export default function Form({ form, className }: Props) {
   return (
     <div className={`flex-col gap-5 ${className}`}>
       <div className="form-control w-full mt-4">
-        <InputLabel htmlFor="photo">Foto
-        </InputLabel>
+        <InputLabel htmlFor="photo">Foto</InputLabel>
         <Controller
           control={form.control}
           name="photo"
@@ -70,15 +69,14 @@ export default function Form({ form, className }: Props) {
                   src={
                     form.getValues('photo')?.file
                       ? getStorageFileUrl(
-                        form.getValues('photo') as BaseDocumentFileModel,
-                      )!
+                          form.getValues('photo') as BaseDocumentFileModel,
+                        )!
                       : form.formState.defaultValues?.photo_path
-                        ? asset(
+                      ? asset(
                           'public',
-                          form.formState.defaultValues
-                            ?.photo_path as string,
+                          form.formState.defaultValues?.photo_path as string,
                         )
-                        : asset('root', 'assets/image/default-image.jpg')
+                      : asset('root', 'assets/image/default-image.jpg')
                   }
                   alt={form.formState.defaultValues?.name}
                 />

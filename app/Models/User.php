@@ -91,7 +91,13 @@ class User extends Authenticatable
 
     public function scopeWhereColumns($query, $filters)
     {
-        $allowed = ['name', 'email', 'phone_number', 'active_year', 'roles.name'];
+        $allowed = [
+            'name',
+            'email',
+            'phone_number',
+            'active_year',
+            'roles.name',
+        ];
 
         if (isset($filters)) {
             foreach (json_decode($filters) as $value) {
@@ -113,11 +119,7 @@ class User extends Authenticatable
                         );
                     });
                 } else {
-                    $query->where(
-                        $value->id,
-                        'like',
-                        "%{$value->value}%",
-                    );
+                    $query->where($value->id, 'like', "%{$value->value}%");
                 }
             }
         }

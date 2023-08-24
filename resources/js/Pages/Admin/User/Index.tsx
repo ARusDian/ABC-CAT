@@ -1,4 +1,8 @@
-import { MRT_ColumnDef, MRT_ColumnFiltersState, MRT_PaginationState } from 'material-react-table';
+import {
+  MRT_ColumnDef,
+  MRT_ColumnFiltersState,
+  MRT_PaginationState,
+} from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 import { User } from '@/types';
@@ -20,7 +24,7 @@ interface Props {
     per_page: number;
     total: number;
     current_page: number;
-  }
+  };
 }
 
 export default function Index(props: Props) {
@@ -36,7 +40,6 @@ export default function Index(props: Props) {
   });
 
   const [isLoading, setIsLoading] = React.useState(false);
-
 
   React.useEffect(() => {
     const url = new URL(route(route().current()!).toString());
@@ -67,7 +70,6 @@ export default function Index(props: Props) {
     });
   }, [pagination.pageIndex, pagination.pageSize, columnFilters]);
 
-
   const form = useForm<ImportFileModel>();
 
   function onSubmit(e: any) {
@@ -78,7 +80,7 @@ export default function Index(props: Props) {
     {
       id: 'name',
       header: 'Nama User',
-      accessorFn: (row) => row.name,
+      accessorFn: row => row.name,
       Cell: ({ renderedCellValue, row }) => (
         <div className="flex gap-3">
           <img
@@ -159,11 +161,11 @@ export default function Index(props: Props) {
                     </div>
                   )}
                 />
-                <div className='my-auto'>
+                <div className="my-auto">
                   {form.formState.isSubmitting ? (
                     <ReactLoading color="#1964AD" type="spin" />
                   ) : (
-                    <div className='my-auto'>
+                    <div className="my-auto">
                       <Button
                         type="submit"
                         variant="contained"
@@ -171,7 +173,9 @@ export default function Index(props: Props) {
                         color="success"
                         disabled={form.formState.isSubmitting}
                       >
-                        {form.formState.isSubmitting ? 'Importing...' : 'Import Student'}
+                        {form.formState.isSubmitting
+                          ? 'Importing...'
+                          : 'Import Student'}
                       </Button>
                     </div>
                   )}
@@ -212,7 +216,7 @@ export default function Index(props: Props) {
             isLoading,
             columnFilters,
           }}
-          getRowId={(it) => it.id?.toString()}
+          getRowId={it => it.id?.toString()}
           manualPagination
           onPaginationChange={setPagination}
           onColumnFiltersChange={setColumnFilters}
@@ -234,6 +238,6 @@ export default function Index(props: Props) {
           )}
         />
       </div>
-    </AdminTableLayout >
+    </AdminTableLayout>
   );
 }

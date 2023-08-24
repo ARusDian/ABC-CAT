@@ -6,29 +6,26 @@ import axios from 'axios';
 import route from 'ziggy-js';
 
 export type MutableProps = {
-
   content: Content | null;
   onBlur: (json: object) => void;
   editorRef?: React.MutableRefObject<Editor | null>;
   editorClassName?: string;
   documentFileType: 'learning-material' | 'bank-question';
   disableEdit?: false;
-}
+};
 
-export type ImmutableProps =
-  {
-    content: Content | null;
-    disableEdit: true;
-    editorRef?: React.MutableRefObject<Editor | null>;
-    editorClassName?: string;
+export type ImmutableProps = {
+  content: Content | null;
+  disableEdit: true;
+  editorRef?: React.MutableRefObject<Editor | null>;
+  editorClassName?: string;
 
-    onBlur?: undefined;
-    bankQuestionId?: undefined;
-    documentFileType?: any;
-  };
+  onBlur?: undefined;
+  bankQuestionId?: undefined;
+  documentFileType?: any;
+};
 
-export type Props =
-  | MutableProps | ImmutableProps
+export type Props = MutableProps | ImmutableProps;
 
 export default function ResourceEditor(props: Props) {
   const editable = props.disableEdit !== true;
@@ -46,7 +43,7 @@ export default function ResourceEditor(props: Props) {
       },
       onCreate: ({ editor }) => {
         editor.commands.setFontSize('16pt');
-      }
+      },
     },
   });
 

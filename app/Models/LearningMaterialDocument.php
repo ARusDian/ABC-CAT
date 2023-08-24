@@ -13,7 +13,6 @@ class LearningMaterialDocument extends Model
     use Cachable;
     use \Znck\Eloquent\Traits\BelongsToThrough;
 
-
     protected $fillable = [
         'caption',
         'learning_material_id',
@@ -22,7 +21,10 @@ class LearningMaterialDocument extends Model
 
     public function learningPacket(): BelongsToThrough
     {
-        return $this->belongsToThrough(LearningPacket::class, [LearningMaterial::class, SubLearningPacket::class]);
+        return $this->belongsToThrough(LearningPacket::class, [
+            LearningMaterial::class,
+            SubLearningPacket::class,
+        ]);
     }
 
     public function learningMaterial()

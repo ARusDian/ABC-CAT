@@ -17,14 +17,15 @@ class ExamMonitorController extends Controller
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
-        $exercise_question_id
+        $exercise_question_id,
     ) {
         return Inertia::render('Instructor/ExamMonitor/Index', [
-            'exercise_question' => ExerciseQuestion::with(
-                [
-                    'exams' =>  fn ($q) => $q->disableCache()->with('user')->orderBy('id', 'desc'),
-                ]
-            )->findOrFail($exercise_question_id),
+            'exercise_question' => ExerciseQuestion::with([
+                'exams' => fn($q) => $q
+                    ->disableCache()
+                    ->with('user')
+                    ->orderBy('id', 'desc'),
+            ])->findOrFail($exercise_question_id),
             // 'exams' => Exam::with(['exerciseQuestion', 'user'])
             //     ->when(
             //         $exercise_question_id != null,
@@ -62,15 +63,17 @@ class ExamMonitorController extends Controller
         $sub_learning_packet,
         $learning_category_id,
         $exercise_question_id,
-        $exam_monitor
+        $exam_monitor,
     ) {
         // dd($exam_monitor, $request->path());
         return Inertia::render('Instructor/ExamMonitor/Show', [
-            'exam' => fn () => Exam::with([
+            'exam' => fn() => Exam::with([
                 'exerciseQuestion',
                 'user',
                 'answers.question',
-            ])->disableCache()->findOrFail($exam_monitor),
+            ])
+                ->disableCache()
+                ->findOrFail($exam_monitor),
         ]);
     }
 

@@ -4,20 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::table('exams', function (Blueprint $table) {
-            $table->dropColumn("finished");
-            $table->timestamp("finished_at")->nullable();
+            $table->dropColumn('finished');
+            $table->timestamp('finished_at')->nullable();
         });
 
         \DB::table('exams')->update([
-            'finished_at' => \Carbon\Carbon::now()
+            'finished_at' => \Carbon\Carbon::now(),
         ]);
     }
 
@@ -27,12 +26,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('exams', function (Blueprint $table) {
-            $table->dropColumn("finished_at");
-            $table->boolean("finished");
+            $table->dropColumn('finished_at');
+            $table->boolean('finished');
         });
 
         \DB::table('exams')->update([
-            'finished' => 1
+            'finished' => 1,
         ]);
     }
 };

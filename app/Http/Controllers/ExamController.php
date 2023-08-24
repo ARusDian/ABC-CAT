@@ -33,7 +33,9 @@ class ExamController extends Controller
         $exerciseQuestions = ExerciseQuestion::where(
             'learning_category_id',
             $learning_category,
-        )->orderBy('id', 'asc')->get();
+        )
+            ->orderBy('id', 'asc')
+            ->get();
         return Inertia::render('Student/Exam/Index', [
             'learning_category' => $learningCategory,
             'exercise_questions' => $exerciseQuestions,
@@ -89,7 +91,7 @@ class ExamController extends Controller
 
         $exam->answers()->update([
             'state' => null,
-            'server_state' => null
+            'server_state' => null,
         ]);
         $exam->save();
     }
@@ -124,7 +126,9 @@ class ExamController extends Controller
         $exam = $this->getInProgressExam();
 
         if ($exam != null && $exam->exercise_question_id != $exercise_id) {
-            return redirect()->route("student.exam.show", [$exam->exercise_question_id]);
+            return redirect()->route('student.exam.show', [
+                $exam->exercise_question_id,
+            ]);
         }
 
         if ($exam != null) {
@@ -144,7 +148,9 @@ class ExamController extends Controller
             }
         }
 
-        $exercise = ExerciseQuestion::with(['learningPacket'])->findOrFail($exercise_id);
+        $exercise = ExerciseQuestion::with(['learningPacket'])->findOrFail(
+            $exercise_id,
+        );
         Gate::authorize('view', $exercise->learningPacket);
 
         return Inertia::render('Student/Exam/Show', [
@@ -163,7 +169,7 @@ class ExamController extends Controller
 
         Gate::authorize('view', $exam);
         return Inertia::render('Student/Exam/ShowAttempt', [
-            'exam' => fn () =>  $exam
+            'exam' => fn() => $exam,
         ]);
     }
 
@@ -186,9 +192,10 @@ class ExamController extends Controller
             /**
              * @var \App\Models\ExerciseQuestion $exercise
              */
-            $exercise = ExerciseQuestion::with(['questions', 'learningPacket'])->findOrFail(
-                $exercise_id,
-            );
+            $exercise = ExerciseQuestion::with([
+                'questions',
+                'learningPacket',
+            ])->findOrFail($exercise_id);
             Gate::authorize('view', $exercise->learningPacket);
 
             if ($exercise->questions->count() == 0) {
@@ -199,7 +206,9 @@ class ExamController extends Controller
                     );
             }
 
-            $cluster_question = $exercise->questions->groupBy($exercise->cluster_by_column);
+            $cluster_question = $exercise->questions->groupBy(
+                $exercise->cluster_by_column,
+            );
 
             $expire_in = null;
             if ($exercise->options->time_limit_per_cluster) {
@@ -213,39 +222,72 @@ class ExamController extends Controller
             $selected_question_per_cluster = [];
             $cluster_column = $exercise->cluster_by_column;
 
-            $pushQuestion = function (\App\Models\BankQuestionItem $question) use (&$selected_question_per_cluster, $cluster_column) {
-                $selected_question_per_cluster[$question[$cluster_column]][] = $question;
+            $pushQuestion = function (
+                \App\Models\BankQuestionItem $question,
+            ) use (&$selected_question_per_cluster, $cluster_column) {
+                $selected_question_per_cluster[
+                    $question[$cluster_column]
+                ][] = $question;
             };
 
             if ($exercise->options->number_of_question_per_cluster) {
-                foreach ($cluster_question->values() as $cluster => $questions) {
-                    foreach ($questions
-                        ->lazy()
-                        ->filter(fn ($q) => $q['is_active'])
-                        ->shuffle()
-                        ->take($exercise->number_of_question)
-                        as $question) {
+                foreach (
+                    $cluster_question->values()
+                    as $cluster => $questions
+                ) {
+                    foreach (
+                        $questions
+                            ->lazy()
+                            ->filter(fn($q) => $q['is_active'])
+                            ->shuffle()
+                            ->take($exercise->number_of_question)
+                        as $question
+                    ) {
                         $pushQuestion($question);
                     }
                 }
             } else {
-                $per_cluster = intval(floor($exercise->number_of_question / $cluster_question->count()));
+                $per_cluster = intval(
+                    floor(
+                        $exercise->number_of_question /
+                            $cluster_question->count(),
+                    ),
+                );
 
                 foreach ($cluster_question as $cluster => $questions) {
-                    foreach ($questions->lazy()->filter(fn ($q) => $q['is_active'])->shuffle()->take($per_cluster) as $question) {
+                    foreach (
+                        $questions
+                            ->lazy()
+                            ->filter(fn($q) => $q['is_active'])
+                            ->shuffle()
+                            ->take($per_cluster)
+                        as $question
+                    ) {
                         $pushQuestion($question);
                     }
                 }
 
-
                 // get id of question that is already selected to filter
-                $selected_question_id = collect($selected_question_per_cluster)->flatten()->pluck('id');
+                $selected_question_id = collect($selected_question_per_cluster)
+                    ->flatten()
+                    ->pluck('id');
                 // question that is not selected before
-                $not_selected_question = $exercise->questions->whereNotIn('id', $selected_question_id);
+                $not_selected_question = $exercise->questions->whereNotIn(
+                    'id',
+                    $selected_question_id,
+                );
                 // question that is needed to reach number_of_question
-                $question_needed = $exercise->number_of_question - $selected_question_id->count();
+                $question_needed =
+                    $exercise->number_of_question -
+                    $selected_question_id->count();
 
-                foreach ($not_selected_question->lazy()->shuffle()->take($question_needed) as $question) {
+                foreach (
+                    $not_selected_question
+                        ->lazy()
+                        ->shuffle()
+                        ->take($question_needed)
+                    as $question
+                ) {
                     $pushQuestion($question);
                 }
             }
@@ -258,16 +300,23 @@ class ExamController extends Controller
                     'last_change_cluster' => Carbon::now(),
                     'current_question' => null,
                     'current_exam_answer_id' => null,
-                    'current_cluster' => array_key_first($selected_question_per_cluster),
+                    'current_cluster' => array_key_first(
+                        $selected_question_per_cluster,
+                    ),
                 ],
                 'options' => [
                     'exercise_question' => $exercise->options,
                 ],
-                'cluster' => (object) collect($exercise->cluster_names)->map(fn ($name) => ['counter' => 0, 'name' => $name])->toArray()
+                'cluster' => (object) collect($exercise->cluster_names)
+                    ->map(fn($name) => ['counter' => 0, 'name' => $name])
+                    ->toArray(),
             ]);
 
             $question_number = 0;
-            foreach ($selected_question_per_cluster as $cluster => $selected_question) {
+            foreach (
+                $selected_question_per_cluster
+                as $cluster => $selected_question
+            ) {
                 foreach ($selected_question as $question) {
                     ExamAnswer::create([
                         'exam_id' => $exam->id,
@@ -278,7 +327,7 @@ class ExamController extends Controller
                         'cluster' => $cluster,
                         'server_state' => [
                             'question_number' => $question_number,
-                        ]
+                        ],
                     ]);
                     $question_number += 1;
                 }
@@ -305,13 +354,17 @@ class ExamController extends Controller
             $data = $request->validate([
                 'exam_id' => 'numeric',
                 'queue.*.change_question' => 'nullable',
-                'queue.*.change_question.date' => 'required_with:queue.*.change_question|date',
-                'queue.*.change_question.question' => 'required_with:queue.*.change_question|numeric',
-                'queue.*.change_question.exam_answer_id' => 'required_with:queue.*.change_question|numeric',
+                'queue.*.change_question.date' =>
+                    'required_with:queue.*.change_question|date',
+                'queue.*.change_question.question' =>
+                    'required_with:queue.*.change_question|numeric',
+                'queue.*.change_question.exam_answer_id' =>
+                    'required_with:queue.*.change_question|numeric',
                 'queue.*.change_question.cluster' => 'numeric',
 
                 'queue.*.change_answer' => 'nullable',
-                'queue.*.change_answer.exam_answer_id' => 'required_with:queue.*.change_answer|numeric',
+                'queue.*.change_answer.exam_answer_id' =>
+                    'required_with:queue.*.change_answer|numeric',
                 'queue.*.change_answer.state' => 'nullable',
                 'queue.*.change_answer.answer' => 'nullable',
             ]);
@@ -319,7 +372,9 @@ class ExamController extends Controller
             /**
              * $var \App\Models\Exam
              */
-            $exam = Exam::disableCache()->with(['exerciseQuestion'])->findOrFail($data['exam_id']);
+            $exam = Exam::disableCache()
+                ->with(['exerciseQuestion'])
+                ->findOrFail($data['exam_id']);
 
             Gate::authorize('update', $exam);
 
@@ -336,11 +391,14 @@ class ExamController extends Controller
 
             $current_cluster = $exam->current_cluster;
 
-            $getAnswer = fn ($answer_id): ExamAnswer => $answer_cache->getOrPut($answer_id, fn () => ExamAnswer::disableCache()
-                ->where('id', $answer_id)
-                ->where('exam_id', $exam->id)
-                ->with(['question'])
-                ->firstOrFail());
+            $getAnswer = fn($answer_id): ExamAnswer => $answer_cache->getOrPut(
+                $answer_id,
+                fn() => ExamAnswer::disableCache()
+                    ->where('id', $answer_id)
+                    ->where('exam_id', $exam->id)
+                    ->with(['question'])
+                    ->firstOrFail(),
+            );
 
             // idk why the data are not sorted by keys by default
             $queues = collect($data['queue'])->sortKeys();
@@ -360,7 +418,10 @@ class ExamController extends Controller
                 if ($q = $queue['change_question'] ?? null) {
                     $q = $queue['change_question'];
 
-                    $exam->setCurrentQuestion($getAnswer($q['exam_answer_id']), Carbon::parse($q['date']));
+                    $exam->setCurrentQuestion(
+                        $getAnswer($q['exam_answer_id']),
+                        Carbon::parse($q['date']),
+                    );
                 }
             }
 
@@ -389,8 +450,8 @@ class ExamController extends Controller
     public function leaderboard($id)
     {
         return Inertia::render('Student/Exam/Leaderboard', [
-            'exercise_question' => fn () => ExerciseQuestion::with([
-                'exams' => fn ($q) => $q->withScore(),
+            'exercise_question' => fn() => ExerciseQuestion::with([
+                'exams' => fn($q) => $q->withScore(),
                 'exams.user',
             ])->findOrFail($id),
         ]);
@@ -400,7 +461,7 @@ class ExamController extends Controller
     {
         $exam = Exam::with([
             'answers.question',
-            'exerciseQuestion.learningCategory'
+            'exerciseQuestion.learningCategory',
         ])
             ->ofExercise($exercise_question)
             ->ofUser(auth()->id())

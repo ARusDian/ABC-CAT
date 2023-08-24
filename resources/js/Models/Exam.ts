@@ -47,10 +47,13 @@ export interface ExamModel {
 
   result: Record<number, ExamAttributeResult>;
 
-  cluster: Record<number, {
-    counter: number;
-    name: string;
-  }>
+  cluster: Record<
+    number,
+    {
+      counter: number;
+      name: string;
+    }
+  >;
 }
 
 interface ExamAttributeResult {
@@ -157,6 +160,6 @@ export function resultToTotal(results: ExamResult[]): ExamResult {
 
   return {
     ...totalResult,
-    time_formatted: formatTimestampMs(totalResult.time)
-  }
+    time_formatted: formatTimestampMs(totalResult.time),
+  };
 }

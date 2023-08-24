@@ -41,11 +41,18 @@ class LearningPacket extends Model
 
     public function bankQuestions()
     {
-        return $this->hasManyDeep(BankQuestion::class, [SubLearningPacket::class, LearningCategory::class]);
+        return $this->hasManyDeep(BankQuestion::class, [
+            SubLearningPacket::class,
+            LearningCategory::class,
+        ]);
     }
 
     public function bankQuestionItems()
     {
-        return $this->hasManyDeep(BankQuestionItem::class, [SubLearningPacket::class, LearningCategory::class, BankQuestion::class]);
+        return $this->hasManyDeep(BankQuestionItem::class, [
+            SubLearningPacket::class,
+            LearningCategory::class,
+            BankQuestion::class,
+        ]);
     }
 }

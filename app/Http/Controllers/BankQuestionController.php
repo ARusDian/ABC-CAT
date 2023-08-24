@@ -53,7 +53,10 @@ class BankQuestionController extends Controller
         $sub_learning_packet,
         $learning_category_id,
     ) {
-        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
+        Gate::authorize(
+            'view',
+            LearningCategory::findOrFail($learning_category_id),
+        );
         $data = $this->validateData($request->all());
 
         $bank = BankQuestion::create([
@@ -87,7 +90,10 @@ class BankQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
+        Gate::authorize(
+            'view',
+            LearningCategory::findOrFail($learning_category_id),
+        );
         return Inertia::render('Admin/BankQuestion/Show', [
             'bank_question' => fn() => BankQuestion::with([
                 'items',
@@ -113,7 +119,10 @@ class BankQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
+        Gate::authorize(
+            'view',
+            LearningCategory::findOrFail($learning_category_id),
+        );
         return Inertia::render('Admin/BankQuestion/Edit', [
             'bank_question' => fn() => BankQuestion::findOrFail($id),
         ]);
@@ -129,7 +138,10 @@ class BankQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        Gate::authorize('view', LearningCategory::findOrFail($learning_category_id));
+        Gate::authorize(
+            'view',
+            LearningCategory::findOrFail($learning_category_id),
+        );
         $data = $this->validateData($request->all());
 
         $bank = BankQuestion::findOrFail($id);

@@ -28,7 +28,6 @@ export function getStorageFileUrl(
   }
 }
 
-
 export interface ImportFileModel {
   import_file: BaseDocumentFileModel;
 }

@@ -305,11 +305,16 @@ class LearningMaterialController extends Controller
         $sub_learning_packet,
         $learning_category,
     ) {
-        $learningCategory = LearningCategory::with(['learningMaterials.documents.documentFile', 'learningPacket'])->findOrFail($learning_category);
+        $learningCategory = LearningCategory::with([
+            'learningMaterials.documents.documentFile',
+            'learningPacket',
+        ])->findOrFail($learning_category);
         Gate::authorize('view', $learningCategory->learningPacket);
 
         return Inertia::render('Student/LearningMaterial/Index', [
-            'learning_category' => fn () => LearningCategory::with(['learningMaterials.documents.documentFile'])->findOrFail($learning_category),
+            'learning_category' => fn() => LearningCategory::with([
+                'learningMaterials.documents.documentFile',
+            ])->findOrFail($learning_category),
         ]);
     }
 
@@ -319,11 +324,13 @@ class LearningMaterialController extends Controller
         $learning_category,
         $id,
     ) {
-        $learningMaterialDocument = LearningMaterialDocument::with('documentFile')->findOrFail($id);
+        $learningMaterialDocument = LearningMaterialDocument::with(
+            'documentFile',
+        )->findOrFail($id);
         Gate::authorize('view', $learningMaterialDocument->learningPacket);
 
         return Inertia::render('Student/LearningMaterial/Show', [
-            'document' => fn () => $learningMaterialDocument
+            'document' => fn() => $learningMaterialDocument,
         ]);
     }
 }

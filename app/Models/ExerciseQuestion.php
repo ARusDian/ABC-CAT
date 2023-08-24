@@ -34,7 +34,7 @@ class ExerciseQuestion extends Model
     protected $casts = [
         'time_limit' => 'float',
         'type' => ExerciseQuestionTypeEnum::class,
-        'options' => 'object'
+        'options' => 'object',
     ];
 
     // protected $appends = ['cluster_names'];
@@ -56,10 +56,10 @@ class ExerciseQuestion extends Model
 
     public function learningPacket()
     {
-        return $this->belongsToThrough(
-            LearningPacket::class,
-            [SubLearningPacket::class, LearningCategory::class],
-        );
+        return $this->belongsToThrough(LearningPacket::class, [
+            SubLearningPacket::class,
+            LearningCategory::class,
+        ]);
     }
 
     public function clusterByColumn(): Attribute
@@ -78,18 +78,30 @@ class ExerciseQuestion extends Model
         return Attribute::get(function () {
             $cluster_ids = null;
             $cluster_column = $this->cluster_by_column;
-            if ($this->relationLoaded("questions")) {
-                $cluster_ids = $this->questions->pluck($cluster_column)->unique()->values();
+            if ($this->relationLoaded('questions')) {
+                $cluster_ids = $this->questions
+                    ->pluck($cluster_column)
+                    ->unique()
+                    ->values();
             } else {
-                $cluster_ids = $this->questions()->select($cluster_column)->distinct()->pluck($cluster_column)->values();
+                $cluster_ids = $this->questions()
+                    ->select($cluster_column)
+                    ->distinct()
+                    ->pluck($cluster_column)
+                    ->values();
             }
 
             $cluster_names = null;
             if ($this->options->cluster_by_bank_question) {
-                $bank_questions = BankQuestion::whereIn('id', $cluster_ids)->get();
+                $bank_questions = BankQuestion::whereIn(
+                    'id',
+                    $cluster_ids,
+                )->get();
                 $cluster_names = $bank_questions->pluck('name', 'id')->all();
             } else {
-                $cluster_names = $cluster_ids->mapWithKeys(fn ($it) => [$it => "Aspek $it"]);
+                $cluster_names = $cluster_ids->mapWithKeys(
+                    fn($it) => [$it => "Aspek $it"],
+                );
             }
 
             return $cluster_names;

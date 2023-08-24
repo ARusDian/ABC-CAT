@@ -28,7 +28,7 @@ class UsersExport implements WithHeadings, FromView
     {
         return view('exports.user', [
             'users' => User::role('student')->get(),
-        ]); 
+        ]);
     }
 
     // public function drawings()

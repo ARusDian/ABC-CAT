@@ -233,7 +233,7 @@ function PilihanForm({
                         <TextField
                           label="Bobot"
                           type="number"
-                          inputProps={{ step: 'any'}}
+                          inputProps={{ step: 'any' }}
                           error={
                             form.formState.errors.answer?.answer?.[index]
                               ?.weight != null

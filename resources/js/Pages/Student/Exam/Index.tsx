@@ -14,12 +14,11 @@ interface Props {
   exercise_questions: ExerciseQuestionModel[];
 }
 
-export default function Index({ learning_category, exercise_questions }: Props) {
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+export default function Index({
+  learning_category,
+  exercise_questions,
+}: Props) {
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   const columns = [
@@ -92,7 +91,9 @@ export default function Index({ learning_category, exercise_questions }: Props) 
             />
           ) : (
             <div className="flex justify-center">
-              <p className="text-3xl font-bold my-auto">Tidak Ada Latihan Soal</p>
+              <p className="text-3xl font-bold my-auto">
+                Tidak Ada Latihan Soal
+              </p>
             </div>
           )}
         </div>

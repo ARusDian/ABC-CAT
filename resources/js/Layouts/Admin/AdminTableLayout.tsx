@@ -25,11 +25,13 @@ export default function AdminTableLayout({
   addRouteTitle,
   customHeader,
   children,
-  isAdminOnlyAction
+  isAdminOnlyAction,
 }: React.PropsWithChildren<Props>) {
   const page = usePage();
   const user = page.props.user as unknown as User;
-  const isAdmin = user.roles.some((role) => role.name === 'super-admin' || role.name === 'admin');
+  const isAdmin = user.roles.some(
+    role => role.name === 'super-admin' || role.name === 'admin',
+  );
   const allowedAction = isAdmin || !isAdminOnlyAction;
   return (
     <DashboardAdminLayout title={title}>
@@ -39,19 +41,17 @@ export default function AdminTableLayout({
         ) : (
           <div className="flex justify-between">
             <div className="mt-8 text-2xl">{title}</div>
-            {
-              (allowedAction && addRoute) && (
-                <div className="">
-                  {addRoute ? (
-                    <Link href={addRoute}>
-                      <StyledButton variant="contained" size="large">
-                        {addRouteTitle ?? `Tambah ${title}`}
-                      </StyledButton>
-                    </Link>
-                  ) : null}
-                </div>
-              )
-            }
+            {allowedAction && addRoute && (
+              <div className="">
+                {addRoute ? (
+                  <Link href={addRoute}>
+                    <StyledButton variant="contained" size="large">
+                      {addRouteTitle ?? `Tambah ${title}`}
+                    </StyledButton>
+                  </Link>
+                ) : null}
+              </div>
+            )}
           </div>
         )}
         {children}

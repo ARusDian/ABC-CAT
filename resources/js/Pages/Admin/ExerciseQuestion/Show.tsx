@@ -21,11 +21,7 @@ export default function Show(props: Props) {
     },
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   return (
@@ -58,10 +54,13 @@ export default function Show(props: Props) {
               }{' '}
               Menit
             </p>
-            <p>Jumlah Soal Per Latihan: {exercise_question.number_of_question}</p>
+            <p>
+              Jumlah Soal Per Latihan: {exercise_question.number_of_question}
+            </p>
             <p
-              className={`${exercise_question.deleted_at ? 'text-red-500' : 'text-green-500'
-                } font-semibold`}
+              className={`${
+                exercise_question.deleted_at ? 'text-red-500' : 'text-green-500'
+              } font-semibold`}
             >
               Status : {exercise_question.deleted_at ? 'Nonaktif' : 'Aktif'}
             </p>

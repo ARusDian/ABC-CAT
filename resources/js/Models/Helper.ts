@@ -22,7 +22,10 @@ export function asset(disk: Disk, link: string) {
   }
 }
 
-type Keyable = { id?: Key; __unique_key?: undefined; } | { id?: undefined; __unique_key?: Key } | Record<string, any>;
+type Keyable =
+  | { id?: Key; __unique_key?: undefined }
+  | { id?: undefined; __unique_key?: Key }
+  | Record<string, any>;
 
 export function getUniqueKey(item: Keyable) {
   if (item.id != null) {

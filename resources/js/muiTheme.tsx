@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material';
-import { blue, yellow,lightBlue } from '@mui/material/colors';
+import { blue, yellow, lightBlue } from '@mui/material/colors';
 
 // allow configuration using `createTheme`
 interface ThemeOptions {

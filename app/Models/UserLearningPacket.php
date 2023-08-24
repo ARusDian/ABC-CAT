@@ -17,9 +17,8 @@ class UserLearningPacket extends Model
         'subscription_date',
     ];
 
-
     protected $casts = [
-        'subscription_date' => 'date'
+        'subscription_date' => 'date',
     ];
 
     public function user()
@@ -34,11 +33,11 @@ class UserLearningPacket extends Model
 
     public function scopeOfUser($query, $id)
     {
-        return $query->where("user_id", $id);
+        return $query->where('user_id', $id);
     }
 
     public function scopeOfPacket($query, $id)
     {
-        return $query->where("learning_packet_id", $id);
+        return $query->where('learning_packet_id', $id);
     }
 }

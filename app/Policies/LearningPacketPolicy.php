@@ -22,7 +22,9 @@ class LearningPacketPolicy
      */
     public function view(User $user, LearningPacket $learningPacket): bool
     {
-        return UserLearningPacket::ofUser($user->id)->ofPacket($learningPacket->id)->count() == 1;
+        return UserLearningPacket::ofUser($user->id)
+            ->ofPacket($learningPacket->id)
+            ->count() == 1;
     }
 
     /**
@@ -60,8 +62,10 @@ class LearningPacketPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, LearningPacket $learningPacket): bool
-    {
+    public function forceDelete(
+        User $user,
+        LearningPacket $learningPacket,
+    ): bool {
         return false;
     }
 }

@@ -44,7 +44,7 @@ export interface User extends BaseUser {
   updated_at: DateTime;
   deleted_at?: Nullable<DateTime>;
   user_profile?: {};
-  exams ?: Array<ExamModel>;
+  exams?: Array<ExamModel>;
 }
 
 export type InertiaSharedProps<T = {}> = T & {

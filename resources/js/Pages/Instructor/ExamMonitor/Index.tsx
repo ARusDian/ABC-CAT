@@ -24,21 +24,22 @@ export default function Index({ exercise_question }: Props) {
     },
     {
       header: 'Waktu Selesai',
-      accessorFn: row => `${row.finished ? new Date(row.finished_at).toLocaleString() : 'Belum Selesai'}`,
+      accessorFn: row =>
+        `${
+          row.finished
+            ? new Date(row.finished_at).toLocaleString()
+            : 'Belum Selesai'
+        }`,
     },
   ] as MRT_ColumnDef<ExamModel>[];
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   return (
     <AdminShowLayout
       title="Monitor Exam"
-      headerTitle='Monitor Ujian'
+      headerTitle="Monitor Ujian"
       backRoute={route('packet.sub.category.exercise.show', [
         learning_packet_id,
         sub_learning_packet_id,
@@ -47,7 +48,7 @@ export default function Index({ exercise_question }: Props) {
       ])}
     >
       <div className="mt-6 p-7 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-3">
-        <div className='flex flex-col gap-1'>
+        <div className="flex flex-col gap-1">
           <p>{exercise_question.name}</p>
           <p>Tipe: {exercise_question.type}</p>
           <p>
@@ -87,13 +88,18 @@ export default function Index({ exercise_question }: Props) {
                 color="primary"
                 size="large"
               >
-                <Link href={route('packet.sub.category.exercise.exam-monitor.show', [
-                  learning_packet_id,
-                  sub_learning_packet_id,
-                  learning_category_id,
-                  exercise_question.id,
-                  row.original.id
-                ])}>
+                <Link
+                  href={route(
+                    'packet.sub.category.exercise.exam-monitor.show',
+                    [
+                      learning_packet_id,
+                      sub_learning_packet_id,
+                      learning_category_id,
+                      exercise_question.id,
+                      row.original.id,
+                    ],
+                  )}
+                >
                   Show
                 </Link>
               </Button>

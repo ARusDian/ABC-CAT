@@ -29,11 +29,8 @@ export default function Index({ learning_category: learningCategory }: Props) {
     [learningCategory.learning_materials!],
   );
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id,
-  } = useDefaultClassificationRouteParams();
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
+    useDefaultClassificationRouteParams();
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {

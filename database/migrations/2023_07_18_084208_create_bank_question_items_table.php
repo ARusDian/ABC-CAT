@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,15 +12,15 @@ return new class extends Migration
     {
         Schema::create('bank_question_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("bank_question_id")->constrained();
-            $table->string("name");
-            $table->string("type");
-            $table->decimal("weight");
-            $table->json("answers");
-            $table->json("answer");
+            $table->foreignId('bank_question_id')->constrained();
+            $table->string('name');
+            $table->string('type');
+            $table->decimal('weight');
+            $table->json('answers');
+            $table->json('answer');
             $table->json('question');
-            $table->json("explanation");
-            $table->boolean("is_active")->default(true);
+            $table->json('explanation');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

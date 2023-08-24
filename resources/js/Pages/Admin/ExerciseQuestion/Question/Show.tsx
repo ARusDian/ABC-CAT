@@ -59,11 +59,7 @@ export default function Index({ question, exercise_question_id }: Props) {
     setTabValue(newValue);
   };
 
-  const {
-    learning_packet_id,
-    sub_learning_packet_id,
-    learning_category_id
-  } =
+  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
   return (
@@ -80,23 +76,23 @@ export default function Index({ question, exercise_question_id }: Props) {
       onDelete={() => {
         question.is_active
           ? router.delete(
-            route('packet.sub.category.exercise.question.destroy', [
-              learning_packet_id,
-              sub_learning_packet_id,
-              learning_category_id,
-              exercise_question_id,
-              question.id,
-            ]),
-          )
+              route('packet.sub.category.exercise.question.destroy', [
+                learning_packet_id,
+                sub_learning_packet_id,
+                learning_category_id,
+                exercise_question_id,
+                question.id,
+              ]),
+            )
           : router.post(
-            route('packet.sub.category.exercise.question.restore', [
-              learning_packet_id,
-              sub_learning_packet_id,
-              learning_category_id,
-              exercise_question_id,
-              question.id,
-            ]),
-          );
+              route('packet.sub.category.exercise.question.restore', [
+                learning_packet_id,
+                sub_learning_packet_id,
+                learning_category_id,
+                exercise_question_id,
+                question.id,
+              ]),
+            );
       }}
       deleteTitle={question.is_active ? 'Hapus' : 'Restore'}
       onDeleteMessage={
