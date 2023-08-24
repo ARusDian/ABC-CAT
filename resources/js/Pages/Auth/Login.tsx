@@ -67,19 +67,6 @@ export default function Login({ canResetPassword, status }: Props) {
           <InputError className="mt-2" message={form.errors.password} />
         </div>
 
-        <div className="mt-4">
-          <label className="flex items-center">
-            <Checkbox
-              name="remember"
-              checked={form.data.remember === 'on'}
-              onChange={e =>
-                form.setData('remember', e.currentTarget.checked ? 'on' : '')
-              }
-            />
-            <span className="ml-2 text-sm text-black">Remember me</span>
-          </label>
-        </div>
-
         <div className="flex flex-col space-y-2 md:flex-row md:items-center md:justify-end md:space-y-0 mt-4">
           {canResetPassword && (
             <div>
