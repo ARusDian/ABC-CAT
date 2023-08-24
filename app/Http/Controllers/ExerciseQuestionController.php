@@ -195,13 +195,13 @@ class ExerciseQuestionController extends Controller
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
-        $id,
+        $exercise_question_id,
         $exam_id,
     ) {
         $exam = Exam::with([
             'exerciseQuestion.learningCategory',
             'user' => fn ($q) => $q->select('id', 'name', 'email'),
-        ])->withScore()->ofFinished(true)->find($id);
+        ])->withScore()->ofFinished(true)->find($exam_id);
         return Inertia::render('Admin/ExerciseQuestion/Exam/Result', [
             'exam' => $exam,
         ]);
