@@ -404,14 +404,12 @@ class ExamController extends Controller
         ])
             ->ofExercise($exercise_question)
             ->ofUser(auth()->id())
-            ->ofFinished(true)
-            ->findOrFail($exam->id);
+            ->findOrFail($exam);
+
+        Gate::authorize('view', $exam);
+
         return Inertia::render('Student/Exam/ShowResult', [
-            'exam' => fn () => Exam::with([
-                'exerciseQuestion',
-            ])
-                ->findOrFail($exam)
-                ->appendResult(),
+            'exam' => $exam,
             'user' => auth()->user(),
             // 'exam' => $exam->load('answers.question'),
         ]);
