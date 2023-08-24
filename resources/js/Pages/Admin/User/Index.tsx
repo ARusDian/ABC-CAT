@@ -36,7 +36,6 @@ export default function Index(props: Props) {
 
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const [importing, setImporting] = React.useState(false);
 
   React.useEffect(() => {
     const url = new URL(route(route().current()!).toString());
@@ -71,9 +70,7 @@ export default function Index(props: Props) {
   const form = useForm<ImportFileModel>();
 
   function onSubmit(e: any) {
-    e.preventDefault();
     Api.post(route('user.import'), e, form);
-    setImporting(false);
   }
 
   const dataColumns = [
@@ -133,10 +130,7 @@ export default function Index(props: Props) {
           <div className="flex justify-center">
             <form
               className="flex-col gap-5 py-5"
-              onSubmit={() => {
-                setImporting(true);
-                form.handleSubmit(onSubmit);
-              }}
+              onSubmit={form.handleSubmit(onSubmit)}
             >
               <div className="flex justify-end gap-3">
                 <Controller
@@ -148,6 +142,7 @@ export default function Index(props: Props) {
                         type="file"
                         ref={field.ref}
                         className=""
+                        required
                         onChange={e => {
                           field.onChange({
                             file: e.target.files![0],
@@ -169,9 +164,9 @@ export default function Index(props: Props) {
                     variant="contained"
                     size="large"
                     color="success"
-                    disabled={importing}
+                    disabled={form.formState.isSubmitting}
                   >
-                    {importing ? 'Importing...' : 'Import Student'}
+                    {form.formState.isSubmitting ? 'Importing...' : 'Import Student'}
                   </Button>
                 </div>
                 <MuiInertiaLinkButton
@@ -232,6 +227,6 @@ export default function Index(props: Props) {
           )}
         />
       </div>
-    </AdminTableLayout>
+    </AdminTableLayout >
   );
 }

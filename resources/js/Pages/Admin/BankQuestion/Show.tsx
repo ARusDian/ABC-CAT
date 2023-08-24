@@ -38,18 +38,14 @@ export default function Show(props: Props) {
   });
 
   const [openImportModal, setOpenImportModal] = React.useState(false);
-  const [importing, setImporting] = React.useState(false);
 
   function onSubmit(e: any) {
-    e.preventDefault();
     Api.post(route('packet.sub.category.bank-question.import', [
       learning_packet_id,
       sub_learning_packet_id,
       learning_category_id,
       bank_question.id,
     ]), e, form);
-    setImporting(false);
-    setOpenImportModal(false);
   }
 
   const [typeSelected, setTypeSelected] = React.useState('Single');
@@ -172,10 +168,7 @@ export default function Show(props: Props) {
         >
           <form
             className="flex flex-col gap-5 py-5 justify-between h-full"
-            onSubmit={() => {
-              setImporting(true);
-              form.handleSubmit(onSubmit);
-            }}
+            onSubmit={form.handleSubmit(onSubmit)}
           >
             <div className=''>
               <Controller
@@ -186,6 +179,7 @@ export default function Show(props: Props) {
                     type="file"
                     ref={field.ref}
                     className=""
+                    required
                     onChange={e => {
                       field.onChange({
                         file: e.target.files![0],
@@ -210,6 +204,7 @@ export default function Show(props: Props) {
                   <select
                     {...field}
                     className="w-full"
+                    required
                     onChange={e => {
                       field.onChange(e.target.value);
                       setTypeSelected(e.target.value);
@@ -232,9 +227,9 @@ export default function Show(props: Props) {
                   variant="contained"
                   size="large"
                   color="success"
-                  disabled={importing}
+                  disabled={form.formState.isSubmitting}
                 >
-                  {importing ? 'Importing...' : 'Import Student'}
+                  {form.formState.isSubmitting ? 'Importing...' : 'Import Student'}
                 </Button>
               </div>
               <MuiInertiaLinkButton
