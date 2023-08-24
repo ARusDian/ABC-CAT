@@ -16,7 +16,7 @@ class UsersImport implements WithStartRow, OnEachRow, WithHeadingRow
      */
     public function startRow(): int
     {
-        return 2;
+        return 4;
     }
 
     /**
@@ -37,10 +37,15 @@ class UsersImport implements WithStartRow, OnEachRow, WithHeadingRow
                 'password' => Hash::make($row['password']),
                 'phone_number' => $row['no_telepon'],
                 'active_year' => $row['tahun_aktif'],
-                'gender' => $row['gender'],
+                'gender' => $row['jenis_kelamin'],
                 'address' => $row['alamat'],
             ],
         );
         $users->assignRole('student');
+    }
+
+    public function headingRow(): int
+    {
+        return 3;
     }
 }
