@@ -11,6 +11,7 @@ import { Button, Modal } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import ReactLoading from 'react-loading';
 import route from 'ziggy-js';
 
 interface Props {
@@ -60,14 +61,13 @@ export default function Show(props: Props) {
       accessorKey: 'type',
     },
     {
-      header: 'Bobot',
-      accessorKey: 'weight',
-    },
-    {
-      header: 'Status',
-      accessorFn: row => {
-        return row.is_active ? 'Aktif' : 'Tidak Aktif';
-      },
+      header: 'Aktif',
+      accessorFn: row =>
+        row.is_active ? (
+          <p className="text-red-500">Tidak Aktif</p>
+        ) : (
+          <p className="text-green-500">Aktif</p>
+        ),
     },
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
@@ -164,11 +164,17 @@ export default function Show(props: Props) {
         onClose={() => setOpenImportModal(false)}
       >
         <div
-          className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 bg-white shadow-2xl p-7 rounded-3xl h-1/4'
+          className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 bg-white shadow-2xl p-7 rounded-3xl'
         >
           <form
             className="flex flex-col gap-5 py-5 justify-between h-full"
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={(e) => {
+              form.handleSubmit(() => {
+                onSubmit(form.getValues());
+                setTimeout(() => {
+                }, 1000);
+              })(e);
+            }}
           >
             <div className=''>
               <Controller
@@ -221,17 +227,21 @@ export default function Show(props: Props) {
               />
             </div>
             <div className='flex justify-between my-auto gap-3'>
-              <div className='my-auto'>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  color="success"
-                  disabled={form.formState.isSubmitting}
-                >
-                  {form.formState.isSubmitting ? 'Importing...' : 'Import Student'}
-                </Button>
-              </div>
+              {form.formState.isSubmitting ? (
+                <ReactLoading color="#1964AD" type="spin" />
+              ) : (
+                <div className='my-auto'>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    color="success"
+                    disabled={form.formState.isSubmitting}
+                  >
+                    {form.formState.isSubmitting ? 'Importing...' : 'Import Student'}
+                  </Button>
+                </div>
+              )}
               <MuiInertiaLinkButton
                 href={route(`packet.sub.category.bank-question.template-${typeSelected === "Single" ? "single" : "multiple"}`, [
                   learning_packet_id,

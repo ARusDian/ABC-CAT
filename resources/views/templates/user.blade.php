@@ -13,6 +13,7 @@
             <th><b>Balikpapan Utara</b></th>
         </tr>
     </tbody>
+    <tr></tr>
     <thead>
         <tr>
             <th><b>Nama</b></th>

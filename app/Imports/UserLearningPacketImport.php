@@ -31,7 +31,7 @@ class UserLearningPacketImport implements WithStartRow, OnEachRow, WithHeadingRo
      */
     public function startRow(): int
     {
-        return 3;
+        return 4;
     }
 
     /**

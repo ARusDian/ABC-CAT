@@ -12,6 +12,7 @@ import { ImportFileModel } from '@/Models/FileModel';
 import { Button } from '@mui/material';
 import { router } from '@inertiajs/react';
 import InputError from '@/Components/Jetstream/InputError';
+import ReactLoading from 'react-loading';
 
 interface Props {
   users: {
@@ -159,15 +160,21 @@ export default function Index(props: Props) {
                   )}
                 />
                 <div className='my-auto'>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    size="large"
-                    color="success"
-                    disabled={form.formState.isSubmitting}
-                  >
-                    {form.formState.isSubmitting ? 'Importing...' : 'Import Student'}
-                  </Button>
+                  {form.formState.isSubmitting ? (
+                    <ReactLoading color="#1964AD" type="spin" />
+                  ) : (
+                    <div className='my-auto'>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        size="large"
+                        color="success"
+                        disabled={form.formState.isSubmitting}
+                      >
+                        {form.formState.isSubmitting ? 'Importing...' : 'Import Student'}
+                      </Button>
+                    </div>
+                  )}
                 </div>
                 <MuiInertiaLinkButton
                   href={route('user.import-template')}

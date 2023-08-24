@@ -23,7 +23,7 @@ class QuestionSingleTrueChoicesImport implements WithStartRow, OnEachRow, WithHe
      */
     public function headingRow(): int
     {
-        return 2;
+        return 4;
     }
 
     /**
@@ -31,7 +31,7 @@ class QuestionSingleTrueChoicesImport implements WithStartRow, OnEachRow, WithHe
      */
     public function startRow(): int
     {
-        return 3;
+        return 6;
     }
 
     /**
@@ -152,7 +152,6 @@ class QuestionSingleTrueChoicesImport implements WithStartRow, OnEachRow, WithHe
         $bank_question = BankQuestionItem::create([
             'bank_question_id' => $this->bank_question->id,
             'name' => $row["nama"],
-            'weight' => $row["bobot"],
 
             'type' => 'Pilihan',
             'question' => $formatted_question,
