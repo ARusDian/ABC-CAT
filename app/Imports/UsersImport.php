@@ -27,7 +27,7 @@ class UsersImport implements WithStartRow, OnEachRow, WithHeadingRow
         $rowIndex = $row->getIndex();
         $row = $row->toArray();
 
-        $users = User::updateOrCreate(
+        $users = User::withTrashed()->updateOrCreate(
             [
                 'email' => $row['email'],
             ],

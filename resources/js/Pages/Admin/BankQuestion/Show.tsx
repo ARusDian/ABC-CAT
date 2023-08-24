@@ -38,14 +38,17 @@ export default function Show(props: Props) {
   });
 
   const [openImportModal, setOpenImportModal] = React.useState(false);
+  const [importing, setImporting] = React.useState(false);
 
   function onSubmit(e: any) {
+    e.preventDefault();
     Api.post(route('packet.sub.category.bank-question.import', [
       learning_packet_id,
       sub_learning_packet_id,
       learning_category_id,
       bank_question.id,
     ]), e, form);
+    setImporting(false);
     setOpenImportModal(false);
   }
 
@@ -169,7 +172,10 @@ export default function Show(props: Props) {
         >
           <form
             className="flex flex-col gap-5 py-5 justify-between h-full"
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={() => {
+              setImporting(true);
+              form.handleSubmit(onSubmit);
+            }}
           >
             <div className=''>
               <Controller
@@ -220,14 +226,17 @@ export default function Show(props: Props) {
               />
             </div>
             <div className='flex justify-between my-auto gap-3'>
-              <Button
-                type="submit"
-                variant="contained"
-                size="large"
-                color="success"
-              >
-                Import Soal
-              </Button>
+              <div className='my-auto'>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  color="success"
+                  disabled={importing}
+                >
+                  {importing ? 'Importing...' : 'Import Student'}
+                </Button>
+              </div>
               <MuiInertiaLinkButton
                 href={route(`packet.sub.category.bank-question.template-${typeSelected === "Single" ? "single" : "multiple"}`, [
                   learning_packet_id,

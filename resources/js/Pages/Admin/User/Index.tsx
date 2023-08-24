@@ -11,6 +11,7 @@ import Api from '@/Utils/Api';
 import { ImportFileModel } from '@/Models/FileModel';
 import { Button } from '@mui/material';
 import { router } from '@inertiajs/react';
+import InputError from '@/Components/Jetstream/InputError';
 
 interface Props {
   users: {
@@ -34,6 +35,8 @@ export default function Index(props: Props) {
   });
 
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const [importing, setImporting] = React.useState(false);
 
   React.useEffect(() => {
     const url = new URL(route(route().current()!).toString());
@@ -68,7 +71,9 @@ export default function Index(props: Props) {
   const form = useForm<ImportFileModel>();
 
   function onSubmit(e: any) {
+    e.preventDefault();
     Api.post(route('user.import'), e, form);
+    setImporting(false);
   }
 
   const dataColumns = [
@@ -128,35 +133,47 @@ export default function Index(props: Props) {
           <div className="flex justify-center">
             <form
               className="flex-col gap-5 py-5"
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={() => {
+                setImporting(true);
+                form.handleSubmit(onSubmit);
+              }}
             >
               <div className="flex justify-end gap-3">
                 <Controller
                   name="import_file"
                   control={form.control}
                   render={({ field }) => (
-                    <input
-                      type="file"
-                      ref={field.ref}
-                      className=""
-                      onChange={e => {
-                        field.onChange({
-                          file: e.target.files![0],
-                          path: '',
-                          disk: 'public',
-                        });
-                      }}
-                    />
+                    <div>
+                      <input
+                        type="file"
+                        ref={field.ref}
+                        className=""
+                        onChange={e => {
+                          field.onChange({
+                            file: e.target.files![0],
+                            path: '',
+                            disk: 'public',
+                          });
+                        }}
+                      />
+                      <InputError
+                        message={form.formState.errors.import_file?.message}
+                        className="mt-2"
+                      />
+                    </div>
                   )}
                 />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  color="success"
-                >
-                  Import Student
-                </Button>
+                <div className='my-auto'>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    color="success"
+                    disabled={importing}
+                  >
+                    {importing ? 'Importing...' : 'Import Student'}
+                  </Button>
+                </div>
                 <MuiInertiaLinkButton
                   href={route('user.import-template')}
                   color="secondary"

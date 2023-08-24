@@ -384,11 +384,11 @@ class BankQuestionItemController extends Controller
     }
 
     public function import(
-        Request $request,
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
         $id,
+        Request $request,
     ) {
         $request->validate([
             'type' => [
