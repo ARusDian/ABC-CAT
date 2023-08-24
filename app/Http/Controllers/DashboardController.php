@@ -15,8 +15,8 @@ class DashboardController extends Controller
     {
         if (
             auth()
-                ->user()
-                ->hasRole('student')
+            ->user()
+            ->hasRole('student')
         ) {
             return Inertia::render('Student/Dashboard', [
                 'user_learning_packets' => auth()->user()->userLearningPackets,
@@ -24,43 +24,23 @@ class DashboardController extends Controller
             ]);
         } elseif (
             auth()
-                ->user()
-                ->hasRole('admin') ||
+            ->user()
+            ->hasRole('admin') ||
             auth()
-                ->user()
-                ->hasRole('super-admin') ||
+            ->user()
+            ->hasRole('super-admin') ||
             auth()
-                ->user()
-                ->hasRole('instructor')
+            ->user()
+            ->hasRole('instructor')
         ) {
             $users_count = User::all()->count();
             $students_count = User::role('student')->count();
 
-            $learning_packets = LearningPacket::with([
-                'learningCategories.bankQuestions.items',
-            ])
-                ->orderBy('id', 'asc')
-                ->withCount(['users'])
+            $learning_packets = LearningPacket::orderBy('id', 'asc')
+                ->withCount(['users', 'bankQuestionItems'])
                 ->get();
 
-            foreach ($learning_packets as $learning_packet) {
-                $learning_packet[
-                    'bank_question_items_count'
-                ] = $learning_packet->learningCategories
-                    ->map(function ($learning_category) {
-                        return $learning_category
-                            ->bankQuestions()
-                            ->withCount('items')
-                            ->get()
-                            ->map(function ($bank_question) {
-                                return $bank_question->items_count;
-                            })
-                            ->sum();
-                    })
-                    ->sum();
-            }
-
-            $sum_of_bank_question_items = BankQuestionItem::all()->count();
+            $sum_of_bank_question_items = BankQuestionItem::count();
             return Inertia::render('Admin/Dashboard', [
                 'users_count' => $users_count,
                 'students_count' => $students_count,

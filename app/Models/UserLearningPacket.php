@@ -31,4 +31,14 @@ class UserLearningPacket extends Model
     {
         return $this->belongsTo(LearningPacket::class);
     }
+
+    public function scopeOfUser($query, $id)
+    {
+        return $query->where("user_id", $id);
+    }
+
+    public function scopeOfPacket($query, $id)
+    {
+        return $query->where("learning_packet_id", $id);
+    }
 }

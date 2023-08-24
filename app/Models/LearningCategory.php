@@ -10,6 +10,8 @@ class LearningCategory extends Model
 {
     use HasFactory;
     use Cachable;
+    use \Znck\Eloquent\Traits\BelongsToThrough;
+
 
     protected $fillable = ['name', 'sub_learning_packet_id'];
 

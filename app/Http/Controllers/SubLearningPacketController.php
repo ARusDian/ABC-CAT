@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\LearningPacket;
 use App\Models\SubLearningPacket;
+use Gate;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -149,10 +150,14 @@ class SubLearningPacketController extends Controller
 
     public function studentIndex($learning_packet)
     {
+        $learningPacket = LearningPacket::with([
+            'subLearningPackets.learningCategories',
+        ])->findOrFail($learning_packet);
+
+        Gate::authorize('view', $learningPacket);
+
         return Inertia::render('Student/SubLearningPacket', [
-            'learningPacket' => fn () => LearningPacket::with([
-                'subLearningPackets.learningCategories',
-            ])->findOrFail($learning_packet),
+            'learningPacket' => fn () => $learningPacket,
         ]);
     }
 }

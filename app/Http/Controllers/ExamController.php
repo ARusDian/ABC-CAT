@@ -10,6 +10,7 @@ use App\Models\ExamAnswer;
 use App\Models\ExerciseQuestion;
 use App\Models\LearningCategory;
 use Carbon\Carbon;
+use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
@@ -129,6 +130,8 @@ class ExamController extends Controller
         if ($exam != null) {
             $this->checkFinished($exam);
 
+            Gate::authorize('view', $exam);
+
             if (!$exam->finished) {
                 $exam->answers->each(function ($answer) {
                     $answer->setHidden(['score']);
@@ -141,7 +144,8 @@ class ExamController extends Controller
             }
         }
 
-        $exercise = ExerciseQuestion::findOrFail($exercise_id);
+        $exercise = ExerciseQuestion::with(['learningPacket'])->findOrFail($exercise_id);
+        Gate::authorize('view', $exercise->learningPacket);
 
         return Inertia::render('Student/Exam/Show', [
             'exercise_question' => $exercise,
@@ -155,8 +159,11 @@ class ExamController extends Controller
 
     public function showAttempt($exercise_question, $exam)
     {
+        $exam = Exam::with(['answers.question'])->findOrFail($exam);
+
+        Gate::authorize('view', $exam);
         return Inertia::render('Student/Exam/ShowAttempt', [
-            'exam' => fn () => Exam::with(['answers.question'])->findOrFail($exam)
+            'exam' => fn () =>  $exam
         ]);
     }
 
@@ -167,6 +174,9 @@ class ExamController extends Controller
             ->ofUser(auth()->id())
             ->ofFinished(false)
             ->firstOrFail();
+
+        Gate::authorize('update', $exam);
+
         $this->markFinished($exam);
     }
 
@@ -176,9 +186,10 @@ class ExamController extends Controller
             /**
              * @var \App\Models\ExerciseQuestion $exercise
              */
-            $exercise = ExerciseQuestion::with(['questions'])->findOrFail(
+            $exercise = ExerciseQuestion::with(['questions', 'learningPacket'])->findOrFail(
                 $exercise_id,
             );
+            Gate::authorize('view', $exercise->learningPacket);
 
             if ($exercise->questions->count() == 0) {
                 return redirect()
@@ -309,6 +320,8 @@ class ExamController extends Controller
              * $var \App\Models\Exam
              */
             $exam = Exam::disableCache()->with(['exerciseQuestion'])->findOrFail($data['exam_id']);
+
+            Gate::authorize('update', $exam);
 
             if ($exam->finished) {
                 return [

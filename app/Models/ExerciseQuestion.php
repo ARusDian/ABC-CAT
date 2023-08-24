@@ -19,6 +19,7 @@ class ExerciseQuestion extends Model
     use HasFactory;
     use SoftDeletes;
     use Cachable;
+    use \Znck\Eloquent\Traits\BelongsToThrough;
 
     protected $fillable = [
         'name',
@@ -51,6 +52,14 @@ class ExerciseQuestion extends Model
     public function learningCategory(): BelongsTo
     {
         return $this->belongsTo(LearningCategory::class);
+    }
+
+    public function learningPacket()
+    {
+        return $this->belongsToThrough(
+            LearningPacket::class,
+            [SubLearningPacket::class, LearningCategory::class],
+        );
     }
 
     public function clusterByColumn(): Attribute

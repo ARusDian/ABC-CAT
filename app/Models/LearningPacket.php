@@ -12,6 +12,7 @@ class LearningPacket extends Model
     use HasFactory;
     use SoftDeletes;
     use Cachable;
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     protected $fillable = ['name', 'description', 'photo_path'];
 
@@ -36,5 +37,15 @@ class LearningPacket extends Model
     public function userLearningPackets()
     {
         return $this->hasMany(UserLearningPacket::class);
+    }
+
+    public function bankQuestions()
+    {
+        return $this->hasManyDeep(BankQuestion::class, [SubLearningPacket::class, LearningCategory::class]);
+    }
+
+    public function bankQuestionItems()
+    {
+        return $this->hasManyDeep(BankQuestionItem::class, [SubLearningPacket::class, LearningCategory::class, BankQuestion::class]);
     }
 }
