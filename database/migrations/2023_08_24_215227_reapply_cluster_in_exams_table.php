@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Exam;
+use App\Models\ExamAnswer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,8 @@ return new class extends Migration
 
 
         \DB::transaction(function () {
-            $exams = Exam::with(['exerciseQuestion'])->get();
+            $exams = Exam::with(['exerciseQuestion', 'answers.question'])->get();
+            $arr = [];
 
             foreach ($exams as $exam) {
                 $cluster_names = $exam->exerciseQuestion->cluster_names;
@@ -26,7 +28,25 @@ return new class extends Migration
                 $exam->update([
                     'cluster' => $cluster
                 ]);
+
+                foreach ($exam->answers as $answer) {
+                    $cluster = $answer->question->{$exam->exerciseQuestion->cluster_by_column};
+                    if ($cluster != $answer->cluster) {
+
+                            $answer->update([
+                                'cluster' => $cluster
+                            ]);
+                        // $arr[$answer->id] = [
+                        //     'original' => $answer->cluster,
+                        //     'change' => $cluster,
+                        //     'bank_question_id' => $answer->question->bank_question_id,
+                        //     'bank_question_cluster' => $answer->question->cluster,
+                        //     'cluster_name' => $cluster_names[$cluster],
+                        // ];
+                    }
+                }
             }
+            // dd($arr);
         });
     }
 
