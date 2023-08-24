@@ -123,16 +123,16 @@ class User extends Authenticatable
         }
     }
 
-    public function userLearningCategories()
+    public function instructorLearningCategories()
     {
-        return $this->hasMany(UserLearningCategory::class);
+        return $this->hasMany(InstructorLearningCategory::class);
     }
 
     public function learningCategories()
     {
         return $this->belongsToMany(
             LearningCategory::class,
-            UserLearningCategory::class,
+            InstructorLearningCategory::class,
         );
     }
 }

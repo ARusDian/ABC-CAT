@@ -5,7 +5,7 @@ namespace App\Policies;
 use Illuminate\Auth\Access\Response;
 use App\Models\LearningCategory;
 use App\Models\User;
-use App\Models\UserLearningCategory;
+use App\Models\InstructorLearningCategory;
 
 class LearningCategoryPolicy
 {
@@ -25,7 +25,7 @@ class LearningCategoryPolicy
     {
         //
         if($user->hasRole('instructor')){
-            return UserLearningCategory::ofUser($user->id)->ofCategory($learningCategory->id)->count() == 1; 
+            return InstructorLearningCategory::ofUser($user->id)->ofCategory($learningCategory->id)->count() == 1; 
         }
         return true;
     }
@@ -74,5 +74,6 @@ class LearningCategoryPolicy
     public function forceDelete(User $user, LearningCategory $learningCategory): bool
     {
         //
+        return $user->hasRole('super-admin') || $user->hasRole('admin');
     }
 }

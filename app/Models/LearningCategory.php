@@ -43,8 +43,8 @@ class LearningCategory extends Model
         return $this->hasMany(ExerciseQuestion::class);
     }
 
-    public function userLearningCategories()
+    public function instructorLearningCategories()
     {
-        return $this->hasMany(UserLearningCategory::class);
+        return $this->hasMany(InstructorLearningCategory::class);
     }
 }
