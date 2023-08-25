@@ -239,8 +239,7 @@ export default function Show(props: Props) {
               )}
               <MuiInertiaLinkButton
                 href={route(
-                  `packet.sub.category.bank-question.template-${
-                    typeSelected === 'Single' ? 'single' : 'multiple'
+                  `packet.sub.category.bank-question.template-${typeSelected === 'Single' ? 'single' : 'multiple'
                   }`,
                   [
                     learning_packet_id,

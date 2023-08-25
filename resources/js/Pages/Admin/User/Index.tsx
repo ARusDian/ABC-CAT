@@ -255,7 +255,9 @@ export default function Index(props: Props) {
       >
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-5xl w-full bg-white shadow-2xl p-7 rounded-3xl">
           <div className="flex flex-col gap-3">
-            <h1 className="text-xl font-semibold">Import Data User Gagal</h1>
+            <h1 className="text-2xl font-bold text-red-500">
+              Import Data User Gagal
+            </h1>
             <p className="text-gray-500">
               Berikut adalah daftar error yang terjadi saat melakukan import
               data user, Pastikan data yang anda masukkan benar dan coba lagi
@@ -264,8 +266,12 @@ export default function Index(props: Props) {
               {import_failures.map((failure, index) => (
                 <div className="flex flex-col gap-3" key={index}>
                   <p className="font-semibold">
-                    {index + 1}. Error di baris {failure.row} pada kolom{' '}
-                    {failure.attribute}
+                    {index + 1}. Error di{' '}
+                    <span className="text-red-500">baris {failure.row}</span>{' '}
+                    pada{' '}
+                    <span className="text-red-500">
+                      kolom {failure.attribute}
+                    </span>
                   </p>
                 </div>
               ))}
@@ -273,6 +279,6 @@ export default function Index(props: Props) {
           </div>
         </div>
       </Modal>
-    </AdminTableLayout>
+    </AdminTableLayout >
   );
 }
