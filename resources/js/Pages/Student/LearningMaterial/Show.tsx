@@ -31,7 +31,7 @@ export default function Index({ document }: Props) {
             Kembali
           </LinkButton>
         </div>
-        <div className="p-5 rounded-lg border overflow-hidden shadow-2xl sm:rounded-3xl flex flex-col gap-3">
+        <div className="p-5 rounded-lg border overflow-hidden shadow-2xl shadow-[#c9d4fc] bg-white sm:rounded-3xl flex flex-col gap-3">
           <div className="">
             <PDFViewer document={document} height="1200px" />
           </div>
