@@ -142,7 +142,7 @@ class ExerciseQuestionController extends Controller
 
         $exercise_question = ExerciseQuestion::whereType(
             $bank_question->type->name,
-        )->whereLearningCategoryId($bank_question->learning_category_id);
+        )->whereLearningCategoryId($bank_question->learning_category_id)->get();
 
         return Inertia::render('Admin/ExerciseQuestion/Import', [
             'bank_question' => $bank_question,
