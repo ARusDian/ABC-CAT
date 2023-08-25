@@ -119,7 +119,7 @@ export default function Leaderboard({ exercise_question, exams }: Props) {
           renderRowActions={({ row }) => (
             <div className="flex items-center justify-center gap-2">
               <MuiInertiaLinkButton
-                href={route('packet.sub.category.exercise.exam.result', [
+                href={route('packet.sub.category.exercise.exam.show', [
                   learning_packet_id,
                   sub_learning_packet_id,
                   learning_category_id,
