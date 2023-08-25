@@ -73,7 +73,7 @@ class ExerciseQuestionController extends Controller
         );
         $data = $this->validateData($request->all());
 
-        $isKecermatan = $data['type'] = ExerciseQuestionTypeEnum::Kecermatan->name;
+        $isKecermatan = $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name;
 
         $exercise = ExerciseQuestion::create([
             'name' => $data['name'],
