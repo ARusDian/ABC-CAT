@@ -129,18 +129,20 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        Gate::authorize(
-            'update',
-            LearningCategory::findOrFail($learning_category_id),
-        );
         $bank_question = BankQuestion::with([
             'items' => function ($q) {
                 return $q->where('is_active', true);
             },
         ])->findOrFail($id);
+
+        Gate::authorize(
+            'update',
+            $bank_question->learningCategory,
+        );
+
         $exercise_question = ExerciseQuestion::whereType(
             $bank_question->type->name,
-        )->get();
+        )->whereLearningCategoryId($bank_question->learning_category_id);
 
         return Inertia::render('Admin/ExerciseQuestion/Import', [
             'bank_question' => $bank_question,
