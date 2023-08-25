@@ -356,6 +356,7 @@ class ExamController extends Controller
                 'queue.*.change_answer.state' => 'nullable',
                 'queue.*.change_answer.answer' => 'nullable',
                 'queue.*.finish' => 'nullable',
+                'queue.*.check_finished' => 'nullable',
             ]);
 
             /**
@@ -416,6 +417,10 @@ class ExamController extends Controller
 
                 if ($q = $queue['finish'] ?? null) {
                     $finish = true;
+                }
+
+                if ($q = $queue['check_finished'] ?? null) {
+                    //
                 }
             }
 

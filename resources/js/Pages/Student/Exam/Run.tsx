@@ -40,9 +40,10 @@ export type Task =
       };
     }
   | {
-      finish: {
-        date: Date;
-      };
+      check_finished: {};
+    }
+  | {
+      finish: {};
     };
 
 export default function Run({ exam }: Props) {
@@ -301,11 +302,13 @@ export default function Run({ exam }: Props) {
               renderer={countdownRenderer}
               key={updateCount}
               onComplete={() => {
-                addStateQueue([{
-                  finish: {
-                    date: new Date()
-                  }
-                }]);
+                addStateQueue([
+                  {
+                    check_finished: {
+                      date: new Date(),
+                    },
+                  },
+                ]);
               }}
             />
           </div>
