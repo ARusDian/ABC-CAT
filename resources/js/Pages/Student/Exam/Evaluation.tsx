@@ -2,7 +2,6 @@ import { ExamModel } from '@/Models/Exam';
 import React from 'react';
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import route from 'ziggy-js';
-import { useSearchParam } from '@/Hooks/useSearchParam';
 import Evaluation from '@/Components/Exam/Evaluation';
 import LinkButton from '@/Components/LinkButton';
 
@@ -11,14 +10,6 @@ interface Props {
 }
 
 export default function ShowAttempt({ exam }: Props) {
-  const currentQuestion =
-    (parseInt(useSearchParam('question') ?? '1') || 1) - 1;
-
-  const setCurrentQuestion = React.useCallback((index: number) => {
-    const url = new URL(location.toString());
-    url.searchParams.set('question', (index + 1).toString());
-    history.pushState({}, '', url);
-  }, []);
 
   return (
     <DashboardLayout title="Evaluasi">
@@ -34,7 +25,6 @@ export default function ShowAttempt({ exam }: Props) {
         </div>
       </div>
       <div className="flex flex-col shadow-lg w-full h-full p-7 rounded-2xl shadow-[#c9d4fc] bg-white">
-
         <Evaluation
           exam={exam}
         />

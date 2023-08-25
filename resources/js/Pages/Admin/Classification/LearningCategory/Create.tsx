@@ -23,15 +23,15 @@ export default function Create({
     },
   });
 
-  function onSubmit(e: LearningCategoryFormModel) {
-    Api.post(
-      route('packet.sub.category.store', [
+  async function onSubmit(value: any) {
+    Api.postAsync({
+      route: route('packet.sub.category.store', [
         learning_packet_id,
         sub_learning_packet_id,
       ]),
-      e,
+      value,
       form,
-    );
+    });
   }
 
   return (

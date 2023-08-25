@@ -1,9 +1,7 @@
 import React from 'react';
 import route from 'ziggy-js';
 
-import AppLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { NewUser, Role } from '@/types';
-import { Link } from '@inertiajs/react';
 
 import Form from './Form';
 import AdminFormLayout from '@/Layouts/Admin/AdminFormLayout';
@@ -24,8 +22,15 @@ export default function Edit(props: Props) {
     defaultValues: user,
   });
 
-  function onSubmit(e: NewUser) {
-    Api.post(route('user.update', user.id), { ...e, _method: 'PUT' }, form);
+  async function onSubmit(value: any) {
+    await Api.postAsync({
+      route: route('user.update', user.id),
+      value: {
+        ...value,
+        _method: 'PUT',
+      },
+      form
+    });
   }
 
   return (

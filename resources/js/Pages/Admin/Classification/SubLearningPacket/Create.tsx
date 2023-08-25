@@ -19,8 +19,12 @@ export default function Create({ learning_packet_id }: Props) {
     },
   });
 
-  function onSubmit(e: SubLearningPacketFormModel) {
-    Api.post(route('packet.sub.store', [learning_packet_id]), e, form);
+  async function onSubmit(value: any) {
+    Api.postAsync({
+      route: route('packet.sub.store', [learning_packet_id]),
+      value,
+      form
+    });
   }
 
   return (

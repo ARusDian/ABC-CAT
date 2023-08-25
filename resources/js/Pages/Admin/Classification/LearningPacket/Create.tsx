@@ -16,8 +16,12 @@ export default function Create(props: Props) {
     },
   });
 
-  function onSubmit(e: LearningPacketFormModel) {
-    Api.post(route('packet.store'), e, form);
+  async function onSubmit(e: LearningPacketFormModel) {
+    await Api.postAsync({
+      route: route('packet.store'),
+      value: e,
+      form,
+    });
   }
 
   return (

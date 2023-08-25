@@ -24,16 +24,20 @@ export default function Edit({ learning_category }: Props) {
     defaultValues: learning_category,
   });
 
-  function onSubmit(e: LearningCategoryFormModel) {
-    Api.post(
-      route('packet.sub.category.update', [
+  async function onSubmit(value: any) {
+    await Api.postAsync({
+      route: route('packet.sub.category.update', [
         learning_packet_id,
         sub_learning_packet_id,
         learning_category_id,
+        learning_category.id,
       ]),
-      { ...e, _method: 'PUT' },
+      value: {
+        ...value,
+        _method: 'PUT',
+      },
       form,
-    );
+    });
   }
 
   return (

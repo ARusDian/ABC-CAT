@@ -19,15 +19,15 @@ export default function Edit({ sub_learning_packet }: Props) {
     defaultValues: sub_learning_packet,
   });
 
-  function onSubmit(e: SubLearningPacketFormModel) {
-    Api.post(
-      route('packet.sub.update', {
+  async function onSubmit(value: any) {
+    await Api.postAsync({
+      route: route('packet.sub.update', {
         learning_packet: sub_learning_packet.learning_packet_id,
         sub_learning_packet: sub_learning_packet.id,
       }),
-      { ...e, _method: 'PUT' },
+      value: { ...value, _method: 'PUT' },
       form,
-    );
+    });
   }
 
   return (

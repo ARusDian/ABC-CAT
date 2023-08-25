@@ -29,20 +29,20 @@ export default function Edit(props: Props) {
   const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
-  function onSubmit(e: BaseLearningMaterialModel) {
-    Api.post(
-      route('packet.sub.category.material.update', [
+  async function onSubmit(value: any) {
+    await Api.postAsync({
+      route: route('packet.sub.category.material.update', [
         learning_packet_id,
         sub_learning_packet_id,
         learning_category_id,
         learningMaterial.id,
       ]),
-      {
-        ...e,
+      value: {
+        ...value,
         _method: 'PUT',
       },
       form,
-    );
+    });
   }
 
   return (

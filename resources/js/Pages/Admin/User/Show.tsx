@@ -147,7 +147,7 @@ export default function Show(props: Props) {
                   )
               }
             </tbody>
-          </table>  
+          </table>
         </div>
       )}
     </AdminShowLayout>

@@ -30,8 +30,8 @@ export default function Create(props: Props) {
     },
   });
 
-  function onSubmit(e: NewUser) {
-    Api.post(route('user.store'), e, form);
+  async function onSubmit(value: any) {
+    await Api.postAsync({ route: route('user.store'), value, form });
   }
 
   return (

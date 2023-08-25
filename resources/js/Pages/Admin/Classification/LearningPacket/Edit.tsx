@@ -19,12 +19,12 @@ export default function Edit({ learning_packet }: Props) {
     defaultValues: learning_packet,
   });
 
-  function onSubmit(e: LearningPacketFormModel) {
-    Api.post(
-      route('packet.update', learning_packet.id),
-      { ...e, _method: 'PUT' },
+  async function onSubmit(value: any) {
+    await Api.postAsync({
+      route: route('packet.update', learning_packet.id),
+      value: { ...value, _method: 'PUT' },
       form,
-    );
+    });
   }
 
   return (
