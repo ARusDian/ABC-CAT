@@ -22,8 +22,9 @@ class LearningMaterialDocument extends Model
     public function learningPacket(): BelongsToThrough
     {
         return $this->belongsToThrough(LearningPacket::class, [
-            LearningMaterial::class,
             SubLearningPacket::class,
+            LearningCategory::class,
+            LearningMaterial::class,
         ]);
     }
 

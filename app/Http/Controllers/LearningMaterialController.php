@@ -324,9 +324,10 @@ class LearningMaterialController extends Controller
         $learning_category,
         $id,
     ) {
-        $learningMaterialDocument = LearningMaterialDocument::with(
+        $learningMaterialDocument = LearningMaterialDocument::with([
             'documentFile',
-        )->findOrFail($id);
+            'learningPacket',
+        ])->findOrFail($id);
         Gate::authorize('view', $learningMaterialDocument->learningPacket);
 
         return Inertia::render('Student/LearningMaterial/Show', [
