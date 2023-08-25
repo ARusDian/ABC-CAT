@@ -6,7 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -19,20 +20,34 @@ return new class extends Migration {
             ])->get();
 
             foreach ($exams as $exam) {
+
+                $exam->exerciseQuestion->update([
+                    'options' => [
+                        ...(array)$exam->exerciseQuestion->options,
+
+                        ...(!$exam->exerciseQuestion->cluster_by_bank_question ? [
+                            // cluster prefix will only be used if cluster_by_bank_question is false
+                            'cluster_name_prefix' => 'Kolom'
+                        ] : [
+                            'cluster_name_prefix' => null
+                        ]),
+                    ]
+                ]);
+
                 $cluster_names = $exam->exerciseQuestion->cluster_names;
+                $mapped_cluster_names = collect($cluster_names)->mapWithKeys(
+                    fn ($name, $key) => [$name => $key],
+                );
+
                 $cluster = collect($cluster_names)->map(
-                    fn($name, $key) => [
+                    fn ($name, $key) => [
                         'counter' => $exam->counter[$key] ?? 0,
                         'name' => $name,
                     ],
-                );
-                $mapped_cluster_names = collect($cluster_names)->mapWithKeys(
-                    fn($name, $key) => [$name => $key],
+                )->mapWithKeys(
+                    fn ($c) => [$mapped_cluster_names->get($c['name']) => $c],
                 );
 
-                $cluster = $cluster->mapWithKeys(
-                    fn($c) => [$mapped_cluster_names->get($c['name']) => $c],
-                );
                 $exam->update([
                     'cluster' => $cluster,
                 ]);
@@ -40,7 +55,7 @@ return new class extends Migration {
                 foreach ($exam->answers as $answer) {
                     $cluster =
                         $answer->question
-                            ->{$exam->exerciseQuestion->cluster_by_column};
+                        ->{$exam->exerciseQuestion->cluster_by_column};
                     if ($cluster != $answer->cluster) {
                         $answer->update([
                             'cluster' => $cluster,

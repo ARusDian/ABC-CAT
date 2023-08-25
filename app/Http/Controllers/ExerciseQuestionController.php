@@ -73,19 +73,25 @@ class ExerciseQuestionController extends Controller
         );
         $data = $this->validateData($request->all());
 
+        $isKecermatan = $data['type'] = ExerciseQuestionTypeEnum::Kecermatan->name;
+
         $exercise = ExerciseQuestion::create([
             'name' => $data['name'],
             'type' => $data['type'],
             'time_limit' => $data['time_limit'],
             'options' => [
-                'time_limit_per_cluster' =>
-                $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
-                'number_of_question_per_cluster' =>
-                $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
-                'next_question_after_answer' =>
-                $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
-                'cluster_by_bank_question' =>
-                $data['type'] != ExerciseQuestionTypeEnum::Kecermatan->name,
+                'time_limit_per_cluster' => $isKecermatan,
+                'number_of_question_per_cluster' => $isKecermatan,
+                'next_question_after_answer' => $isKecermatan,
+
+                ...($isKecermatan ? [
+                    // cluster prefix will only be used if cluster_by_bank_question is false
+                    'cluster_name_prefix' => 'Kolom'
+                ] : [
+                    'cluster_name_prefix' => null
+                ]),
+
+                'cluster_by_bank_question' => !$isKecermatan,
             ],
             'number_of_question' => $data['number_of_question'],
             'learning_category_id' => $learning_category_id,

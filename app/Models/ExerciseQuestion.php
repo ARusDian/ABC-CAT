@@ -100,7 +100,7 @@ class ExerciseQuestion extends Model
                 $cluster_names = $bank_questions->pluck('name', 'id')->all();
             } else {
                 $cluster_names = $cluster_ids->mapWithKeys(
-                    fn($it, $key) => [$it => "Aspek ". $key + 1],
+                    fn ($it, $key) => [$it => ($this->options->cluster_name_prefix ?? "Aspek") . " " . $key + 1],
                 );
             }
 
