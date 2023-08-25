@@ -408,6 +408,9 @@ class ExamController extends Controller
                 }
 
                 if ($q = $queue['change_question'] ?? null) {
+                    if (empty($queue['exam_answer_id'])) {
+                        continue;
+                    }
                     $q = $queue['change_question'];
 
                     $exam->setCurrentQuestion(
