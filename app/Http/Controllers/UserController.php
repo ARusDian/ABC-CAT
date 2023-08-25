@@ -123,7 +123,7 @@ class UserController extends Controller
     {
         //
         $user = User::withTrashed()
-            ->with(['roles'])
+            ->with(['roles', 'learningCategories.subLearningPacket.learningPacket'])
             ->find($id);
         return Inertia::render('Admin/User/Show', [
             'user_data' => $user,

@@ -12,16 +12,7 @@ interface Props {
 
 export default function Show(props: Props) {
   let user = props.user_data;
-  console.log(user);
-  const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   let editProps = {};
 
   if (!user.deleted_at) {
@@ -113,8 +104,8 @@ export default function Show(props: Props) {
                 {user.gender === 'L'
                   ? 'Laki laki'
                   : user.gender === 'P'
-                  ? 'Perempuan'
-                  : 'Tidak Diketahui'}
+                    ? 'Perempuan'
+                    : 'Tidak Diketahui'}
               </td>
             </tr>
             <tr className="border-b py-3 border-black">
@@ -126,6 +117,39 @@ export default function Show(props: Props) {
           </tbody>
         </table>
       </div>
+      {user.roles.some(role => role.name === 'instructor') && (
+        <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
+          <p className='text-2xl'>
+            Kategori Belajar Instruktur
+          </p>
+          <table className="w-full">
+            <thead>
+              <tr className="border-b py-3 border-black">
+                <th className="">Kategori Belajar Diampu</th>
+                <th className=''>Paket Belajar </th>
+                <th className="">Sub Paket Belajar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                user.learning_categories?.length && user.learning_categories?.length > 0 ? user.learning_categories?.map((category, index) => (
+
+                  <tr className="border-b py-3 border-black" key={category.id}>
+                    <td className="py-3 text-center">{category.name}</td>
+                    <td className="py-3 text-center">{category.sub_learning_packet?.learning_packet?.name}</td>
+                    <td className="py-3 text-center">{category.sub_learning_packet?.name}</td>
+                  </tr>
+                ))
+                  : (
+                    <tr className="border-b py-3 border-black">
+                      <td className="py-3 text-center" colSpan={3}>Tidak ada kategori belajar yang diampu</td>
+                    </tr>
+                  )
+              }
+            </tbody>
+          </table>  
+        </div>
+      )}
     </AdminShowLayout>
   );
 }
