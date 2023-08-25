@@ -307,7 +307,11 @@ class UserController extends Controller
             ->causedBy(Auth::user())
             ->withProperties(['method' => 'EXPORT'])
             ->log('Exported Users');
-        return Excel::download(new UsersExport(), 'users.xlsx');
+        return Excel::download(
+            new UsersExport(),
+            'users.xlsx',
+            ExcelExcel::XLSX,
+        );
     }
 
     public function template()
@@ -315,6 +319,7 @@ class UserController extends Controller
         return Excel::download(
             new UsersTemplateExport(),
             'users_template.xlsx',
+            ExcelExcel::XLSX,
         );
     }
 
@@ -339,6 +344,7 @@ class UserController extends Controller
             new ExamResultExport(
                 $exams,
                 'Hasil Latihan Pengguna ' . $user->name . ' - ' . $user->email,
+                ExcelExcel::XLSX,
             ),
             'Hasil Ujian Pengguna.xlsx',
         );

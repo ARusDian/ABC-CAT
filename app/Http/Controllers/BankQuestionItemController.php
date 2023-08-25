@@ -544,6 +544,7 @@ class BankQuestionItemController extends Controller
         return Excel::download(
             new QuestionSingleTrueChoicesTemplateExport($bank_question),
             'Template Soal Pilihan Jawaban Tunggal.xlsx',
+            ExcelExcel::XLSX
         );
     }
 
@@ -563,6 +564,7 @@ class BankQuestionItemController extends Controller
         return Excel::download(
             new QuestionMultipleTrueChoicesTemplateExport($bank_question),
             'Template Soal Pilihan Jawaban Ganda.xlsx',
+            ExcelExcel::XLSX
         );
     }
 }
