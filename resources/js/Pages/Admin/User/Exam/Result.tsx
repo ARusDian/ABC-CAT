@@ -1,5 +1,4 @@
-import ExamResultDocument from '@/Components/ExamResultDocument';
-import KecermatanResultDocument from '@/Components/KecermatanResultDocument';
+import ResultTable from '@/Components/Exam/ResultTable';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { ExamModel } from '@/Models/Exam';
@@ -17,7 +16,7 @@ export default function Result({ exam }: Props) {
 
   return (
     <DashboardAdminLayout title="Hasil Pengerjaan Latihan Soal">
-      <div className="flex flex-col shadow-lg w-full h-full p-7 rounded-2xl shadow-[#c9d4fc] bg-white">
+      <div className="flex flex-col w-full h-full p-7 rounded-2xl shadow-2xl shadow-sky-400/50  bg-white">
         <div className="flex justify-between">
           {/* @ts-ignore */}
           <Pdf
@@ -40,19 +39,10 @@ export default function Result({ exam }: Props) {
             Kembali
           </MuiInertiaLinkButton>
         </div>
-        <div className="border border-black mx-auto">
-          <div
-            ref={ref}
-            style={{ width: '795px' }}
-            className=" bg-white flex flex-col gap-1 w-full flex-1 p-1"
-          >
-            {exam.exercise_question.type === 'Kecermatan' ? (
-              <KecermatanResultDocument exam={exam} user={exam.user} />
-            ) : (
-              <ExamResultDocument exam={exam} user={exam.user} />
-            )}
-          </div>
-        </div>
+        <ResultTable
+          exam={exam}
+          resultRef={ref}
+        />
       </div>
     </DashboardAdminLayout>
   );

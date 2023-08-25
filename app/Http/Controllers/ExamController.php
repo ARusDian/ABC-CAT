@@ -165,10 +165,10 @@ class ExamController extends Controller
 
     public function showAttempt($exercise_question, $exam)
     {
-        $exam = Exam::with(['answers.question'])->findOrFail($exam);
+        $exam = Exam::with(['answers.question', 'user'])->withScore()->findOrFail($exam);
 
         Gate::authorize('view', $exam);
-        return Inertia::render('Student/Exam/ShowAttempt', [
+        return Inertia::render('Student/Exam/Evaluation', [
             'exam' => fn () => $exam,
         ]);
     }
@@ -466,6 +466,7 @@ class ExamController extends Controller
         $exam = Exam::with([
             'answers.question',
             'exerciseQuestion.learningCategory',
+            'user'
         ])
             ->ofExercise($exercise_question)
             ->ofUser(auth()->id())
@@ -474,7 +475,7 @@ class ExamController extends Controller
 
         Gate::authorize('view', $exam);
 
-        return Inertia::render('Student/Exam/ShowResult', [
+        return Inertia::render('Student/Exam/Result', [
             'exam' => $exam,
             'user' => auth()->user(),
             // 'exam' => $exam->load('answers.question'),

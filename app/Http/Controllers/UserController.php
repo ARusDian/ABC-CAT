@@ -361,7 +361,7 @@ class UserController extends Controller
 
     public function examShow($user_id, $id)
     {
-        return Inertia::render('Admin/User/Exam/Show', [
+        return Inertia::render('Admin/User/Exam/Evaluation', [
             'exam' => Exam::with([
                 'exerciseQuestion.learningCategory.subLearningPacket.learningPacket',
                 'answers.question',

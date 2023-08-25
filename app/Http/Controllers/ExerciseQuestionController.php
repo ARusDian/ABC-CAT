@@ -233,8 +233,7 @@ class ExerciseQuestionController extends Controller
         $exam_id,
     ) {
 
-
-        $exam = Exam::with(['answers.question', 'learningCategory'])
+        $exam = Exam::with(['answers.question', 'learningCategory', 'user'])
             ->withScore()
             ->findOrFail($exam_id);
 
@@ -243,7 +242,7 @@ class ExerciseQuestionController extends Controller
             $exam->learningCategory,
         );
 
-        return Inertia::render('Admin/ExerciseQuestion/Exam/Show', [
+        return Inertia::render('Admin/ExerciseQuestion/Exam/Evaluation', [
             'exam' => $exam,
         ]);
     }

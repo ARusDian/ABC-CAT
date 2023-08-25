@@ -48,8 +48,8 @@ export default function Index({ user_data }: Props) {
 
   return (
     <AdminShowLayout
-      title="Monitor Exam"
-      headerTitle="Monitor Ujian"
+      title={`Riwayat Ujian ${user_data.name}`}
+      headerTitle={`Riwayat Ujian ${user_data.name}`}
       backRoute={route('user.show', [user_data.id])}
     >
       <div className="mt-6 p-7 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 flex flex-col gap-3">
