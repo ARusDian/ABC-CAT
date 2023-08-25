@@ -16,7 +16,7 @@ export default function DashboardAdminLayout({
   children,
 }: PropsWithChildren<Props>) {
   return (
-    <div className="min-h-screen h-full bg-gradient-to-b from-blue-50 to-blue-100">
+    <div className="min-h-screen h-full min-w-full w-full bg-gradient-to-b from-blue-50 to-blue-100">
       <Head title={title || 'ABC'} />
       <Banner />
       <nav className="flex justify-center w-full sticky bg-sky-300 py-5 px-10">
