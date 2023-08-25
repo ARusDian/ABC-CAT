@@ -24,6 +24,11 @@ class ExamPolicy
         return $user->id == $exam->user_id;
     }
 
+    public function isOwned(User $user, Exam $exam): bool
+    {
+        return $user->id == $exam->user_id;
+    }
+
     /**
      * Determine whether the user can create models.
      */
@@ -37,7 +42,7 @@ class ExamPolicy
      */
     public function update(User $user, Exam $exam): bool
     {
-        return true;
+        return $this->isOwned($user, $exam);
     }
 
     /**

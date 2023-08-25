@@ -169,7 +169,7 @@ class ExamController extends Controller
 
         Gate::authorize('view', $exam);
         return Inertia::render('Student/Exam/ShowAttempt', [
-            'exam' => fn() => $exam,
+            'exam' => fn () => $exam,
         ]);
     }
 
@@ -225,24 +225,18 @@ class ExamController extends Controller
             $pushQuestion = function (
                 \App\Models\BankQuestionItem $question,
             ) use (&$selected_question_per_cluster, $cluster_column) {
-                $selected_question_per_cluster[
-                    $question[$cluster_column]
-                ][] = $question;
+                $selected_question_per_cluster[$question[$cluster_column]][] = $question;
             };
 
             if ($exercise->options->number_of_question_per_cluster) {
-                foreach (
-                    $cluster_question->values()
-                    as $cluster => $questions
-                ) {
-                    foreach (
-                        $questions
-                            ->lazy()
-                            ->filter(fn($q) => $q['is_active'])
-                            ->shuffle()
-                            ->take($exercise->number_of_question)
-                        as $question
-                    ) {
+                foreach ($cluster_question->values()
+                    as $cluster => $questions) {
+                    foreach ($questions
+                        ->lazy()
+                        ->filter(fn ($q) => $q['is_active'])
+                        ->shuffle()
+                        ->take($exercise->number_of_question)
+                        as $question) {
                         $pushQuestion($question);
                     }
                 }
@@ -255,14 +249,12 @@ class ExamController extends Controller
                 );
 
                 foreach ($cluster_question as $cluster => $questions) {
-                    foreach (
-                        $questions
-                            ->lazy()
-                            ->filter(fn($q) => $q['is_active'])
-                            ->shuffle()
-                            ->take($per_cluster)
-                        as $question
-                    ) {
+                    foreach ($questions
+                        ->lazy()
+                        ->filter(fn ($q) => $q['is_active'])
+                        ->shuffle()
+                        ->take($per_cluster)
+                        as $question) {
                         $pushQuestion($question);
                     }
                 }
@@ -281,13 +273,11 @@ class ExamController extends Controller
                     $exercise->number_of_question -
                     $selected_question_id->count();
 
-                foreach (
-                    $not_selected_question
-                        ->lazy()
-                        ->shuffle()
-                        ->take($question_needed)
-                    as $question
-                ) {
+                foreach ($not_selected_question
+                    ->lazy()
+                    ->shuffle()
+                    ->take($question_needed)
+                    as $question) {
                     $pushQuestion($question);
                 }
             }
@@ -308,15 +298,13 @@ class ExamController extends Controller
                     'exercise_question' => $exercise->options,
                 ],
                 'cluster' => (object) collect($exercise->cluster_names)
-                    ->map(fn($name) => ['counter' => 0, 'name' => $name])
+                    ->map(fn ($name) => ['counter' => 0, 'name' => $name])
                     ->toArray(),
             ]);
 
             $question_number = 0;
-            foreach (
-                $selected_question_per_cluster
-                as $cluster => $selected_question
-            ) {
+            foreach ($selected_question_per_cluster
+                as $cluster => $selected_question) {
                 foreach ($selected_question as $question) {
                     ExamAnswer::create([
                         'exam_id' => $exam->id,
@@ -355,18 +343,19 @@ class ExamController extends Controller
                 'exam_id' => 'numeric',
                 'queue.*.change_question' => 'nullable',
                 'queue.*.change_question.date' =>
-                    'required_with:queue.*.change_question|date',
+                'required_with:queue.*.change_question|date',
                 'queue.*.change_question.question' =>
-                    'required_with:queue.*.change_question|numeric',
+                'required_with:queue.*.change_question|numeric',
                 'queue.*.change_question.exam_answer_id' =>
-                    'required_with:queue.*.change_question|numeric',
+                'required_with:queue.*.change_question|numeric',
                 'queue.*.change_question.cluster' => 'numeric',
 
                 'queue.*.change_answer' => 'nullable',
                 'queue.*.change_answer.exam_answer_id' =>
-                    'required_with:queue.*.change_answer|numeric',
+                'required_with:queue.*.change_answer|numeric',
                 'queue.*.change_answer.state' => 'nullable',
                 'queue.*.change_answer.answer' => 'nullable',
+                'queue.*.finish' => 'nullable',
             ]);
 
             /**
@@ -391,9 +380,9 @@ class ExamController extends Controller
 
             $current_cluster = $exam->current_cluster;
 
-            $getAnswer = fn($answer_id): ExamAnswer => $answer_cache->getOrPut(
+            $getAnswer = fn ($answer_id): ExamAnswer => $answer_cache->getOrPut(
                 $answer_id,
-                fn() => ExamAnswer::disableCache()
+                fn () => ExamAnswer::disableCache()
                     ->where('id', $answer_id)
                     ->where('exam_id', $exam->id)
                     ->with(['question'])
@@ -401,7 +390,8 @@ class ExamController extends Controller
             );
 
             // idk why the data are not sorted by keys by default
-            $queues = collect($data['queue'])->sortKeys();
+            $queues = collect($data['queue'] ?? [])->sortKeys();
+            $finish = false;
             foreach ($queues as $queue) {
                 if ($q = $queue['change_answer'] ?? null) {
                     $answer_id = $q['exam_answer_id'];
@@ -423,14 +413,23 @@ class ExamController extends Controller
                         Carbon::parse($q['date']),
                     );
                 }
+
+                if ($q = $queue['finish'] ?? null) {
+                    $finish = true;
+                }
             }
+
 
             foreach ($answer_cache as $answer) {
                 $answer->save();
             }
-            $exam->save();
+            if ($finish) {
+                $this->markFinished($exam);
+            } else {
+                $exam->save();
+                $this->checkFinished($exam);
+            }
 
-            $this->checkFinished($exam);
 
             return [
                 'finished' => $exam->finished,
@@ -450,8 +449,8 @@ class ExamController extends Controller
     public function leaderboard($id)
     {
         return Inertia::render('Student/Exam/Leaderboard', [
-            'exercise_question' => fn() => ExerciseQuestion::with([
-                'exams' => fn($q) => $q->withScore(),
+            'exercise_question' => fn () => ExerciseQuestion::with([
+                'exams' => fn ($q) => $q->withScore(),
                 'exams.user',
             ])->findOrFail($id),
         ]);

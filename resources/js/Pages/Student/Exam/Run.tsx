@@ -38,6 +38,11 @@ export type Task =
         question: number;
         exam_answer_id?: string;
       };
+    }
+  | {
+      finish: {
+        date: Date;
+      };
     };
 
 export default function Run({ exam }: Props) {
@@ -295,6 +300,13 @@ export default function Run({ exam }: Props) {
               date={currentClusterDateEnd.current}
               renderer={countdownRenderer}
               key={updateCount}
+              onComplete={() => {
+                addStateQueue([{
+                  finish: {
+                    date: new Date()
+                  }
+                }]);
+              }}
             />
           </div>
           <div>
