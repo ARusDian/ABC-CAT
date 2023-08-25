@@ -343,11 +343,9 @@ class ExamController extends Controller
                 'exam_id' => 'numeric',
                 'queue.*.change_question' => 'nullable',
                 'queue.*.change_question.date' =>
-                'required_with:queue.*.change_question|date',
-                'queue.*.change_question.question' =>
-                'required_with:queue.*.change_question|numeric',
+                    'required_with:queue.*.change_question|date',
                 'queue.*.change_question.exam_answer_id' =>
-                'required_with:queue.*.change_question|numeric',
+                'nullable|numeric',
                 'queue.*.change_question.cluster' => 'numeric',
 
                 'queue.*.change_answer' => 'nullable',
@@ -387,7 +385,7 @@ class ExamController extends Controller
                     ->where('id', $answer_id)
                     ->where('exam_id', $exam->id)
                     ->with(['question'])
-                    ->firstOrFail(),
+                    ->first(),
             );
 
             // idk why the data are not sorted by keys by default
@@ -395,6 +393,9 @@ class ExamController extends Controller
             $finish = false;
             foreach ($queues as $queue) {
                 if ($q = $queue['change_answer'] ?? null) {
+                    if ($queue['exam_answer_id']) {
+                        continue;
+                    }
                     $answer_id = $q['exam_answer_id'];
 
                     $answer = $getAnswer($answer_id);
