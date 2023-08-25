@@ -393,7 +393,7 @@ class ExamController extends Controller
             $finish = false;
             foreach ($queues as $queue) {
                 if ($q = $queue['change_answer'] ?? null) {
-                    if ($queue['exam_answer_id']) {
+                    if (empty($queue['exam_answer_id'])) {
                         continue;
                     }
                     $answer_id = $q['exam_answer_id'];
