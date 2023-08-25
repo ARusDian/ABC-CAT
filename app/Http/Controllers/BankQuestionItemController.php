@@ -18,6 +18,8 @@ use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelExcel;
+
 
 class BankQuestionItemController extends Controller
 {
@@ -82,11 +84,11 @@ class BankQuestionItemController extends Controller
         $validator->sometimes(
             'answers.choices',
             'array',
-            fn(Fluent $item) => $item->type ==
+            fn (Fluent $item) => $item->type ==
                 BankQuestionTypeEnum::Pilihan->name,
         );
 
-        $isWeightedChoice = fn(Fluent $item) => $item->type == 'WeightedChoice';
+        $isWeightedChoice = fn (Fluent $item) => $item->type == 'WeightedChoice';
         $validator->sometimes(
             'answer.answer',
             'required|array',
@@ -98,7 +100,7 @@ class BankQuestionItemController extends Controller
             $isWeightedChoice,
         );
 
-        $isSingleChoice = fn(Fluent $item) => $item->type == 'Single';
+        $isSingleChoice = fn (Fluent $item) => $item->type == 'Single';
         $validator->sometimes(
             'answer.answer',
             'required|number',
@@ -308,7 +310,7 @@ class BankQuestionItemController extends Controller
             'update',
             $item->learningCategory,
         );
-        
+
         return \DB::transaction(function () use (
             $request,
             $learning_packet,
@@ -466,7 +468,12 @@ class BankQuestionItemController extends Controller
                     $import = new QuestionSingleTrueChoicesImport($bank_question);
                     break;
             }
-            Excel::import($import, $request->file('import_file.file')->path('temp'));
+            Excel::import(
+                $import,
+                $request->file('import_file.file')->path('temp'),
+                null,
+                ExcelExcel::XLSX
+            );
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $import_failures = $e->failures();
             $errors = array_map(function ($import_failure) {
@@ -484,7 +491,7 @@ class BankQuestionItemController extends Controller
                     $learning_category_id,
                     $bank_question,
                 ]);
-                            // $failures = $e->failures();
+            // $failures = $e->failures();
             // $errors = [];
             // foreach ($failures as $failure) {
             //     $errors[] = [

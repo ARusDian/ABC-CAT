@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelExcel;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -272,6 +273,8 @@ class UserController extends Controller
             Excel::import(
                 new UsersImport(),
                 $request->file('import_file.file')->store('temp'),
+                null,
+                ExcelExcel::XLSX,
             );
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             // TODO: Return the errors to view 
