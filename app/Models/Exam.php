@@ -94,7 +94,7 @@ class Exam extends Model
 
     public function finished(): Attribute
     {
-        return Attribute::get(fn() => $this->finished_at != null);
+        return Attribute::get(fn() => $this->finished_at != null)->withoutObjectCaching();
     }
 
     public function markClusterChange(Carbon $date)

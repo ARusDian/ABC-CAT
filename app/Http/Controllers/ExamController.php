@@ -465,7 +465,8 @@ class ExamController extends Controller
         ])
             ->ofExercise($exercise_question)
             ->ofUser(auth()->id())
-            ->findOrFail($exam);
+            ->findOrFail($exam)
+            ->appendResult();
 
         Gate::authorize('view', $exam);
 
