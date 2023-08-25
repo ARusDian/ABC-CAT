@@ -19,7 +19,7 @@ type Model = ExamModel & {
   answers_count: number;
 };
 
-export default function Show(props: Props) {
+export default function Show({exams, exercise_question}: Props) {
   const dataColumns = [
     {
       header: 'Waktu Mulai',
@@ -48,7 +48,7 @@ export default function Show(props: Props) {
     useDefaultClassificationRouteParams();
 
   return (
-    <DashboardLayout title={props.exercise_question.name}>
+    <DashboardLayout title={exercise_question.name}>
       <div className="flex flex-col gap-8 ">
         <div className="flex justify-between">
           <p className="text-5xl text-[#3A63F5]">Pengerjaan Latihan Soal</p>
@@ -68,24 +68,24 @@ export default function Show(props: Props) {
             <div className="flex basis-1/2 border-b">
               <div className="flex flex-col basis-1/2 gap-1">
                 <p className="text-lg font-bold">Nama Latihan Soal</p>
-                <p className="text-lg">{props.exercise_question.name}</p>
+                <p className="text-lg">{exercise_question.name}</p>
               </div>
               <div className="flex flex-col basis-1/2 gap-1">
                 <p className="text-lg font-bold">Tipe Soal</p>
-                <p className="text-lg">{props.exercise_question.type}</p>
+                <p className="text-lg">{exercise_question.type}</p>
               </div>
             </div>
             <div className="flex basis-1/2">
               <div className="flex flex-col basis-1/2 gap-1">
-                <p className="text-lg font-bold">Jumlah Soal</p>
+                <p className="text-lg font-bold">Jumlah Soal {exercise_question.type === "Kecermatan" ? " per Kolom " : " "}</p>
                 <p className="text-lg">
-                  {props.exercise_question.number_of_question}
+                  {exercise_question.number_of_question}
                 </p>
               </div>
               <div className="flex flex-col basis-1/2 gap-1">
-                <p className="text-lg font-bold">Waktu Pengerjaan</p>
+                <p className="text-lg font-bold">Waktu Pengerjaan{exercise_question.type === "Kecermatan" ? " per Kolom " : " "}</p>
                 <p className="text-lg">
-                  {props.exercise_question.time_limit} menit
+                  {exercise_question.time_limit} menit
                 </p>
               </div>
             </div>
@@ -98,7 +98,7 @@ export default function Show(props: Props) {
             </p>
             <LinkButton
               href={route('student.exam.leaderboard', [
-                props.exercise_question.id,
+                exercise_question.id,
               ])}
               colorCode="#3A63F5"
               className="px-5 rounded-md"
@@ -108,7 +108,7 @@ export default function Show(props: Props) {
           </div>
           <LazyLoadMRT
             columns={dataColumns}
-            data={props.exams}
+            data={exams}
             enableColumnActions
             enableColumnFilters
             enablePagination
@@ -122,7 +122,7 @@ export default function Show(props: Props) {
               <div className="flex items-center justify-center gap-2">
                 <LinkButton
                   href={route('student.exam.show.attempt', [
-                    props.exercise_question.id,
+                    exercise_question.id,
                     row.original.id,
                   ])}
                   colorCode="#3A63F5"
@@ -132,7 +132,7 @@ export default function Show(props: Props) {
                 </LinkButton>
                 <LinkButton
                   href={route('student.exam.show.result', [
-                    props.exercise_question.id,
+                    exercise_question.id,
                     row.original.id,
                   ])}
                   colorCode="#00b506"
@@ -146,7 +146,7 @@ export default function Show(props: Props) {
               <button className="text-white font-sans bg-[#3A63F5] text-center rounded-md my-auto py-3 font-thin hover:brightness-90 uppercase px-5">
                 <Link
                   href={route('student.exam.attempt', [
-                    props.exercise_question.id,
+                    exercise_question.id,
                   ])}
                   method="post"
                 >

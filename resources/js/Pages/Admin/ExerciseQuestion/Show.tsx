@@ -46,7 +46,7 @@ export default function Show(props: Props) {
             <p>{exercise_question.name}</p>
             <p>Tipe: {exercise_question.type}</p>
             <p>
-              Batas waktu:{' '}
+              Batas waktu{exercise_question.type === "Kecermatan" ? " per Kolom : " : ": "}
               {
                 <span className="font-semibold">
                   {parseFloat(exercise_question.time_limit.toFixed(2))}
@@ -55,12 +55,11 @@ export default function Show(props: Props) {
               Menit
             </p>
             <p>
-              Jumlah Soal Per Latihan: {exercise_question.number_of_question}
+              Jumlah Soal {exercise_question.type === "Kecermatan" ? "per Kolom" : "Per Latihan"}: {exercise_question.number_of_question}
             </p>
             <p
-              className={`${
-                exercise_question.deleted_at ? 'text-red-500' : 'text-green-500'
-              } font-semibold`}
+              className={`${exercise_question.deleted_at ? 'text-red-500' : 'text-green-500'
+                } font-semibold`}
             >
               Status : {exercise_question.deleted_at ? 'Nonaktif' : 'Aktif'}
             </p>
