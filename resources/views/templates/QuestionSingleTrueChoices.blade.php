@@ -6,7 +6,7 @@
             </th>
         </tr>
         <tr>
-            <th colspan="10"><b>Contoh Pengisian Data Soal</b></th>
+            <th colspan="10">Contoh Pengisian Data Soal</th>
         </tr>
         <tr>
             <th><b>Soal 1</b></th>

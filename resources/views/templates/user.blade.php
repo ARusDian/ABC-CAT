@@ -1,7 +1,7 @@
 <table>
     <tbody>
         <tr>
-            <td colspan="7"><b>Contoh Pengisian Data Pengguna</b></td>
+            <td colspan="7">Contoh Pengisian Data Pengguna</td>
         </tr>
         <tr>
             <th><b>Karim Makarim</b></th>
