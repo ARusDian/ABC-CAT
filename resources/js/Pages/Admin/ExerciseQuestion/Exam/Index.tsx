@@ -19,7 +19,6 @@ interface Props {
 }
 
 export default function Leaderboard({ exercise_question, exams }: Props) {
-  console.log(exams);
   const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
