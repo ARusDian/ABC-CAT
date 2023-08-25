@@ -25,6 +25,8 @@ interface QuestionImportForm extends ImportFileModel {
 export default function Show(props: Props) {
   const { bank_question } = props;
 
+  console.log(bank_question);
+
   const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
@@ -59,15 +61,6 @@ export default function Show(props: Props) {
     {
       header: 'type',
       accessorKey: 'type',
-    },
-    {
-      header: 'Aktif',
-      accessorFn: row =>
-        row.is_active ? (
-          <p className="text-red-500">Tidak Aktif</p>
-        ) : (
-          <p className="text-green-500">Aktif</p>
-        ),
     },
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
