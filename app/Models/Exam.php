@@ -137,7 +137,7 @@ class Exam extends Model
     public function currentCluster(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->server_state['current_cluster'],
+            get: fn() => $this->server_state['current_cluster'] ?? null,
             // set: function ($value) {
             //     return $this->server_state->current_cluster = $value;
             // },
