@@ -8,11 +8,13 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
 class QuestionMultiTrueChoicesImport implements
     WithStartRow,
     OnEachRow,
-    WithHeadingRow
+    WithHeadingRow,
+    WithValidation
 {
     private $bank_question;
 
@@ -26,7 +28,7 @@ class QuestionMultiTrueChoicesImport implements
      */
     public function headingRow(): int
     {
-        return 4;
+        return 5;
     }
 
     /**
@@ -174,5 +176,24 @@ class QuestionMultiTrueChoicesImport implements
             'answer' => $formatted_answer,
             'answers' => $choices_formatted,
         ]);
+    }
+
+    public function rules(): array
+    {
+        return [
+            '*.nama' =>  'required|string|max:255',
+            '*.pertanyaan' => 'required|string',
+            '*.pilihan_1' => 'required|string',
+            '*.pilihan_2' => 'required|string',
+            '*.pilihan_3' => 'required|string',
+            '*.pilihan_4' => 'required|string',
+            '*.pilihan_5' => 'required|string',
+            '*.bobot_1' => 'required|numeric',
+            '*.bobot_2' => 'required|numeric',
+            '*.bobot_3' => 'required|numeric',
+            '*.bobot_4' => 'required|numeric',
+            '*.bobot_5' => 'required|numeric',
+            '*.pembahasan' => 'required|string',
+        ];
     }
 }

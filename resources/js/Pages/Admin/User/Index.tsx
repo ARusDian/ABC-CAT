@@ -13,8 +13,8 @@ import { asset } from '@/Models/Helper';
 import { Controller, useForm } from 'react-hook-form';
 import Api from '@/Utils/Api';
 import { ImportFileModel } from '@/Models/FileModel';
-import { Button } from '@mui/material';
-import { router } from '@inertiajs/react';
+import { Button, Modal } from '@mui/material';
+import { router, usePage } from '@inertiajs/react';
 import InputError from '@/Components/Jetstream/InputError';
 import ReactLoading from 'react-loading';
 
@@ -25,10 +25,17 @@ interface Props {
     total: number;
     current_page: number;
   };
+  // import_failures? : any[]
 }
 
 export default function Index(props: Props) {
   const users = props.users;
+
+  console.log(props);
+
+
+  // const import_failures = props.import_failures ?? [];
+  // const [openImportFailModal, setOpenImportFailModal] = React.useState(import_failures.length > 0);
 
   const [dataState, setDataState] = React.useState(users.data);
   const [columnFilters, setColumnFilters] =
@@ -238,6 +245,10 @@ export default function Index(props: Props) {
           )}
         />
       </div>
+      {/* <Modal open={openImportFailModal} onClose={() => setOpenImportFailModal(false)}>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 bg-white shadow-2xl p-7 rounded-3xl">
+        </div>
+      </Modal> */}
     </AdminTableLayout>
   );
 }

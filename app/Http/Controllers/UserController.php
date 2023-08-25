@@ -268,10 +268,18 @@ class UserController extends Controller
         $request->validate([
             'import_file' => 'required',
         ]);
-        Excel::import(
-            new UsersImport(),
-            $request->file('import_file.file')->store('temp'),
-        );
+        try {
+            Excel::import(
+                new UsersImport(),
+                $request->file('import_file.file')->store('temp'),
+            );
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            // TODO: Return the errors to view 
+            $import_failures = $e->failures();
+            return redirect()
+                ->route('user.index')
+                ->banner('User Import Failed, '. count($import_failures)  .' user data is invalid, Please Check Your Data');
+        }
         activity()
             ->performedOn(User::find(Auth::user()->id))
             ->causedBy(Auth::user())

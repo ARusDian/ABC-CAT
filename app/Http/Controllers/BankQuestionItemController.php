@@ -456,16 +456,44 @@ class BankQuestionItemController extends Controller
             'type' => ['required', 'in:WeightedChoice,Single'],
             'import_file' => 'required',
         ]);
-        if ($request['type'] == 'Single') {
-            Excel::import(
-                new QuestionSingleTrueChoicesImport($bank_question),
-                $request->file('import_file.file')->store('temp'),
-            );
-        } else {
-            Excel::import(
-                new QuestionMultiTrueChoicesImport($bank_question),
-                $request->file('import_file.file')->store('temp'),
-            );
+        try {
+            $import = null;
+            switch ($request['type']) {
+                case 'WeightedChoice':
+                    $import = new QuestionMultiTrueChoicesImport($bank_question);
+                    break;
+                case 'Single':
+                    $import = new QuestionSingleTrueChoicesImport($bank_question);
+                    break;
+            }
+            Excel::import($import, $request->file('import_file.file')->path('temp'));
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $import_failures = $e->failures();
+            return redirect()
+                ->route('packet.sub.category.bank-question.show', [
+                    $learning_packet,
+                    $sub_learning_packet,
+                    $learning_category_id,
+                    $bank_question,
+                ])
+                ->banner('Question Import Failed, ' . count($import_failures)  . ' question data is invalid, Please Check Your Data');
+            // $failures = $e->failures();
+            // $errors = [];
+            // foreach ($failures as $failure) {
+            //     $errors[] = [
+            //         'row' => $failure->row(),
+            //         'attribute' => $failure->attribute(),
+            //         'errors' => $failure->errors(),
+            //     ];
+            // }
+            // return redirect()
+            //     ->route('packet.sub.category.bank-question.show', [
+            //         $learning_packet,
+            //         $sub_learning_packet,
+            //         $learning_category_id,
+            //         $bank_question,
+            //     ])
+            //     ->with('errors', $errors);
         }
 
         activity()
