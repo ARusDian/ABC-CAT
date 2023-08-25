@@ -469,15 +469,22 @@ class BankQuestionItemController extends Controller
             Excel::import($import, $request->file('import_file.file')->path('temp'));
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $import_failures = $e->failures();
+            $errors = array_map(function ($import_failure) {
+                return [
+                    'row' => $import_failure->row(),
+                    'attribute' => $import_failure->attribute(),
+                    'errors' => $import_failure->errors(),
+                ];
+            }, $import_failures);
+            session()->flash('import_failures', $errors);
             return redirect()
                 ->route('packet.sub.category.bank-question.show', [
                     $learning_packet,
                     $sub_learning_packet,
                     $learning_category_id,
                     $bank_question,
-                ])
-                ->banner('Question Import Failed, ' . count($import_failures)  . ' question data is invalid, Please Check Your Data');
-            // $failures = $e->failures();
+                ]);
+                            // $failures = $e->failures();
             // $errors = [];
             // foreach ($failures as $failure) {
             //     $errors[] = [

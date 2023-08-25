@@ -3,7 +3,7 @@ import {
   MRT_ColumnFiltersState,
   MRT_PaginationState,
 } from 'material-react-table';
-import React from 'react';
+import React, { useEffect } from 'react';
 import route from 'ziggy-js';
 import { User } from '@/types';
 import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
@@ -25,17 +25,19 @@ interface Props {
     total: number;
     current_page: number;
   };
-  // import_failures? : any[]
+  import_failures? : any[]
 }
 
 export default function Index(props: Props) {
   const users = props.users;
 
-  console.log(props);
+  const import_failures = props.import_failures ?? [];
 
-
-  // const import_failures = props.import_failures ?? [];
-  // const [openImportFailModal, setOpenImportFailModal] = React.useState(import_failures.length > 0);
+  const [openImportFailModal, setOpenImportFailModal] = React.useState(import_failures.length > 0);
+  
+  useEffect(() => {
+    setOpenImportFailModal(import_failures.length > 0);
+  }, [JSON.stringify(import_failures)]);
 
   const [dataState, setDataState] = React.useState(users.data);
   const [columnFilters, setColumnFilters] =
@@ -47,6 +49,8 @@ export default function Index(props: Props) {
   });
 
   const [isLoading, setIsLoading] = React.useState(false);
+
+
 
   React.useEffect(() => {
     const url = new URL(route(route().current()!).toString());
@@ -245,10 +249,21 @@ export default function Index(props: Props) {
           )}
         />
       </div>
-      {/* <Modal open={openImportFailModal} onClose={() => setOpenImportFailModal(false)}>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/4 bg-white shadow-2xl p-7 rounded-3xl">
+      <Modal open={openImportFailModal} onClose={() => setOpenImportFailModal(false)}>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-w-5xl w-full bg-white shadow-2xl p-7 rounded-3xl">
+          <div className="flex flex-col gap-3">
+            <h1 className="text-xl font-semibold">Import Data User Gagal</h1>
+            <p className="text-gray-500">Berikut adalah daftar error yang terjadi saat melakukan import data user, Pastikan data yang anda masukkan benar dan coba lagi</p>
+            <div className="flex flex-col gap-3">
+              {import_failures.map((failure, index) => (
+                <div className="flex flex-col gap-3" key={index}>
+                  <p className="font-semibold">{index + 1}. Error di baris {failure.row} pada kolom { failure.attribute}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </Modal> */}
+      </Modal>
     </AdminTableLayout>
   );
 }

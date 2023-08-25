@@ -276,9 +276,16 @@ class UserController extends Controller
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             // TODO: Return the errors to view 
             $import_failures = $e->failures();
+            $errors = array_map(function ($import_failure) {
+                return [
+                    'row' => $import_failure->row(),
+                    'attribute' => $import_failure->attribute(),
+                    'errors' => $import_failure->errors(),
+                ];
+            }, $import_failures);
+            session()->flash('import_failures', $errors);
             return redirect()
-                ->route('user.index')
-                ->banner('User Import Failed, '. count($import_failures)  .' user data is invalid, Please Check Your Data');
+                ->route('user.index');
         }
         activity()
             ->performedOn(User::find(Auth::user()->id))

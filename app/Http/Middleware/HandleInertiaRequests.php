@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             //
+            'import_failures' => fn () => $request->session()->get('import_failures', []),
         ]);
     }
 }
