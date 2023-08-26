@@ -22,10 +22,18 @@ export function BankQuestionItemShow(props: {
       );
     case 'Kecermatan':
       return (
-        <div className="flex flex-row text-5xl gap-7 mb-3 font-semibold">
-          {props.question.question.questions.map((it, index) => (
-            <div key={index}>{it}</div>
-          ))}
+        <div>
+          <div className="flex flex-row text-5xl gap-7 mb-3 font-semibold">
+            {props.question.answers.choices.map((it, index) => (
+              <div key={index}>{it}</div>
+            ))}
+          </div>
+
+          <div className="flex flex-row text-5xl gap-7 mb-3 font-semibold">
+            {props.question.question.questions.map((it, index) => (
+              <div key={index}>{it}</div>
+            ))}
+          </div>
         </div>
       );
   }
