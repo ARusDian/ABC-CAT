@@ -404,7 +404,7 @@ class ExamController extends Controller
             $finish = false;
             foreach ($queues as $queue) {
                 if ($q = $queue['change_answer'] ?? null) {
-                    if (empty($queue['exam_answer_id'])) {
+                    if (empty($q['exam_answer_id'])) {
                         continue;
                     }
                     $answer_id = $q['exam_answer_id'];
@@ -419,10 +419,9 @@ class ExamController extends Controller
                 }
 
                 if ($q = $queue['change_question'] ?? null) {
-                    if (empty($queue['exam_answer_id'])) {
+                    if (empty($q['exam_answer_id'])) {
                         continue;
                     }
-                    $q = $queue['change_question'];
 
                     $exam->setCurrentQuestion(
                         $getAnswer($q['exam_answer_id']),
