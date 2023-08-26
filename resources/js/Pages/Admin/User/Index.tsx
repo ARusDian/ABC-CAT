@@ -74,7 +74,7 @@ export default function Index(props: Props) {
         columnFilters: JSON.stringify(columnFilters),
         // globalFilter: globalFilter,
       },
-      only: ['activities'],
+      only: ['users'],
       onFinish: () => {
         setIsLoading(false);
       },
