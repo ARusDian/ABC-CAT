@@ -19,7 +19,9 @@ type Model = ExamModel & {
   answers_count: number;
 };
 
-export default function Show({exams, exercise_question}: Props) {
+export default function Show({ exams, exercise_question }: Props) {
+
+
   const dataColumns = [
     {
       header: 'Waktu Mulai',
@@ -44,16 +46,20 @@ export default function Show({exams, exercise_question}: Props) {
     },
   ] as MRT_ColumnDef<Model>[];
 
-  const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
-    useDefaultClassificationRouteParams();
-
   return (
     <DashboardLayout title={exercise_question.name}>
       <div className="flex flex-col gap-8 ">
         <div className="flex justify-between">
           <p className="text-5xl text-[#3A63F5]">Pengerjaan Latihan Soal</p>
           <LinkButton
-            href={route('dashboard')}
+            href={route(
+              'student.packet.category.exercise.index',
+              [
+                exercise_question.learning_category_id,
+                exercise_question.learning_category?.sub_learning_packet_id,
+                exercise_question.learning_category?.sub_learning_packet?.learning_packet_id,
+              ],
+            )}
             colorCode="#3A63F5"
             className="px-5 rounded-md"
           >

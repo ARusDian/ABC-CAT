@@ -148,7 +148,10 @@ class ExamController extends Controller
             }
         }
 
-        $exercise = ExerciseQuestion::with(['learningPacket'])->findOrFail(
+        $exercise = ExerciseQuestion::with([
+            'learningPacket',
+            'learningCategory.subLearningPacket.learningPacket',
+            ])->findOrFail(
             $exercise_id,
         );
         Gate::authorize('view', $exercise->learningPacket);

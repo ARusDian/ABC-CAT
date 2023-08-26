@@ -21,6 +21,7 @@ export interface ExerciseQuestionModel {
   deleted_at?: string;
   exams?: ExamModel[];
   learning_category?: LearningCategoryModel;
+  learning_category_id: string;
 
   cluster_names: Record<number, string>;
 }
