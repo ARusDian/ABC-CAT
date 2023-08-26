@@ -339,7 +339,7 @@ export default function Run({ exam }: Props) {
                       <p>1. Baca soal dengan teliti</p>
                       <p>2. Pilih jawaban yang menurut anda benar</p>
                       <p>
-                        3. Klik tombol "Kumpulkan Jawaban" untuk mengakhiri
+                        3. Klik tombol"Kumpulkan Jawaban" untuk mengakhiri
                         ujian
                       </p>
                     </div>
@@ -364,7 +364,7 @@ export default function Run({ exam }: Props) {
                     <div className="flex justify-between p-3 h-20 py-auto">
                       <div className=" flex gap-3">
                         <p className="font-bold text-2xl">
-                          Soal {currentQuestion + 1}
+                          Soal {(currentQuestion + 1) > exam.exercise_question.number_of_question ? exam.exercise_question.number_of_question : currentQuestion + 1 } 
                         </p>
                         <div>
                           <Button
@@ -404,7 +404,7 @@ export default function Run({ exam }: Props) {
                             ''
                           )}
                         </div>
-                        <p className="text-2xl">{`${currentQuestion + 1}/${
+                        <p className="text-2xl">{`${(currentQuestion + 1) > exam.exercise_question.number_of_question ? exam.exercise_question.number_of_question : currentQuestion + 1 } /${
                           answers.length
                         }`}</p>
                       </div>
