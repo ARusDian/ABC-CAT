@@ -9,6 +9,7 @@ import {
 } from '@/Models/Exam';
 import Typography from '@mui/material/Typography';
 import { Editor } from '@tiptap/react';
+import _ from 'lodash';
 import React, { MutableRefObject } from 'react';
 
 interface Props {
@@ -40,7 +41,7 @@ export default function ExamAnswer({
 
   return (
     <div className="px-3 flex flex-col gap-3">
-      <div >
+      <div>
         <BankQuestionItemShow
           question={answer.question}
           editorRef={questionEditorRef}
@@ -127,16 +128,17 @@ function PilihanAnswerForm({
         }
         return (
           <div
-            className={`flex justify-between rounded-lg px-3 ${isEvaluation
+            className={`flex justify-between rounded-lg px-3 ${
+              isEvaluation
                 ? parseInt(answer.answer) === index
                   ? isCorrect
                     ? 'bg-green-50'
                     : 'bg-red-50'
                   : isCorrect
-                    ? 'bg-green-50'
-                    : ''
+                  ? 'bg-green-50'
+                  : ''
                 : ''
-              }`}
+            }`}
             key={index}
           >
             <div className="flex gap-3">
@@ -178,7 +180,16 @@ function KecermatanAnswerForm({
   answer: ExamAnswerKecermatanModel;
   updateAnswer?: (answer: { answer: number }) => void;
 }) {
-  const choices = answer.question.answers.choices;
+  const choices = React.useMemo(() => {
+    return _.sortBy(
+      answer.question.answers.choices.map((value, index) => ({
+        index,
+        value,
+        order: answer.choice_order?.choices?.[index] ?? index,
+      })),
+      'order',
+    );
+  }, [answer.choice_order]);
 
   // store editor ref to prevent re-creating editor
   const arrayEditorRef = React.useRef<React.MutableRefObject<Editor | null>[]>(
@@ -201,13 +212,13 @@ function KecermatanAnswerForm({
                 disabled={updateAnswer == null}
                 onChange={() => {
                   updateAnswer?.({
-                    answer: index,
+                    answer: choice.index,
                   });
                 }}
-                checked={answer.answer == index}
+                checked={answer.answer == choice.index}
               />
               <div className=" mx-auto ">
-                <p>{choice}</p>
+                <p>{choice.value}</p>
               </div>
             </div>
           </div>

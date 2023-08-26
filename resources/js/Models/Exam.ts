@@ -75,7 +75,9 @@ export interface BaseExamAnswerModel {
     mark: boolean;
   };
 
-  // question: BankQuestionItemModel;
+  choice_order: {
+    choices: Record<number, number>;
+  };
 }
 
 export type ExamAnswerGenericModel<QuestionModel> = BaseExamAnswerModel & {

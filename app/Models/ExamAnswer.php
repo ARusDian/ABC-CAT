@@ -21,6 +21,7 @@ class ExamAnswer extends Model
         'server_state',
         'score',
         'cluster',
+        'choice_order',
     ];
 
     protected $casts = [
@@ -28,6 +29,7 @@ class ExamAnswer extends Model
         'answer' => 'json',
         'state' => 'object',
         'server_state' => 'object',
+        'choice_order' => 'object',
     ];
 
     public function question(): BelongsTo

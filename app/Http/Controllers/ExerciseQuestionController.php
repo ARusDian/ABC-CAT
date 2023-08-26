@@ -83,10 +83,12 @@ class ExerciseQuestionController extends Controller
                 'time_limit_per_cluster' => $isKecermatan,
                 'number_of_question_per_cluster' => $isKecermatan,
                 'next_question_after_answer' => $isKecermatan,
+                'randomize_choice' => $isKecermatan,
 
                 ...($isKecermatan ? [
                     // cluster prefix will only be used if cluster_by_bank_question is false
                     'cluster_name_prefix' => 'Kolom'
+                    
                 ] : [
                     'cluster_name_prefix' => null
                 ]),

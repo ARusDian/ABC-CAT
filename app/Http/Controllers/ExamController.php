@@ -309,6 +309,14 @@ class ExamController extends Controller
             foreach ($selected_question_per_cluster
                 as $cluster => $selected_question) {
                 foreach ($selected_question as $question) {
+                    $choice_order =  [];
+
+                    if ($exercise->options->randomize_choice) {
+                        $choice_array = array_keys($question->answers['choices']);
+                        $randomed_choice = collect($choice_array)->shuffle();
+                        // dd($question->answers, collect(array_keys($question->answers['choices']))->shuffle());
+                        $choice_order['choices'] = $randomed_choice->toArray();
+                    }
                     ExamAnswer::create([
                         'exam_id' => $exam->id,
                         'bank_question_item_id' => $question->id,
@@ -319,6 +327,7 @@ class ExamController extends Controller
                         'server_state' => [
                             'question_number' => $question_number,
                         ],
+                        'choice_order' => (object) $choice_order
                     ]);
                     $question_number += 1;
                 }
