@@ -212,6 +212,7 @@ export default function Index(props: Props) {
         <LazyLoadMRT
           columns={dataColumns}
           data={users.data}
+          rowCount={users.total}
           enableGlobalFilter={false}
           enableColumnActions
           enableColumnFilters
