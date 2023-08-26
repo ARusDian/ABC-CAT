@@ -402,38 +402,38 @@ class ExamController extends Controller
             // idk why the data are not sorted by keys by default
             $queues = collect($data['queue'] ?? [])->sortKeys();
             $finish = false;
-            foreach ($queues as $queue) {
-                if ($q = $queue['change_answer'] ?? null) {
-                    if (empty($q['exam_answer_id'])) {
+            foreach ($queues as $requestQueue) {
+                if ($queue = $requestQueue['change_answer'] ?? null) {
+                    if (empty($queue['exam_answer_id'])) {
                         continue;
                     }
-                    $answer_id = $q['exam_answer_id'];
+                    $answer_id = $queue['exam_answer_id'];
 
                     $answer = $getAnswer($answer_id);
 
                     if ($exam->current_question == $answer->question_number) {
-                        $answer->state = $q['state'] ?? null;
-                        $answer->answer = $q['answer'] ?? null;
+                        $answer->state = $queue['state'] ?? null;
+                        $answer->answer = $queue['answer'] ?? null;
                         $answer->score = $this->calculateScore($answer);
                     }
                 }
 
-                if ($q = $queue['change_question'] ?? null) {
-                    if (empty($q['exam_answer_id'])) {
+                if ($queue = $requestQueue['change_question'] ?? null) {
+                    if (empty($queue['exam_answer_id'])) {
                         continue;
                     }
 
                     $exam->setCurrentQuestion(
-                        $getAnswer($q['exam_answer_id']),
-                        Carbon::parse($q['date']),
+                        $getAnswer($queue['exam_answer_id']),
+                        Carbon::parse($queue['date']),
                     );
                 }
 
-                if ($q = $queue['finish'] ?? null) {
+                if ($queue = $requestQueue['finish'] ?? null) {
                     $finish = true;
                 }
 
-                if ($q = $queue['check_finished'] ?? null) {
+                if ($queue = $requestQueue['check_finished'] ?? null) {
                     //
                 }
             }
