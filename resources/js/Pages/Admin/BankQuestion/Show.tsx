@@ -57,7 +57,7 @@ export default function Show(props: Props) {
       ]),
       value,
       form,
-    });
+    }).then(() => setOpenImportModal(false));
   }
 
   const [typeSelected, setTypeSelected] = React.useState('Single');
