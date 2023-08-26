@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Http\Controllers\BankQuestionItemController;
 use App\Models\BankQuestion;
 use App\Models\BankQuestionItem;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -9,12 +10,13 @@ use Maatwebsite\Excel\Row;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Request;
 
 class QuestionSingleTrueChoicesImport implements
     OnEachRow,
     WithStartRow,
-    WithHeadingRow,
-    WithValidation
+    WithHeadingRow
+    // WithValidation
 {
     private $bank_question;
 
@@ -154,7 +156,7 @@ class QuestionSingleTrueChoicesImport implements
             }, $row_pilihan),
         ];
 
-        $bank_question = BankQuestionItem::create([
+        $request = new \Illuminate\Http\Request([
             'bank_question_id' => $this->bank_question->id,
             'name' => $row['nama'],
 
@@ -165,20 +167,30 @@ class QuestionSingleTrueChoicesImport implements
             'answer' => $formatted_answer,
             'answers' => $choices_formatted,
         ]);
+
+
+        $bank_question = $this->bank_question;
+        $item = (new BankQuestionItemController)->store(
+            $request,
+            $bank_question->learningCategory->SubLearningPacket->learningPacket->id,
+            $bank_question->learningCategory->sub_learning_packet_id,
+            $bank_question->learning_category_id,
+            $bank_question->id
+        );
     }
 
     public function rules(): array
     {
         return [
-            '*.nama' => 'required|string|max:255',
-            '*.pertanyaan' => 'required|string',
-            '*.pilihan_1' => 'required|string|max:255',
-            '*.pilihan_2' => 'required|string|max:255',
-            '*.pilihan_3' => 'required|string|max:255',
-            '*.pilihan_4' => 'required|string|max:255',
-            '*.pilihan_5' => 'required|string|max:255',
-            '*.jawaban' => 'required|integer|between:1,5',
-            '*.pembahasan' => 'required|string',
+            'nama' => 'required|string|max:255',
+            'pertanyaan' => 'required|string',
+            'pilihan_1' => 'required|string|max:255',
+            'pilihan_2' => 'required|string|max:255',
+            'pilihan_3' => 'required|string|max:255',
+            'pilihan_4' => 'required|string|max:255',
+            'pilihan_5' => 'required|string|max:255',
+            'jawaban' => 'required|integer|between:1,5',
+            'pembahasan' => 'required|string',
         ];
     }
 

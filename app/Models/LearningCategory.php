@@ -14,7 +14,7 @@ class LearningCategory extends Model
 
     protected $fillable = ['name', 'sub_learning_packet_id'];
 
-    public function SubLearningPacket()
+    public function subLearningPacket()
     {
         return $this->belongsTo(SubLearningPacket::class);
     }
