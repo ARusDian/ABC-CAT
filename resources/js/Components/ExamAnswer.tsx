@@ -40,7 +40,7 @@ export default function ExamAnswer({
 
   return (
     <div className="px-3 flex flex-col gap-3">
-      <div className="prose">
+      <div >
         <BankQuestionItemShow
           question={answer.question}
           editorRef={questionEditorRef}
@@ -127,17 +127,16 @@ function PilihanAnswerForm({
         }
         return (
           <div
-            className={`flex justify-between rounded-lg px-3 ${
-              isEvaluation
+            className={`flex justify-between rounded-lg px-3 ${isEvaluation
                 ? parseInt(answer.answer) === index
                   ? isCorrect
                     ? 'bg-green-50'
                     : 'bg-red-50'
                   : isCorrect
-                  ? 'bg-green-50'
-                  : ''
+                    ? 'bg-green-50'
+                    : ''
                 : ''
-            }`}
+              }`}
             key={index}
           >
             <div className="flex gap-3">
