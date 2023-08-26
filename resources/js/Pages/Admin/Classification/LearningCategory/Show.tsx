@@ -227,6 +227,10 @@ export default function Show({ learning_category }: Props) {
               header: 'Jumlah Soal',
               accessorFn: row => row.items?.length ?? 0,
             },
+            {
+              header: 'tipe',
+              accessorKey: 'type',
+            }
           ]}
           data={learning_category.bank_questions ?? []}
           showRoute="packet.sub.category.bank-question.show"
@@ -260,6 +264,10 @@ export default function Show({ learning_category }: Props) {
                 {
                   header: 'Jumlah Soal',
                   accessorFn: row => row.number_of_question,
+                },
+                {
+                  header: 'tipe',
+                  accessorKey: 'type',
                 },
                 {
                   header: 'Aktif',
