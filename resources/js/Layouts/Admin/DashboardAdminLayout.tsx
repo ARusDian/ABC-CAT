@@ -24,6 +24,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import FolderSharedIcon from '@mui/icons-material/FolderShared';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import { asset } from '@/Models/Helper';
 import { User } from '@/types';
 
@@ -229,6 +230,21 @@ export default function DashboardAdminLayout({
             Paket Belajar
           </ResponsiveNavLink>
         </li>
+        {user.roles.some(role => role.name === 'instructor') && (
+          <>
+            <li>
+              <ResponsiveNavLink
+                href={route('instructorIndex')}
+                active={route().current('instructorIndex')}
+              >
+                <span className={'mr-4'}>
+                  <InventoryIcon fontSize="large" />
+                </span>
+                Kategori Belajar Instruktur
+              </ResponsiveNavLink>
+            </li>
+          </>
+        )}
       </ul>
     </Box>
   );

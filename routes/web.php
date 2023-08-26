@@ -129,6 +129,9 @@ Route::middleware([
             Route::resource("document-file", DocumentFileController::class);
 
             // Paket Belajar
+            Route::middleware(['role:instructor'])->group((function(){
+                Route::get("instructor-index", [LearningCategoryController::class, "instructorIndex"])->name("instructorIndex");
+            }));
             Route::prefix("packet")->name("packet.")->group(function () {
                 Route::get("", [LearningPacketController::class, "index"])->name("index");
                 Route::get("{learning_packet}", [LearningPacketController::class, "show"])->name("show");

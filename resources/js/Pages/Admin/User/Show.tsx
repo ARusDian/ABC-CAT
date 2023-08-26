@@ -128,6 +128,7 @@ export default function Show(props: Props) {
                 <th className="">Kategori Belajar Diampu</th>
                 <th className=''>Paket Belajar </th>
                 <th className="">Sub Paket Belajar</th>
+                <th>Pintasan</th>
               </tr>
             </thead>
             <tbody>
@@ -138,6 +139,17 @@ export default function Show(props: Props) {
                     <td className="py-3 text-center">{category.name}</td>
                     <td className="py-3 text-center">{category.sub_learning_packet?.learning_packet?.name}</td>
                     <td className="py-3 text-center">{category.sub_learning_packet?.name}</td>
+                    <td className="py-3 text-center">
+                      <MuiInertiaLinkButton
+                        href={route('packet.sub.category.show', [
+                          category.sub_learning_packet?.learning_packet_id,
+                          category.sub_learning_packet?.id,
+                          category.id,
+                        ])}
+                      >
+                        Lihat
+                      </MuiInertiaLinkButton>
+                    </td>
                   </tr>
                 ))
                   : (

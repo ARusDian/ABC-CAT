@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\LearningCategory;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -167,5 +168,15 @@ class LearningCategoryController extends Controller
         return redirect()
             ->route('packet.sub.show', [$learning_packet, $sub_learning_packet])
             ->banner('Learning Category deleted successfully.');
+    }
+
+    public function instructorIndex(){
+        $id = Auth::id();
+
+        $user = User::with('learningCategories.subLearningPacket.learningPacket')->findOrFail($id);
+
+        return Inertia::render('Instructor/LearningCategory/Index', [
+            'userData' => $user,
+        ]);
     }
 }
