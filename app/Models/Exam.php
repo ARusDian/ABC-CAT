@@ -166,8 +166,6 @@ class Exam extends Model
         return Attribute::get(function () {
             $cluster = $this->answers->groupBy('cluster');
 
-            \Log::info('called');
-
             $result = $cluster->map(function ($c, $key) {
                 $count = $c->count();
                 $correct = $c->whereNotIn('score', [0])->count();
