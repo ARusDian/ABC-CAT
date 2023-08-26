@@ -102,9 +102,9 @@ export default function Dashboard(props: Props) {
                 </p>
               </div>
             </div>
-            <div className="w-full flex justify-evenly gap-3 p-7 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 h-full">
+            <div className="w-full flex flex-col 2xl:flex-row justify-evenly gap-3 p-7 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50 h-full">
               <div className="flex flex-col my-auto">
-                <p className="text-xl">Bank Soal</p>
+                <p className="text-xl text-left xl:text-center">Bank Soal</p>
                 <p className="text-5xl mx-auto">
                   {props.sum_of_bank_question_items}
                 </p>
