@@ -134,6 +134,7 @@ export default function Run({ exam }: Props) {
   const currentQuestion =
     (parseInt(useSearchParam('question') ?? '1') || 1) - 1;
   const isLastQuestion = currentQuestion === answers.length - 1;
+  const isLastQuestionInCluster = answers?.at(currentQuestion + 1)?.cluster == currentCluster;
 
   const doSetCurrentQuestion = (index: number): Task[] => {
     const url = new URL(location.toString());
@@ -266,7 +267,7 @@ export default function Run({ exam }: Props) {
       },
     ];
 
-    if (changeAnswerAfterAnswering && !isLastQuestion) {
+    if (changeAnswerAfterAnswering && !isLastQuestionInCluster) {
       tasks = [...tasks, ...doSetCurrentQuestion(currentQuestion + 1)];
     }
 
