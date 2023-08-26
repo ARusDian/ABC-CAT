@@ -69,12 +69,7 @@ export default function Leaderboard({ exercise_question }: Props) {
     {
       header: 'Score',
       accessorFn: it => {
-        return (
-          <div>
-            {parseFloat(it.answers_sum_score.toString())}/{it.answers_count} (
-            {(it.answers_sum_score * 100) / it.answers_count}%)
-          </div>
-        );
+        return <div>{parseFloat(it.answers_sum_score.toString())}</div>;
       },
     },
   ] as MRT_ColumnDef<ExamModel>[];
