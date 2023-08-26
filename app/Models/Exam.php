@@ -35,6 +35,7 @@ class Exam extends Model
         'server_state' => 'array',
         'cluster' => AsArrayObject::class,
         'options' => 'object',
+        'answers_sum_score' => 'float',
     ];
 
     protected $appends = ['finished'];
