@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BankQuestionItem;
 use App\Models\LearningPacket;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -51,5 +51,10 @@ class DashboardController extends Controller
                 'sum_of_bank_question_items' => $sum_of_bank_question_items,
             ]);
         }
+    }
+
+    public function guide() : BinaryFileResponse
+    {
+        return response()->download(public_path('assets/documents/guide.pdf'));
     }
 }

@@ -23,6 +23,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import FolderSharedIcon from '@mui/icons-material/FolderShared';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { asset } from '@/Models/Helper';
 import { User } from '@/types';
 
@@ -167,6 +168,18 @@ export default function DashboardAdminLayout({
             </span>
             Dashboard
           </ResponsiveNavLink>
+        </li>
+        <li>
+          <a
+            href={route('guide')}
+            target='_blank'
+            className='block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition'
+          >
+            <span className={'mr-4'}>
+              <MenuBookIcon fontSize="large" />
+            </span>
+            Panduan
+          </a>
         </li>
         {!(user.roles[0].name === 'instructor') && (
           <>
