@@ -21,7 +21,9 @@
             <th><b>6</b></th>
             <th><b>Tentu saja banyak Pilihan</b></th>
         </tr>
-        <tr></tr>
+        <tr>
+            <th colspan="13"><b>Isi Data Soal Dibawah</b></th>
+        </tr>
         <tr>
             <th><b>Nama</b></th>
             <th><b>pertanyaan</b></th>

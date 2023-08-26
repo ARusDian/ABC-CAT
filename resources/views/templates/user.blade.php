@@ -13,7 +13,9 @@
             <th><b>Balikpapan Utara</b></th>
         </tr>
     </tbody>
-    <tr></tr>
+    <tr>
+        <th colspan="7"><b>Isi Data User Dibawah</b></th>
+    </tr>
     <thead>
         <tr>
             <th><b>Nama</b></th>

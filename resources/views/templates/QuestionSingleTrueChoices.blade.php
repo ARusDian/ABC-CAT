@@ -19,7 +19,9 @@
             <th><b>1 (1 / 2 / 3 / 4 / 5)</b></th>
             <th><b>Tentu Saja Pilihan 1</b></th>
         </tr>
-        <tr></tr>
+        <tr>
+            <th colspan="10"><b>Isi Data Soal Dibawah</b></th>
+        </tr>
         <tr>
             <th><b>Nama</b></th>
             <th><b>Pertanyaan</b></th>
