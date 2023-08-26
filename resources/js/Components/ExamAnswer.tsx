@@ -131,10 +131,10 @@ function PilihanAnswerForm({
               isEvaluation
                 ? parseInt(answer.answer) === index
                   ? isCorrect
-                    ? 'bg-green-200'
-                    : 'bg-red-200'
+                    ? 'bg-green-50'
+                    : 'bg-red-50'
                   : isCorrect
-                  ? 'bg-green-200'
+                  ? 'bg-green-50'
                   : ''
                 : ''
             }`}
