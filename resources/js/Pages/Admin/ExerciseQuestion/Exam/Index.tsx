@@ -39,8 +39,7 @@ export default function Leaderboard({ exercise_question, exams }: Props) {
       accessorFn: it => {
         return (
           <>
-            {parseFloat(it.answers_sum_score?.toString() ?? '0')} (
-            {parseFloat(it.answers_sum_score.toString())}/{it.answers_count})
+            {parseFloat(it.answers_sum_score?.toString() ?? '0')}
           </>
         );
       },

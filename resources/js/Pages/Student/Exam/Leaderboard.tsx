@@ -48,7 +48,7 @@ export default function Leaderboard({ exercise_question }: Props) {
     {
       header: 'Skor',
       accessorFn: it => {
-        return <div>{(it.answers_sum_score * 100) / it.answers_count}</div>;
+        return <div>{it.answers_sum_score}</div>;
       },
     },
   ] as MRT_ColumnDef<ExamModel>[];
