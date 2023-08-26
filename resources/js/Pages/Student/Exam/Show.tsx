@@ -21,6 +21,7 @@ type Model = ExamModel & {
 
 export default function Show({ exams, exercise_question }: Props) {
 
+  console.log(exercise_question);
 
   const dataColumns = [
     {
@@ -55,9 +56,9 @@ export default function Show({ exams, exercise_question }: Props) {
             href={route(
               'student.packet.category.exercise.index',
               [
-                exercise_question.learning_category_id,
-                exercise_question.learning_category?.sub_learning_packet_id,
                 exercise_question.learning_category?.sub_learning_packet?.learning_packet_id,
+                exercise_question.learning_category?.sub_learning_packet_id,
+                exercise_question.learning_category_id,
               ],
             )}
             colorCode="#3A63F5"

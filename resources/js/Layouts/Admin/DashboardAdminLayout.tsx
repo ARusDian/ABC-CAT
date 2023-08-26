@@ -234,17 +234,17 @@ export default function DashboardAdminLayout({
             </li>
           </>
         ) : (
-            <li>
-              <ResponsiveNavLink
-                href={route('packet.index')}
-                active={route().current('packet.index')}
-              >
-                <span className={'mr-4'}>
-                  <FolderCopyIcon fontSize="large" />
-                </span>
-                Paket Belajar
-              </ResponsiveNavLink>
-            </li>  
+          <li>
+            <ResponsiveNavLink
+              href={route('packet.index')}
+              active={route().current('packet.index')}
+            >
+              <span className={'mr-4'}>
+                <FolderCopyIcon fontSize="large" />
+              </span>
+              Paket Belajar
+            </ResponsiveNavLink>
+          </li>
         )}
       </ul>
     </Box>
@@ -328,6 +328,9 @@ export default function DashboardAdminLayout({
           </div>
         </Box>
       </Box>
+      <div className='w-full bg-blue-50 fixed bottom-0 text-center shadow shadow-sky-400/50 py-1'>
+        ABC-CAT @2023 Ver. 1.1.0
+      </div>
     </div>
   );
 }
