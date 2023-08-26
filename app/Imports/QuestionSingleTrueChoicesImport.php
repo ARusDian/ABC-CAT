@@ -15,8 +15,8 @@ use Request;
 class QuestionSingleTrueChoicesImport implements
     OnEachRow,
     WithStartRow,
-    WithHeadingRow
-    // WithValidation
+    WithHeadingRow,
+    WithValidation
 {
     private $bank_question;
 
