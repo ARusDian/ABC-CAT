@@ -36,6 +36,7 @@ class DocumentFileController extends Controller
                 'required',
                 Rule::in(['learning-material', 'bank-question', 'question']),
             ],
+            'file' => 'required|image',
         ]);
         $file = $request->file('file');
 
