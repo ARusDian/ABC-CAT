@@ -314,7 +314,6 @@ class ExamController extends Controller
                     if ($exercise->options->randomize_choice) {
                         $choice_array = array_keys($question->answers['choices']);
                         $randomed_choice = collect($choice_array)->shuffle();
-                        // dd($question->answers, collect(array_keys($question->answers['choices']))->shuffle());
                         $choice_order['choices'] = $randomed_choice->toArray();
                     }
                     ExamAnswer::create([
