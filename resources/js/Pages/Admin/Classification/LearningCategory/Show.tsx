@@ -1,6 +1,6 @@
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { LearningCategoryModel } from '@/Models/LearningCategory';
-import { Link, router } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import QuizIcon from '@mui/icons-material/Quiz';
@@ -14,6 +14,7 @@ import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificatio
 import { useConfirm } from 'material-ui-confirm';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
+import { User } from '@/types';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,6 +53,9 @@ interface Props {
 export default function Show({ learning_category }: Props) {
   const confirm = useConfirm();
 
+  const { props } = usePage();
+  const user = props.user as unknown as User;
+
   const handleDelete = (
     onDeleteMessage: string,
     onDelete: () => any,
@@ -78,11 +82,15 @@ export default function Show({ learning_category }: Props) {
     <AdminShowLayout
       title="Kategori Belajar"
       headerTitle="Kategori Belajar"
-      backRoute={route('packet.sub.show', [
-        learning_packet_id,
-        sub_learning_packet_id,
-        learning_category_id,
-      ])}
+      backRoute={
+        user.roles.some(role => role.name === 'super-admin') ?
+          route('packet.sub.show', [
+            learning_packet_id,
+            sub_learning_packet_id,
+            learning_category_id,
+          ]) :
+          route('instructorIndex')
+      }
       editRoute={route('packet.sub.category.edit', [
         learning_packet_id,
         sub_learning_packet_id,
@@ -316,28 +324,28 @@ export default function Show({ learning_category }: Props) {
                         (row.original.deleted_at === null
                           ? 'Nonaktifkan'
                           : 'Aktifkan') +
-                          ' Latihan Soal ' +
-                          row.original.name,
+                        ' Latihan Soal ' +
+                        row.original.name,
                         () => {
                           row.original.deleted_at === null
                             ? router.delete(
-                                route('packet.sub.category.exercise.destroy', [
-                                  learning_category.sub_learning_packet
-                                    ?.learning_packet_id ?? 0,
-                                  learning_category.sub_learning_packet_id,
-                                  learning_category.id,
-                                  row.original.id,
-                                ]),
-                              )
+                              route('packet.sub.category.exercise.destroy', [
+                                learning_category.sub_learning_packet
+                                  ?.learning_packet_id ?? 0,
+                                learning_category.sub_learning_packet_id,
+                                learning_category.id,
+                                row.original.id,
+                              ]),
+                            )
                             : router.post(
-                                route('packet.sub.category.exercise.restore', [
-                                  learning_category.sub_learning_packet
-                                    ?.learning_packet_id ?? 0,
-                                  learning_category.sub_learning_packet_id,
-                                  learning_category.id,
-                                  row.original.id,
-                                ]),
-                              );
+                              route('packet.sub.category.exercise.restore', [
+                                learning_category.sub_learning_packet
+                                  ?.learning_packet_id ?? 0,
+                                learning_category.sub_learning_packet_id,
+                                learning_category.id,
+                                row.original.id,
+                              ]),
+                            );
                         },
                         'Latihan Soal ' + row.original.name,
                       );

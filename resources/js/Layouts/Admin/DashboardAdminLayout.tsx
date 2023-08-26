@@ -219,18 +219,7 @@ export default function DashboardAdminLayout({
             </li>
           </>
         )}
-        <li>
-          <ResponsiveNavLink
-            href={route('packet.index')}
-            active={route().current('packet.index')}
-          >
-            <span className={'mr-4'}>
-              <FolderCopyIcon fontSize="large" />
-            </span>
-            Paket Belajar
-          </ResponsiveNavLink>
-        </li>
-        {user.roles.some(role => role.name === 'instructor') && (
+        {user.roles.some(role => role.name === 'instructor') ? (
           <>
             <li>
               <ResponsiveNavLink
@@ -240,10 +229,22 @@ export default function DashboardAdminLayout({
                 <span className={'mr-4'}>
                   <InventoryIcon fontSize="large" />
                 </span>
-                Kategori Belajar Instruktur
+                Kategori Belajar
               </ResponsiveNavLink>
             </li>
           </>
+        ) : (
+            <li>
+              <ResponsiveNavLink
+                href={route('packet.index')}
+                active={route().current('packet.index')}
+              >
+                <span className={'mr-4'}>
+                  <FolderCopyIcon fontSize="large" />
+                </span>
+                Paket Belajar
+              </ResponsiveNavLink>
+            </li>  
         )}
       </ul>
     </Box>
