@@ -1,8 +1,9 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useContext } from 'react';
 
 import Banner from '@/Components/Jetstream/Banner';
 import { Head } from '@inertiajs/react';
 import { asset } from '@/Models/Helper';
+import { VersionContext } from '@/Context/VersionContext';
 
 interface Props {
   title: string;
@@ -15,6 +16,7 @@ export default function DashboardAdminLayout({
   renderHeader,
   children,
 }: PropsWithChildren<Props>) {
+  const version = useContext(VersionContext);
   return (
     <div className="min-h-screen h-full min-w-full w-full bg-gradient-to-b from-blue-50 to-blue-100">
       <Head title={title || 'ABC'} />
@@ -30,7 +32,7 @@ export default function DashboardAdminLayout({
       </nav>
       {children}
       <div className='w-full bg-blue-50 fixed bottom-0 text-center shadow shadow-sky-400/50 py-1'>
-        ABC-CAT @2023 Ver. 1.1.0
+        ABC-CAT @2023 Ver. {version}
       </div>
     </div>
   );

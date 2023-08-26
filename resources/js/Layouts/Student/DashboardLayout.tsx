@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useContext } from 'react';
 import { Head, router, usePage } from '@inertiajs/react';
 import Banner from '@/Components/Jetstream/Banner';
 import ResponsiveNavLink from '@/Components/Jetstream/ResponsiveNavLink';
@@ -24,6 +24,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import QuizIcon from '@mui/icons-material/Quiz';
 import { asset } from '@/Models/Helper';
 import { User } from '@/types';
+import { VersionContext } from '@/Context/VersionContext';
 
 interface Props {
   title: string;
@@ -116,6 +117,8 @@ export default function DashboardLayout({
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
   const { props } = usePage();
   const user = props.user as unknown as User;
+  const version = useContext(VersionContext);
+
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -246,7 +249,7 @@ export default function DashboardLayout({
         </Box>
       </Box>
       <div className='w-full bg-blue-50 fixed bottom-0 text-center shadow shadow-sky-400/50 py-1'>
-        ABC-CAT @2023 Ver. 1.1.0
+        ABC-CAT @2023 Ver. {version}
       </div>
     </div>
   );
