@@ -37,11 +37,12 @@ export default function Index(props: Props) {
     import_failures.length > 0,
   );
 
+  const [importDetailError, setImportDetailError] = React.useState<User>();
+  
   useEffect(() => {
     setOpenImportFailModal(import_failures.length > 0);
-  }, [JSON.stringify(import_failures)]);
+  }, [JSON.stringify(import_failures), JSON.stringify(importDetailError)]);
 
-  const [dataState, setDataState] = React.useState(users.data);
   const [columnFilters, setColumnFilters] =
     React.useState<MRT_ColumnFiltersState>([]);
 
@@ -49,6 +50,8 @@ export default function Index(props: Props) {
     pageIndex: users.current_page - 1,
     pageSize: users.per_page,
   });
+
+
 
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -84,7 +87,11 @@ export default function Index(props: Props) {
   const form = useForm<ImportFileModel>();
 
   async function onSubmit(value: any) {
-    await Api.postAsync({ route: route('user.import'), value, form });
+    await Api.postAsync({ route: route('user.import'), value, form }).catch(
+      (e) => {
+        setImportDetailError(e);
+      }
+    );
   }
 
   const dataColumns = [
@@ -277,6 +284,17 @@ export default function Index(props: Props) {
                 </div>
               ))}
             </div>
+            <div className="flex flex-col gap-3">
+              {importDetailError && Object.keys(importDetailError ?? {}).length > 0 && (
+                <>
+                  <p className="text-red-500">Error Detail :</p>
+                  {Object.keys(importDetailError ?? {}).map((key, index) => (
+                    <p className="text-red-500" key={index}>{key} : {importDetailError[key]}</p>
+                  ))}
+                </>
+              )}
+            </div>
+
           </div>
         </div>
       </Modal>

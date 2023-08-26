@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -10,6 +11,7 @@ use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Spatie\Permission\Models\Role;
 
 class UsersImport implements
     OnEachRow,
@@ -33,22 +35,37 @@ class UsersImport implements
     {
         $rowIndex = $row->getIndex();
         $row = $row->toArray();
-        
-        $users = User::withTrashed()->updateOrCreate(
-            [
-                'email' => $row['email'],
-            ],
-            [
-                'name' => $row['nama'],
-                'email' => $row['email'],
-                'password' => Hash::make($row['password']),
-                'phone_number' => $row['no_telepon'],
-                'active_year' => $row['tahun_aktif'],
-                'gender' => $row['jenis_kelamin'],
-                'address' => $row['alamat'],
-            ],
-        );
-        $users->assignRole('student');
+
+        // $users = User::withTrashed()->updateOrCreate(
+        //     [
+        //         'email' => $row['email'],
+        //     ],
+        //     [
+        //         'name' => $row['nama'],
+        //         'email' => $row['email'],
+        //         'password' => Hash::make($row['password']),
+        //         'phone_number' => $row['no_telepon'],
+        //         'active_year' => $row['tahun_aktif'],
+        //         'gender' => $row['jenis_kelamin'],
+        //         'address' => $row['alamat'],
+        //     ],
+        // );
+        // $users->assignRole('student');
+
+        $role_id = Role::where('name', 'student')->first()->id;
+
+        $request = new \Illuminate\Http\Request([
+            'name' => $row['nama'],
+            'email' => $row['email'],
+            'password' => Hash::make($row['password']),
+            'phone_number' => $row['no_telepon'],
+            'active_year' => $row['tahun_aktif'],
+            'gender' => $row['jenis_kelamin'],
+            'address' => $row['alamat'],
+            'roles' => [['id' => $role_id]],
+        ]);
+
+        $user = (new UserController)->store($request);
     }
 
     public function headingRow(): int
@@ -60,7 +77,7 @@ class UsersImport implements
     {
         return [
             '*.nama' =>  'required|string|max:255',
-            '*.email' => 'required|string|email|max:255',
+            '*.email' => 'required|string|email|max:255|unique:users,email',
             '*.password' => 'required|string|min:8',
             '*.no_telepon' => ['required'],
             '*.tahun_aktif' => ['required'],
