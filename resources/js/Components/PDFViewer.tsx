@@ -22,7 +22,6 @@ interface Props {
 }
 
 export default function PDFViewer({ document, height }: Props) {
-  console.log(document.document_file);
   const toolbarPluginInstance = toolbarPlugin();
   const { renderDefaultToolbar, Toolbar } = toolbarPluginInstance;
 
@@ -38,7 +37,6 @@ export default function PDFViewer({ document, height }: Props) {
     Print: () => <></>,
   });
 
-  console.log(workerUrl);
 
   return (
     <div className="border border-gray-300 rounded-md p-2 h-1.2 w-6/12 mx-auto">
