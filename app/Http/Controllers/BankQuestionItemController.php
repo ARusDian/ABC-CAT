@@ -115,6 +115,7 @@ class BankQuestionItemController extends Controller
      */
     public function store(
         Request $request,
+        bool $is_import = false,
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
@@ -129,6 +130,7 @@ class BankQuestionItemController extends Controller
 
         return \DB::transaction(function () use (
             $request,
+            $is_import,
             $learning_packet,
             $sub_learning_packet,
             $learning_category_id,
@@ -148,13 +150,13 @@ class BankQuestionItemController extends Controller
                 'answers' => $data['answers'],
             ]);
 
-            activity()
-                ->performedOn($newQuestion)
-                ->causedBy(auth()->user())
-                ->withProperties(['method' => 'CREATE'])
-                ->log(
-                    'Question ' . $newQuestion->name . ' created successfully',
-                );
+            if (!$is_import) {
+                activity()
+                    ->performedOn($newQuestion)
+                    ->causedBy(auth()->user())
+                    ->withProperties(['method' => 'CREATE'])
+                    ->log('Question ' . $newQuestion->name . ' created successfully');
+            }
 
             return redirect()
                 ->route('packet.sub.category.bank-question.show', [

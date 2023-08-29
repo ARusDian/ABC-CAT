@@ -65,7 +65,7 @@ class UsersImport implements
             'roles' => [['id' => $role_id]],
         ]);
 
-        $user = (new UserController)->store($request);
+        $user = (new UserController)->store($request, true);
     }
 
     public function headingRow(): int

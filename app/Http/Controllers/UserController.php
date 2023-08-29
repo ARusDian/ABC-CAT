@@ -61,10 +61,10 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, bool $is_import = false)
     {
         //
-        return DB::transaction(function () use ($request) {
+        return DB::transaction(function () use ($request , $is_import) {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
@@ -102,11 +102,13 @@ class UserController extends Controller
             foreach ($validated['roles'] as $role) {
                 $user->assignRole($role['id']);
             }
-            activity()
-                ->performedOn($user)
-                ->causedBy(Auth::user())
-                ->withProperties(['method' => 'CREATE'])
-                ->log('Created User ' . $user->name . '');
+            if (!$is_import) {
+                activity()
+                    ->performedOn($user)
+                    ->causedBy(Auth::user())
+                    ->withProperties(['method' => 'CREATE'])
+                    ->log('Created User ' . $user->name . '');
+            }
 
             return redirect()
                 ->route('user.index')
