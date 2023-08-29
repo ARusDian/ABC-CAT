@@ -91,8 +91,8 @@ export default function DocumentForm(props: Props) {
                         }}
                       />
                       <InputLabel htmlFor={`document_file_${index}`}>
-                        <div className="flex justify-between">
-                          <span className="label-text-alt">Maksimal 10 MB</span>
+                        <div className="flex justify-between text-red-500">
+                          <span className="label-text-alt">Maksimal 50 MB</span>
                           <span className="label-text-alt">
                             Dalam bentuk PDF
                           </span>
