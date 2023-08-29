@@ -68,9 +68,17 @@ export default function Show(props: Props) {
       accessorKey: 'name',
     },
     {
-      header: 'type',
+      header: 'Tipe',
       accessorKey: 'type',
     },
+    {
+      header: 'Tipe Jawaban',
+      accessorFn(originalRow) {
+        return originalRow.answer.type === 'Single'
+          ? "Tunggal"
+          : 'Ganda';
+      },
+    }
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
   return (

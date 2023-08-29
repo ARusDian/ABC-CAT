@@ -19,6 +19,14 @@ export default function Show(props: Props) {
       header: 'Nama',
       accessorKey: 'name',
     },
+    {
+      header: 'Tipe Jawaban',
+      accessorFn(originalRow) {
+        return originalRow.answer.type === 'Single'
+          ? "Tunggal"
+          : 'Ganda';
+      },
+    }
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
   const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
