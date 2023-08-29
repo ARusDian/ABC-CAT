@@ -89,7 +89,8 @@ Route::middleware([
 
     Route::middleware(["role:super-admin|instructor"])->withoutMiddleware(['exam'])->group(function () {
         Route::prefix("admin")->group(function () {
-            Route::get("/guide", [DashboardController::class, "guide"])->name("guide");
+            Route::get("/guide-book", [DashboardController::class, "guide"])->name("guide");
+            Route::get("/guide-book/download", [DashboardController::class, "guideDownload"])->name("guide.download");
             Route::middleware(["role:super-admin"])->group(function () {
                 Route::resource("/user", UserController::class);
                 Route::post('/user/{user}/restore', [UserController::class, "restore"])->name('user.restore');

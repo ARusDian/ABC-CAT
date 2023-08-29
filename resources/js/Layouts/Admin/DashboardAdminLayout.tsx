@@ -174,18 +174,17 @@ export default function DashboardAdminLayout({
           </ResponsiveNavLink>
         </li>
         <li>
-          <a
+          <ResponsiveNavLink
             href={route('guide')}
-            target='_blank'
-            className='block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition'
+            active={route().current('guide')}
           >
             <span className={'mr-4'}>
               <MenuBookIcon fontSize="large" />
             </span>
             Panduan
-          </a>
+          </ResponsiveNavLink>
         </li>
-        {!(user.roles[0].name === 'instructor') && (
+        {(user.roles.some(role => role.name === 'super-admin')) && (
           <>
             <li>
               <ResponsiveNavLink
