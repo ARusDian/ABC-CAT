@@ -251,11 +251,11 @@ function PilihanForm({
                               //   value: 1,
                               // },
                               min: {
-                                message: 'Bobot harus lebih dari 0',
+                                message: 'Bobot harus lebih dari atau sama dengan 0',
                                 value: 0,
                               },
                               valueAsNumber: true,
-                              validate: value => value > 0,
+                              validate: value => value >= 0,
                               // pattern: {
                               //   value: /^(0|[1-9]\d*)(\.\d+)?$/,
                               // },

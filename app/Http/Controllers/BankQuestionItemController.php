@@ -115,12 +115,15 @@ class BankQuestionItemController extends Controller
      */
     public function store(
         Request $request,
-        bool $is_import = false,
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
         $bank_question_id,
+        bool $is_import = false,
     ) {
+        if(!isset($is_import)){
+            $is_import = false;
+        }
         $bank_question = BankQuestion::with(['learningCategory'])->findOrFail($bank_question_id);
 
         Gate::authorize(
