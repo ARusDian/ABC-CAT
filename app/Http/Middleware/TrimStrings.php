@@ -15,6 +15,20 @@ class TrimStrings extends Middleware
         'current_password',
         'password',
         'password_confirmation',
-        'text',
     ];
+
+    protected $exceptRegex = [
+        'content.*.text',
+    ];
+
+    public function transform($key, $value)
+    {
+        foreach ($this->exceptRegex as $pattern) {
+            if (preg_match("/" . $pattern . "/", $key)) {
+                return $value;
+            }
+        }
+
+        return parent::transform($key, $value);
+    }
 }
