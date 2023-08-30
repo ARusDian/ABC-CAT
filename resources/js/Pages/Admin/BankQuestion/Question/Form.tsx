@@ -83,6 +83,26 @@ export default function Form(props: Props) {
     setTabValue(newValue);
   };
 
+  const choices = form.watch('answers.choices');
+  const choiceLength = choices.length;
+
+  const updateChoiceNumber = React.useCallback(
+    (value: number) => {
+      if (value != choiceLength) {
+        const v = (form.getValues('answers.choices') as any[]).filter(
+          (_: any, index: number) => value >= index + 1,
+        );
+
+        while (v.length < value) {
+          v.push(form.formState.defaultValues?.answers?.choices?.at(0)!);
+        }
+        console.log(v, value);
+        form.setValue('answers.choices', v);
+      }
+    },
+    [choices],
+  );
+
   const answerType = useWatch({
     control: form.control,
     name: 'answer.type',
@@ -115,6 +135,7 @@ export default function Form(props: Props) {
 
                 if (value == 'Single') {
                   form.setValue('answer', { type: 'Single', answer: 0 });
+                  updateChoiceNumber(5);
                 } else if (value == 'WeightedChoice') {
                   form.setValue('answer', {
                     type: 'WeightedChoice',
@@ -122,6 +143,7 @@ export default function Form(props: Props) {
                       .getValues('answers')
                       .choices.map(it => ({ weight: 0 })),
                   });
+                  updateChoiceNumber(4);
                 }
               }}
             >
@@ -132,6 +154,19 @@ export default function Form(props: Props) {
                 return <MenuItem value={key}>{value}</MenuItem>;
               })}
             </Select>
+
+            <TextField
+              label="Banyak Pilihan"
+              value={choiceLength}
+              onChange={it => {
+                if (it.target.value) {
+                  updateChoiceNumber(parseInt(it.target.value) ?? 5);
+                }
+              }}
+              type="number"
+              error={form.formState.errors?.name != null}
+              helperText={form.formState.errors?.name?.message}
+            />
           </div>
           <Controller
             name="question.content"
@@ -251,7 +286,8 @@ function PilihanForm({
                               //   value: 1,
                               // },
                               min: {
-                                message: 'Bobot harus lebih dari atau sama dengan 0',
+                                message:
+                                  'Bobot harus lebih dari atau sama dengan 0',
                                 value: 0,
                               },
                               valueAsNumber: true,

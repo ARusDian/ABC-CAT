@@ -34,7 +34,8 @@ export default function ResourceEditor(props: Props) {
     editable,
     override: {
       onBlur: ({ editor }) => {
-        props.onBlur?.(editor.getJSON());
+        const json =editor.getJSON();
+        props.onBlur?.(json);
       },
       editorProps: {
         attributes: {
