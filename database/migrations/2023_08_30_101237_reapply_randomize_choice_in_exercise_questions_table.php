@@ -16,16 +16,15 @@ return new class extends Migration
         $exercises = ExerciseQuestion::withTrashed()->get();
 
         foreach ($exercises as $exercise) {
+            $isKecermatan = $exercise->type == ExerciseQuestionTypeEnum::Kecermatan;
             $exercise->update([
                 'options' => [
                     ...(array)$exercise->options,
+                    'randomize_choice' => true,
+                    'number_of_question_per_cluster' => $isKecermatan,
+                    'next_question_after_answer' => $isKecermatan,
+                    'time_limit_per_cluster' => $isKecermatan,
 
-                    ...($exercise->type == ExerciseQuestionTypeEnum::Kecermatan ? [
-                        // cluster prefix will only be used if cluster_by_bank_question is false
-                        'randomize_choice' => true
-                    ] : [
-                        'randomize_choice' => false
-                    ]),
                 ]
             ]);
         }
