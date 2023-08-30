@@ -194,19 +194,19 @@ class QuestionMultiTrueChoicesImport implements
     public function rules(): array
     {
         return [
-            'nama' =>  'required|string|max:255',
-            'pertanyaan' => 'required|string',
-            'pilihan_1' => 'required|string',
-            'pilihan_2' => 'required|string',
-            'pilihan_3' => 'required|string',
-            'pilihan_4' => 'required|string',
-            'pilihan_5' => 'required|string',
+            'nama' =>  'required',
+            'pertanyaan' => 'required',
+            'pilihan_1' => 'required',
+            'pilihan_2' => 'required',
+            'pilihan_3' => 'required',
+            'pilihan_4' => 'required',
+            'pilihan_5' => 'required',
             'bobot_1' => 'required|numeric',
             'bobot_2' => 'required|numeric',
             'bobot_3' => 'required|numeric',
             'bobot_4' => 'required|numeric',
             'bobot_5' => 'required|numeric',
-            'pembahasan' => 'required|string',
+            'pembahasan' => 'required',
         ];
     }
 }

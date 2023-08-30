@@ -183,15 +183,15 @@ class QuestionSingleTrueChoicesImport implements
     public function rules(): array
     {
         return [
-            'nama' => 'required|string|max:255',
-            'pertanyaan' => 'required|string',
-            'pilihan_1' => 'required|string|max:255',
-            'pilihan_2' => 'required|string|max:255',
-            'pilihan_3' => 'required|string|max:255',
-            'pilihan_4' => 'required|string|max:255',
-            'pilihan_5' => 'required|string|max:255',
+            'nama' => 'required',
+            'pertanyaan' => 'required',
+            'pilihan_1' => 'required',
+            'pilihan_2' => 'required',
+            'pilihan_3' => 'required',
+            'pilihan_4' => 'required',
+            'pilihan_5' => 'required',
             'jawaban' => 'required|integer|between:1,5',
-            'pembahasan' => 'required|string',
+            'pembahasan' => 'required',
         ];
     }
 }
