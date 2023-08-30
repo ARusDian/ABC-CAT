@@ -172,7 +172,6 @@ class QuestionSingleTrueChoicesImport implements
         $bank_question = $this->bank_question;
         $item = (new BankQuestionItemController)->store(
             $request,
-            true,
             $bank_question->learningCategory->SubLearningPacket->learningPacket->id,
             $bank_question->learningCategory->sub_learning_packet_id,
             $bank_question->learning_category_id,

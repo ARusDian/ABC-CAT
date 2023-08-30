@@ -119,11 +119,7 @@ class BankQuestionItemController extends Controller
         $sub_learning_packet,
         $learning_category_id,
         $bank_question_id,
-        bool $is_import = false,
     ) {
-        if(!isset($is_import)){
-            $is_import = false;
-        }
         $bank_question = BankQuestion::with(['learningCategory'])->findOrFail($bank_question_id);
 
         Gate::authorize(
@@ -133,7 +129,6 @@ class BankQuestionItemController extends Controller
 
         return \DB::transaction(function () use (
             $request,
-            $is_import,
             $learning_packet,
             $sub_learning_packet,
             $learning_category_id,
@@ -153,13 +148,12 @@ class BankQuestionItemController extends Controller
                 'answers' => $data['answers'],
             ]);
 
-            if (!$is_import) {
-                activity()
-                    ->performedOn($newQuestion)
-                    ->causedBy(auth()->user())
-                    ->withProperties(['method' => 'CREATE'])
-                    ->log('Question ' . $newQuestion->name . ' created successfully');
-            }
+            activity()
+                ->performedOn($newQuestion)
+                ->causedBy(auth()->user())
+                ->withProperties(['method' => 'CREATE'])
+                ->log('Question ' . $newQuestion->name . ' created successfully');
+
 
             return redirect()
                 ->route('packet.sub.category.bank-question.show', [
