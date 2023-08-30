@@ -55,7 +55,6 @@ class LearningCategoryPolicy
     public function update(User $user, LearningCategory $learningCategory): bool
     {
         return $this->hasAccess($user, $learningCategory);
-        return $user->hasRole('super-admin') || $user->hasRole('admin');
     }
 
     /**
@@ -64,7 +63,6 @@ class LearningCategoryPolicy
     public function delete(User $user, LearningCategory $learningCategory): bool
     {
         return $this->hasAccess($user, $learningCategory);
-        return $user->hasRole('super-admin') || $user->hasRole('admin');
     }
 
     /**
