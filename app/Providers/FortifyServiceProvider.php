@@ -75,7 +75,7 @@ class FortifyServiceProvider extends ServiceProvider
             if ($sessions) {
                 $last_activity = \Carbon\Carbon::parse($sessions->last_activity);
 
-                if ($last_activity < \Carbon\Carbon::now()->subMinutes(5)) {
+                if ($last_activity > \Carbon\Carbon::now()->subMinutes(5)) {
                     throw ValidationException::withMessages([
                         Fortify::username() => 'Sudah ada user yang login menggunakan akun ini'
                     ]);
