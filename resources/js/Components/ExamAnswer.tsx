@@ -18,6 +18,19 @@ interface Props {
   isEvaluation?: boolean;
 }
 
+function useRandomizedChoice<T>(choices: T[], choice_order?: Partial<{ choices: Record<number, number> }> | null) {
+  return React.useMemo(() => {
+    return _.sortBy(
+      choices.map((value, answer) => ({
+        answer,
+        value,
+        order: choice_order?.choices?.[answer] ?? answer,
+      })),
+      'order',
+    );
+  }, [choices, choice_order]);
+}
+
 export default function ExamAnswer({
   answer,
   updateAnswer,
@@ -90,7 +103,7 @@ function PilihanAnswerForm({
   isEvaluation?: boolean;
   updateAnswer?: (answer: { answer: number }) => void;
 }) {
-  let choices = answer.question.answers.choices;
+  const choices = useRandomizedChoice(answer.question.answers.choices, answer.choice_order);
   // store editor ref to prevent re-creating editor
   const arrayEditorRef = React.useRef<React.MutableRefObject<Editor | null>[]>(
     [],
@@ -99,12 +112,13 @@ function PilihanAnswerForm({
   while (arrayEditorRef.current.length < choices.length) {
     arrayEditorRef.current.push({ current: null });
   }
+
   React.useEffect(() => {
     choices.map((choice, index) => {
       const editorRef = arrayEditorRef.current[index];
 
-      if (Object.keys(choice.content).length != 0) {
-        editorRef?.current?.commands.setContent(choice.content);
+      if (Object.keys(choice.value.content).length != 0) {
+        editorRef?.current?.commands.setContent(choice.value.content);
       } else {
         editorRef?.current?.commands.clearContent();
       }
@@ -113,24 +127,24 @@ function PilihanAnswerForm({
 
   return (
     <div className="flex flex-col gap-1">
-      {choices.map((choice, index) => {
-        const editorRef = arrayEditorRef.current[index];
+      {choices.map((choice, enumerate) => {
+        const editorRef = arrayEditorRef.current[enumerate];
 
         const answerQuestion = answer.question.answer;
         let isCorrect = false;
 
         if (isEvaluation) {
           if (answerQuestion?.type == 'Single') {
-            isCorrect = answerQuestion.answer == index;
+            isCorrect = answerQuestion.answer == choice.answer;
           } else if (answerQuestion?.type == 'WeightedChoice') {
-            isCorrect = answerQuestion.answer[index].weight > 0;
+            isCorrect = answerQuestion.answer[choice.answer].weight > 0;
           }
         }
         return (
           <div
             className={`flex justify-between rounded-lg px-3 ${
               isEvaluation
-                ? parseInt(answer.answer) === index
+                ? parseInt(answer.answer) === choice.answer
                   ? isCorrect
                     ? 'bg-green-50'
                     : 'bg-red-50'
@@ -139,7 +153,7 @@ function PilihanAnswerForm({
                   : ''
                 : ''
             }`}
-            key={index}
+            key={enumerate}
           >
             <div className="flex gap-3">
               <input
@@ -149,18 +163,18 @@ function PilihanAnswerForm({
                 disabled={updateAnswer == null}
                 onChange={() => {
                   updateAnswer?.({
-                    answer: index,
+                    answer: choice.answer,
                   });
                 }}
-                checked={answer.answer == index}
+                checked={answer.answer == choice.answer}
               />
               {isEvaluation && answerQuestion?.type == 'WeightedChoice' ? (
-                <div>{answerQuestion.answer[index].weight}</div>
+                <div>{answerQuestion.answer[choice.answer].weight}</div>
               ) : null}
               <div className="prose">
                 <ResourceEditor
                   editorRef={editorRef}
-                  content={choice.content}
+                  content={choice.value.content}
                   editorClassName=""
                   disableEdit
                 />
@@ -180,16 +194,7 @@ function KecermatanAnswerForm({
   answer: ExamAnswerKecermatanModel;
   updateAnswer?: (answer: { answer: number }) => void;
 }) {
-  const choices = React.useMemo(() => {
-    return _.sortBy(
-      answer.question.answers.choices.map((value, index) => ({
-        index,
-        value,
-        order: answer.choice_order?.choices?.[index] ?? index,
-      })),
-      'order',
-    );
-  }, [answer.choice_order]);
+  const choices = useRandomizedChoice(answer.question.answers.choices, answer.choice_order);
 
   // store editor ref to prevent re-creating editor
   const arrayEditorRef = React.useRef<React.MutableRefObject<Editor | null>[]>(
@@ -212,10 +217,10 @@ function KecermatanAnswerForm({
                 disabled={updateAnswer == null}
                 onChange={() => {
                   updateAnswer?.({
-                    answer: choice.index,
+                    answer: choice.answer,
                   });
                 }}
-                checked={answer.answer == choice.index}
+                checked={answer.answer == choice.answer}
               />
               <div className=" mx-auto ">
                 <p>{choice.value}</p>
