@@ -56,13 +56,6 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
 
-            $sessions = \DB::connection(config('session.connection'))
-                ->table(config('session.table', 'sessions'))
-                ->where('user_id', $user->getAuthIdentifier())
-                ->orderBy('last_activity', 'desc')
-                ->first();
-
-
             $isLoggedIn =
                 $user &&
                 Hash::check($request->password, $user->password);
@@ -70,6 +63,12 @@ class FortifyServiceProvider extends ServiceProvider
             if (!$isLoggedIn) {
                 return false;
             }
+
+            $sessions = \DB::connection(config('session.connection'))
+                ->table(config('session.table', 'sessions'))
+                ->where('user_id', $user->getAuthIdentifier())
+                ->orderBy('last_activity', 'desc')
+                ->first();
 
             // only allow one session per user
             if ($sessions) {
