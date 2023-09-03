@@ -1,3 +1,4 @@
+import { BankQuestionItemShow } from '@/Components/BankQuestionItemShow';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
@@ -114,6 +115,19 @@ export default function Show(props: Props) {
               fontWeight: 'bold',
               fontSize: '16px',
             },
+          }}
+          renderDetailPanel={({ row }) => {
+            return (
+              <div className="flex flex-col gap-1">
+                <label className="text-lg">Pertanyaan</label>
+                <div className="w-full border rounded-2xl p-5">
+                  <BankQuestionItemShow
+                    question={row.original}
+                    editorClassName="h-full"
+                  />
+                </div>
+              </div>
+            );
           }}
           renderRowActions={({ row }) => (
             <div className="flex items-center justify-center gap-2">

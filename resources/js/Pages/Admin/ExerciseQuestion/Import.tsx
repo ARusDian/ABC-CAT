@@ -19,6 +19,7 @@ import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificatio
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import { useDefaultExerciseQuestionFormModel } from '@/Hooks/useDefaultExerciseQuestionForm';
+import { BankQuestionItemShow } from '@/Components/BankQuestionItemShow';
 
 interface Props {
   bank_question: BankQuestionModel;
@@ -159,6 +160,19 @@ export default function Show(props: Props) {
             fontWeight: 'bold',
             fontSize: '16px',
           },
+        }}
+        renderDetailPanel={({ row }) => {
+          return (
+            <div className="flex flex-col gap-1">
+              <label className="text-lg">Pertanyaan</label>
+              <div className="w-full border rounded-2xl p-5">
+                <BankQuestionItemShow
+                  question={row.original}
+                  editorClassName="h-full"
+                />
+              </div>
+            </div>
+          );
         }}
         renderRowActions={({ row }) => (
           <div className="flex items-center justify-center gap-2">

@@ -1,3 +1,4 @@
+import { BankQuestionItemShow } from '@/Components/BankQuestionItemShow';
 import InputError from '@/Components/Jetstream/InputError';
 import LazyLoadMRT from '@/Components/LazyLoadMRT';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
@@ -66,10 +67,6 @@ export default function Show(props: Props) {
     {
       header: 'Nama',
       accessorKey: 'name',
-    },
-    {
-      header: 'Tipe',
-      accessorKey: 'type',
     },
     {
       header: 'Tipe Jawaban',
@@ -169,6 +166,19 @@ export default function Show(props: Props) {
               </MuiInertiaLinkButton>
             </div>
           )}
+          renderDetailPanel={({ row }) => {
+            return (
+              <div className="flex flex-col gap-1">
+                <label className="text-lg">Pertanyaan</label>
+                <div className="w-full border rounded-2xl p-5">
+                  <BankQuestionItemShow
+                    question={row.original}
+                    editorClassName="h-full"
+                  />
+                </div>
+              </div>
+            );
+          }}
         />
       </div>
       <Modal open={openImportModal} onClose={() => setOpenImportModal(false)}>
