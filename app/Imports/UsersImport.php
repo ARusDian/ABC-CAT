@@ -57,7 +57,7 @@ class UsersImport implements
         $request = new \Illuminate\Http\Request([
             'name' => $row['nama'],
             'email' => $row['email'],
-            'password' => Hash::make($row['password']),
+            'password' => $row['password'],
             'phone_number' => $row['no_telepon'],
             'active_year' => $row['tahun_aktif'],
             'gender' => $row['jenis_kelamin'],
