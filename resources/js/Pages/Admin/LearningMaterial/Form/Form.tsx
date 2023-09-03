@@ -43,6 +43,7 @@ export default function Form(props: Props) {
           onBlur={json => {
             form.setValue('description.content', json);
           }}
+          editorClassName="h-full min-h-[96px] p-3"
           documentFileType="learning-material"
         />
         <InputError
