@@ -75,6 +75,18 @@ export default function Show(props: Props) {
           ? "Tunggal"
           : 'Ganda';
       },
+    },
+    {
+      header: 'Status',
+      accessorFn(originalRow) {
+        return (<p
+          className={`${originalRow.is_active ? 'text-green-500' : 'text-red-500' 
+            } font-semibold`}
+        >
+          {originalRow.is_active ? "Aktif" : "Nonaktif"}
+        </p>
+        );
+      },
     }
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
