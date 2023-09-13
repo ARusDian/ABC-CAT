@@ -164,6 +164,7 @@ export default function Form(props: Props) {
                 }
               }}
               type="number"
+              inputProps={{ min: 2 }}
               error={form.formState.errors?.name != null}
               helperText={form.formState.errors?.name?.message}
             />
