@@ -1,7 +1,7 @@
 import ResultTable from '@/Components/Exam/ResultTable';
 import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
 import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificationRouteParams';
-import DashboardLayout from '@/Layouts/Student/DashboardLayout';
+import DashboardAdminLayout from '@/Layouts/Admin/DashboardAdminLayout';
 import { ExamModel } from '@/Models/Exam';
 import { Button } from '@mui/material';
 import React, { useRef } from 'react';
@@ -17,7 +17,7 @@ export default function ShowResult({ exam }: Props) {
   const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
   return (
-    <DashboardLayout title="Hasil Pengerjaan Latihan Soal">
+    <DashboardAdminLayout title="Hasil Pengerjaan Latihan Soal">
       <div className="flex flex-col w-full h-full p-7 rounded-2xl shadow-2xl shadow-sky-400/50  bg-white">
         <div className="flex justify-between">
           {/* @ts-ignore */}
@@ -53,6 +53,6 @@ export default function ShowResult({ exam }: Props) {
           resultRef={ref}
         />
       </div>
-    </DashboardLayout>
+    </DashboardAdminLayout>
   );
 }
