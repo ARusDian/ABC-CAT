@@ -64,7 +64,7 @@ class UserController extends Controller
     public function store(Request $request, bool $is_import = false)
     {
         //
-        return DB::transaction(function () use ($request , $is_import) {
+        return DB::transaction(function () use ($request, $is_import) {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
@@ -259,6 +259,55 @@ class UserController extends Controller
         return redirect()
             ->route('user.index')
             ->banner('User Restored Successfully');
+    }
+
+    public function forceDelete($id)
+    {
+        return DB::transaction(function () use ($id) {
+            $user = User::withTrashed()
+                ->with(['userLearningPackets', 'exams.answers', 'instructorLearningCategories'])
+                ->findOrFail($id);
+
+            if ($user->hasRole('super-admin')) {
+                return redirect()
+                    ->route('user.show', $id)
+                    ->banner('Superadmin Cannot Be Deleted');
+            }
+
+            if ($user->exams()->count() > 0) {
+                foreach ($user->exams as $exam) {
+                    if ($exam->answers()->count() > 0) {
+                        foreach ($exam->answers as $answer) {
+                            $answer->delete();
+                        }
+                    }
+                    $exam->delete();
+                }
+            }
+
+            if ($user->userLearningPackets()->count() > 0) {
+                foreach ($user->userLearningPackets as $userLearningPacket) {
+                    $userLearningPacket->delete();
+                }
+            }
+
+            if ($user->instructorLearningCategories()->count() > 0) {
+                foreach ($user->instructorLearningCategories as $instructorLearningCategory) {
+                    $instructorLearningCategory->delete();
+                }
+            }
+
+            $user->forceDelete();
+
+            activity()
+                ->performedOn($user)
+                ->causedBy(Auth::user())
+                ->withProperties(['method' => 'FORCE_DELETE'])
+                ->log('Force Deleted User ' . $user->name . '');
+            return redirect()
+                ->route('user.index')
+                ->banner('User Force Deleted Successfully');
+        });
     }
 
     public function ImportExportView()

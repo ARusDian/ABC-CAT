@@ -94,6 +94,7 @@ Route::middleware([
             Route::middleware(["role:super-admin"])->group(function () {
                 Route::resource("/user", UserController::class);
                 Route::post('/user/{user}/restore', [UserController::class, "restore"])->name('user.restore');
+                Route::delete('/user/{user}/force-delete', [UserController::class, "forceDelete"])->name('user.force-delete');
                 Route::get('/user/{user}/export-result', [UserController::class, "exportExamResult"])->name('user.export-result');
                 Route::get('/user/{user}/exam', [UserController::class, "exams"])->name('user.exam.index');
                 Route::get('/user/{user}/exam/{exam}', [UserController::class, "examShow"])->name('user.exam.show');
