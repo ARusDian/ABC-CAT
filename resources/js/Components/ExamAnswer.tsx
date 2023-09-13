@@ -171,7 +171,7 @@ function PilihanAnswerForm({
               {isEvaluation && answerQuestion?.type == 'WeightedChoice' ? (
                 <div>{answerQuestion.answer[choice.answer].weight}</div>
               ) : null}
-              <div className="prose">
+              <div className="py-2">
                 <ResourceEditor
                   editorRef={editorRef}
                   content={choice.value.content}
