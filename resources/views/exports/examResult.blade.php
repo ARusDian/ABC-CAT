@@ -21,7 +21,7 @@
             <td>{{$exam->user->name}}</td>
             <td>{{$exam->user->email}}</td>
             <td>{{$exam->exerciseQuestion->name}}</td>
-            <td>{{$exam->answers_sum_score/$exam->answers_count}}</td>
+            <td>{{$exam->answers_sum_score}}</td>
             <td>{{$exam->exerciseQuestion->learningCategory->name}}</td>
             <td>{{$exam->exerciseQuestion->learningCategory->subLearningPacket->name}}</td>
             <td>{{$exam->exerciseQuestion->learningCategory->subLearningPacket->learningPacket->name}}</td>
