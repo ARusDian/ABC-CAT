@@ -7,6 +7,7 @@ export interface ExerciseQuestionFormModel {
   type: ExerciseQuestionType;
   time_limit: number;
   number_of_question: number;
+  is_next_question_after_answered: boolean;
 }
 
 export interface ExerciseQuestionModel {
@@ -24,6 +25,14 @@ export interface ExerciseQuestionModel {
   learning_category_id: string;
 
   cluster_names: Record<number, string>;
+  options: {
+    cluster_by_bank_question: boolean;
+    cluster_name_prefix: string | null;
+    next_question_after_answer : boolean;
+    number_of_question_per_cluster: number | false;
+    randomize_choices: boolean;
+    time_limit_per_cluster: number | false;
+  }
 }
 
 export const EXERCISE_QUESTION_TYPE = ['Pilihan', 'Kecermatan'] as const;

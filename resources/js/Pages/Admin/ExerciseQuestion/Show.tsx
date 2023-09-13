@@ -66,6 +66,9 @@ export default function Show(props: Props) {
             <p>
               Jumlah Soal {exercise_question.type === "Kecermatan" ? "per Kolom" : "Per Latihan"}: {exercise_question.number_of_question}
             </p>
+            <p>
+              Pengerjaan Berkelanjutan: {exercise_question.options.next_question_after_answer ? 'Ya' : 'Tidak'}
+            </p>
             <p
               className={`${exercise_question.deleted_at ? 'text-red-500' : 'text-green-500'
                 } font-semibold`}

@@ -4,6 +4,7 @@ import {
   EXERCISE_QUESTION_TYPE,
   ExerciseQuestionFormModel,
 } from '@/Models/ExerciseQuestion';
+import { FormControlLabel, Switch } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -73,6 +74,14 @@ export default function Form({ form }: Props) {
         fullWidth
       />
       <InputError message={form.formState.errors.number_of_question?.message} />
+      <FormControlLabel
+        control={<Switch
+          {...form.register('is_next_question_after_answered')}
+          defaultChecked={form.formState.defaultValues?.is_next_question_after_answered}
+        />}
+        label="Pengerjaan Berkelanjutan"
+      />
+
     </div>
   );
 }

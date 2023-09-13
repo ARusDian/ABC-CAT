@@ -15,6 +15,7 @@ export function useDefaultExerciseQuestionFormModel(
       type,
       time_limit,
       number_of_question: defaultValues?.number_of_question ?? 50,
+      is_next_question_after_answered: false
     },
   });
 }
