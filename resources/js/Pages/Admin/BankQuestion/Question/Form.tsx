@@ -1,7 +1,7 @@
 import InputError from '@/Components/Jetstream/InputError';
 import InputLabel from '@/Components/Jetstream/InputLabel';
 import Radio from '@mui/material/Radio';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Controller,
   UseFormReturn,
@@ -73,6 +73,24 @@ function isWeightedChoiceFormModel(
 > {
   return form.getValues('answer.type') == 'WeightedChoice';
 }
+
+const DisableNumInputScroll = () => {
+  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    const { type } = event.target as HTMLInputElement;
+    if (type === 'number') {
+      event.preventDefault();
+    }
+  }
+  useEffect(() => {
+    document.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      document.removeEventListener('wheel', handleWheel);
+    };
+  }, []);
+
+  return null;
+};
 
 export default function Form(props: Props) {
   const form = props.form;
@@ -266,10 +284,15 @@ function PilihanForm({
                     />
                     {isWeightedChoiceFormModel(form) ? (
                       <>
+                        <DisableNumInputScroll />
                         <TextField
                           label="Bobot"
                           type="number"
-                          inputProps={{ step: 'any' }}
+                          onWheel={e => {
+                            e.preventDefault();
+                            e.currentTarget.blur();
+                          }}
+                          inputProps={{ step: 'any', min: 0 }}
                           error={
                             form.formState.errors.answer?.answer?.[index]
                               ?.weight != null
