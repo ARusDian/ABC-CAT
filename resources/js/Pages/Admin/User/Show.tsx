@@ -48,7 +48,7 @@ export default function Show(props: Props) {
           ? router.post(route('user.restore', [user.id]))
           : router.delete(route('user.destroy', [user.id]));
       }}
-      deleteTitle={user.deleted_at ? 'Restore' : 'Hapus'}
+      deleteTitle={user.deleted_at ? 'Restore' : 'Nonaktifkan'}
       onDeleteMessage={
         user.deleted_at
           ? `Ini akan mengembalikan Akun ${user.name}`
