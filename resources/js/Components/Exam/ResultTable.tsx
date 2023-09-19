@@ -2,6 +2,7 @@ import React from 'react';
 import KecermatanResultDocument from '../KecermatanResultDocument';
 import { ExamModel } from '@/Models/Exam';
 import ExamResultDocument from '../ExamResultDocument';
+import KepribadianResultDocument from '../KepribadianResultDocument';
 
 interface Props {
   exam: ExamModel;
@@ -20,9 +21,8 @@ export default function Result({ exam, resultRef }: Props) {
         {exam.exercise_question.type === 'Kecermatan' ? (
           <KecermatanResultDocument exam={exam} user={exam.user} />
         ) : exam.exercise_question.type == 'Kepribadian' ? (
-            <>
+            <KepribadianResultDocument exam={exam} user={exam.user} />
 
-            </>
         ) : (
           <ExamResultDocument exam={exam} user={exam.user} />
         )}

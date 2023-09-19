@@ -14,7 +14,7 @@ interface Props {
   user: User;
 }
 
-export default function ExamResultDocument({ exam, user }: Props) {
+export default function KepribadianResultDocument({ exam, user }: Props) {
   const resultData = React.useMemo(() => {
     return examToResult(exam);
   }, [exam]);
