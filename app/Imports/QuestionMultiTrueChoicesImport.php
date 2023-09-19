@@ -19,10 +19,12 @@ class QuestionMultiTrueChoicesImport implements
     WithValidation
 {
     private $bank_question;
+    private $choice_count;
 
-    public function __construct(BankQuestion $bank_question)
+    public function __construct(BankQuestion $bank_question, int $choice_count)
     {
         $this->bank_question = $bank_question;
+        $this->choice_count = $choice_count;
     }
 
     /**
@@ -49,20 +51,13 @@ class QuestionMultiTrueChoicesImport implements
         $rowIndex = $row->getIndex();
         $row = $row->toArray();
 
-        $row_choices = [
-            $row['pilihan_1'],
-            $row['pilihan_2'],
-            $row['pilihan_3'],
-            $row['pilihan_4'],
-            $row['pilihan_5'],
-        ];
-        $row_weight = [
-            $row['bobot_1'],
-            $row['bobot_2'],
-            $row['bobot_3'],
-            $row['bobot_4'],
-            $row['bobot_5'],
-        ];
+        $row_choices = [];
+        $row_weight = [];
+
+        for ($i = 1; $i <= $this->choice_count; $i++) {
+            $row_choices[] = $row['pilihan_' . $i];
+            $row_weight[] = $row['bobot_' . $i];
+        }
 
         $formatted_question = [
             'type' => 'tiptap',
@@ -192,20 +187,22 @@ class QuestionMultiTrueChoicesImport implements
 
     public function rules(): array
     {
-        return [
-            'nama' =>  'required',
+        $choices
+            = array_map(function ($i) {
+                return 'pilihan_' . $i;
+            }, range(1, $this->choice_count));
+
+        $weights
+            = array_map(function ($i) {
+                return 'bobot_' . $i;
+            }, range(1, $this->choice_count));
+
+        $default_rules = [
+            'nama' => 'required',
             'pertanyaan' => 'required',
-            'pilihan_1' => 'required',
-            'pilihan_2' => 'required',
-            'pilihan_3' => 'required',
-            'pilihan_4' => 'required',
-            'pilihan_5' => 'required',
-            'bobot_1' => 'required|numeric',
-            'bobot_2' => 'required|numeric',
-            'bobot_3' => 'required|numeric',
-            'bobot_4' => 'required|numeric',
-            'bobot_5' => 'required|numeric',
             'pembahasan' => 'required',
         ];
+
+        return array_merge($default_rules, array_combine($choices, array_fill(0, $this->choice_count, 'required')), array_combine($weights, array_fill(0, $this->choice_count, 'required')));
     }
 }

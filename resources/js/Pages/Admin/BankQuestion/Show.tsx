@@ -8,7 +8,7 @@ import { BankQuestionModel } from '@/Models/BankQuestion';
 import { BankQuestionItemModel } from '@/Models/BankQuestionItem';
 import { ImportFileModel } from '@/Models/FileModel';
 import Api from '@/Utils/Api';
-import { Button, Modal } from '@mui/material';
+import { Button, Modal, TextField } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -22,6 +22,7 @@ interface Props {
 
 interface QuestionImportForm extends ImportFileModel {
   type: string;
+  choice_count: number;
 }
 
 export default function Show(props: Props) {
@@ -42,6 +43,7 @@ export default function Show(props: Props) {
 
   const form = useForm<QuestionImportForm>({
     defaultValues: {
+      choice_count: 4,
       type: 'Single',
     },
   });
@@ -224,6 +226,20 @@ export default function Show(props: Props) {
                 className="mt-2"
               />
             </div>
+            <div>
+              <TextField
+                label="Banyak Pilihan"
+                {...form.register('choice_count')}
+                type="number"
+                inputProps={{ min: 2 }}
+                error={form.formState.errors?.choice_count != null}
+                helperText={form.formState.errors?.choice_count?.message}
+              />
+              <InputError
+                message={form.formState.errors.choice_count?.message}
+                className="mt-2"
+              />
+            </div>
             <div className="">
               <label htmlFor="type">Tipe Soal Pilihan</label>
               <Controller
@@ -241,7 +257,6 @@ export default function Show(props: Props) {
                   >
                     <option value="Single">Pembobotan Tunggal</option>
                     <option value="WeightedChoice">Pembobotan Ganda</option>
-                    <option value="Kepribadian">Kepribadian</option>
                   </select>
                 )}
               />
@@ -270,14 +285,15 @@ export default function Show(props: Props) {
               )}
               <MuiInertiaLinkButton
                 href={route(
-                  `packet.sub.category.bank-question.template-${typeSelected === 'Single' ? 'single' : typeSelected === 'WeightedChoice' ? 'multiple' : 'kepribadian'
+                  `packet.sub.category.bank-question.template-${typeSelected === 'Single' ? 'single' : typeSelected === 'WeightedChoice' ? 'multiple' : ''
                   }`,
-                  [
-                    learning_packet_id,
-                    sub_learning_packet_id,
-                    learning_category_id,
-                    bank_question.id,
-                  ],
+                  {
+                    learning_packet: learning_packet_id,
+                    sub_learning_packet: sub_learning_packet_id,
+                    learning_category: learning_category_id,
+                    bank_question: bank_question.id,
+                    choice_count: form.getValues('choice_count'),
+                  },
                 )}
                 color="secondary"
                 isNextPage

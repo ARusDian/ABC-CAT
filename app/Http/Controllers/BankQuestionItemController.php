@@ -459,20 +459,18 @@ class BankQuestionItemController extends Controller
         );
 
         $request->validate([
-            'type' => ['required', 'in:WeightedChoice,Single,Kepribadian'],
+            'type' => ['required', 'in:WeightedChoice,Single'],
+            'choice_count' => 'required|integer|min:2',
             'import_file' => 'required',
         ]);
         try {
             $import = null;
             switch ($request['type']) {
-                case 'Kepribadian':
-                    $import = new QuestionKepribadianImport($bank_question);
-                    break;
                 case 'WeightedChoice':
-                    $import = new QuestionMultiTrueChoicesImport($bank_question);
+                    $import = new QuestionMultiTrueChoicesImport($bank_question, $request['choice_count']);
                     break;
                 case 'Single':
-                    $import = new QuestionSingleTrueChoicesImport($bank_question);
+                    $import = new QuestionSingleTrueChoicesImport($bank_question , $request['choice_count']);
                     break;
             }
             Excel::import(
@@ -540,37 +538,20 @@ class BankQuestionItemController extends Controller
         $sub_learning_packet,
         $learning_category_id,
         $id,
+        Request $request,
     ) {
         $bank_question = BankQuestion::with(['learningCategory'])->find($id);
-
+        $choice_count = $request->validate([
+            'choice_count' => 'required|integer|min:2',
+        ])['choice_count'];
         Gate::authorize(
             'update',
             $bank_question->learningCategory,
         );
         $bank_question = BankQuestion::find($id);
         return Excel::download(
-            new QuestionSingleTrueChoicesTemplateExport($bank_question),
+            new QuestionSingleTrueChoicesTemplateExport($bank_question, $choice_count),
             'Template Soal Pilihan Jawaban Tunggal.xlsx',
-            ExcelExcel::XLSX
-        );
-    }
-
-    public function templateKepribadian(
-        $learning_packet,
-        $sub_learning_packet,
-        $learning_category_id,
-        $id,
-    ) {
-        $bank_question = BankQuestion::with(['learningCategory'])->find($id);
-
-        Gate::authorize(
-            'update',
-            $bank_question->learningCategory,
-        );
-        $bank_question = BankQuestion::find($id);
-        return Excel::download(
-            new QuestionKepribadianTemplateExport($bank_question),
-            'Template Soal Kepribadian.xlsx',
             ExcelExcel::XLSX
         );
     }
@@ -580,16 +561,19 @@ class BankQuestionItemController extends Controller
         $sub_learning_packet,
         $learning_category_id,
         $id,
+        Request $request,
     ) {
         $bank_question = BankQuestion::with(['learningCategory'])->find($id);
-
+        $choice_count = $request->validate([
+            'choice_count' => 'required|integer|min:2',
+        ])['choice_count'];
         Gate::authorize(
             'update',
             $bank_question->learningCategory,
         );
 
         return Excel::download(
-            new QuestionMultipleTrueChoicesTemplateExport($bank_question),
+            new QuestionMultipleTrueChoicesTemplateExport($bank_question, $choice_count),
             'Template Soal Pilihan Jawaban Ganda.xlsx',
             ExcelExcel::XLSX
         );
