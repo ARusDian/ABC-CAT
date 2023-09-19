@@ -14,6 +14,22 @@ interface Props {
   bank_question: BankQuestionModel;
 }
 
+function defaultAnswer(
+  bank_question: BankQuestionModel,
+): BankQuestionItemFormModel['answer'] {
+  if (bank_question.type == 'Kepribadian') {
+    return {
+      type: 'WeightedChoice',
+      answer: [0, 0, 0, 0, 0].map(it => ({ weight: it })),
+    };
+  } else {
+    return {
+      type: 'Single',
+      answer: 0,
+    };
+  }
+}
+
 export default function Create({ bank_question }: Props) {
   let form = useForm<BankQuestionItemFormModel>({
     defaultValues: {
@@ -23,10 +39,7 @@ export default function Create({ bank_question }: Props) {
         content: {},
       },
       type: 'Pilihan',
-      answer: {
-        type: 'Single',
-        answer: 0,
-      },
+      answer: defaultAnswer(bank_question),
       answers: {
         choices: [
           {
