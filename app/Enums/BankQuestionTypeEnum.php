@@ -5,6 +5,7 @@ namespace App\Enums;
 enum BankQuestionTypeEnum
 {
     case Pilihan;
+    case Kepribadian;
 
     /**
      * only allow kecermatan in question type

@@ -54,6 +54,7 @@ class BankQuestionItemController extends Controller
         $view = null;
         switch ($bank_question->type) {
             case BankQuestionTypeEnum::Pilihan:
+            case BankQuestionTypeEnum::Kepribadian:
                 $view = 'Admin/BankQuestion/Question/Create';
                 break;
             case BankQuestionTypeEnum::Kecermatan:
@@ -84,8 +85,10 @@ class BankQuestionItemController extends Controller
         $validator->sometimes(
             'answers.choices',
             'array',
-            fn (Fluent $item) => $item->type ==
-                BankQuestionTypeEnum::Pilihan->name,
+            fn (Fluent $item) => in_array(
+                $item->type,
+                [BankQuestionTypeEnum::Pilihan->name, BankQuestionTypeEnum::Kepribadian->name]
+            ),
         );
 
         $isWeightedChoice = fn (Fluent $item) => $item->type == 'WeightedChoice';

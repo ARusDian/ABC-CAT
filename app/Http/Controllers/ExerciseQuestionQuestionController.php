@@ -50,6 +50,7 @@ class ExerciseQuestionQuestionController extends Controller
         $view = null;
         switch ($exercise_question->type) {
             case ExerciseQuestionTypeEnum::Pilihan:
+            case ExerciseQuestionTypeEnum::Kepribadian:
                 $view = 'Admin/ExerciseQuestion/Question/Create';
                 break;
             case ExerciseQuestionTypeEnum::Kecermatan:
@@ -76,7 +77,7 @@ class ExerciseQuestionQuestionController extends Controller
         $validator->sometimes(
             'answers.choices',
             'array',
-            fn (Fluent $item) => $item->type == QuestionTypeEnum::Pilihan->name,
+            fn (Fluent $item) => in_array($item->typ,[QuestionTypeEnum::Pilihan->name]),
         );
 
         return $validator->validate();

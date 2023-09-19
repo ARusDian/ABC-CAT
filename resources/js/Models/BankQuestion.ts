@@ -13,7 +13,7 @@ export interface BankQuestionModel {
   items?: BankQuestionItemModel[];
 }
 
-export const BANK_QUESTION_TYPE = ['Pilihan', 'Kecermatan'] as const;
+export const BANK_QUESTION_TYPE = ['Pilihan', 'Kecermatan', 'Kepribadian'] as const;
 
 export const DEFAULT_BANK_QUESTION_TYPE = BANK_QUESTION_TYPE[0];
 

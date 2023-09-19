@@ -37,7 +37,11 @@ export interface ExerciseQuestionModel {
   };
 }
 
-export const EXERCISE_QUESTION_TYPE = ['Pilihan', 'Kecermatan'] as const;
+export const EXERCISE_QUESTION_TYPE = [
+  'Pilihan',
+  'Kecermatan',
+  'Kepribadian',
+] as const;
 
 export const DEFAULT_EXERCISE_QUESTION_TYPE = EXERCISE_QUESTION_TYPE[0];
 

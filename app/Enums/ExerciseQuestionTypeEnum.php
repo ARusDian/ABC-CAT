@@ -5,6 +5,7 @@ namespace App\Enums;
 enum ExerciseQuestionTypeEnum
 {
     case Pilihan;
+    case Kepribadian;
 
     /**
      * only allow kecermatan in question type

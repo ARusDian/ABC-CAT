@@ -120,8 +120,6 @@ export default function ExamResultDocument({ exam, user }: Props) {
             <th className="border border-black">Soal</th>
             <th className="border border-black">Jawab</th>
             <th className="border border-black">Waktu</th>
-            <th className="border border-black">Benar</th>
-            <th className="border border-black">Salah</th>
             <th className="border border-black">Skor</th>
           </tr>
           {/* TODO: Change with Exact Value */}
@@ -131,8 +129,6 @@ export default function ExamResultDocument({ exam, user }: Props) {
               <td className="border border-black">{item.count}</td>
               <td className="border border-black">{item.answered}</td>
               <td className="border border-black">{item.time_formatted}</td>
-              <td className="border border-black">{item.correct}</td>
-              <td className="border border-black">{item.incorrect}</td>
               <td className="border border-black">{item.score}</td>
             </tr>
           ))}
