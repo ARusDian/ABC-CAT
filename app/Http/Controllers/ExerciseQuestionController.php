@@ -70,6 +70,7 @@ class ExerciseQuestionController extends Controller
             ],
             'number_of_question' => $data['number_of_question'],
             'learning_category_id' => $learning_category_id,
+            'bank_question_items' => $data['bank_question_items'] ?? [],
         ];
     }
 
