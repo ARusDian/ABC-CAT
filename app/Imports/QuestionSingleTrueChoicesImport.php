@@ -49,13 +49,11 @@ class QuestionSingleTrueChoicesImport implements
         $rowIndex = $row->getIndex();
         $row = $row->toArray();
 
-        $row_pilihan = [
-            $row['pilihan_1'],
-            $row['pilihan_2'],
-            $row['pilihan_3'],
-            $row['pilihan_4'],
-            $row['pilihan_5'],
-        ];
+        $row_pilihan = [];
+
+        for ($i = 1; $i <= 5; $i++) {
+            $row_pilihan[] = $row['pilihan_' . $i];
+        }
 
         $formatted_question = [
             'type' => 'tiptap',
@@ -181,16 +179,18 @@ class QuestionSingleTrueChoicesImport implements
 
     public function rules(): array
     {
-        return [
+        $choices
+            = array_map(function ($i) {
+                return 'pilihan_' . $i;
+            }, range(1, 5));
+
+        $default_rules = [
             'nama' => 'required',
             'pertanyaan' => 'required',
-            'pilihan_1' => 'required',
-            'pilihan_2' => 'required',
-            'pilihan_3' => 'required',
-            'pilihan_4' => 'required',
-            'pilihan_5' => 'required',
-            'jawaban' => 'required|integer|between:1,5',
+            'jawaban' => 'required|numeric|min:1|max:5',
             'pembahasan' => 'required',
         ];
+        
+        return array_merge($default_rules, array_combine($choices, array_fill(0, count($choices), 'required')));
     }
 }
