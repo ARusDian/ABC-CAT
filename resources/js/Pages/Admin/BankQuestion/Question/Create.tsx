@@ -14,61 +14,57 @@ interface Props {
   bank_question: BankQuestionModel;
 }
 
-function defaultAnswer(
+function defaultForm(
   bank_question: BankQuestionModel,
-): BankQuestionItemFormModel['answer'] {
+): BankQuestionItemFormModel {
+  let defaultAnswerCount = 5;
+
   if (bank_question.type == 'Kepribadian') {
-    return {
+    defaultAnswerCount = 4;
+  }
+
+  let defaultAnswers: BankQuestionItemFormModel['answers'] = {
+    choices: Array.from({ length: defaultAnswerCount }, () => ({
+      type: 'tiptap',
+      content: {},
+    })),
+  };
+
+  let defaultAnswer: BankQuestionItemFormModel['answer'] = {
+    type: 'Single',
+    answer: 0,
+  };
+
+  if (bank_question.type == 'Kepribadian') {
+    defaultAnswer = {
       type: 'WeightedChoice',
-      answer: [0, 0, 0, 0, 0].map(it => ({ weight: it })),
-    };
-  } else {
-    return {
-      type: 'Single',
-      answer: 0,
+      answer: Array.from({ length: defaultAnswerCount }, () => ({
+        weight: 0,
+      })),
     };
   }
+
+  return {
+    name: '',
+    question: {
+      type: 'tiptap',
+      content: {},
+    },
+    type: 'Pilihan',
+    answer: defaultAnswer,
+    answers: defaultAnswers,
+    explanation: {
+      type: 'tiptap',
+      content: {},
+    },
+
+    is_active: true,
+  };
 }
 
 export default function Create({ bank_question }: Props) {
   let form = useForm<BankQuestionItemFormModel>({
-    defaultValues: {
-      name: '',
-      question: {
-        type: 'tiptap',
-        content: {},
-      },
-      type: 'Pilihan',
-      answer: defaultAnswer(bank_question),
-      answers: {
-        choices: [
-          {
-            type: 'tiptap',
-            content: {},
-          },
-          {
-            type: 'tiptap',
-            content: {},
-          },
-          {
-            type: 'tiptap',
-            content: {},
-          },
-          {
-            type: 'tiptap',
-            content: {},
-          },
-          {
-            type: 'tiptap',
-            content: {},
-          },
-        ],
-      },
-      explanation: {
-        type: 'tiptap',
-        content: {},
-      },
-    },
+    defaultValues: defaultForm(bank_question),
   });
 
   const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
