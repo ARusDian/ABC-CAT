@@ -139,8 +139,6 @@ export default function KepribadianResultDocument({ exam, user }: Props) {
             <td className="border border-black">
               {totalResult.time_formatted}
             </td>
-            <td className="border border-black">{totalResult.correct}</td>
-            <td className="border border-black">{totalResult.incorrect}</td>
             <td className="border border-black">{totalResult.score}</td>
           </tr>
         </table>
