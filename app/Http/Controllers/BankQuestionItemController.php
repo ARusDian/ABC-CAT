@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Enums\BankQuestionItemTypeEnum;
 use App\Enums\BankQuestionTypeEnum;
 use App\Exports\QuestionMultipleTrueChoicesTemplateExport;
+use App\Exports\QuestionKepribadianTemplateExport;
 use App\Exports\QuestionSingleTrueChoicesTemplateExport;
 use App\Imports\QuestionMultiTrueChoicesImport;
 use App\Imports\QuestionSingleTrueChoicesImport;
+use App\Imports\QuestionKepribadianImport;
 use App\Models\BankQuestion;
 use App\Models\BankQuestionItem;
 use App\Models\LearningCategory;
@@ -457,12 +459,15 @@ class BankQuestionItemController extends Controller
         );
 
         $request->validate([
-            'type' => ['required', 'in:WeightedChoice,Single'],
+            'type' => ['required', 'in:WeightedChoice,Single,Kepribadian'],
             'import_file' => 'required',
         ]);
         try {
             $import = null;
             switch ($request['type']) {
+                case 'Kepribadian':
+                    $import = new QuestionKepribadianImport($bank_question);
+                    break;
                 case 'WeightedChoice':
                     $import = new QuestionMultiTrueChoicesImport($bank_question);
                     break;
@@ -546,6 +551,26 @@ class BankQuestionItemController extends Controller
         return Excel::download(
             new QuestionSingleTrueChoicesTemplateExport($bank_question),
             'Template Soal Pilihan Jawaban Tunggal.xlsx',
+            ExcelExcel::XLSX
+        );
+    }
+
+    public function templateKepribadian(
+        $learning_packet,
+        $sub_learning_packet,
+        $learning_category_id,
+        $id,
+    ) {
+        $bank_question = BankQuestion::with(['learningCategory'])->find($id);
+
+        Gate::authorize(
+            'update',
+            $bank_question->learningCategory,
+        );
+        $bank_question = BankQuestion::find($id);
+        return Excel::download(
+            new QuestionKepribadianTemplateExport($bank_question),
+            'Template Soal Kepribadian.xlsx',
             ExcelExcel::XLSX
         );
     }

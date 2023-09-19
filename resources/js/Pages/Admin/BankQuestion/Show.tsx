@@ -112,7 +112,7 @@ export default function Show(props: Props) {
           <p>Type: {bank_question.type}</p>
         </div>
         <div className="flex my-3">
-          {bank_question.type === 'Pilihan' ? (
+          {bank_question.type === 'Pilihan' || bank_question.type === 'Kepribadian' ? (
             <Button
               variant="contained"
               size="large"
@@ -241,6 +241,7 @@ export default function Show(props: Props) {
                   >
                     <option value="Single">Pembobotan Tunggal</option>
                     <option value="WeightedChoice">Pembobotan Ganda</option>
+                    <option value="Kepribadian">Kepribadian</option>
                   </select>
                 )}
               />
@@ -269,7 +270,7 @@ export default function Show(props: Props) {
               )}
               <MuiInertiaLinkButton
                 href={route(
-                  `packet.sub.category.bank-question.template-${typeSelected === 'Single' ? 'single' : 'multiple'
+                  `packet.sub.category.bank-question.template-${typeSelected === 'Single' ? 'single' : typeSelected === 'WeightedChoice' ? 'multiple' : 'kepribadian'
                   }`,
                   [
                     learning_packet_id,
