@@ -76,8 +76,8 @@ export default function Form({ form }: Props) {
       <InputError message={form.formState.errors.number_of_question?.message} />
       <FormControlLabel
         control={<Switch
-          {...form.register('is_next_question_after_answered')}
-          defaultChecked={form.formState.defaultValues?.is_next_question_after_answered}
+          {...form.register('options.next_question_after_answer')}
+          defaultChecked={form.formState.defaultValues?.options?.next_question_after_answer}
         />}
         label="Pengerjaan Berkelanjutan"
       />

@@ -27,9 +27,9 @@ class ExerciseQuestionController extends Controller
         ]);
     }
 
-    public function validateData($data)
+    public function validateData($data, $learning_category_id)
     {
-        return Validator::make($data, [
+        $data =  Validator::make($data, [
             'name' => 'required|string',
             'type' => [
                 'required',
@@ -39,8 +39,38 @@ class ExerciseQuestionController extends Controller
             'number_of_question' => 'required|numeric',
             'bank_question_items' => 'array',
             'bank_question_items.*' => 'numeric',
-            'is_next_question_after_answered' => 'boolean',
+            'options.next_question_after_answer' => 'boolean',
         ])->validate();
+
+        $isKecermatan = $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name;
+
+        $is_continuous = $data['options']['next_question_after_answer'] ?? false;
+
+
+
+        return [
+            'name' => $data['name'],
+            'type' => $data['type'],
+            'time_limit' => $data['time_limit'],
+            'options' => [
+                'randomize_choice' => true,
+                'time_limit_per_cluster' => $isKecermatan,
+                'number_of_question_per_cluster' => $isKecermatan,
+                'next_question_after_answer' => $is_continuous,
+
+                ...($isKecermatan ? [
+                    // cluster prefix will only be used if cluster_by_bank_question is false
+                    'cluster_name_prefix' => 'Kolom'
+
+                ] : [
+                    'cluster_name_prefix' => null
+                ]),
+
+                'cluster_by_bank_question' => !$isKecermatan,
+            ],
+            'number_of_question' => $data['number_of_question'],
+            'learning_category_id' => $learning_category_id,
+        ];
     }
 
     /**
@@ -72,37 +102,9 @@ class ExerciseQuestionController extends Controller
             'update',
             LearningCategory::findOrFail($learning_category_id),
         );
-        $data = $this->validateData($request->all());
-        $isKecermatan = $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name;
+        $data = $this->validateData($request->all(), $learning_category_id);
 
-        $is_continuous = false;
-        if($isKecermatan || $data['is_next_question_after_answered']){
-            $is_continuous = true;
-        }
-
-        $exercise = ExerciseQuestion::create([
-            'name' => $data['name'],
-            'type' => $data['type'],
-            'time_limit' => $data['time_limit'],
-            'options' => [
-                'randomize_choice' => true,
-                'time_limit_per_cluster' => $isKecermatan,
-                'number_of_question_per_cluster' => $isKecermatan,
-                'next_question_after_answer' => $is_continuous,
-
-                ...($isKecermatan ? [
-                    // cluster prefix will only be used if cluster_by_bank_question is false
-                    'cluster_name_prefix' => 'Kolom'
-
-                ] : [
-                    'cluster_name_prefix' => null
-                ]),
-
-                'cluster_by_bank_question' => !$isKecermatan,
-            ],
-            'number_of_question' => $data['number_of_question'],
-            'learning_category_id' => $learning_category_id,
-        ]);
+        $exercise = ExerciseQuestion::create($data);
 
         if (isset($data['bank_question_items'])) {
             $exercise
@@ -328,38 +330,20 @@ class ExerciseQuestionController extends Controller
         $id,
     ) {
         return \DB::transaction(function ()  use ($request, $learning_packet, $sub_learning_packet, $learning_category_id, $id) {
-            $data = $this->validateData($request->all());
 
-            $exercise = ExerciseQuestion::with([])
+            $exercise = ExerciseQuestion::with(['learningCategory'])
                 ->withTrashed()
                 ->findOrFail($id);
+
+            $data = $this->validateData($request->all(), $exercise->learning_category_id);
 
             Gate::authorize(
                 'update',
                 $exercise->learningCategory,
             );
-            $exercise->update([
-                'name' => $data['name'],
-                'type' => $data['type'],
-                'time_limit' => $data['time_limit'],
-                'options' => [
-                    'randomize_choice' => true,
-                    'time_limit_per_cluster' => $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
-                    'number_of_question_per_cluster' => $data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name,
-                    'next_question_after_answer' => $data['is_next_question_after_answered'],
 
-                    ...($data['type'] == ExerciseQuestionTypeEnum::Kecermatan->name ? [
-                        // cluster prefix will only be used if cluster_by_bank_question is false
-                        'cluster_name_prefix' => 'Kolom'
+            $exercise->update($data);
 
-                    ] : [
-                        'cluster_name_prefix' => null
-                    ]),
-
-                    'cluster_by_bank_question' => $data['type'] != ExerciseQuestionTypeEnum::Kecermatan->name,
-                ],
-                'number_of_question' => $data['number_of_question'],
-            ]);
             activity()
                 ->performedOn($exercise)
                 ->causedBy(auth()->user())

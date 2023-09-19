@@ -46,7 +46,6 @@ export default function Create({ bank_question }: Props) {
   let form = useForm<BankQuestionItemModel>({
     defaultValues: {
       question: {},
-      weight: 1,
       type: 'Kecermatan',
       answer: {
         type: 'Single',
