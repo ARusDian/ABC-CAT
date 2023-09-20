@@ -100,7 +100,6 @@ class ExamController extends Controller
     {
         switch ($exam->question->type) {
             case BankQuestionItemTypeEnum::Pilihan:
-            case BankQuestionItemTypeEnum::Kepribadian:
             case BankQuestionItemTypeEnum::Kecermatan:
                 $answer = $exam->question->answer;
                 switch ($answer['type']) {
