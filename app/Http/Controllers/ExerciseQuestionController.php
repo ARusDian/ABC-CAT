@@ -232,7 +232,7 @@ class ExerciseQuestionController extends Controller
             ->get();
 
         return Inertia::render('Admin/ExerciseQuestion/Exam/Index', [
-            'exercise_question' => fn () => ExerciseQuestion::findOrFail($id),
+            'exercise_question' => $exerciseQuestion,
             'exams' => $exams,
         ]);
     }
