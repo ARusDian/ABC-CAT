@@ -144,7 +144,6 @@ class ExamController extends Controller
 
                 return Inertia::render('Student/Exam/Run', [
                     'exam' => $exam,
-                    'delay' => Carbon::now()->getTimestampMs()
                 ]);
             }
         }

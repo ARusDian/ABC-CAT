@@ -36,6 +36,7 @@ export interface ExamModel {
     current_question: number;
     current_exam_answer_id: number;
     current_cluster: number;
+    timestamp_delay: number;
   };
   options: {
     exercise_question: {

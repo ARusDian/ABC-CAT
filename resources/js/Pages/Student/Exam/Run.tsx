@@ -18,6 +18,7 @@ import _ from 'lodash';
 
 export interface Props {
   exam: ExamModel;
+  timestamp: number;
 }
 
 export type Task =
@@ -46,11 +47,7 @@ export type Task =
       finish: {};
     };
 
-export default function Run({ exam }: Props) {
-  const expireInTime = React.useMemo(
-    () => new Date(Date.parse(exam.expire_in)),
-    [exam.expire_in],
-  );
+export default function Run({ exam, timestamp }: Props) {
   const { answers } = exam;
 
   const confirm = useConfirm();
@@ -59,10 +56,32 @@ export default function Run({ exam }: Props) {
     defaultValues: exam,
   });
 
+  const delayedDate = React.useMemo(
+    () => new Date(exam.server_state.timestamp_delay),
+    [exam.server_state.timestamp_delay],
+  );
+
+  const convertServerTimestamp = (time: number) => {
+    return new Date(time + delayedDate.getTime());
+  };
+
+  const convertServerDateTime = (time: string) => {
+    const t = new Date(time);
+
+    return new Date(t.getTime() + delayedDate.getTime());
+  };
+
   const createdAt = React.useMemo(
-    () => new Date(exam.created_at),
+    () => convertServerDateTime(exam.created_at),
     [exam.created_at],
   );
+
+  const expireInTime = React.useMemo(
+    () => convertServerDateTime(exam.expire_in),
+    [exam.expire_in],
+  );
+
+  console.log({ createdAt });
 
   const [updateCount, { inc: update }] = useCounter(1);
 
@@ -143,6 +162,22 @@ export default function Run({ exam }: Props) {
     }
   }, [answers, currentQuestion, currentCluster]);
 
+  // console.log(
+  //   JSON.stringify(
+  //     {
+  //       currentCluster,
+  //       currentQuestion,
+  //       isLastQuestionInCluster,
+  //       currentClusterDateEnd,
+  //       splitQuestionByCluster,
+  //       expireInTime,
+  //       // exam
+  //     },
+  //     null,
+  //     4,
+  //   ),
+  // );
+  //
   const doSetCurrentQuestion = (index: number): Task[] => {
     const url = new URL(location.toString());
     url.searchParams.set('question', (index + 1).toString());

@@ -4,7 +4,7 @@ import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificatio
 import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
@@ -20,7 +20,6 @@ type Model = ExamModel & {
 };
 
 export default function Show({ exams, exercise_question }: Props) {
-
   console.log(exercise_question);
 
   const dataColumns = [
@@ -47,20 +46,31 @@ export default function Show({ exams, exercise_question }: Props) {
     },
   ] as MRT_ColumnDef<Model>[];
 
+  const onStartExam = React.useCallback(() => {
+    router.post(route('student.exam.attempt', [exercise_question.id]), {
+      current_timestamp: new Date(),
+    });
+
+    // <Link
+    //   href={route('student.exam.attempt', [
+    //     exercise_question.id,
+    //   ])}
+    //   method="post"
+    // >
+  }, []);
+
   return (
     <DashboardLayout title={exercise_question.name}>
       <div className="flex flex-col gap-8 ">
         <div className="flex justify-between">
           <p className="text-5xl text-[#3A63F5]">Pengerjaan Latihan Soal</p>
           <LinkButton
-            href={route(
-              'student.packet.category.exercise.index',
-              [
-                exercise_question.learning_category?.sub_learning_packet?.learning_packet_id,
-                exercise_question.learning_category?.sub_learning_packet_id,
-                exercise_question.learning_category_id,
-              ],
-            )}
+            href={route('student.packet.category.exercise.index', [
+              exercise_question.learning_category?.sub_learning_packet
+                ?.learning_packet_id,
+              exercise_question.learning_category?.sub_learning_packet_id,
+              exercise_question.learning_category_id,
+            ])}
             colorCode="#3A63F5"
             className="px-5 rounded-md"
           >
@@ -84,16 +94,24 @@ export default function Show({ exams, exercise_question }: Props) {
             </div>
             <div className="flex basis-1/2">
               <div className="flex flex-col basis-1/2 gap-1">
-                <p className="text-lg font-bold">Jumlah Soal {exercise_question.type === "Kecermatan" ? " per Kolom " : " "}</p>
+                <p className="text-lg font-bold">
+                  Jumlah Soal{' '}
+                  {exercise_question.type === 'Kecermatan'
+                    ? ' per Kolom '
+                    : ' '}
+                </p>
                 <p className="text-lg">
                   {exercise_question.number_of_question}
                 </p>
               </div>
               <div className="flex flex-col basis-1/2 gap-1">
-                <p className="text-lg font-bold">Waktu Pengerjaan{exercise_question.type === "Kecermatan" ? " per Kolom " : " "}</p>
-                <p className="text-lg">
-                  {exercise_question.time_limit} menit
+                <p className="text-lg font-bold">
+                  Waktu Pengerjaan
+                  {exercise_question.type === 'Kecermatan'
+                    ? ' per Kolom '
+                    : ' '}
                 </p>
+                <p className="text-lg">{exercise_question.time_limit} menit</p>
               </div>
             </div>
           </div>
@@ -104,9 +122,7 @@ export default function Show({ exams, exercise_question }: Props) {
               Riwayat Pengerjaan Latihan Soal
             </p>
             <LinkButton
-              href={route('student.exam.leaderboard', [
-                exercise_question.id,
-              ])}
+              href={route('student.exam.leaderboard', [exercise_question.id])}
               colorCode="#3A63F5"
               className="px-5 rounded-md"
             >
@@ -150,15 +166,11 @@ export default function Show({ exams, exercise_question }: Props) {
               </div>
             )}
             renderTopToolbarCustomActions={() => (
-              <button className="text-white font-sans bg-[#3A63F5] text-center rounded-md my-auto py-3 font-thin hover:brightness-90 uppercase px-5">
-                <Link
-                  href={route('student.exam.attempt', [
-                    exercise_question.id,
-                  ])}
-                  method="post"
-                >
-                  Mulai Ujian
-                </Link>
+              <button
+                className="text-white font-sans bg-[#3A63F5] text-center rounded-md my-auto py-3 font-thin hover:brightness-90 uppercase px-5"
+                onClick={onStartExam}
+              >
+                Mulai Ujian
               </button>
             )}
           />
