@@ -144,6 +144,7 @@ class ExamController extends Controller
 
                 return Inertia::render('Student/Exam/Run', [
                     'exam' => $exam,
+                    'delay' => Carbon::now()->getTimestampMs()
                 ]);
             }
         }
@@ -151,7 +152,7 @@ class ExamController extends Controller
         $exercise = ExerciseQuestion::with([
             'learningPacket',
             'learningCategory.subLearningPacket.learningPacket',
-            ])->findOrFail(
+        ])->findOrFail(
             $exercise_id,
         );
         Gate::authorize('view', $exercise->learningPacket);
@@ -189,9 +190,10 @@ class ExamController extends Controller
         $this->markFinished($exam);
     }
 
-    public function attempt($exercise_id)
+    public function attempt($exercise_id, Request $request)
     {
-        return \DB::transaction(function () use ($exercise_id) {
+        $now = Carbon::now();
+        return \DB::transaction(function () use ($exercise_id, $request, $now) {
             /**
              * @var \App\Models\ExerciseQuestion $exercise
              */
@@ -199,6 +201,13 @@ class ExamController extends Controller
                 'questions',
                 'learningPacket',
             ])->findOrFail($exercise_id);
+
+            $data = $request->validate([
+                'current_timestamp' => 'required|date'
+            ]);
+            $client_timestamp = (new Carbon($data['current_timestamp']));
+            $delay = $client_timestamp->getTimestampMs() - $now->getTimestampMs();
+
             Gate::authorize('view', $exercise->learningPacket);
 
             if ($exercise->questions->count() == 0) {
@@ -215,11 +224,11 @@ class ExamController extends Controller
 
             $expire_in = null;
             if ($exercise->options->time_limit_per_cluster) {
-                $expire_in = Carbon::now()->addMinutes(
+                $expire_in = $now->clone()->addMinutes(
                     $exercise->time_limit * $cluster_question->keys()->count(),
                 );
             } else {
-                $expire_in = Carbon::now()->addMinutes($exercise->time_limit);
+                $expire_in = $now->clone()->addMinutes($exercise->time_limit);
             }
 
             $selected_question_per_cluster = [];
@@ -296,6 +305,7 @@ class ExamController extends Controller
                     'current_cluster' => array_key_first(
                         $selected_question_per_cluster,
                     ),
+                    'timestamp_delay' => $delay,
                 ],
                 'options' => [
                     'exercise_question' => $exercise->options,
@@ -354,7 +364,7 @@ class ExamController extends Controller
                 'exam_id' => 'numeric',
                 'queue.*.change_question' => 'nullable',
                 'queue.*.change_question.date' =>
-                    'required_with:queue.*.change_question|date',
+                'required_with:queue.*.change_question|date',
                 'queue.*.change_question.exam_answer_id' =>
                 'nullable|numeric',
                 'queue.*.change_question.cluster' => 'numeric',
