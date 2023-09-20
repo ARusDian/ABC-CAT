@@ -43,7 +43,7 @@ export default function Show(props: Props) {
 
   const form = useForm<QuestionImportForm>({
     defaultValues: {
-      choice_count: 4,
+      choice_count: 5,
       type: 'Single',
     },
   });
