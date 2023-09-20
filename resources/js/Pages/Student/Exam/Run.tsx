@@ -159,7 +159,7 @@ export default function Run({ exam, timestamp }: Props) {
     if (splitQuestionByCluster) {
       return answers?.at(currentQuestion + 1)?.cluster != currentCluster;
     } else {
-      return false;
+      return isLastQuestion;
     }
   }, [answers, currentQuestion, currentCluster]);
 
