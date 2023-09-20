@@ -81,7 +81,6 @@ export default function Run({ exam, timestamp }: Props) {
     [exam.expire_in],
   );
 
-  console.log({ createdAt });
 
   const [updateCount, { inc: update }] = useCounter(1);
 
@@ -95,8 +94,10 @@ export default function Run({ exam, timestamp }: Props) {
       let minutes = exam.exercise_question.time_limit;
       let count = 1;
 
-      const current = () =>
-        new Date(createdAt.getTime() + minutes * count * 60000);
+      const current = () => {
+        let time = createdAt.getTime() + (minutes * count * 60000) + 3000; // 3000 is for 3 second
+        return new Date(time);
+      }
 
       while (current() < new Date()) {
         count += 1;
@@ -162,22 +163,6 @@ export default function Run({ exam, timestamp }: Props) {
     }
   }, [answers, currentQuestion, currentCluster]);
 
-  // console.log(
-  //   JSON.stringify(
-  //     {
-  //       currentCluster,
-  //       currentQuestion,
-  //       isLastQuestionInCluster,
-  //       currentClusterDateEnd,
-  //       splitQuestionByCluster,
-  //       expireInTime,
-  //       // exam
-  //     },
-  //     null,
-  //     4,
-  //   ),
-  // );
-  //
   const doSetCurrentQuestion = (index: number): Task[] => {
     const url = new URL(location.toString());
     url.searchParams.set('question', (index + 1).toString());
@@ -256,6 +241,7 @@ export default function Run({ exam, timestamp }: Props) {
             {
               _method: 'put',
               exam_id: exam.id,
+              current_timestamp: new Date(),
               queue,
             },
           );

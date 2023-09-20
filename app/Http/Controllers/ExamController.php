@@ -230,6 +230,8 @@ class ExamController extends Controller
                 $expire_in = $now->clone()->addMinutes($exercise->time_limit);
             }
 
+            $expire_in = $expire_in->addSeconds(3);
+
             $selected_question_per_cluster = [];
             $cluster_column = $exercise->cluster_by_column;
 
