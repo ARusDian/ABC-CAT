@@ -24,6 +24,7 @@
             @foreach (range(1, $choice_count) as $i)
                 <th><b>Pilihan {{ $i }}</b></th>
                 <th><b>Bobot {{ $i }}</b></th>
+	    @endforeach
             <th><b>Pembahasan</b></th>
         </tr>
     </thead>
