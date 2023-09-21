@@ -12,8 +12,36 @@ use App\Models\LearningCategory;
 use Carbon\Carbon;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\LazyCollection;
 use Inertia\Inertia;
+
+
+function shuffleCollection(LazyCollection $collection): Collection
+{
+    $randomBytes = random_bytes($collection->count());
+
+    $combinedArray = [];
+    foreach ($collection as $key => $value) {
+        $combinedArray[] = [
+            'key' => $key,
+            'random' => ord($randomBytes[$key]),
+            'value' => $value,
+        ];
+    }
+
+    usort($combinedArray, function ($a, $b) {
+        return $a['random'] - $b['random'];
+    });
+
+    $shuffledArray = [];
+    foreach ($combinedArray as $item) {
+        $shuffledArray[] = $item['value'];
+    }
+
+    return collect($shuffledArray);
+};
 
 class ExamController extends Controller
 {
@@ -244,10 +272,9 @@ class ExamController extends Controller
             if ($exercise->options->number_of_question_per_cluster) {
                 foreach ($cluster_question->values()
                     as $cluster => $questions) {
-                    foreach ($questions
+                    foreach (shuffleCollection($questions
                         ->lazy()
-                        ->filter(fn ($q) => $q['is_active'])
-                        ->shuffle()
+                        ->filter(fn ($q) => $q['is_active']))
                         ->take($exercise->number_of_question)
                         as $question) {
                         $pushQuestion($question);
@@ -262,10 +289,9 @@ class ExamController extends Controller
                 );
 
                 foreach ($cluster_question as $cluster => $questions) {
-                    foreach ($questions
+                    foreach (shuffleCollection($questions
                         ->lazy()
-                        ->filter(fn ($q) => $q['is_active'])
-                        ->shuffle()
+                        ->filter(fn ($q) => $q['is_active']))
                         ->take($per_cluster)
                         as $question) {
                         $pushQuestion($question);
@@ -286,9 +312,8 @@ class ExamController extends Controller
                     $exercise->number_of_question -
                     $selected_question_id->count();
 
-                foreach ($not_selected_question
-                    ->lazy()
-                    ->shuffle()
+                foreach (shuffleCollection($not_selected_question
+                    ->lazy())
                     ->take($question_needed)
                     as $question) {
                     $pushQuestion($question);
