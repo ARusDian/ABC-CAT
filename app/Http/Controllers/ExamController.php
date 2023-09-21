@@ -75,11 +75,13 @@ class ExamController extends Controller
             ->first();
     }
 
-    public function checkFinished(Exam $exam)
+    public function checkFinished(Exam $exam): bool
     {
         if ($exam->isExpired() && !$exam->finished) {
             $this->markFinished($exam);
+            return true;
         }
+        return false;
     }
 
     public function markFinished(Exam $exam)
@@ -456,8 +458,9 @@ class ExamController extends Controller
             if ($finish) {
                 $this->markFinished($exam);
             } else {
-                $exam->save();
-                $this->checkFinished($exam);
+                if (!$this->checkFinished($exam)) {
+                    $exam->save();
+                }
             }
 
 
