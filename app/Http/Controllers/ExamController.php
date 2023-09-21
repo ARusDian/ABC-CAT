@@ -456,6 +456,7 @@ class ExamController extends Controller
             foreach ($answer_cache as $answer) {
                 $answer->save();
             }
+
             if ($finish) {
                 $this->markFinished($exam);
             } else {
@@ -469,7 +470,7 @@ class ExamController extends Controller
                 'finished' => $exam->finished,
                 'cluster' => $exam->current_cluster,
             ];
-        });
+        }, 3);
     }
 
     /**
