@@ -161,6 +161,7 @@ class ExamController extends Controller
         return Inertia::render('Student/Exam/Show', [
             'exercise_question' => $exercise,
             'exams' => Exam::withScore()
+                ->disableCache()
                 ->ofExercise($exercise_id)
                 ->ofUser(auth()->id())
                 ->orderBy('created_at', 'desc')
