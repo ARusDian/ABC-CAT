@@ -119,7 +119,6 @@ export default function DashboardLayout({
   const user = props.user as unknown as User;
   const version = useContext(VersionContext);
 
-
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -248,7 +247,7 @@ export default function DashboardLayout({
           <div className="p-5">{children}</div>
         </Box>
       </Box>
-      <div className='w-full bg-blue-50 fixed bottom-0 text-center shadow shadow-sky-400/50 py-1'>
+      <div className="w-full bg-blue-50 fixed bottom-0 text-center shadow shadow-sky-400/50 py-1">
         ABC-CAT @2023 Ver. {version}
       </div>
     </div>

@@ -83,13 +83,13 @@ export default function Show({ learning_category }: Props) {
       title="Kategori Belajar"
       headerTitle="Kategori Belajar"
       backRoute={
-        user.roles.some(role => role.name === 'super-admin') ?
-          route('packet.sub.show', [
-            learning_packet_id,
-            sub_learning_packet_id,
-            learning_category_id,
-          ]) :
-          route('instructorIndex')
+        user.roles.some(role => role.name === 'super-admin')
+          ? route('packet.sub.show', [
+              learning_packet_id,
+              sub_learning_packet_id,
+              learning_category_id,
+            ])
+          : route('instructorIndex')
       }
       editRoute={route('packet.sub.category.edit', [
         learning_packet_id,
@@ -230,7 +230,7 @@ export default function Show({ learning_category }: Props) {
             {
               header: 'tipe',
               accessorKey: 'type',
-            }
+            },
           ]}
           data={learning_category.bank_questions ?? []}
           showRoute="packet.sub.category.bank-question.show"
@@ -332,28 +332,28 @@ export default function Show({ learning_category }: Props) {
                         (row.original.deleted_at === null
                           ? 'Nonaktifkan'
                           : 'Aktifkan') +
-                        ' Latihan Soal ' +
-                        row.original.name,
+                          ' Latihan Soal ' +
+                          row.original.name,
                         () => {
                           row.original.deleted_at === null
                             ? router.delete(
-                              route('packet.sub.category.exercise.destroy', [
-                                learning_category.sub_learning_packet
-                                  ?.learning_packet_id ?? 0,
-                                learning_category.sub_learning_packet_id,
-                                learning_category.id,
-                                row.original.id,
-                              ]),
-                            )
+                                route('packet.sub.category.exercise.destroy', [
+                                  learning_category.sub_learning_packet
+                                    ?.learning_packet_id ?? 0,
+                                  learning_category.sub_learning_packet_id,
+                                  learning_category.id,
+                                  row.original.id,
+                                ]),
+                              )
                             : router.post(
-                              route('packet.sub.category.exercise.restore', [
-                                learning_category.sub_learning_packet
-                                  ?.learning_packet_id ?? 0,
-                                learning_category.sub_learning_packet_id,
-                                learning_category.id,
-                                row.original.id,
-                              ]),
-                            );
+                                route('packet.sub.category.exercise.restore', [
+                                  learning_category.sub_learning_packet
+                                    ?.learning_packet_id ?? 0,
+                                  learning_category.sub_learning_packet_id,
+                                  learning_category.id,
+                                  row.original.id,
+                                ]),
+                              );
                         },
                         'Latihan Soal ' + row.original.name,
                       );

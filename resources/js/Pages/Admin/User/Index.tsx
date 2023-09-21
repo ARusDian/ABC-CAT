@@ -38,7 +38,7 @@ export default function Index(props: Props) {
   );
 
   const [importDetailError, setImportDetailError] = React.useState<User>();
-  
+
   useEffect(() => {
     setOpenImportFailModal(import_failures.length > 0);
   }, [JSON.stringify(import_failures), JSON.stringify(importDetailError)]);
@@ -50,8 +50,6 @@ export default function Index(props: Props) {
     pageIndex: users.current_page - 1,
     pageSize: users.per_page,
   });
-
-
 
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -88,9 +86,9 @@ export default function Index(props: Props) {
 
   async function onSubmit(value: any) {
     await Api.postAsync({ route: route('user.import'), value, form }).catch(
-      (e) => {
+      e => {
         setImportDetailError(e);
-      }
+      },
     );
   }
 
@@ -285,19 +283,21 @@ export default function Index(props: Props) {
               ))}
             </div>
             <div className="flex flex-col gap-3">
-              {importDetailError && Object.keys(importDetailError ?? {}).length > 0 && (
-                <>
-                  <p className="text-red-500">Error Detail :</p>
-                  {Object.keys(importDetailError ?? {}).map((key, index) => (
-                    <p className="text-red-500" key={index}>{key} : {importDetailError[key]}</p>
-                  ))}
-                </>
-              )}
+              {importDetailError &&
+                Object.keys(importDetailError ?? {}).length > 0 && (
+                  <>
+                    <p className="text-red-500">Error Detail :</p>
+                    {Object.keys(importDetailError ?? {}).map((key, index) => (
+                      <p className="text-red-500" key={index}>
+                        {key} : {importDetailError[key]}
+                      </p>
+                    ))}
+                  </>
+                )}
             </div>
-
           </div>
         </div>
       </Modal>
-    </AdminTableLayout >
+    </AdminTableLayout>
   );
 }

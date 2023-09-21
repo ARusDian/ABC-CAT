@@ -23,20 +23,26 @@ export function BankQuestionItemShow(props: {
       );
     case 'Kecermatan':
       return (
-        <div className='flex flex-col gap-3'>
+        <div className="flex flex-col gap-3">
           <div className="text-4xl mb-3 font-bold">
             <table>
               <tbody>
                 <tr>
                   {props.question.answers.choices.map((it, index) => (
-                    <td key={index} className='border-4 border-black text-center py-3 px-5'>
+                    <td
+                      key={index}
+                      className="border-4 border-black text-center py-3 px-5"
+                    >
                       {numberToLowerCase(index)}
                     </td>
                   ))}
                 </tr>
                 <tr>
                   {props.question.answers.choices.map((it, index) => (
-                    <td key={index} className='border-4 border-black text-center py-3 px-5'>
+                    <td
+                      key={index}
+                      className="border-4 border-black text-center py-3 px-5"
+                    >
                       {it}
                     </td>
                   ))}

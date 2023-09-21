@@ -17,14 +17,12 @@ class TrimStrings extends Middleware
         'password_confirmation',
     ];
 
-    protected $exceptRegex = [
-        'content.*.text',
-    ];
+    protected $exceptRegex = ['content.*.text'];
 
     public function transform($key, $value)
     {
         foreach ($this->exceptRegex as $pattern) {
-            if (preg_match("/" . $pattern . "/", $key)) {
+            if (preg_match('/' . $pattern . '/', $key)) {
                 return $value;
             }
         }

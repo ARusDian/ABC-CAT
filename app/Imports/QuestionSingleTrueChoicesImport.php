@@ -166,23 +166,22 @@ class QuestionSingleTrueChoicesImport implements
             'answers' => $choices_formatted,
         ]);
 
-
         $bank_question = $this->bank_question;
-        $item = (new BankQuestionItemController)->store(
+        $item = (new BankQuestionItemController())->store(
             $request,
-            $bank_question->learningCategory->SubLearningPacket->learningPacket->id,
+            $bank_question->learningCategory->SubLearningPacket->learningPacket
+                ->id,
             $bank_question->learningCategory->sub_learning_packet_id,
             $bank_question->learning_category_id,
-            $bank_question->id
+            $bank_question->id,
         );
     }
 
     public function rules(): array
     {
-        $choices
-            = array_map(function ($i) {
-                return 'pilihan_' . $i;
-            }, range(1, 5));
+        $choices = array_map(function ($i) {
+            return 'pilihan_' . $i;
+        }, range(1, 5));
 
         $default_rules = [
             'nama' => 'required',
@@ -190,7 +189,10 @@ class QuestionSingleTrueChoicesImport implements
             'jawaban' => 'required|numeric|min:1|max:5',
             'pembahasan' => 'required',
         ];
-        
-        return array_merge($default_rules, array_combine($choices, array_fill(0, count($choices), 'required')));
+
+        return array_merge(
+            $default_rules,
+            array_combine($choices, array_fill(0, count($choices), 'required')),
+        );
     }
 }

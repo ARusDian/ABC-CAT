@@ -81,7 +81,6 @@ export default function Run({ exam, timestamp }: Props) {
     [exam.expire_in],
   );
 
-
   const [updateCount, { inc: update }] = useCounter(1);
 
   const {
@@ -95,9 +94,9 @@ export default function Run({ exam, timestamp }: Props) {
       let count = 1;
 
       const current = () => {
-        let time = createdAt.getTime() + (minutes * count * 60000) + 3000; // 3000 is for 3 second
+        let time = createdAt.getTime() + minutes * count * 60000 + 3000; // 3000 is for 3 second
         return new Date(time);
-      }
+      };
 
       while (current() < new Date()) {
         count += 1;

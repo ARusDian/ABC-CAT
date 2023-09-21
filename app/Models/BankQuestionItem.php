@@ -47,6 +47,8 @@ class BankQuestionItem extends Model
 
     public function learningCategory(): BelongsToThrough
     {
-        return $this->belongsToThrough(LearningCategory::class, [BankQuestion::class]);
+        return $this->belongsToThrough(LearningCategory::class, [
+            BankQuestion::class,
+        ]);
     }
 }

@@ -80,7 +80,7 @@ const DisableNumInputScroll = () => {
     if (type === 'number') {
       event.preventDefault();
     }
-  }
+  };
   useEffect(() => {
     document.addEventListener('wheel', handleWheel, { passive: false });
 

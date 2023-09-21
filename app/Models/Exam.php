@@ -57,7 +57,9 @@ class Exam extends Model
 
     public function learningCategory(): BelongsToThrough
     {
-        return $this->belongsToThrough(LearningCategory::class, [ExerciseQuestion::class]);
+        return $this->belongsToThrough(LearningCategory::class, [
+            ExerciseQuestion::class,
+        ]);
     }
 
     public function scopeOfExercise($query, $exercise_question_id)
@@ -95,7 +97,9 @@ class Exam extends Model
 
     public function finished(): Attribute
     {
-        return Attribute::get(fn() => $this->finished_at != null)->withoutObjectCaching();
+        return Attribute::get(
+            fn() => $this->finished_at != null,
+        )->withoutObjectCaching();
     }
 
     public function markClusterChange(Carbon $date)

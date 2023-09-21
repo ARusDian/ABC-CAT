@@ -47,8 +47,7 @@ class UserController extends Controller
         $roles = Role::all();
         $learning_categories = LearningCategory::with([
             'subLearningPacket.learningPacket',
-        ])
-            ->get();
+        ])->get();
         return Inertia::render('Admin/User/Create', [
             'roles' => $roles,
             'learning_categories' => $learning_categories,
@@ -75,7 +74,7 @@ class UserController extends Controller
                 'address' => 'required|string',
                 'gender' => 'required|in:L,P',
                 'learning_categories.*.id' =>
-                'exists:learning_categories,id|distinct|required_if:roles.*.name,==,instructor',
+                    'exists:learning_categories,id|distinct|required_if:roles.*.name,==,instructor',
             ]);
             $user = User::create([
                 'name' => $validated['name'],
@@ -126,7 +125,10 @@ class UserController extends Controller
     {
         //
         $user = User::withTrashed()
-            ->with(['roles', 'learningCategories.subLearningPacket.learningPacket'])
+            ->with([
+                'roles',
+                'learningCategories.subLearningPacket.learningPacket',
+            ])
             ->find($id);
         return Inertia::render('Admin/User/Show', [
             'user_data' => $user,
@@ -150,9 +152,8 @@ class UserController extends Controller
             ->find($id);
         $roles = Role::all();
         $learning_categories = LearningCategory::with([
-            'subLearningPacket.learningPacket'
-        ])
-            ->get();
+            'subLearningPacket.learningPacket',
+        ])->get();
         return Inertia::render('Admin/User/Edit', [
             'user_data' => $user,
             'roles' => $roles,
@@ -183,7 +184,7 @@ class UserController extends Controller
                 'address' => 'required|string',
                 'gender' => 'required|in:L,P',
                 'learning_categories.*.id' =>
-                'exists:learning_categories,id|distinct|required_if:roles.*.name,==,instructor',
+                    'exists:learning_categories,id|distinct|required_if:roles.*.name,==,instructor',
             ]);
 
             $user = User::findOrFail($id);
@@ -265,7 +266,11 @@ class UserController extends Controller
     {
         return DB::transaction(function () use ($id) {
             $user = User::withTrashed()
-                ->with(['userLearningPackets', 'exams.answers', 'instructorLearningCategories'])
+                ->with([
+                    'userLearningPackets',
+                    'exams.answers',
+                    'instructorLearningCategories',
+                ])
                 ->findOrFail($id);
 
             if ($user->hasRole('super-admin')) {
@@ -292,7 +297,10 @@ class UserController extends Controller
             }
 
             if ($user->instructorLearningCategories()->count() > 0) {
-                foreach ($user->instructorLearningCategories as $instructorLearningCategory) {
+                foreach (
+                    $user->instructorLearningCategories
+                    as $instructorLearningCategory
+                ) {
                     $instructorLearningCategory->delete();
                 }
             }
@@ -328,7 +336,7 @@ class UserController extends Controller
                 ExcelExcel::XLSX,
             );
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-            // TODO: Return the errors to view 
+            // TODO: Return the errors to view
             $import_failures = $e->failures();
             $errors = array_map(function ($import_failure) {
                 return [
@@ -338,8 +346,7 @@ class UserController extends Controller
                 ];
             }, $import_failures);
             session()->flash('import_failures', $errors);
-            return redirect()
-                ->route('user.index');
+            return redirect()->route('user.index');
         }
         activity()
             ->performedOn(User::find(Auth::user()->id))
@@ -380,7 +387,7 @@ class UserController extends Controller
         $exams = Exam::where('user_id', $id)
             ->with([
                 'exerciseQuestion.learningCategory.subLearningPacket.learningPacket',
-                'user' => fn ($q) => $q->select('id', 'name', 'email'),
+                'user' => fn($q) => $q->select('id', 'name', 'email'),
             ])
             ->withScore()
             ->ofFinished(true)
@@ -405,7 +412,7 @@ class UserController extends Controller
     {
         $user = User::select('id', 'name', 'email')
             ->with([
-                'exams' => fn ($q) => $q
+                'exams' => fn($q) => $q
                     ->with([
                         'exerciseQuestion.learningCategory.subLearningPacket.learningPacket',
                     ])
@@ -425,7 +432,7 @@ class UserController extends Controller
             'exam' => Exam::with([
                 'exerciseQuestion.learningCategory.subLearningPacket.learningPacket',
                 'answers.question',
-                'user' => fn ($q) => $q->select('id', 'name', 'email'),
+                'user' => fn($q) => $q->select('id', 'name', 'email'),
             ])
                 ->withScore()
                 ->ofFinished(true)
@@ -438,7 +445,7 @@ class UserController extends Controller
         return Inertia::render('Admin/User/Exam/Result', [
             'exam' => Exam::with([
                 'exerciseQuestion.learningCategory',
-                'user' => fn ($q) => $q->select('id', 'name', 'email'),
+                'user' => fn($q) => $q->select('id', 'name', 'email'),
             ])
                 ->withScore()
                 ->ofFinished(true)

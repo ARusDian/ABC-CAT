@@ -13,7 +13,7 @@ import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificatio
 import Api from '@/Utils/Api';
 import { useForm } from 'react-hook-form';
 
-interface Props { }
+interface Props {}
 
 export default function Create(props: Props) {
   let form = useForm<BaseLearningMaterialModel>({
@@ -38,7 +38,7 @@ export default function Create(props: Props) {
         learning_category_id,
       ]),
       value,
-      form
+      form,
     });
   }
 

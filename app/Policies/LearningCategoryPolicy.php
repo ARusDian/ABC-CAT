@@ -26,8 +26,10 @@ class LearningCategoryPolicy
         return $this->hasAccess($user, $learningCategory);
     }
 
-    public function hasAccess(User $user, LearningCategory $learningCategory = null): bool
-    {
+    public function hasAccess(
+        User $user,
+        LearningCategory $learningCategory = null,
+    ): bool {
         if ($user->hasRole('admin') || $user->hasRole('super-admin')) {
             return true;
         }

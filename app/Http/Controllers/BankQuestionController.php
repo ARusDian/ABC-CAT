@@ -20,7 +20,7 @@ class BankQuestionController extends Controller
     public function index()
     {
         return Inertia::render('Admin/BankQuestion/Index', [
-            'bank_questions' => fn () => BankQuestion::all(),
+            'bank_questions' => fn() => BankQuestion::all(),
         ]);
     }
 
@@ -95,10 +95,7 @@ class BankQuestionController extends Controller
             'items',
         ])->findOrFail($id);
 
-        Gate::authorize(
-            'view',
-            $bankQuestion->learningCategory,
-        );
+        Gate::authorize('view', $bankQuestion->learningCategory);
 
         return Inertia::render('Admin/BankQuestion/Show', [
             'bank_question' => $bankQuestion,
@@ -123,14 +120,11 @@ class BankQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        $bankQuestion = BankQuestion::with([
-            'learningCategory',
-        ])->findOrFail($id);
-
-        Gate::authorize(
-            'update',
-            $bankQuestion->learningCategory,
+        $bankQuestion = BankQuestion::with(['learningCategory'])->findOrFail(
+            $id,
         );
+
+        Gate::authorize('update', $bankQuestion->learningCategory);
         return Inertia::render('Admin/BankQuestion/Edit', [
             'bank_question' => $bankQuestion,
         ]);
@@ -148,14 +142,9 @@ class BankQuestionController extends Controller
     ) {
         $data = $this->validateData($request->all());
 
-        $bank = BankQuestion::with([
-            'learningCategory',
-        ])->findOrFail($id);
+        $bank = BankQuestion::with(['learningCategory'])->findOrFail($id);
 
-        Gate::authorize(
-            'update',
-            $bank->learningCategory,
-        );
+        Gate::authorize('update', $bank->learningCategory);
 
         $bank->update($data);
 

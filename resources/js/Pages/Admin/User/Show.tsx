@@ -27,8 +27,7 @@ export default function Show(props: Props) {
 
   const handleDelete = () => {
     confirm({
-      description:
-        `Ini akan menghapus seluruh data ${user.name} selamanya.`,
+      description: `Ini akan menghapus seluruh data ${user.name} selamanya.`,
       confirmationButtonProps: { autoFocus: true },
     })
       .then(() => router.delete(route('user.force-delete', [user.id])))
@@ -63,7 +62,7 @@ export default function Show(props: Props) {
           >
             Hasil Ujian Pengguna
           </MuiInertiaLinkButton>
-          <div className='flex justify-between gap-3'>
+          <div className="flex justify-between gap-3">
             <MuiInertiaLinkButton
               color="success"
               href={route('user-learning-packet.create', {
@@ -129,8 +128,8 @@ export default function Show(props: Props) {
                 {user.gender === 'L'
                   ? 'Laki laki'
                   : user.gender === 'P'
-                    ? 'Perempuan'
-                    : 'Tidak Diketahui'}
+                  ? 'Perempuan'
+                  : 'Tidak Diketahui'}
               </td>
             </tr>
             <tr className="border-b py-3 border-black">
@@ -144,26 +143,28 @@ export default function Show(props: Props) {
       </div>
       {user.roles.some(role => role.name === 'instructor') && (
         <div className="m-8 mb-12 p-7 text-gray-800 shadow-2xl sm:rounded-3xl bg-white shadow-sky-400/50">
-          <p className='text-2xl'>
-            Kategori Belajar Instruktur
-          </p>
+          <p className="text-2xl">Kategori Belajar Instruktur</p>
           <table className="w-full">
             <thead>
               <tr className="border-b py-3 border-black">
                 <th className="">Kategori Belajar Diampu</th>
-                <th className=''>Paket Belajar </th>
+                <th className="">Paket Belajar </th>
                 <th className="">Sub Paket Belajar</th>
                 <th>Pintasan</th>
               </tr>
             </thead>
             <tbody>
-              {
-                user.learning_categories?.length && user.learning_categories?.length > 0 ? user.learning_categories?.map((category, index) => (
-
+              {user.learning_categories?.length &&
+              user.learning_categories?.length > 0 ? (
+                user.learning_categories?.map((category, index) => (
                   <tr className="border-b py-3 border-black" key={category.id}>
                     <td className="py-3 text-center">{category.name}</td>
-                    <td className="py-3 text-center">{category.sub_learning_packet?.learning_packet?.name}</td>
-                    <td className="py-3 text-center">{category.sub_learning_packet?.name}</td>
+                    <td className="py-3 text-center">
+                      {category.sub_learning_packet?.learning_packet?.name}
+                    </td>
+                    <td className="py-3 text-center">
+                      {category.sub_learning_packet?.name}
+                    </td>
                     <td className="py-3 text-center">
                       <MuiInertiaLinkButton
                         href={route('packet.sub.category.show', [
@@ -177,12 +178,13 @@ export default function Show(props: Props) {
                     </td>
                   </tr>
                 ))
-                  : (
-                    <tr className="border-b py-3 border-black">
-                      <td className="py-3 text-center" colSpan={3}>Tidak ada kategori belajar yang diampu</td>
-                    </tr>
-                  )
-              }
+              ) : (
+                <tr className="border-b py-3 border-black">
+                  <td className="py-3 text-center" colSpan={3}>
+                    Tidak ada kategori belajar yang diampu
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

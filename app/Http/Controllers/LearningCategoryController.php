@@ -170,10 +170,13 @@ class LearningCategoryController extends Controller
             ->banner('Learning Category deleted successfully.');
     }
 
-    public function instructorIndex(){
+    public function instructorIndex()
+    {
         $id = Auth::id();
 
-        $user = User::with('learningCategories.subLearningPacket.learningPacket')->findOrFail($id);
+        $user = User::with(
+            'learningCategories.subLearningPacket.learningPacket',
+        )->findOrFail($id);
 
         return Inertia::render('Instructor/LearningCategory/Index', [
             'userData' => $user,

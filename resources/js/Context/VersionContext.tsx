@@ -1,3 +1,5 @@
-import React from "react";
+import React from 'react';
 
-export const VersionContext = React.createContext<string | undefined>(undefined);
+export const VersionContext = React.createContext<string | undefined>(
+  undefined,
+);

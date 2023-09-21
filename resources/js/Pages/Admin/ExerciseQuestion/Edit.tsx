@@ -17,7 +17,6 @@ interface Props {
 }
 
 export default function Create({ exercise_question }: Props) {
-
   let form = useForm<ExerciseQuestionFormModel>({
     defaultValues: {
       name: exercise_question.name,

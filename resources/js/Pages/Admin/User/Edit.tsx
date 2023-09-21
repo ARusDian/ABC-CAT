@@ -29,7 +29,7 @@ export default function Edit(props: Props) {
         ...value,
         _method: 'PUT',
       },
-      form
+      form,
     });
   }
 

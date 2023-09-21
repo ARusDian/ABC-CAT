@@ -21,8 +21,7 @@ export default function Result({ exam, resultRef }: Props) {
         {exam.exercise_question.type === 'Kecermatan' ? (
           <KecermatanResultDocument exam={exam} user={exam.user} />
         ) : exam.exercise_question.type == 'Kepribadian' ? (
-            <KepribadianResultDocument exam={exam} user={exam.user} />
-
+          <KepribadianResultDocument exam={exam} user={exam.user} />
         ) : (
           <ExamResultDocument exam={exam} user={exam.user} />
         )}

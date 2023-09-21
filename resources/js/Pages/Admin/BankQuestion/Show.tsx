@@ -73,23 +73,23 @@ export default function Show(props: Props) {
     {
       header: 'Tipe Jawaban',
       accessorFn(originalRow) {
-        return originalRow.answer.type === 'Single'
-          ? "Tunggal"
-          : 'Ganda';
+        return originalRow.answer.type === 'Single' ? 'Tunggal' : 'Ganda';
       },
     },
     {
       header: 'Status',
       accessorFn(originalRow) {
-        return (<p
-          className={`${originalRow.is_active ? 'text-green-500' : 'text-red-500' 
+        return (
+          <p
+            className={`${
+              originalRow.is_active ? 'text-green-500' : 'text-red-500'
             } font-semibold`}
-        >
-          {originalRow.is_active ? "Aktif" : "Nonaktif"}
-        </p>
+          >
+            {originalRow.is_active ? 'Aktif' : 'Nonaktif'}
+          </p>
         );
       },
-    }
+    },
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
   return (
@@ -114,7 +114,8 @@ export default function Show(props: Props) {
           <p>Type: {bank_question.type}</p>
         </div>
         <div className="flex my-3">
-          {bank_question.type === 'Pilihan' || bank_question.type === 'Kepribadian' ? (
+          {bank_question.type === 'Pilihan' ||
+          bank_question.type === 'Kepribadian' ? (
             <Button
               variant="contained"
               size="large"
@@ -285,7 +286,12 @@ export default function Show(props: Props) {
               )}
               <MuiInertiaLinkButton
                 href={route(
-                  `packet.sub.category.bank-question.template-${typeSelected === 'Single' ? 'single' : typeSelected === 'WeightedChoice' ? 'multiple' : ''
+                  `packet.sub.category.bank-question.template-${
+                    typeSelected === 'Single'
+                      ? 'single'
+                      : typeSelected === 'WeightedChoice'
+                      ? 'multiple'
+                      : ''
                   }`,
                   {
                     learning_packet: learning_packet_id,

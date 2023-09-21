@@ -25,9 +25,7 @@ export default function Show(props: Props) {
       backRoute={route('user.exam.index', [exam.user.id])}
     >
       <div className="flex flex-col w-full h-full p-7 rounded-2xl shadow-2xl shadow-sky-400/50 bg-white">
-        <Evaluation
-          exam={exam}
-        />
+        <Evaluation exam={exam} />
       </div>
     </AdminShowLayout>
   );

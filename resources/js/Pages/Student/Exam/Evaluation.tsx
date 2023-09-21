@@ -10,7 +10,6 @@ interface Props {
 }
 
 export default function ShowAttempt({ exam }: Props) {
-
   return (
     <DashboardLayout title="Evaluasi">
       <div className="flex justify-end my-3">
@@ -25,9 +24,7 @@ export default function ShowAttempt({ exam }: Props) {
         </div>
       </div>
       <div className="flex flex-col shadow-lg w-full h-full p-7 rounded-2xl shadow-[#c9d4fc] bg-white">
-        <Evaluation
-          exam={exam}
-        />
+        <Evaluation exam={exam} />
       </div>
     </DashboardLayout>
   );

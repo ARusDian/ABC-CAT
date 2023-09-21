@@ -11,7 +11,10 @@ interface Props {
 
 export default function LayoutProfile({ user, title, children }: Props) {
   const isAdmin = user.roles.find(
-    role => role.name === 'admin' || role.name === 'super-admin' || role.name === 'instructor',
+    role =>
+      role.name === 'admin' ||
+      role.name === 'super-admin' ||
+      role.name === 'instructor',
   );
   return isAdmin ? (
     <DashboardAdminLayout title={title}>{children}</DashboardAdminLayout>

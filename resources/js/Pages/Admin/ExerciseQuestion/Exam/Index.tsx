@@ -4,9 +4,7 @@ import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificatio
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
-import {
-  MRT_ColumnDef,
-} from 'material-react-table';
+import { MRT_ColumnDef } from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
@@ -37,11 +35,7 @@ export default function Leaderboard({ exercise_question, exams }: Props) {
     {
       header: 'Skor',
       accessorFn: it => {
-        return (
-          <>
-            {parseFloat(it.answers_sum_score?.toString() ?? '0')}
-          </>
-        );
+        return <>{parseFloat(it.answers_sum_score?.toString() ?? '0')}</>;
       },
     },
   ] as MRT_ColumnDef<ExamModel>[];
@@ -57,7 +51,6 @@ export default function Leaderboard({ exercise_question, exams }: Props) {
         exercise_question.id,
       ])}
     >
-
       <div className="mt-6 p-7 shadow-2xl shadow-sky-400/50 sm:rounded-3xl bg-white  flex flex-col gap-3">
         <div className="flex justify-between my-3">
           <p>

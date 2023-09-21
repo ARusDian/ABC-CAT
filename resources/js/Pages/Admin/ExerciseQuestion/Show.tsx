@@ -23,11 +23,9 @@ export default function Show(props: Props) {
     {
       header: 'Tipe Jawaban',
       accessorFn(originalRow) {
-        return originalRow.answer.type === 'Single'
-          ? "Tunggal"
-          : 'Ganda';
+        return originalRow.answer.type === 'Single' ? 'Tunggal' : 'Ganda';
       },
-    }
+    },
   ] as MRT_ColumnDef<BankQuestionItemModel>[];
 
   const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
@@ -55,7 +53,8 @@ export default function Show(props: Props) {
             <p>{exercise_question.name}</p>
             <p>Tipe: {exercise_question.type}</p>
             <p>
-              Batas waktu{exercise_question.type === "Kecermatan" ? " per Kolom : " : ": "}
+              Batas waktu
+              {exercise_question.type === 'Kecermatan' ? ' per Kolom : ' : ': '}
               {
                 <span className="font-semibold">
                   {parseFloat(exercise_question.time_limit.toFixed(2))}
@@ -64,14 +63,22 @@ export default function Show(props: Props) {
               Menit
             </p>
             <p>
-              Jumlah Soal {exercise_question.type === "Kecermatan" ? "per Kolom" : "Per Latihan"}: {exercise_question.number_of_question}
+              Jumlah Soal{' '}
+              {exercise_question.type === 'Kecermatan'
+                ? 'per Kolom'
+                : 'Per Latihan'}
+              : {exercise_question.number_of_question}
             </p>
             <p>
-              Pengerjaan Berkelanjutan: {exercise_question.options.next_question_after_answer ? 'Ya' : 'Tidak'}
+              Pengerjaan Berkelanjutan:{' '}
+              {exercise_question.options.next_question_after_answer
+                ? 'Ya'
+                : 'Tidak'}
             </p>
             <p
-              className={`${exercise_question.deleted_at ? 'text-red-500' : 'text-green-500'
-                } font-semibold`}
+              className={`${
+                exercise_question.deleted_at ? 'text-red-500' : 'text-green-500'
+              } font-semibold`}
             >
               Status : {exercise_question.deleted_at ? 'Nonaktif' : 'Aktif'}
             </p>

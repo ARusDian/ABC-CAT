@@ -15,8 +15,8 @@ class DashboardController extends Controller
     {
         if (
             auth()
-            ->user()
-            ->hasRole('student')
+                ->user()
+                ->hasRole('student')
         ) {
             return Inertia::render('Student/Dashboard', [
                 'user_learning_packets' => auth()->user()->userLearningPackets,
@@ -27,14 +27,14 @@ class DashboardController extends Controller
             ]);
         } elseif (
             auth()
-            ->user()
-            ->hasRole('admin') ||
+                ->user()
+                ->hasRole('admin') ||
             auth()
-            ->user()
-            ->hasRole('super-admin') ||
+                ->user()
+                ->hasRole('super-admin') ||
             auth()
-            ->user()
-            ->hasRole('instructor')
+                ->user()
+                ->hasRole('instructor')
         ) {
             $users_count = User::all()->count();
             $students_count = User::role('student')->count();
@@ -64,11 +64,13 @@ class DashboardController extends Controller
         $filename = '';
         if ($user->hasRole('super-admin')) {
             $filename = 'guide_admin.pdf';
-        } else if ($user->hasRole('instructor')) {
+        } elseif ($user->hasRole('instructor')) {
             $filename = 'guide_instructor.pdf';
         } else {
             return abort(403);
         }
-        return response()->download(public_path('assets/documents/'.$filename));
+        return response()->download(
+            public_path('assets/documents/' . $filename),
+        );
     }
 }

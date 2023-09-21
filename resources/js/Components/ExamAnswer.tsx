@@ -18,7 +18,10 @@ interface Props {
   isEvaluation?: boolean;
 }
 
-function useRandomizedChoice<T>(choices: T[], choice_order?: Partial<{ choices: Record<number, number> }> | null) {
+function useRandomizedChoice<T>(
+  choices: T[],
+  choice_order?: Partial<{ choices: Record<number, number> }> | null,
+) {
   return React.useMemo(() => {
     return _.sortBy(
       choices.map((value, answer) => ({
@@ -103,7 +106,10 @@ function PilihanAnswerForm({
   isEvaluation?: boolean;
   updateAnswer?: (answer: { answer: number }) => void;
 }) {
-  const choices = useRandomizedChoice(answer.question.answers.choices, answer.choice_order);
+  const choices = useRandomizedChoice(
+    answer.question.answers.choices,
+    answer.choice_order,
+  );
   // store editor ref to prevent re-creating editor
   const arrayEditorRef = React.useRef<React.MutableRefObject<Editor | null>[]>(
     [],
@@ -194,7 +200,10 @@ function KecermatanAnswerForm({
   answer: ExamAnswerKecermatanModel;
   updateAnswer?: (answer: { answer: number }) => void;
 }) {
-  const choices = useRandomizedChoice(answer.question.answers.choices, answer.choice_order);
+  const choices = useRandomizedChoice(
+    answer.question.answers.choices,
+    answer.choice_order,
+  );
 
   // store editor ref to prevent re-creating editor
   const arrayEditorRef = React.useRef<React.MutableRefObject<Editor | null>[]>(

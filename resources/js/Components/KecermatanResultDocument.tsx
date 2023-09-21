@@ -165,12 +165,12 @@ export default function KecermatanResultDocument({ exam, user }: Props) {
 
   const getScoreCategory = (score: number) => {
     const scores: Record<string, number> = {
-      "Sangat Baik": 26,
-      "Baik": 23,
-      "Cukup": 20,
-      "Kurang": 10,
-      "Sangat Kurang": 0,
-    }
+      'Sangat Baik': 26,
+      Baik: 23,
+      Cukup: 20,
+      Kurang: 10,
+      'Sangat Kurang': 0,
+    };
 
     for (var [name, minimum] of Object.entries(scores)) {
       if (score >= minimum) {

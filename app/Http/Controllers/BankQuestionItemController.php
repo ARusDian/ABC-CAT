@@ -22,7 +22,6 @@ use Validator;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Excel as ExcelExcel;
 
-
 class BankQuestionItemController extends Controller
 {
     /**
@@ -46,12 +45,11 @@ class BankQuestionItemController extends Controller
         $learning_category_id,
         $bank_question_id,
     ) {
-        $bank_question = BankQuestion::with(['learningCategory'])->findOrFail($bank_question_id);
-
-        Gate::authorize(
-            'update',
-            $bank_question->learningCategory,
+        $bank_question = BankQuestion::with(['learningCategory'])->findOrFail(
+            $bank_question_id,
         );
+
+        Gate::authorize('update', $bank_question->learningCategory);
 
         $view = null;
         switch ($bank_question->type) {
@@ -87,13 +85,13 @@ class BankQuestionItemController extends Controller
         $validator->sometimes(
             'answers.choices',
             'array',
-            fn (Fluent $item) => in_array(
-                $item->type,
-                [BankQuestionTypeEnum::Pilihan->name, BankQuestionTypeEnum::Kepribadian->name]
-            ),
+            fn(Fluent $item) => in_array($item->type, [
+                BankQuestionTypeEnum::Pilihan->name,
+                BankQuestionTypeEnum::Kepribadian->name,
+            ]),
         );
 
-        $isWeightedChoice = fn (Fluent $item) => $item->type == 'WeightedChoice';
+        $isWeightedChoice = fn(Fluent $item) => $item->type == 'WeightedChoice';
         $validator->sometimes(
             'answer.answer',
             'required|array',
@@ -105,7 +103,7 @@ class BankQuestionItemController extends Controller
             $isWeightedChoice,
         );
 
-        $isSingleChoice = fn (Fluent $item) => $item->type == 'Single';
+        $isSingleChoice = fn(Fluent $item) => $item->type == 'Single';
         $validator->sometimes(
             'answer.answer',
             'required|number',
@@ -125,12 +123,11 @@ class BankQuestionItemController extends Controller
         $learning_category_id,
         $bank_question_id,
     ) {
-        $bank_question = BankQuestion::with(['learningCategory'])->findOrFail($bank_question_id);
-
-        Gate::authorize(
-            'update',
-            $bank_question->learningCategory,
+        $bank_question = BankQuestion::with(['learningCategory'])->findOrFail(
+            $bank_question_id,
         );
+
+        Gate::authorize('update', $bank_question->learningCategory);
 
         return \DB::transaction(function () use (
             $request,
@@ -157,8 +154,9 @@ class BankQuestionItemController extends Controller
                 ->performedOn($newQuestion)
                 ->causedBy(auth()->user())
                 ->withProperties(['method' => 'CREATE'])
-                ->log('Question ' . $newQuestion->name . ' created successfully');
-
+                ->log(
+                    'Question ' . $newQuestion->name . ' created successfully',
+                );
 
             return redirect()
                 ->route('packet.sub.category.bank-question.show', [
@@ -178,12 +176,11 @@ class BankQuestionItemController extends Controller
         $learning_category_id,
         $bank_question_id,
     ) {
-        $bank_question = BankQuestion::with(['learningCategory'])->findOrFail($bank_question_id);
-
-        Gate::authorize(
-            'update',
-            $bank_question->learningCategory,
+        $bank_question = BankQuestion::with(['learningCategory'])->findOrFail(
+            $bank_question_id,
         );
+
+        Gate::authorize('update', $bank_question->learningCategory);
 
         return \DB::transaction(function () use (
             $request,
@@ -264,10 +261,7 @@ class BankQuestionItemController extends Controller
     ) {
         $item = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
 
-        Gate::authorize(
-            'view',
-            $item->learningCategory,
-        );
+        Gate::authorize('view', $item->learningCategory);
 
         return Inertia::render('Admin/BankQuestion/Question/Show', [
             'item' => $item,
@@ -287,10 +281,7 @@ class BankQuestionItemController extends Controller
     ) {
         $item = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
 
-        Gate::authorize(
-            'view',
-            $item->learningCategory,
-        );
+        Gate::authorize('view', $item->learningCategory);
 
         return Inertia::render('Admin/BankQuestion/Question/Edit', [
             'question' => $item,
@@ -310,10 +301,7 @@ class BankQuestionItemController extends Controller
     ) {
         $item = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
 
-        Gate::authorize(
-            'update',
-            $item->learningCategory,
-        );
+        Gate::authorize('update', $item->learningCategory);
 
         return \DB::transaction(function () use (
             $request,
@@ -368,10 +356,7 @@ class BankQuestionItemController extends Controller
     ) {
         $item = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
 
-        Gate::authorize(
-            'update',
-            $item->learningCategory,
-        );
+        Gate::authorize('update', $item->learningCategory);
 
         return \DB::transaction(function () use (
             $learning_packet,
@@ -411,10 +396,7 @@ class BankQuestionItemController extends Controller
     ) {
         $item = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
 
-        Gate::authorize(
-            'update',
-            $item->learningCategory,
-        );
+        Gate::authorize('update', $item->learningCategory);
         return \DB::transaction(function () use (
             $learning_packet,
             $sub_learning_packet,
@@ -453,10 +435,7 @@ class BankQuestionItemController extends Controller
     ) {
         $bank_question = BankQuestion::with(['learningCategory'])->find($id);
 
-        Gate::authorize(
-            'update',
-            $bank_question->learningCategory,
-        );
+        Gate::authorize('update', $bank_question->learningCategory);
 
         $request->validate([
             'type' => ['required', 'in:WeightedChoice,Single'],
@@ -467,17 +446,23 @@ class BankQuestionItemController extends Controller
             $import = null;
             switch ($request['type']) {
                 case 'WeightedChoice':
-                    $import = new QuestionMultiTrueChoicesImport($bank_question, $request['choice_count']);
+                    $import = new QuestionMultiTrueChoicesImport(
+                        $bank_question,
+                        $request['choice_count'],
+                    );
                     break;
                 case 'Single':
-                    $import = new QuestionSingleTrueChoicesImport($bank_question , $request['choice_count']);
+                    $import = new QuestionSingleTrueChoicesImport(
+                        $bank_question,
+                        $request['choice_count'],
+                    );
                     break;
             }
             Excel::import(
                 $import,
                 $request->file('import_file.file')->path('temp'),
                 null,
-                ExcelExcel::XLSX
+                ExcelExcel::XLSX,
             );
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             $import_failures = $e->failures();
@@ -489,13 +474,12 @@ class BankQuestionItemController extends Controller
                 ];
             }, $import_failures);
             session()->flash('import_failures', $errors);
-            return redirect()
-                ->route('packet.sub.category.bank-question.show', [
-                    $learning_packet,
-                    $sub_learning_packet,
-                    $learning_category_id,
-                    $bank_question,
-                ]);
+            return redirect()->route('packet.sub.category.bank-question.show', [
+                $learning_packet,
+                $sub_learning_packet,
+                $learning_category_id,
+                $bank_question,
+            ]);
             // $failures = $e->failures();
             // $errors = [];
             // foreach ($failures as $failure) {
@@ -544,15 +528,15 @@ class BankQuestionItemController extends Controller
         $choice_count = $request->validate([
             'choice_count' => 'required|integer|min:2',
         ])['choice_count'];
-        Gate::authorize(
-            'update',
-            $bank_question->learningCategory,
-        );
+        Gate::authorize('update', $bank_question->learningCategory);
         $bank_question = BankQuestion::find($id);
         return Excel::download(
-            new QuestionSingleTrueChoicesTemplateExport($bank_question, $choice_count),
+            new QuestionSingleTrueChoicesTemplateExport(
+                $bank_question,
+                $choice_count,
+            ),
             'Template Soal Pilihan Jawaban Tunggal.xlsx',
-            ExcelExcel::XLSX
+            ExcelExcel::XLSX,
         );
     }
 
@@ -567,15 +551,15 @@ class BankQuestionItemController extends Controller
         $choice_count = $request->validate([
             'choice_count' => 'required|integer|min:2',
         ])['choice_count'];
-        Gate::authorize(
-            'update',
-            $bank_question->learningCategory,
-        );
+        Gate::authorize('update', $bank_question->learningCategory);
 
         return Excel::download(
-            new QuestionMultipleTrueChoicesTemplateExport($bank_question, $choice_count),
+            new QuestionMultipleTrueChoicesTemplateExport(
+                $bank_question,
+                $choice_count,
+            ),
             'Template Soal Pilihan Jawaban Ganda.xlsx',
-            ExcelExcel::XLSX
+            ExcelExcel::XLSX,
         );
     }
 }

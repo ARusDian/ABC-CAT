@@ -48,10 +48,7 @@ export default function ShowResult({ exam }: Props) {
             Kembali
           </MuiInertiaLinkButton>
         </div>
-        <ResultTable
-          exam={exam}
-          resultRef={ref}
-        />
+        <ResultTable exam={exam} resultRef={ref} />
       </div>
     </DashboardAdminLayout>
   );

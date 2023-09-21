@@ -23,7 +23,7 @@ export default function Create({ learning_packet_id }: Props) {
     Api.postAsync({
       route: route('packet.sub.store', [learning_packet_id]),
       value,
-      form
+      form,
     });
   }
 

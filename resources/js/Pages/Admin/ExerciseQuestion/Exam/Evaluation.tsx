@@ -10,7 +10,6 @@ interface Props {
 }
 
 export default function ShowAttempt({ exam }: Props) {
-
   const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
 
@@ -26,9 +25,7 @@ export default function ShowAttempt({ exam }: Props) {
       ])}
     >
       <div className="flex flex-col w-full h-full p-7 rounded-2xl shadow-2xl shadow-sky-400/50 bg-white">
-        <Evaluation
-          exam={exam}
-        />
+        <Evaluation exam={exam} />
       </div>
     </AdminShowLayout>
   );

@@ -41,11 +41,10 @@ class ExerciseQuestionQuestionController extends Controller
         $learning_category_id,
         $exercise_question_id,
     ) {
-        $exercise_question = ExerciseQuestion::with(['learningCategory'])->findOrFail($exercise_question_id);
-        Gate::authorize(
-            'view',
-            $exercise_question,
-        );
+        $exercise_question = ExerciseQuestion::with([
+            'learningCategory',
+        ])->findOrFail($exercise_question_id);
+        Gate::authorize('view', $exercise_question);
 
         $view = null;
         switch ($exercise_question->type) {
@@ -77,7 +76,9 @@ class ExerciseQuestionQuestionController extends Controller
         $validator->sometimes(
             'answers.choices',
             'array',
-            fn (Fluent $item) => in_array($item->typ,[QuestionTypeEnum::Pilihan->name]),
+            fn(Fluent $item) => in_array($item->typ, [
+                QuestionTypeEnum::Pilihan->name,
+            ]),
         );
 
         return $validator->validate();
@@ -93,12 +94,10 @@ class ExerciseQuestionQuestionController extends Controller
         $learning_category_id,
         $exercise_question_id,
     ) {
-
-        $exercise = ExerciseQuestion::with(['learningCategory'])->findOrFail($exercise_question_id);
-        Gate::authorize(
-            'update',
-            $exercise->learningCategory,
+        $exercise = ExerciseQuestion::with(['learningCategory'])->findOrFail(
+            $exercise_question_id,
         );
+        Gate::authorize('update', $exercise->learningCategory);
 
         return DB::transaction(function () use (
             $request,
@@ -158,11 +157,10 @@ class ExerciseQuestionQuestionController extends Controller
         $learning_category_id,
         $exercise_question_id,
     ) {
-        $exercise = ExerciseQuestion::with(['learningCategory'])->findOrFail($exercise_question_id);
-        Gate::authorize(
-            'update',
-            $exercise->learningCategory,
+        $exercise = ExerciseQuestion::with(['learningCategory'])->findOrFail(
+            $exercise_question_id,
         );
+        Gate::authorize('update', $exercise->learningCategory);
         return \DB::transaction(function () use (
             $request,
             $learning_packet,
@@ -230,11 +228,10 @@ class ExerciseQuestionQuestionController extends Controller
         $exercise_question_id,
         $id,
     ) {
-        $question = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
-        Gate::authorize(
-            'update',
-            $question->learningCategory,
+        $question = BankQuestionItem::with(['learningCategory'])->findOrFail(
+            $id,
         );
+        Gate::authorize('update', $question->learningCategory);
 
         return Inertia::render('Admin/ExerciseQuestion/Question/Show', [
             'question' => $question,
@@ -252,11 +249,10 @@ class ExerciseQuestionQuestionController extends Controller
         $exercise_question,
         $id,
     ) {
-        $question = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
-        Gate::authorize(
-            'update',
-            $question->learningCategory,
+        $question = BankQuestionItem::with(['learningCategory'])->findOrFail(
+            $id,
         );
+        Gate::authorize('update', $question->learningCategory);
         return Inertia::render('Admin/ExerciseQuestion/Question/Edit', [
             'question' => $question,
         ]);
@@ -273,11 +269,10 @@ class ExerciseQuestionQuestionController extends Controller
         $exercise_question,
         $id,
     ) {
-        $question = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
-        Gate::authorize(
-            'update',
-            $question->learningCategory,
+        $question = BankQuestionItem::with(['learningCategory'])->findOrFail(
+            $id,
         );
+        Gate::authorize('update', $question->learningCategory);
 
         return DB::transaction(function () use (
             $request,
@@ -330,11 +325,10 @@ class ExerciseQuestionQuestionController extends Controller
         $exercise_question,
         $id,
     ) {
-        $question = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
-        Gate::authorize(
-            'update',
-            $question->learningCategory,
+        $question = BankQuestionItem::with(['learningCategory'])->findOrFail(
+            $id,
         );
+        Gate::authorize('update', $question->learningCategory);
 
         return DB::transaction(function () use ($exercise_question, $id) {
             $question = Question::find($id);
@@ -365,11 +359,10 @@ class ExerciseQuestionQuestionController extends Controller
         $exercise_question,
         $id,
     ) {
-        $question = BankQuestionItem::with(['learningCategory'])->findOrFail($id);
-        Gate::authorize(
-            'update',
-            $question->learningCategory,
+        $question = BankQuestionItem::with(['learningCategory'])->findOrFail(
+            $id,
         );
+        Gate::authorize('update', $question->learningCategory);
 
         return DB::transaction(function () use (
             $learning_packet,

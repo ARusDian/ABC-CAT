@@ -65,7 +65,7 @@ class UsersImport implements
             'roles' => [['id' => $role_id]],
         ]);
 
-        $user = (new UserController)->store($request, true);
+        $user = (new UserController())->store($request, true);
     }
 
     public function headingRow(): int
@@ -76,7 +76,7 @@ class UsersImport implements
     public function rules(): array
     {
         return [
-            '*.nama' =>  'required|string|max:255',
+            '*.nama' => 'required|string|max:255',
             '*.email' => 'required|string|email|max:255|unique:users,email',
             '*.password' => 'required|string|min:8',
             '*.no_telepon' => ['required'],

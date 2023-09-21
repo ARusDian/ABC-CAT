@@ -57,8 +57,7 @@ class FortifyServiceProvider extends ServiceProvider
             $user = User::where('email', $request->email)->first();
 
             $isLoggedIn =
-                $user &&
-                Hash::check($request->password, $user->password);
+                $user && Hash::check($request->password, $user->password);
 
             if (!$isLoggedIn) {
                 return false;
@@ -72,11 +71,13 @@ class FortifyServiceProvider extends ServiceProvider
 
             // only allow one session per user
             if ($sessions) {
-                $last_activity = \Carbon\Carbon::parse($sessions->last_activity);
+                $last_activity = \Carbon\Carbon::parse(
+                    $sessions->last_activity,
+                );
 
                 if ($last_activity > \Carbon\Carbon::now()->subMinutes(5)) {
                     throw ValidationException::withMessages([
-                        Fortify::username() => 'Sudah ada user yang login menggunakan akun ini'
+                        Fortify::username() => 'Sudah ada user yang login menggunakan akun ini',
                     ]);
                 } else {
                     \DB::connection(config('session.connection'))

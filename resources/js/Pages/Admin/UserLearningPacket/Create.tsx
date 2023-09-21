@@ -34,8 +34,8 @@ export default function Create({ users, learningPackets }: Props) {
         : {},
       learning_packet: params.learning_packet
         ? learningPackets.find(
-          it => it.id.toString() === params.learning_packet,
-        )
+            it => it.id.toString() === params.learning_packet,
+          )
         : {},
       subscription_date: new Date().toISOString().split('T')[0],
     },
@@ -45,7 +45,7 @@ export default function Create({ users, learningPackets }: Props) {
     await Api.postAsync({
       route: route('user-learning-packet.store'),
       value,
-      form
+      form,
     });
   }
 

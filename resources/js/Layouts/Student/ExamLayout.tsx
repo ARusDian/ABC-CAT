@@ -31,7 +31,7 @@ export default function DashboardAdminLayout({
         </div>
       </nav>
       {children}
-      <div className='w-full bg-blue-50 fixed bottom-0 text-center shadow shadow-sky-400/50 py-1'>
+      <div className="w-full bg-blue-50 fixed bottom-0 text-center shadow shadow-sky-400/50 py-1">
         ABC-CAT @2023 Ver. {version}
       </div>
     </div>

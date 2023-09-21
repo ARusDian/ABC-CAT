@@ -37,7 +37,6 @@ export default function PDFViewer({ document, height }: Props) {
     Print: () => <></>,
   });
 
-
   return (
     <div className="border border-gray-300 rounded-md p-2 h-1.2 w-6/12 mx-auto">
       <Worker workerUrl={workerUrl}>
