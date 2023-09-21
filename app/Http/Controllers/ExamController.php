@@ -60,16 +60,11 @@ class ExamController extends Controller
 
     public function getInProgressExam($exercise_id = null)
     {
-        $query = Exam::disableCache()->with([
+        return Exam::with([
             'answers.question',
             'exerciseQuestion',
-        ]);
-
-        if ($exercise_id) {
-            $query = $query->ofExercise($exercise_id);
-        }
-
-        return $query
+        ])
+            ->when($exercise_id != null, fn ($q) => $q->ofExercise($exercise_id))
             ->ofUser(auth()->id())
             ->ofFinished(false)
             ->first();
@@ -161,7 +156,6 @@ class ExamController extends Controller
         return Inertia::render('Student/Exam/Show', [
             'exercise_question' => $exercise,
             'exams' => Exam::withScore()
-                ->disableCache()
                 ->ofExercise($exercise_id)
                 ->ofUser(auth()->id())
                 ->orderBy('created_at', 'desc')
@@ -182,7 +176,7 @@ class ExamController extends Controller
     public function finish($exercise_id)
     {
         $exam = Exam::ofExercise($exercise_id)
-            ->disableModelCaching()
+            ->disableCache()
             ->ofUser(auth()->id())
             ->ofFinished(false)
             ->firstOrFail();
@@ -190,6 +184,9 @@ class ExamController extends Controller
         Gate::authorize('update', $exam);
 
         $this->markFinished($exam);
+
+        ExamAnswer::flushCache();
+        Exam::flushCache();
     }
 
     public function attempt($exercise_id, Request $request)
@@ -465,6 +462,8 @@ class ExamController extends Controller
                 }
             }
 
+            ExamAnswer::flushCache();
+            Exam::flushCache();
 
             return [
                 'finished' => $exam->finished,

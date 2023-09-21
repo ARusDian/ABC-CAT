@@ -18,8 +18,7 @@ class CheckExamMiddleware
     {
         $userId = auth()->id();
         if (auth()->id()) {
-            $exam = Exam::disableCache()
-                ->ofUser($userId)
+            $exam = Exam::ofUser($userId)
                 ->ofFinished(false)
                 ->first();
 

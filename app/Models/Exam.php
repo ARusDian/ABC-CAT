@@ -75,7 +75,7 @@ class Exam extends Model
         if ($finished) {
             return $query->whereNotNull('finished_at');
         } else {
-            return $query->disableCache()->whereNull('finished_at');
+            return $query->whereNull('finished_at');
         }
     }
 
