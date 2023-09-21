@@ -21,6 +21,7 @@ function shuffleCollection(LazyCollection $collection): Collection
 {
     $randomBytes = random_bytes($collection->count());
 
+    dd($randomBytes, $collection);
     $combinedArray = [];
     foreach ($collection as $key => $value) {
         $combinedArray[] = [
@@ -209,8 +210,7 @@ class ExamController extends Controller
 
         $this->markFinished($exam);
 
-        ExamAnswer::flushCache();
-        Exam::flushCache();
+        $exam->flushCache();
     }
 
     public function attempt($exercise_id, Request $request)
@@ -491,6 +491,7 @@ class ExamController extends Controller
 
             foreach ($answer_cache as $answer) {
                 $answer->save();
+                $answer->flushCache();
             }
 
             if ($finish) {
@@ -501,8 +502,7 @@ class ExamController extends Controller
                 }
             }
 
-            ExamAnswer::flushCache();
-            Exam::flushCache();
+            $exam->flushCache();
 
             return [
                 'finished' => $exam->finished,
