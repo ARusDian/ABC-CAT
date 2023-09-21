@@ -19,9 +19,8 @@ use Inertia\Inertia;
 
 function shuffleCollection(LazyCollection $collection): Collection
 {
-    $randomBytes = random_bytes($collection->count());
+    $randomBytes = random_bytes(($collection->count() + 1) * 10);
 
-    dd($randomBytes, $collection);
     $combinedArray = [];
     foreach ($collection as $key => $value) {
         $combinedArray[] = [
@@ -41,7 +40,7 @@ function shuffleCollection(LazyCollection $collection): Collection
     }
 
     return collect($shuffledArray);
-}
+};
 
 class ExamController extends Controller
 {
@@ -365,7 +364,7 @@ class ExamController extends Controller
                         $choice_array = array_keys(
                             $question->answers['choices'],
                         );
-                        $randomed_choice = collect($choice_array)->shuffle();
+                        $randomed_choice = shuffleCollection(collect($choice_array)->lazy());
                         $choice_order['choices'] = $randomed_choice->toArray();
                     }
                     ExamAnswer::create([
