@@ -178,15 +178,23 @@ export default function Show({ exams, exercise_question }: Props) {
                 </LinkButton>
               </div>
             )}
-            renderTopToolbarCustomActions={() => (
-              <button
-                className="text-white font-sans bg-[#3A63F5] text-center rounded-md my-auto py-3 font-thin hover:brightness-90 uppercase px-5"
-                onClick={onStartExam}
-                disabled={startExamButton}
-              >
-                Mulai Ujian
-              </button>
-            )}
+            renderTopToolbarCustomActions={() =>
+              startExamButton ? (
+                <button
+                  className="text-white font-sans bg-gray-700 text-center rounded-md my-auto py-3 font-thin hover:brightness-90 uppercase px-5"
+                >
+                  Loading
+                </button>
+              ) : (
+                <button
+                  className="text-white font-sans bg-[#3A63F5] disabled:bg-gray-700 text-center rounded-md my-auto py-3 font-thin hover:brightness-90 uppercase px-5"
+                  onClick={onStartExam}
+                  disabled={startExamButton}
+                >
+                  Mulai Ujian
+                </button>
+              )
+            }
           />
         </div>
       </div>
