@@ -12,11 +12,10 @@ import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 
 interface Props {
   exercise_question: ExerciseQuestionModel;
+  exams: ExamModel[];
 }
 
-export default function Index({ exercise_question }: Props) {
-  const exams = exercise_question.exams as ExamModel[];
-  console.log(exercise_question);
+export default function Index({ exercise_question, exams }: Props) {
   const dataColumns = [
     {
       header: 'Nama User',

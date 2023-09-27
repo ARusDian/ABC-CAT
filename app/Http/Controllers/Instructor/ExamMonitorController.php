@@ -20,18 +20,8 @@ class ExamMonitorController extends Controller
         $exercise_question_id,
     ) {
         return Inertia::render('Instructor/ExamMonitor/Index', [
-            'exercise_question' => ExerciseQuestion::with([
-                'exams' => fn($q) => $q->with('user')->orderBy('id', 'desc'),
-            ])->findOrFail($exercise_question_id),
-            // 'exams' => Exam::with(['exerciseQuestion', 'user'])
-            //     ->when(
-            //         $exercise_question_id != null,
-            //         fn($q) => $q->where(
-            //             'exercise_question_id',
-            //             $exercise_question_id,
-            //         ),
-            //     )
-            //     ->get(),
+            'exercise_question' => ExerciseQuestion::findOrFail($exercise_question_id),
+            'exams' => Exam::ofExercise($exercise_question_id)->orderBy('id', 'desc')->with(['user'])->get()
         ]);
     }
 
@@ -64,7 +54,7 @@ class ExamMonitorController extends Controller
     ) {
         // dd($exam_monitor, $request->path());
         return Inertia::render('Instructor/ExamMonitor/Show', [
-            'exam' => fn() => Exam::with([
+            'exam' => fn () => Exam::with([
                 'exerciseQuestion',
                 'user',
                 'answers.question',

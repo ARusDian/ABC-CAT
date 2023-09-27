@@ -10,22 +10,21 @@ import route from 'ziggy-js';
 
 interface Props {
   exercise_question: ExerciseQuestionModel & {
-    exams: ExamModel[];
   };
+    exams: ExamModel[];
 }
 
-export default function Leaderboard({ exercise_question }: Props) {
+export default function Leaderboard({ exercise_question, exams }: Props) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10, //customize the default page size
   });
 
   const sortedExam = React.useMemo(() => {
-    return Object.values(groupBy(exercise_question.exams, it => it.user_id))
+    return Object.values(groupBy(exams, it => it.user_id))
       .map(it => maxBy(it, it => it.answers_sum_score)!)
       .sort((a, b) => b.answers_sum_score - a.answers_sum_score);
-    // return exercise_question.exams.slice().sort((a,b) => a.:A)
-  }, [JSON.stringify(exercise_question.exams)]);
+  }, [JSON.stringify(exams)]);
 
   const dataColumns = [
     {

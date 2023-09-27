@@ -10,13 +10,12 @@ import React, { useState, useEffect } from 'react';
 import route from 'ziggy-js';
 
 interface Props {
-  exercise_question: ExerciseQuestionModel & {
-    exams: ExamModel[];
-  };
+  exercise_question: ExerciseQuestionModel & {};
+  exams: ExamModel[];
 }
 
-export default function Leaderboard({ exercise_question }: Props) {
-  const [data, setData] = useState<ExamModel[]>(exercise_question.exams);
+export default function Leaderboard({ exercise_question, exams }: Props) {
+  const [data, setData] = useState<ExamModel[]>(exams);
 
   const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();

@@ -23,7 +23,7 @@ class ExerciseQuestionController extends Controller
     public function index()
     {
         return Inertia::render('Admin/ExerciseQuestion/Index', [
-            'exercise_questions' => fn() => ExerciseQuestion::all(),
+            'exercise_questions' => fn () => ExerciseQuestion::all(),
         ]);
     }
 
@@ -170,7 +170,7 @@ class ExerciseQuestionController extends Controller
         $id,
     ) {
         $exerciseQuestion = ExerciseQuestion::with([
-            'questions' => fn($q) => $q->orderBy('id', 'asc'),
+            'questions' => fn ($q) => $q->orderBy('id', 'asc'),
         ])
             ->withTrashed()
             ->findOrFail($id);
@@ -182,23 +182,35 @@ class ExerciseQuestionController extends Controller
         ]);
     }
 
+    public function getLeaderboardProps($id) 
+    {
+
+        $exerciseQuestion = ExerciseQuestion::withTrashed()
+            ->findOrFail($id);
+
+        Gate::authorize('view', $exerciseQuestion->learningCategory);
+
+        $exams = Exam::ofExercise($exerciseQuestion->id)->withScore()->with(['user'])->get();
+
+        return ['exercise_question' => $exerciseQuestion, 'exams' => $exams];
+    }
+
+    public function getLeaderboardData($id)
+    {
+        $data = $this->getLeaderboardProps($id);
+
+        return response()->json($data);
+    }
+
+
     public function leaderboard(
         $learning_packet,
         $sub_learning_packet,
         $learning_category_id,
         $id,
     ) {
-        $exerciseQuestion = ExerciseQuestion::with([
-            'exams' => fn($q) => $q->with(['user'])->withScore(),
-        ])
-            ->withTrashed()
-            ->findOrFail($id);
-
-        Gate::authorize('view', $exerciseQuestion->learningCategory);
-
-        return Inertia::render('Admin/ExerciseQuestion/Exam/Leaderboard', [
-            'exercise_question' => $exerciseQuestion,
-        ]);
+        $data = $this->getLeaderboardProps($id);
+        return Inertia::render('Admin/ExerciseQuestion/Exam/Leaderboard', $data);
     }
 
     public function ExamIndex(
@@ -255,7 +267,7 @@ class ExerciseQuestionController extends Controller
     ) {
         $exam = Exam::with([
             'exerciseQuestion.learningCategory',
-            'user' => fn($q) => $q->select('id', 'name', 'email'),
+            'user' => fn ($q) => $q->select('id', 'name', 'email'),
         ])
             ->withScore()
             ->ofFinished(true)
@@ -267,18 +279,6 @@ class ExerciseQuestionController extends Controller
         return Inertia::render('Admin/ExerciseQuestion/Exam/Result', [
             'exam' => $exam,
         ]);
-    }
-
-    public function getLeaderboardData($id)
-    {
-        $exercise_question = ExerciseQuestion::with([
-            'exams' => fn($q) => $q->withScore(),
-            'exams.user',
-        ])
-            ->withTrashed()
-            ->findOrFail($id);
-
-        return response()->json($exercise_question);
     }
 
     /**
@@ -475,22 +475,22 @@ class ExerciseQuestionController extends Controller
 
         $exams = Exam::where('exercise_question_id', $id)
             ->with([
-                'exerciseQuestion' => fn($q) => $q
+                'exerciseQuestion' => fn ($q) => $q
                     ->select('id', 'name', 'learning_category_id')
                     ->with([
-                        'learningCategory' => fn($q) => $q
+                        'learningCategory' => fn ($q) => $q
                             ->select('id', 'name', 'sub_learning_packet_id')
                             ->with([
-                                'subLearningPacket' => fn($q) => $q
+                                'subLearningPacket' => fn ($q) => $q
                                     ->select('id', 'name', 'learning_packet_id')
                                     ->with([
-                                        'learningPacket' => fn(
+                                        'learningPacket' => fn (
                                             $q,
                                         ) => $q->select('id', 'name'),
                                     ]),
                             ]),
                     ]),
-                'user' => fn($q) => $q->select('id', 'name', 'email'),
+                'user' => fn ($q) => $q->select('id', 'name', 'email'),
             ])
             ->withScore()
             ->ofFinished(true)
