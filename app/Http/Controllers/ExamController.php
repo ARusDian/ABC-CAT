@@ -215,6 +215,12 @@ class ExamController extends Controller
     public function attempt($exercise_id, Request $request)
     {
         $now = Carbon::now();
+        $exam_in_progress = $this->getInProgressExam();
+
+        if ($exam_in_progress != null) {
+            return redirect()->back();
+        }
+
         return \DB::transaction(function () use ($exercise_id, $request, $now) {
             /**
              * @var \App\Models\ExerciseQuestion $exercise
