@@ -46,10 +46,23 @@ export default function Show({ exams, exercise_question }: Props) {
     },
   ] as MRT_ColumnDef<Model>[];
 
+  const [startExamButton, setStartExamButton] = React.useState(false);
+
   const onStartExam = React.useCallback(() => {
-    router.post(route('student.exam.attempt', [exercise_question.id]), {
-      current_timestamp: new Date(),
-    });
+    setStartExamButton(true);
+    const onAll = () => {
+      setStartExamButton(false);
+    };
+    router.post(
+      route('student.exam.attempt', [exercise_question.id]),
+      {
+        current_timestamp: new Date(),
+      },
+      {
+        onError: onAll,
+        onFinish: () => {},
+      },
+    );
 
     // <Link
     //   href={route('student.exam.attempt', [
@@ -169,6 +182,7 @@ export default function Show({ exams, exercise_question }: Props) {
               <button
                 className="text-white font-sans bg-[#3A63F5] text-center rounded-md my-auto py-3 font-thin hover:brightness-90 uppercase px-5"
                 onClick={onStartExam}
+                disabled={startExamButton}
               >
                 Mulai Ujian
               </button>
