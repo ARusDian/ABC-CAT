@@ -5,7 +5,9 @@ import DashboardLayout from '@/Layouts/Student/DashboardLayout';
 import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
 import { Link, router } from '@inertiajs/react';
+import { CircularProgress } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
+import { useConfirm } from 'material-ui-confirm';
 import React from 'react';
 import route from 'ziggy-js';
 
@@ -48,9 +50,17 @@ export default function Show({ exams, exercise_question }: Props) {
 
   const [startExamButton, setStartExamButton] = React.useState(false);
 
-  const onStartExam = React.useCallback(() => {
+  const onStartExam = React.useCallback(async () => {
+    await confirm({
+      description: 'Mau Memulai Ujian?',
+      confirmationButtonProps: { autoFocus: true },
+      allowClose: false,
+    });
+
     setStartExamButton(true);
+    console.log('setting to true');
     const onAll = () => {
+      console.log('setting to false');
       setStartExamButton(false);
     };
     router.post(
@@ -71,6 +81,8 @@ export default function Show({ exams, exercise_question }: Props) {
     //   method="post"
     // >
   }, []);
+
+  const confirm = useConfirm();
 
   return (
     <DashboardLayout title={exercise_question.name}>
@@ -180,9 +192,7 @@ export default function Show({ exams, exercise_question }: Props) {
             )}
             renderTopToolbarCustomActions={() =>
               startExamButton ? (
-                <button
-                  className="text-white font-sans bg-gray-700 text-center rounded-md my-auto py-3 font-thin hover:brightness-90 uppercase px-5"
-                >
+                <button className="text-white font-sans bg-gray-700 text-center rounded-md my-auto py-3 font-thin hover:brightness-90 uppercase px-5">
                   Loading
                 </button>
               ) : (
