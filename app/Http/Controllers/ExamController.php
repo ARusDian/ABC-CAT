@@ -221,7 +221,7 @@ class ExamController extends Controller
             return redirect()->back();
         }
 
-        return \DB::transaction(function () use ($exercise_id, $request, $now) {
+        $createExam = function () use ($exercise_id, $request, $now) {
             /**
              * @var \App\Models\ExerciseQuestion $exercise
              */
@@ -370,7 +370,9 @@ class ExamController extends Controller
                         $choice_array = array_keys(
                             $question->answers['choices'],
                         );
-                        $randomed_choice = shuffleCollection(collect($choice_array)->lazy());
+                        $randomed_choice = shuffleCollection(
+                            collect($choice_array)->lazy(),
+                        );
                         $choice_order['choices'] = $randomed_choice->toArray();
                     }
                     ExamAnswer::create([
@@ -390,6 +392,14 @@ class ExamController extends Controller
             }
 
             return redirect()->route('student.exam.show', [$exercise->id]);
+        };
+
+        $user_id = auth()->id();
+
+        Cache::lock("exam:$user_id", 5)->block(5, function () use (
+            $createExam,
+        ) {
+            return \DB::transaction($createExam, 3);
         });
     }
 
