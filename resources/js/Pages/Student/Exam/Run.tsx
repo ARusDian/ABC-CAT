@@ -23,29 +23,29 @@ export interface Props {
 
 export type Task =
   | {
-      change_answer: {
-        exam_answer_id: string;
+    change_answer: {
+      exam_answer_id: string;
 
-        state: {
-          mark: boolean;
-        };
+      state: {
+        mark: boolean;
+      };
 
-        answer: any;
-      };
-    }
-  | {
-      change_question: {
-        date: Date;
-        question: number;
-        exam_answer_id?: string;
-      };
-    }
-  | {
-      check_finished: {};
-    }
-  | {
-      finish: {};
+      answer: any;
     };
+  }
+  | {
+    change_question: {
+      date: Date;
+      question: number;
+      exam_answer_id?: string;
+    };
+  }
+  | {
+    check_finished: {};
+  }
+  | {
+    finish: {};
+  };
 
 export default function Run({ exam, timestamp }: Props) {
   const { answers } = exam;
@@ -472,7 +472,20 @@ export default function Run({ exam, timestamp }: Props) {
                             });
                           }}
                         />
-                      ) : null}
+
+                      ) :
+                        <div className="flex gap-2">
+                          <div className='flex flex-col gap-3 mx-auto'>
+                            <ReactLoading
+                              color="#1964AD" type="spin"
+                              width={200}
+                              height={200}
+                            />
+                            <p className='text-center text-2xl font-bold'>
+                              Sedang Memuat ...
+                            </p>
+                          </div>
+                        </div>}
                     </div>
                   </div>
                 </div>
