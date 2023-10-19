@@ -22,7 +22,8 @@ class DevController extends Controller
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
         header('Content-Length: ' . filesize($file_name));
-        readfile($file_name);
+
+        return response()->file($file_name);
     }
 
     public function dumpDB(Request $request)
@@ -86,7 +87,7 @@ class DevController extends Controller
         header('Content-Length: ' . filesize($file_name));
         ob_clean();
         flush();
-        readfile($file_name);
-        unlink($file_name);
+
+        return response()->download($file_name)->deleteFileAfterSend(true);
     }
 }
