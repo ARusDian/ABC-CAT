@@ -200,7 +200,6 @@ class ExamController extends Controller
     public function finish($exercise_id)
     {
         $exam = Exam::ofExercise($exercise_id)
-            ->disableCache()
             ->ofUser(auth()->id())
             ->ofFinished(false)
             ->firstOrFail();
@@ -208,8 +207,6 @@ class ExamController extends Controller
         Gate::authorize('update', $exam);
 
         $this->markFinished($exam);
-
-        $exam->flushCache();
     }
 
     public function attempt($exercise_id, Request $request)
@@ -437,8 +434,7 @@ class ExamController extends Controller
             /**
              * $var \App\Models\Exam
              */
-            $exam = Exam::disableCache()
-                ->with(['exerciseQuestion'])
+            $exam = Exam::with(['exerciseQuestion'])
                 ->findOrFail($data['exam_id']);
 
             Gate::authorize('update', $exam);
@@ -458,8 +454,7 @@ class ExamController extends Controller
 
             $getAnswer = fn($answer_id): ExamAnswer => $answer_cache->getOrPut(
                 $answer_id,
-                fn() => ExamAnswer::disableCache()
-                    ->where('id', $answer_id)
+                fn() => ExamAnswer::where('id', $answer_id)
                     ->where('exam_id', $exam->id)
                     ->with(['question'])
                     ->first(),
@@ -506,7 +501,6 @@ class ExamController extends Controller
 
             foreach ($answer_cache as $answer) {
                 $answer->save();
-                $answer->flushCache();
             }
 
             if ($finish) {
@@ -516,8 +510,6 @@ class ExamController extends Controller
                     $exam->save();
                 }
             }
-
-            $exam->flushCache();
 
             return [
                 'finished' => $exam->finished,
