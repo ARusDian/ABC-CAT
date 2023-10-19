@@ -225,7 +225,7 @@ export default function Show({ learning_category }: Props) {
             },
             {
               header: 'Jumlah Soal',
-              accessorFn: row => row.items?.length ?? 0,
+              accessorFn: row => row.items_count ?? 0,
             },
             {
               header: 'tipe',
