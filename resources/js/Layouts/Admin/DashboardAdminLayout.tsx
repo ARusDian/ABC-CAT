@@ -219,6 +219,39 @@ export default function DashboardAdminLayout({
                 Paket Belajar Pengguna
               </ResponsiveNavLink>
             </li>
+            <li>
+              <ResponsiveNavLink
+                href={route('packet.index')}
+                active={route().current('packet.index')}
+              >
+                <span className={'mr-4'}>
+                  <FolderCopyIcon fontSize="large" />
+                </span>
+                Paket Belajar
+              </ResponsiveNavLink>
+            </li>
+            <li>
+              <ResponsiveNavLink
+                href={route('dev.dump-db')}
+                active={route().current('dev.dump-db')}
+              >
+                <span className={'mr-4'}>
+                  <FolderSharedIcon fontSize="large" />
+                </span>
+                dumpDB
+              </ResponsiveNavLink>
+            </li>
+            <li>
+              <ResponsiveNavLink
+                href={route('dev.dump-redis')}
+                active={route().current('dev.dump-redis')}
+              >
+                <span className={'mr-4'}>
+                  <FolderSharedIcon fontSize="large" />
+                </span>
+                dumpRedis
+              </ResponsiveNavLink>
+            </li>
           </>
         )}
         {user.roles.some(role => role.name === 'instructor') ? (
@@ -236,17 +269,7 @@ export default function DashboardAdminLayout({
             </li>
           </>
         ) : (
-          <li>
-            <ResponsiveNavLink
-              href={route('packet.index')}
-              active={route().current('packet.index')}
-            >
-              <span className={'mr-4'}>
-                <FolderCopyIcon fontSize="large" />
-              </span>
-              Paket Belajar
-            </ResponsiveNavLink>
-          </li>
+          <></>
         )}
       </ul>
     </Box>

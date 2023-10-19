@@ -4,6 +4,7 @@ use App\Actions\Fortify\UserProfileController;
 use App\Http\Controllers\BankQuestionController;
 use App\Http\Controllers\BankQuestionItemController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DevController;
 use App\Http\Controllers\DocumentFileController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExerciseQuestionController;
@@ -112,6 +113,12 @@ Route::middleware([
                 Route::get('/user-learning-packet-export/{learning_packet}', [UserLearningPacketController::class, "Export"])->name('user-packet.export');
                 Route::get('/user-learning-packet-template/{learning_packet}', [UserLearningPacketController::class, "Template"])->name('user-packet.import-template');
 
+                Route::prefix('dev')->name('dev.')->group(function () {
+                    Route::get('/dump-db', [DevController::class, 'dumpDB'])->name('dump-db');
+                    Route::get('/dump-redis', [DevController::class, 'dumpRedis'])->name('dump-redis');
+
+                });
+
                 Route::prefix("packet")->name("packet.")->group(function () {
                     Route::resource("", LearningPacketController::class)->parameter("", "learning_packet");
                     Route::post("{learning_packet}/restore", [LearningPacketController::class, "restore"])->name("restore");
@@ -131,7 +138,7 @@ Route::middleware([
             Route::resource("document-file", DocumentFileController::class);
 
             // Paket Belajar
-            Route::middleware(['role:instructor'])->group((function(){
+            Route::middleware(['role:instructor'])->group((function () {
                 Route::get("instructor-index", [LearningCategoryController::class, "instructorIndex"])->name("instructorIndex");
             }));
             Route::prefix("packet")->name("packet.")->group(function () {
