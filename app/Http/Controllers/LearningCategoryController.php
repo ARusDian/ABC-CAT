@@ -78,7 +78,7 @@ class LearningCategoryController extends Controller
             'subLearningPacket',
             'subLearningPacket.learningPacket',
             'learningMaterials.documents.documentFile',
-            'bankQuestions.items',
+            'bankQuestions' => fn ($q) => $q->withCount('items'),
             'exerciseQuestions' => function ($q) {
                 return $q->withTrashed()->orderBy('id', 'asc');
             },
