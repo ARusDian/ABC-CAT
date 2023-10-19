@@ -16,7 +16,6 @@ use Znck\Eloquent\Relations\BelongsToThrough;
 class Exam extends Model
 {
     use HasFactory;
-    use Cachable;
     use \Znck\Eloquent\Traits\BelongsToThrough;
 
     protected $fillable = [

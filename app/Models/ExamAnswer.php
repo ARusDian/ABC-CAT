@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ExamAnswer extends Model
 {
     use HasFactory;
-    use Cachable;
 
     protected $fillable = [
         'exam_id',
