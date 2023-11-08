@@ -19,13 +19,13 @@ use Inertia\Inertia;
 
 function shuffleCollection(LazyCollection $collection): Collection
 {
-    $randomBytes = random_bytes(($collection->count() + 1) * 10);
+    $max = $collection->count() * 10;
 
     $combinedArray = [];
     foreach ($collection as $key => $value) {
         $combinedArray[] = [
             'key' => $key,
-            'random' => ord($randomBytes[$key]),
+            'random' => random_int(0, $max),
             'value' => $value,
         ];
     }
