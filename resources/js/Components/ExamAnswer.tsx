@@ -206,7 +206,7 @@ function KecermatanAnswerForm({
   );
 
   // store editor ref to prevent re-creating editor
-  const arrayEditorRef = React.useRef<React.MutableRefObject<Editor | null>[]>(
+  const arrayEditorRef = React.useRef<React.MutableRefObject<HTMLDivElement | null>[]>(
     [],
   );
 
@@ -217,8 +217,9 @@ function KecermatanAnswerForm({
   return (
     <div className="flex flex-col gap-3">
       {choices.map((choice, index) => {
+        const currentEditorRef = arrayEditorRef.current[index]
         return (
-          <div className="flex justify-between text-3xl" key={index}>
+          <div className="flex justify-between text-3xl" key={index} ref={currentEditorRef}>
             <div className="flex gap-3">
               <input
                 type="radio"
