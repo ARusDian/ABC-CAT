@@ -116,7 +116,7 @@ Route::middleware([
                 Route::prefix('dev')->name('dev.')->group(function () {
                     Route::get('/dump-db', [DevController::class, 'dumpDB'])->name('dump-db');
                     Route::get('/dump-redis', [DevController::class, 'dumpRedis'])->name('dump-redis');
-
+                    Route::get('/dump-storage-logs', [DevController::class, 'dumpStorageLogs'])->name('dump-storage-logs');
                 });
 
                 Route::prefix("packet")->name("packet.")->group(function () {
