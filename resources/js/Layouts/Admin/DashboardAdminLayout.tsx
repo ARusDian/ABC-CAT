@@ -25,6 +25,9 @@ import FolderSharedIcon from '@mui/icons-material/FolderShared';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import StorageIcon from '@mui/icons-material/Storage';
+import TableRowsIcon from '@mui/icons-material/TableRows';
+import BackupIcon from '@mui/icons-material/Backup';
 import { asset } from '@/Models/Helper';
 import { User } from '@/types';
 import { VersionContext } from '@/Context/VersionContext';
@@ -230,6 +233,9 @@ export default function DashboardAdminLayout({
                 Paket Belajar
               </ResponsiveNavLink>
             </li>
+            <Divider >
+              DEV
+            </Divider>
             <li>
               <a
                 href={route('dev.dump-db')}
@@ -237,7 +243,7 @@ export default function DashboardAdminLayout({
                 className='block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition'
               >
                 <span className={'mr-4'}>
-                  <FolderSharedIcon fontSize="large" />
+                  <BackupIcon fontSize="large" />
                 </span>
                 dumpDB
               </a>
@@ -251,6 +257,17 @@ export default function DashboardAdminLayout({
                   <FolderSharedIcon fontSize="large" />
                 </span>
                 dumpRedis
+              </a>
+            </li>
+            <li>
+              <a
+                href={route('dev.dump-storage-logs')}
+                className='block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition'
+              >
+                <span className={'mr-4'}>
+                  <StorageIcon fontSize="large" />
+                </span>
+                dumpStorageLogs
               </a>
             </li>
           </>

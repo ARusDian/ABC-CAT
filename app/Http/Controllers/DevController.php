@@ -8,6 +8,22 @@ use Illuminate\Support\Facades\DB;
 
 class DevController extends Controller
 {
+    public function dumpStorageLogs(Request $request)
+    {
+        $file_name = storage_path('logs/laravel.log');
+        $outputname = 'laravel_log_on_' . date('y-m-d') . '.log';
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . basename($outputname));
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file_name));
+        readfile($file_name);
+    }
+    
     public function dumpRedis(Request $request)
     {
         $file_name =  env('REDIS_DUMP_PATH');
