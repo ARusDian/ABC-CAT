@@ -232,6 +232,7 @@ class ExerciseQuestionController extends Controller
             ->ofExercise($id)
             ->whereColumns($request->get('columnFilters'))
             ->orderBy('finished_at', 'desc')
+            ->paginate($request->get("perPage") ?? 10)
             ->get();
 
         return Inertia::render('Admin/ExerciseQuestion/Exam/Index', [

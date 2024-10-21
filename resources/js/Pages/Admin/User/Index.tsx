@@ -1,22 +1,23 @@
+import InputError from '@/Components/Jetstream/InputError';
+import LazyLoadMRT from '@/Components/LazyLoadMRT';
+import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
+import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
+import { ImportFileModel } from '@/Models/FileModel';
+import { asset } from '@/Models/Helper';
+import { User } from '@/types';
+import Api from '@/Utils/Api';
+import { router } from '@inertiajs/react';
+import { Button, Modal } from '@mui/material';
 import {
   MRT_ColumnDef,
   MRT_ColumnFiltersState,
+  MRT_ColumnOrderState,
   MRT_PaginationState,
 } from 'material-react-table';
 import React, { useEffect } from 'react';
-import route from 'ziggy-js';
-import { User } from '@/types';
-import AdminTableLayout from '@/Layouts/Admin/AdminTableLayout';
-import MuiInertiaLinkButton from '@/Components/MuiInertiaLinkButton';
-import LazyLoadMRT from '@/Components/LazyLoadMRT';
-import { asset } from '@/Models/Helper';
 import { Controller, useForm } from 'react-hook-form';
-import Api from '@/Utils/Api';
-import { ImportFileModel } from '@/Models/FileModel';
-import { Button, Modal } from '@mui/material';
-import { router, usePage } from '@inertiajs/react';
-import InputError from '@/Components/Jetstream/InputError';
 import ReactLoading from 'react-loading';
+import route from 'ziggy-js';
 
 interface Props {
   users: {
@@ -45,6 +46,8 @@ export default function Index(props: Props) {
 
   const [columnFilters, setColumnFilters] =
     React.useState<MRT_ColumnFiltersState>([]);
+  const [columnOrder, setColumnOrder] =
+    React.useState<MRT_ColumnOrderState>([]);
 
   const [pagination, setPagination] = React.useState<MRT_PaginationState>({
     pageIndex: users.current_page - 1,
@@ -59,6 +62,7 @@ export default function Index(props: Props) {
     url.searchParams.set('columnFilters', JSON.stringify(columnFilters ?? []));
     url.searchParams.set('page', (pagination.pageIndex + 1).toString());
     url.searchParams.set('perPage', pagination.pageSize.toString());
+    url.searchParams.set('columnOrder', JSON.stringify(columnOrder ?? []));
     // url.searchParams.set('globalFilter', globalFilter ?? '');
 
     if (window.location.href == url.toString()) {
@@ -219,6 +223,16 @@ export default function Index(props: Props) {
           data={users.data}
           rowCount={users.total}
           enableGlobalFilter={false}
+          manualPagination
+          onPaginationChange={setPagination}
+          onColumnFiltersChange={setColumnFilters}
+          onColumnOrderChange={setColumnOrder}
+          state={{
+            pagination,
+            isLoading,
+            columnFilters,
+            columnOrder
+          }}
           enableColumnActions
           enableColumnFilters
           enablePagination
@@ -228,15 +242,6 @@ export default function Index(props: Props) {
           enableRowActions
           enableRowNumbers
           muiTableBodyRowProps={{ hover: false }}
-          state={{
-            pagination,
-            isLoading,
-            columnFilters,
-          }}
-          getRowId={it => it.id?.toString()}
-          manualPagination
-          onPaginationChange={setPagination}
-          onColumnFiltersChange={setColumnFilters}
           muiTableHeadCellProps={{
             sx: {
               fontWeight: 'bold',

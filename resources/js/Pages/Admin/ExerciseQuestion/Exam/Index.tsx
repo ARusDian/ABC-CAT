@@ -4,18 +4,36 @@ import useDefaultClassificationRouteParams from '@/Hooks/useDefaultClassificatio
 import AdminShowLayout from '@/Layouts/Admin/AdminShowLayout';
 import { ExamModel } from '@/Models/Exam';
 import { ExerciseQuestionModel } from '@/Models/ExerciseQuestion';
-import { MRT_ColumnDef } from 'material-react-table';
+import { router } from '@inertiajs/react';
+import {
+  MRT_ColumnDef,
+  MRT_ColumnFiltersState,
+  MRT_PaginationState,
+} from 'material-react-table';
 import React from 'react';
 import route from 'ziggy-js';
 
 interface Props {
   exercise_question: ExerciseQuestionModel;
-  exams: ExamModel[];
+  exams: {
+    data: ExamModel[];
+    per_page: number;
+    total: number;
+    current_page: number;
+  };
 }
 
 export default function Leaderboard({ exercise_question, exams }: Props) {
   const { learning_packet_id, sub_learning_packet_id, learning_category_id } =
     useDefaultClassificationRouteParams();
+
+  const [columnFilters, setColumnFilters] =
+    React.useState<MRT_ColumnFiltersState>([]);
+
+  const [pagination, setPagination] = React.useState<MRT_PaginationState>({
+    pageIndex: exams.current_page - 1,
+    pageSize: exams.per_page,
+  });
 
   const dataColumns = [
     { header: 'User', accessorKey: 'user.name' },
@@ -25,6 +43,7 @@ export default function Leaderboard({ exercise_question, exams }: Props) {
     },
     {
       header: 'Waktu Berakhir',
+      id: 'finished_at',
       accessorFn: it => {
         if (it.finished_at === null) {
           return 'Belum Selesai';
@@ -34,11 +53,44 @@ export default function Leaderboard({ exercise_question, exams }: Props) {
     },
     {
       header: 'Skor',
+      id: 'answers_sum_score',
       accessorFn: it => {
         return <>{parseFloat(it.answers_sum_score?.toString() ?? '0')}</>;
       },
     },
   ] as MRT_ColumnDef<ExamModel>[];
+
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    const url = new URL(route(route().current()!).toString());
+
+    url.searchParams.set('columnFilters', JSON.stringify(columnFilters ?? []));
+    url.searchParams.set('page', (pagination.pageIndex + 1).toString());
+    url.searchParams.set('perPage', pagination.pageSize.toString());
+    // url.searchParams.set('globalFilter', globalFilter ?? '');
+
+    if (window.location.href == url.toString()) {
+      return;
+    }
+
+    setIsLoading(true);
+    router.reload({
+      // preserveState: true,
+      // preserveScroll: true,
+      data: {
+        page: pagination.pageIndex + 1,
+        perPage: pagination.pageSize,
+        columnFilters: JSON.stringify(columnFilters),
+        // globalFilter: globalFilter,
+      },
+      only: ['users'],
+      onFinish: () => {
+        setIsLoading(false);
+      },
+    });
+  }, [pagination.pageIndex, pagination.pageSize, columnFilters]);
+
 
   return (
     <AdminShowLayout
@@ -86,7 +138,15 @@ export default function Leaderboard({ exercise_question, exams }: Props) {
         </div>
         <LazyLoadMRT
           columns={dataColumns}
-          data={exams}
+          data={exams.data}
+          rowCount={exams.total}
+          enableGlobalFilter={false}
+          state={{
+            pagination,
+            isLoading,
+            columnFilters,
+            columnOrder
+          }}
           enableColumnActions
           enableColumnFilters
           enablePagination
