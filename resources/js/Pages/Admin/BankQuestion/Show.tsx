@@ -181,6 +181,7 @@ export default function Show(props: Props) {
               </MuiInertiaLinkButton>
             </div>
           )}
+          enableDetailPanelSearch={true}
           renderDetailPanel={({ row }) => {
             return (
               <div className="flex flex-col gap-1">
