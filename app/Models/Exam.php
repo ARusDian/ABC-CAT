@@ -34,7 +34,7 @@ class Exam extends Model
         'server_state' => 'array',
         'cluster' => AsArrayObject::class,
         'options' => 'object',
-        'answers_sum_score' => 'float',
+        'score' => 'float',
     ];
 
     protected $appends = ['finished'];
@@ -83,7 +83,17 @@ class Exam extends Model
     public function scopeWithScore($query, bool $state = true)
     {
         if ($state) {
-            return $query->withSum('answers', 'score')->withCount('answers');
+            return $query;
+            // return $query->withSum('answers', 'score');
+        } else {
+            return $query;
+        }
+    }
+
+    public function scopeWithAnswerCount($query, bool $state = true)
+    {
+        if ($state) {
+            return $query->withCount('answers');
         } else {
             return $query;
         }
@@ -208,10 +218,7 @@ class Exam extends Model
                 }
 
                 if (count($key) > 1) {
-                    $query->whereHas($key[0], function ($query) use (
-                        $value,
-                        $key,
-                    ) {
+                    $query->whereHas($key[0], function ($query) use ($value, $key, ) {
                         return $query->where(
                             $key[1],
                             'like',
@@ -229,5 +236,16 @@ class Exam extends Model
         }
 
         return $query;
+    }
+
+    public function updateScore()
+    {
+        $this->score = $this->answers->sum("score");
+        $this->save();
+    }
+
+    protected function answersSumScore(): Attribute
+    {
+        return Attribute::get(fn() => $this->answers->sum('score'));
     }
 }

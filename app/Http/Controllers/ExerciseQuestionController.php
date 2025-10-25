@@ -23,7 +23,7 @@ class ExerciseQuestionController extends Controller
     public function index()
     {
         return Inertia::render('Admin/ExerciseQuestion/Index', [
-            'exercise_questions' => fn () => ExerciseQuestion::all(),
+            'exercise_questions' => fn() => ExerciseQuestion::all(),
         ]);
     }
 
@@ -59,13 +59,13 @@ class ExerciseQuestionController extends Controller
                 'next_question_after_answer' => $is_continuous,
 
                 ...$isKecermatan
-                    ? [
-                        // cluster prefix will only be used if cluster_by_bank_question is false
-                        'cluster_name_prefix' => 'Kolom',
-                    ]
-                    : [
-                        'cluster_name_prefix' => null,
-                    ],
+                ? [
+                    // cluster prefix will only be used if cluster_by_bank_question is false
+                    'cluster_name_prefix' => 'Kolom',
+                ]
+                : [
+                    'cluster_name_prefix' => null,
+                ],
 
                 'cluster_by_bank_question' => !$isKecermatan,
             ],
@@ -120,8 +120,8 @@ class ExerciseQuestionController extends Controller
             ->withProperties(['method' => 'CREATE'])
             ->log(
                 'Exercise Question ' .
-                    $exercise->name .
-                    ' created successfully.',
+                $exercise->name .
+                ' created successfully.',
             );
 
         return redirect()
@@ -170,7 +170,7 @@ class ExerciseQuestionController extends Controller
         $id,
     ) {
         $exerciseQuestion = ExerciseQuestion::with([
-            'questions' => fn ($q) => $q->orderBy('id', 'asc'),
+            'questions' => fn($q) => $q->orderBy('id', 'asc'),
         ])
             ->withTrashed()
             ->findOrFail($id);
@@ -182,15 +182,17 @@ class ExerciseQuestionController extends Controller
         ]);
     }
 
-    public function getLeaderboardProps($id) 
+    public function getLeaderboardProps($id)
     {
-
         $exerciseQuestion = ExerciseQuestion::withTrashed()
             ->findOrFail($id);
 
         Gate::authorize('view', $exerciseQuestion->learningCategory);
 
-        $exams = Exam::ofExercise($exerciseQuestion->id)->withScore()->with(['user'])->get();
+        $exams = Exam::where('exercise_question_id', $exerciseQuestion->id)
+            ->with('user')
+            ->withSum('answers', 'score')  // Ini akan otomatis create 'answers_sum_score'
+            ->get();
 
         return ['exercise_question' => $exerciseQuestion, 'exams' => $exams];
     }
@@ -226,8 +228,7 @@ class ExerciseQuestionController extends Controller
 
         Gate::authorize('view', $exerciseQuestion->learningCategory);
 
-        $exams = Exam::withScore()
-            ->with('user')
+        $exams = Exam::with('user')
             ->ofFinished(true)
             ->ofExercise($id)
             ->whereColumns($request->get('columnFilters'))
@@ -248,7 +249,6 @@ class ExerciseQuestionController extends Controller
         $exam_id,
     ) {
         $exam = Exam::with(['answers.question', 'learningCategory', 'user'])
-            ->withScore()
             ->findOrFail($exam_id);
 
         Gate::authorize('view', $exam->learningCategory);
@@ -267,9 +267,8 @@ class ExerciseQuestionController extends Controller
     ) {
         $exam = Exam::with([
             'exerciseQuestion.learningCategory',
-            'user' => fn ($q) => $q->select('id', 'name', 'email'),
+            'user' => fn($q) => $q->select('id', 'name', 'email'),
         ])
-            ->withScore()
             ->ofFinished(true)
             ->find($exam_id)
             ->appendResult();
@@ -310,13 +309,7 @@ class ExerciseQuestionController extends Controller
         $learning_category_id,
         $id,
     ) {
-        return \DB::transaction(function () use (
-            $request,
-            $learning_packet,
-            $sub_learning_packet,
-            $learning_category_id,
-            $id,
-        ) {
+        return \DB::transaction(function () use ($request, $learning_packet, $sub_learning_packet, $learning_category_id, $id, ) {
             $exercise = ExerciseQuestion::with(['learningCategory'])
                 ->withTrashed()
                 ->findOrFail($id);
@@ -336,8 +329,8 @@ class ExerciseQuestionController extends Controller
                 ->withProperties(['method' => 'UPDATE'])
                 ->log(
                     'Exercise Question ' .
-                        $exercise->name .
-                        ' updated successfully.',
+                    $exercise->name .
+                    ' updated successfully.',
                 );
 
             return redirect()
@@ -379,8 +372,8 @@ class ExerciseQuestionController extends Controller
             ->withProperties(['method' => 'UPDATE'])
             ->log(
                 'Exercise Question imported' .
-                    $exercise_question->name .
-                    ' updated successfully.',
+                $exercise_question->name .
+                ' updated successfully.',
             );
 
         return redirect()
@@ -416,8 +409,8 @@ class ExerciseQuestionController extends Controller
             ->withProperties(['method' => 'DELETE'])
             ->log(
                 'Exercise Question ' .
-                    $exercise->name .
-                    ' deleted successfully.',
+                $exercise->name .
+                ' deleted successfully.',
             );
 
         return redirect()
@@ -448,8 +441,8 @@ class ExerciseQuestionController extends Controller
             ->withProperties(['method' => 'RESTORE'])
             ->log(
                 'Exercise Question ' .
-                    $exercise->name .
-                    ' restored successfully.',
+                $exercise->name .
+                ' restored successfully.',
             );
 
         return redirect()
@@ -475,24 +468,23 @@ class ExerciseQuestionController extends Controller
 
         $exams = Exam::where('exercise_question_id', $id)
             ->with([
-                'exerciseQuestion' => fn ($q) => $q
+                'exerciseQuestion' => fn($q) => $q
                     ->select('id', 'name', 'learning_category_id')
                     ->with([
-                        'learningCategory' => fn ($q) => $q
+                        'learningCategory' => fn($q) => $q
                             ->select('id', 'name', 'sub_learning_packet_id')
                             ->with([
-                                'subLearningPacket' => fn ($q) => $q
+                                'subLearningPacket' => fn($q) => $q
                                     ->select('id', 'name', 'learning_packet_id')
                                     ->with([
-                                        'learningPacket' => fn (
+                                        'learningPacket' => fn(
                                             $q,
                                         ) => $q->select('id', 'name'),
                                     ]),
                             ]),
                     ]),
-                'user' => fn ($q) => $q->select('id', 'name', 'email'),
+                'user' => fn($q) => $q->select('id', 'name', 'email'),
             ])
-            ->withScore()
             ->ofFinished(true)
             ->get();
 
@@ -502,8 +494,8 @@ class ExerciseQuestionController extends Controller
             ->withProperties(['method' => 'EXPORT'])
             ->log(
                 'Exercise Question ' .
-                    $exams->first()->exerciseQuestion->name .
-                    ' exported successfully.',
+                $exams->first()->exerciseQuestion->name .
+                ' exported successfully.',
             );
 
         return Excel::download(
