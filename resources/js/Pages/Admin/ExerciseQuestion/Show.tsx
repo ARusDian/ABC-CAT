@@ -126,6 +126,7 @@ export default function Show(props: Props) {
               fontSize: '16px',
             },
           }}
+          enableDetailPanelSearch={true}
           renderDetailPanel={({ row }) => {
             return (
               <div className="flex flex-col gap-1">
