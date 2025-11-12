@@ -229,6 +229,7 @@ class ExerciseQuestionController extends Controller
         Gate::authorize('view', $exerciseQuestion->learningCategory);
 
         $exams = Exam::with('user')
+            ->withSum('answers', 'score')
             ->ofFinished(true)
             ->ofExercise($id)
             ->whereColumns($request->get('columnFilters'))

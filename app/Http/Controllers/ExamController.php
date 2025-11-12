@@ -40,7 +40,8 @@ function shuffleCollection(LazyCollection $collection): Collection
     }
 
     return collect($shuffledArray);
-};
+}
+;
 
 class ExamController extends Controller
 {
@@ -177,7 +178,7 @@ class ExamController extends Controller
 
         return Inertia::render('Student/Exam/Show', [
             'exercise_question' => $exercise,
-            'exams' => Exam::withScore()
+            'exams' => Exam::withSum('answers', 'score')
                 ->ofExercise($exercise_id)
                 ->ofUser(auth()->id())
                 ->orderBy('created_at', 'desc')
@@ -254,7 +255,7 @@ class ExamController extends Controller
                     ->clone()
                     ->addMinutes(
                         $exercise->time_limit *
-                            $cluster_question->keys()->count(),
+                        $cluster_question->keys()->count(),
                     );
             } else {
                 $expire_in = $now->clone()->addMinutes($exercise->time_limit);
@@ -265,9 +266,7 @@ class ExamController extends Controller
             $selected_question_per_cluster = [];
             $cluster_column = $exercise->cluster_by_column;
 
-            $pushQuestion = function (
-                \App\Models\BankQuestionItem $question,
-            ) use (&$selected_question_per_cluster, $cluster_column) {
+            $pushQuestion = function (\App\Models\BankQuestionItem $question, ) use (&$selected_question_per_cluster, $cluster_column) {
                 $selected_question_per_cluster[
                     $question[$cluster_column]
                 ][] = $question;
@@ -293,7 +292,7 @@ class ExamController extends Controller
                 $per_cluster = intval(
                     floor(
                         $exercise->number_of_question /
-                            $cluster_question->count(),
+                        $cluster_question->count(),
                     ),
                 );
 
@@ -393,9 +392,7 @@ class ExamController extends Controller
 
         $user_id = auth()->id();
 
-        Cache::lock("exam:$user_id", 5)->block(5, function () use (
-            $createExam,
-        ) {
+        Cache::lock("exam:$user_id", 5)->block(5, function () use ($createExam, ) {
             return \DB::transaction($createExam, 3);
         });
     }

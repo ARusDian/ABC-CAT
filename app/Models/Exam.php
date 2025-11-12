@@ -41,7 +41,7 @@ class Exam extends Model
 
     public function answers(): HasMany
     {
-        return $this->hasMany(ExamAnswer::class);
+        return $this->hasMany(ExamAnswer::class, 'exam_id', 'id');
     }
 
     public function user(): BelongsTo
@@ -83,8 +83,7 @@ class Exam extends Model
     public function scopeWithScore($query, bool $state = true)
     {
         if ($state) {
-            return $query;
-            // return $query->withSum('answers', 'score');
+            return $query->withSum('answers', 'score');
         } else {
             return $query;
         }
